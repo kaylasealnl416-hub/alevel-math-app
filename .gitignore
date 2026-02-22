@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+.env.local
+.DS_Store
+*.log
+.vscode
+.idea
+*.backup*
+src/alevel-math-app-backup-*.jsx
+src/alevel-math-app-final-*.jsx
