@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { SUBJECTS } from "./data/subjects.js";
 
 // ============================================================
 // DATA: A-Level Math Curriculum (P1, P2, P3, P4, S1, M1)
@@ -1568,6 +1569,19 @@ const CURRICULUM = {
   }
 };
 
+// All subjects including Mathematics (from CURRICULUM) and others (from SUBJECTS)
+const ALL_SUBJECTS = {
+  mathematics: {
+    id: "mathematics",
+    name: { zh: "数学", en: "Mathematics" },
+    nameFull: { zh: "爱德思IAL数学", en: "Pearson Edexcel IAL Mathematics" },
+    icon: "📐",
+    color: "#DA291C",
+    level: "IAL (International A-Level)"
+  },
+  ...SUBJECTS
+};
+
 // Past exam papers — Edexcel IAL WMA11 / WMA12 / WMA13 / WMA14 / WST01 / WME01
 const PAST_PAPERS = [
   { year: 2024, session: "May/Jun", paper: "P1", code:"WMA11", duration: 90, questions: 11, desc: "Pure Mathematics 1" },
@@ -1914,64 +1928,90 @@ const CHAPTER_EN = {
 
 /** Returns a chapter object with English text when lang === 'en' */
 function localiseChapter(chapter, lang) {
-  if (lang !== 'en') return chapter;
+  // Handle object format title like {zh: "...", en: "..."}
+  const getTitle = () => {
+    if (typeof chapter.title === 'object' && chapter.title !== null) {
+      return lang === 'en' ? chapter.title.en : chapter.title.zh;
+    }
+    if (lang === 'en') {
+      return titleEn(chapter.title);
+    }
+    return chapter.title;
+  };
+
+  // Helper to handle object format fields
+  const getField = (field, fallback = '') => {
+    if (typeof field === 'object' && field !== null) {
+      return lang === 'en' ? field.en : field.zh;
+    }
+    if (lang === 'en' && typeof field === 'string') {
+      return toEn(field);
+    }
+    return field || fallback;
+  };
+
+  if (lang !== 'en') return { ...chapter, title: getTitle() };
+
   const en = CHAPTER_EN[chapter.id] || {};
+
+  // Handle overview (can be string or object)
+  const getOverview = () => {
+    if (typeof chapter.overview === 'object' && chapter.overview !== null) {
+      return lang === 'en' ? chapter.overview.en : chapter.overview.zh;
+    }
+    return en.overview || toEn(chapter.overview);
+  };
+
   return {
     ...chapter,
-    title: titleEn(chapter.title),
-    overview: en.overview || toEn(chapter.overview),
-    hardPoints: en.hardPoints || toEn(chapter.hardPoints),
-    examTips: chapter.examTips ? (en.examTips || toEn(chapter.examTips)) : undefined,
-    keyPoints: chapter.keyPoints.map(kp => toEn(kp)),
-    formulas: chapter.formulas.map((f, i) => ({
-      name: en.formulaNames?.[i] || toEn(f.name),
-      expr: f.expr,            // expressions stay as-is (they're already in symbols)
-    })),
-    difficulty: chapter.difficulty, // already English
+    title: getTitle(),
+    overview: getOverview(),
+    hardPoints: getField(chapter.hardPoints),
+    examTips: getField(chapter.examTips),
+    keyPoints: chapter.keyPoints?.map ? chapter.keyPoints.map(kp => getField(kp)) : chapter.keyPoints,
+    formulas: chapter.formulas?.map ? chapter.formulas.map((f, i) => ({
+      name: getField(f.name),
+      expr: f.expr,
+    })) : chapter.formulas,
+    difficulty: chapter.difficulty,
   };
 }
 
 // ============================================================
 // AI SERVICE
 // ============================================================
-const API_KEY_STORAGE = "alevel_math_api_key";
-const API_PROVIDER_STORAGE = "alevel_math_api_provider";
+const API_KEY_STORAGE = "alevel_math_anthropic_key";
+const MINIMAX_API_KEY_STORAGE = "alevel_math_minimax_key";
+const ZHIPU_API_KEY_STORAGE = "alevel_math_zhipu_key";
+const PROVIDER_STORAGE = "alevel_math_provider";
 
 function getApiKey() {
-  try {
-    return localStorage.getItem(API_KEY_STORAGE) || "";
-  } catch (e) {
-    console.error("Failed to access localStorage:", e);
-    return "";
-  }
+  return localStorage.getItem(API_KEY_STORAGE) || "";
 }
 function saveApiKey(key) {
-  try {
-    localStorage.setItem(API_KEY_STORAGE, key.trim());
-  } catch (e) {
-    console.error("Failed to save to localStorage:", e);
-  }
+  localStorage.setItem(API_KEY_STORAGE, key.trim());
 }
-
-function getApiProvider() {
-  try {
-    return localStorage.getItem(API_PROVIDER_STORAGE) || "anthropic";
-  } catch (e) {
-    console.error("Failed to access localStorage:", e);
-    return "anthropic";
-  }
+function getMiniMaxApiKey() {
+  return localStorage.getItem(MINIMAX_API_KEY_STORAGE) || "";
 }
-function saveApiProvider(provider) {
-  try {
-    localStorage.setItem(API_PROVIDER_STORAGE, provider);
-  } catch (e) {
-    console.error("Failed to save to localStorage:", e);
-  }
+function saveMiniMaxApiKey(key) {
+  localStorage.setItem(MINIMAX_API_KEY_STORAGE, key.trim());
+}
+function getZhipuApiKey() {
+  return localStorage.getItem(ZHIPU_API_KEY_STORAGE) || "";
+}
+function saveZhipuApiKey(key) {
+  localStorage.setItem(ZHIPU_API_KEY_STORAGE, key.trim());
+}
+function getProvider() {
+  return localStorage.getItem(PROVIDER_STORAGE) || "anthropic";
+}
+function saveProvider(provider) {
+  localStorage.setItem(PROVIDER_STORAGE, provider);
 }
 
 async function callClaude(systemPrompt, userMessage, maxTokens = 1500) {
   const apiKey = getApiKey();
-  console.log("📝 [Anthropic] Calling API with key:", apiKey ? apiKey.substring(0, 10) + "..." : "NO KEY");
   if (!apiKey) throw new Error("NO_API_KEY");
 
   const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -1989,146 +2029,81 @@ async function callClaude(systemPrompt, userMessage, maxTokens = 1500) {
       messages: [{ role: "user", content: userMessage }]
     })
   });
-  console.log("📝 [Anthropic] Response status:", response.status);
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));
-    console.log("📝 [Anthropic] Error response:", err);
     if (response.status === 401) throw new Error("INVALID_API_KEY");
     throw new Error(err?.error?.message || `HTTP ${response.status}`);
   }
   const data = await response.json();
-  console.log("📝 [Anthropic] Success! Got response");
   return data.content?.[0]?.text || "";
 }
 
-async function generateZhipuJWT(apiKey) {
-  try {
-    const [id, secret] = apiKey.split('.');
-    if (!id || !secret) {
-      throw new Error("Invalid API Key format. Expected: id.secret");
-    }
+async function callMiniMax(systemPrompt, userMessage, maxTokens = 1500) {
+  const apiKey = getMiniMaxApiKey();
+  if (!apiKey) throw new Error("NO_MINIMAX_API_KEY");
 
-    const now = Date.now();
-    const exp = now + 3600000; // 1小时后过期
-
-    const header = {
-      alg: "HS256",
-      sign_type: "SIGN"
-    };
-
-    const payload = {
-      api_key: id,
-      exp: exp,
-      timestamp: now
-    };
-
-    const base64UrlEncode = (str) => {
-      return btoa(str)
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=+$/, '');
-    };
-
-    const base64UrlEncodeJson = (obj) => {
-      return base64UrlEncode(JSON.stringify(obj));
-    };
-
-    const encodedHeader = base64UrlEncodeJson(header);
-    const encodedPayload = base64UrlEncodeJson(payload);
-
-    const key = await crypto.subtle.importKey(
-      "raw",
-      new TextEncoder().encode(secret),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["sign"]
-    );
-
-    const data = `${encodedHeader}.${encodedPayload}`;
-    const signature = await crypto.subtle.sign(
-      "HMAC",
-      key,
-      new TextEncoder().encode(data)
-    );
-
-    const encodedSignature = base64UrlEncode(
-      String.fromCharCode(...new Uint8Array(signature))
-    );
-
-    return `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
-  } catch (e) {
-    console.error("JWT Generation Error:", e);
-    throw new Error("Failed to generate JWT: " + e.message);
-  }
-}
-
-async function callZhipuAI(systemPrompt, userMessage, maxTokens = 1500) {
-  const apiKey = getApiKey();
-  console.log("📝 [Zhipu] Calling API with key:", apiKey ? apiKey.substring(0, 10) + "..." : "NO KEY");
-  if (!apiKey) throw new Error("NO_API_KEY");
-
-  let response;
-
-  try {
-    response = await fetch("https://open.bigmodel.cn/api/paas/v4/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "glm-4",
-        max_tokens: maxTokens,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userMessage }
-        ]
-      })
-    });
-    console.log("📝 [Zhipu] Response status:", response.status);
-
-    if (response.status === 401) {
-      const token = await generateZhipuJWT(apiKey);
-      console.log("📝 [Zhipu] 401 detected, trying with JWT token...");
-      response = await fetch("https://open.bigmodel.cn/api/paas/v4/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          model: "glm-4",
-          max_tokens: maxTokens,
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userMessage }
-          ]
-        })
-      });
-    }
-  } catch (e) {
-    console.error("Zhipu AI API Call Error:", e);
-    throw new Error("Failed to call Zhipu AI: " + e.message);
-  }
-
+  const response = await fetch("https://api.minimax.chat/v1/text/chatcompletion_pro", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: "abab6.5s-chat",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userMessage }
+      ],
+      max_tokens: maxTokens,
+    })
+  });
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));
-    console.error("Zhipu AI Error Response:", err);
-    if (response.status === 401) throw new Error("INVALID_API_KEY");
-    throw new Error(err?.error?.message || err?.message || `HTTP ${response.status}`);
+    if (response.status === 401) throw new Error("INVALID_MINIMAX_API_KEY");
+    throw new Error(err?.base_resp?.status_msg || `HTTP ${response.status}`);
   }
   const data = await response.json();
-  console.log("📝 [Zhipu] Success! Got response");
   return data.choices?.[0]?.message?.content || "";
 }
 
-async function callAI(systemPrompt, userMessage, maxTokens = 1500) {
-  const provider = getApiProvider();
-  if (provider === "zhipu") {
-    return await callZhipuAI(systemPrompt, userMessage, maxTokens);
-  } else {
-    return await callClaude(systemPrompt, userMessage, maxTokens);
+async function callZhipu(systemPrompt, userMessage, maxTokens = 1500) {
+  const apiKey = getZhipuApiKey();
+  if (!apiKey) throw new Error("NO_ZHIPU_API_KEY");
+
+  const response = await fetch("https://open.bigmodel.cn/api/paas/v4/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: "glm-4",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userMessage }
+      ],
+      max_tokens: maxTokens,
+    })
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    if (response.status === 401) throw new Error("INVALID_ZHIPU_API_KEY");
+    throw new Error(err?.error?.message || `HTTP ${response.status}`);
   }
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || "";
+}
+
+// Unified AI call function
+async function callAI(systemPrompt, userMessage, maxTokens = 1500) {
+  const provider = getProvider();
+  if (provider === "minimax") {
+    return await callMiniMax(systemPrompt, userMessage, maxTokens);
+  }
+  if (provider === "zhipu") {
+    return await callZhipu(systemPrompt, userMessage, maxTokens);
+  }
+  return await callClaude(systemPrompt, userMessage, maxTokens);
 }
 
 // ============================================================
@@ -2153,6 +2128,7 @@ const T = {
     curriculumTitle: "Curriculum", backCurriculum: "← Back to Curriculum",
     secKeyPoints: "🔑 Key Points", secFormulas: "📐 Formulas & Equations",
     secHardPoints: "⚠️ High-Frequency Mistakes", secExamTips: "🎯 Exam Strategy & Scoring Tips",
+    secExamples: "📝 Examples",
     tabLearn: "📖 Learn", tabVideos: "▶️ Videos", tabQuiz: "✍️ Quiz", tabExam: "🎯 Exam",
     videoIntro: "Curated video resources for Chapter", videoHint: "Click to search on YouTube →",
     searchMore: "🔍 Search More Videos for This Chapter on YouTube",
@@ -2209,6 +2185,7 @@ const T = {
     curriculumTitle: "课程大纲", backCurriculum: "← 返回课程",
     secKeyPoints: "🔑 核心考点", secFormulas: "📐 公式与方程",
     secHardPoints: "⚠️ 高频失分点 & 难点分析", secExamTips: "🎯 考试策略 & 得分技巧",
+    secExamples: "📝 例题解析",
     tabLearn: "📖 学习", tabVideos: "▶️ 视频", tabQuiz: "✍️ 练习", tabExam: "🎯 考试",
     videoIntro: "精选视频资源 — 第", videoHint: "点击在 YouTube 搜索 →",
     searchMore: "🔍 在 YouTube 搜索本章更多视频",
@@ -2253,7 +2230,8 @@ const T = {
 // MAIN APP
 // ============================================================
 export default function ALevelMathApp() {
-  const [activeView, setActiveView] = useState("home");
+  const [activeView, setActiveView] = useState("subjects"); // Start with subject selection
+  const [selectedSubject, setSelectedSubject] = useState("mathematics");
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedChapter, setSelectedChapter] = useState(null);
   const [errorBook, setErrorBook] = useState([]);
@@ -2263,32 +2241,55 @@ export default function ALevelMathApp() {
   const [lang, setLang] = useState("en");
   const [showApiModal, setShowApiModal] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
+  const [miniMaxApiKeyInput, setMiniMaxApiKeyInput] = useState("");
+  const [zhipuApiKeyInput, setZhipuApiKeyInput] = useState("");
   const [apiKeySaved, setApiKeySaved] = useState(!!getApiKey());
-  const [apiProvider, setApiProvider] = useState(getApiProvider());
+  const [miniMaxApiKeySaved, setMiniMaxApiKeySaved] = useState(!!getMiniMaxApiKey());
+  const [zhipuApiKeySaved, setZhipuApiKeySaved] = useState(!!getZhipuApiKey());
+  const [provider, setProvider] = useState(getProvider());
   const t = T[lang];
 
   function handleSaveApiKey() {
     if (!apiKeyInput.trim()) return;
     saveApiKey(apiKeyInput);
-    saveApiProvider(apiProvider);
     setApiKeySaved(true);
     setShowApiModal(false);
     setApiKeyInput("");
+  }
+  function handleSaveMiniMaxApiKey() {
+    if (!miniMaxApiKeyInput.trim()) return;
+    saveMiniMaxApiKey(miniMaxApiKeyInput);
+    setMiniMaxApiKeySaved(true);
+    setShowApiModal(false);
+    setMiniMaxApiKeyInput("");
+  }
+  function handleSaveZhipuApiKey() {
+    if (!zhipuApiKeyInput.trim()) return;
+    saveZhipuApiKey(zhipuApiKeyInput);
+    setZhipuApiKeySaved(true);
+    setShowApiModal(false);
+    setZhipuApiKeyInput("");
   }
   function handleClearApiKey() {
     localStorage.removeItem(API_KEY_STORAGE);
     setApiKeySaved(false);
   }
-  function handleProviderChange(provider) {
-    setApiProvider(provider);
-    // 切换提供商时清除已保存的 key
-    setApiKeySaved(false);
-    setApiKeyInput("");
-    localStorage.removeItem(API_KEY_STORAGE);
+  function handleClearMiniMaxApiKey() {
+    localStorage.removeItem(MINIMAX_API_KEY_STORAGE);
+    setMiniMaxApiKeySaved(false);
+  }
+  function handleClearZhipuApiKey() {
+    localStorage.removeItem(ZHIPU_API_KEY_STORAGE);
+    setZhipuApiKeySaved(false);
+  }
+  function handleProviderChange(newProvider) {
+    setProvider(newProvider);
+    saveProvider(newProvider);
   }
 
-  const nav = (view, book = undefined, chapter = undefined) => {
+  const nav = (view, book = undefined, chapter = undefined, subject = undefined) => {
     setActiveView(view);
+    if (subject !== undefined) setSelectedSubject(subject);
     if (book !== undefined) setSelectedBook(book);
     if (chapter !== undefined) setSelectedChapter(chapter);
   };
@@ -2299,14 +2300,26 @@ export default function ALevelMathApp() {
       <div style={styles.bgGrid} />
 
       {/* Header */}
-      <header style={styles.header}>
+      <header style={{ ...styles.header, borderBottomColor: ALL_SUBJECTS[selectedSubject]?.color || "#DA291C" }}>
         <div style={styles.headerInner}>
-          <button onClick={() => nav("home")} style={styles.logoBtn}>
-            <span style={styles.logoSymbol}>A*</span>
+          <button onClick={() => nav("subjects")} style={styles.logoBtn}>
+            <span style={{
+              ...styles.logoSymbol,
+              color: ALL_SUBJECTS[selectedSubject]?.color || "#DA291C",
+              background: `${ALL_SUBJECTS[selectedSubject]?.color || "#DA291C"}15`,
+              borderColor: `${ALL_SUBJECTS[selectedSubject]?.color || "#DA291C"}30`
+            }}>{ALL_SUBJECTS[selectedSubject]?.icon || "A*"}</span>
             <div>
               <div style={styles.logoTitle}>{t.logoTitle}</div>
-              <div style={styles.logoSub}>{t.logoSub}</div>
+              <div style={styles.logoSub}>{ALL_SUBJECTS[selectedSubject]?.name[lang] || t.logoSub}</div>
             </div>
+          </button>
+          {/* Subject indicator */}
+          <button
+            onClick={() => nav("subjects")}
+            style={{ ...styles.subjectBadge, background: ALL_SUBJECTS[selectedSubject]?.color || "#DA291C" }}
+          >
+            {ALL_SUBJECTS[selectedSubject]?.name[lang] || "Subject"}
           </button>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
             <nav style={styles.headerNav}>
@@ -2319,7 +2332,14 @@ export default function ALevelMathApp() {
               ].map(item => (
                 <button
                   key={item.id}
-                  onClick={() => item.id === "curriculum" ? nav("curriculum", undefined, null) : nav(item.id)}
+                  onClick={() => {
+                    if (activeView === "subjects") {
+                      // User hasn't selected a subject yet - show message at top of subjects view
+                      document.querySelector('.subject-warning')?.scrollIntoView({ behavior: 'smooth' });
+                      return;
+                    }
+                    nav(item.id, undefined, item.id === "curriculum" ? null : undefined, selectedSubject);
+                  }}
                   style={{ ...styles.navBtn, ...(activeView === item.id ? styles.navBtnActive : {}) }}
                 >
                   {item.label}
@@ -2339,19 +2359,17 @@ export default function ALevelMathApp() {
             </button>
             {/* API Key settings */}
             <button
-              onClick={() => { setApiKeyInput(""); setShowApiModal(true); }}
+              onClick={() => { setApiKeyInput(""); setMiniMaxApiKeyInput(""); setShowApiModal(true); }}
               title="API Key Settings"
               style={{
                 ...styles.langToggleBtn,
-                borderColor: apiKeySaved ? "rgba(26,122,60,0.4)" : "rgba(218,41,28,0.4)",
-                color: apiKeySaved ? "#1A7A3C" : "#DA291C",
-                background: apiKeySaved ? "rgba(26,122,60,0.06)" : "rgba(218,41,28,0.06)",
+                borderColor: (provider === "anthropic" && apiKeySaved) || (provider === "minimax" && miniMaxApiKeySaved) || (provider === "zhipu" && zhipuApiKeySaved) ? "rgba(26,122,60,0.4)" : "rgba(218,41,28,0.4)",
+                color: (provider === "anthropic" && apiKeySaved) || (provider === "minimax" && miniMaxApiKeySaved) || (provider === "zhipu" && zhipuApiKeySaved) ? "#1A7A3C" : "#DA291C",
+                background: (provider === "anthropic" && apiKeySaved) || (provider === "minimax" && miniMaxApiKeySaved) || (provider === "zhipu" && zhipuApiKeySaved) ? "rgba(26,122,60,0.06)" : "rgba(218,41,28,0.06)",
                 fontFamily: "sans-serif", fontSize: 15,
               }}
             >
-              {apiKeySaved
-                ? `${apiProvider === "zhipu" ? "🤖 智谱 ✓" : "🔑 AI ✓"}`
-                : `${apiProvider === "zhipu" ? "🤖 智谱 Key" : "🔑 AI Key"}`}
+              {provider === "minimax" ? "🟣 MiniMax" : provider === "zhipu" ? "🔵 Zhipu" : "🔴 Claude"}
             </button>
           </div>
         </div>
@@ -2359,10 +2377,11 @@ export default function ALevelMathApp() {
 
       {/* Main Content */}
       <main style={styles.main}>
-        {activeView === "home" && <HomeView nav={nav} t={t} />}
-        {activeView === "curriculum" && !selectedChapter && <CurriculumView nav={nav} t={t} lang={lang} />}
+        {activeView === "subjects" && <SubjectsView nav={nav} lang={lang} selectedSubject={selectedSubject} />}
+        {activeView === "home" && <HomeView nav={nav} t={t} lang={lang} />}
+        {activeView === "curriculum" && !selectedChapter && <CurriculumView key={selectedSubject} nav={nav} t={t} lang={lang} subject={selectedSubject} book={selectedBook} />}
         {activeView === "curriculum" && selectedChapter && (
-          <ChapterView chapter={selectedChapter} book={selectedBook} nav={nav} t={t} lang={lang} />
+          <ChapterView key={`${selectedSubject}-${selectedBook}`} chapter={selectedChapter} book={selectedBook} nav={nav} t={t} lang={lang} subject={selectedSubject} />
         )}
         {activeView === "quiz" && (
           <QuizView
@@ -2371,6 +2390,7 @@ export default function ALevelMathApp() {
             nav={nav}
             t={t}
             lang={lang}
+            subject={selectedSubject}
             onAddError={(q) => setErrorBook(prev => [...prev.filter(e => e.id !== q.id), q])}
           />
         )}
@@ -2381,6 +2401,7 @@ export default function ALevelMathApp() {
             nav={nav}
             t={t}
             lang={lang}
+            subject={selectedSubject}
             onAddError={(q) => setErrorBook(prev => [...prev.filter(e => e.id !== q.id), q])}
           />
         )}
@@ -2389,12 +2410,14 @@ export default function ALevelMathApp() {
             nav={nav}
             t={t}
             lang={lang}
+            subject={selectedSubject}
             onAddError={(q) => setErrorBook(prev => [...prev.filter(e => e.id !== q.id), q])}
           />
         )}
         {activeView === "errorbook" && (
           <ErrorBookView
             errors={errorBook}
+            subject={selectedSubject}
             onClear={(id) => setErrorBook(prev => prev.filter(e => e.id !== id))}
             nav={nav}
             t={t}
@@ -2413,7 +2436,7 @@ export default function ALevelMathApp() {
         }} onClick={(e) => e.target === e.currentTarget && setShowApiModal(false)}>
           <div style={{
             background: "#FFFFFF", borderRadius: 16, padding: 36,
-            width: "100%", maxWidth: 480,
+            width: "100%", maxWidth: 520,
             boxShadow: "0 24px 60px rgba(0,0,0,0.18)",
             border: "1px solid #E0E0E0",
             fontFamily: "Georgia, serif",
@@ -2427,7 +2450,7 @@ export default function ALevelMathApp() {
               }}>🔑</div>
               <div>
                 <h2 style={{ fontSize: 20, fontWeight: 700, color: "#1A1A1A", margin: 0 }}>
-                  {lang === "en" ? "API Key Settings" : "API 密钥设置"}
+                  {lang === "en" ? "AI API Settings" : "AI API 设置"}
                 </h2>
                 <p style={{ fontSize: 13, color: "#888888", marginTop: 4, lineHeight: 1.5 }}>
                   {lang === "en"
@@ -2438,88 +2461,83 @@ export default function ALevelMathApp() {
             </div>
 
             {/* Provider Selection */}
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, color: "#555555", fontWeight: 600, display: "block", marginBottom: 8 }}>
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ fontSize: 13, color: "#555555", fontWeight: 600, marginBottom: 8, display: "block" }}>
                 {lang === "en" ? "Select AI Provider:" : "选择 AI 提供商："}
               </label>
-              <div style={{ display: "flex", gap: 10 }}>
+              <div style={{ display: "flex", gap: 8 }}>
                 <button
                   onClick={() => handleProviderChange("anthropic")}
                   style={{
-                    flex: 1, padding: "10px 14px",
-                    background: apiProvider === "anthropic" ? "linear-gradient(135deg, #DA291C, #B81E14)" : "#FFFFFF",
-                    color: apiProvider === "anthropic" ? "#FFFFFF" : "#1A1A1A",
-                    border: apiProvider === "anthropic" ? "none" : "1.5px solid #D0D0D0",
-                    borderRadius: 8, fontSize: 14, fontWeight: 600,
-                    cursor: "pointer", fontFamily: "Georgia, serif",
+                    flex: 1, padding: "12px 0",
+                    background: provider === "anthropic" ? "linear-gradient(135deg, #DA291C, #B81E14)" : "#F5F5F5",
+                    color: provider === "anthropic" ? "#FFFFFF" : "#555555",
+                    border: "none", borderRadius: 8,
+                    fontSize: 13, fontWeight: 600, cursor: "pointer",
+                    fontFamily: "Georgia, serif",
                   }}
                 >
-                  🔑 Anthropic (Claude)
+                  🔴 Claude
+                </button>
+                <button
+                  onClick={() => handleProviderChange("minimax")}
+                  style={{
+                    flex: 1, padding: "12px 0",
+                    background: provider === "minimax" ? "linear-gradient(135deg, #8B5CF6, #6D28D9)" : "#F5F5F5",
+                    color: provider === "minimax" ? "#FFFFFF" : "#555555",
+                    border: "none", borderRadius: 8,
+                    fontSize: 13, fontWeight: 600, cursor: "pointer",
+                    fontFamily: "Georgia, serif",
+                  }}
+                >
+                  🟣 MiniMax
                 </button>
                 <button
                   onClick={() => handleProviderChange("zhipu")}
                   style={{
-                    flex: 1, padding: "10px 14px",
-                    background: apiProvider === "zhipu" ? "linear-gradient(135deg, #1890FF, #096DD9)" : "#FFFFFF",
-                    color: apiProvider === "zhipu" ? "#FFFFFF" : "#1A1A1A",
-                    border: apiProvider === "zhipu" ? "none" : "1.5px solid #D0D0D0",
-                    borderRadius: 8, fontSize: 14, fontWeight: 600,
-                    cursor: "pointer", fontFamily: "Georgia, serif",
+                    flex: 1, padding: "12px 0",
+                    background: provider === "zhipu" ? "linear-gradient(135deg, #2563EB, #1D4ED8)" : "#F5F5F5",
+                    color: provider === "zhipu" ? "#FFFFFF" : "#555555",
+                    border: "none", borderRadius: 8,
+                    fontSize: 13, fontWeight: 600, cursor: "pointer",
+                    fontFamily: "Georgia, serif",
                   }}
                 >
-                  🤖 智谱 AI (GLM-4)
+                  🔵 Zhipu
                 </button>
               </div>
             </div>
 
-            {/* Current status */}
-            {apiKeySaved && (
-              <div style={{
-                background: "rgba(26,122,60,0.08)", border: "1px solid rgba(26,122,60,0.25)",
-                borderRadius: 8, padding: "10px 14px", marginBottom: 16,
-                display: "flex", alignItems: "center", gap: 10, fontSize: 14,
-              }}>
-                <span style={{ fontSize: 18 }}>✅</span>
-                <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
-                  {lang === "en" ? "API key is saved" : "密钥已保存"}
-                </span>
-                <button onClick={handleClearApiKey} style={{
-                  marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
-                  border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
-                  padding: "3px 10px", cursor: "pointer",
-                }}>{lang === "en" ? "Remove" : "删除"}</button>
-              </div>
-            )}
+            {/* Anthropic API Key Section */}
+            {provider === "anthropic" && (
+              <>
+                {/* Current status */}
+                {apiKeySaved && (
+                  <div style={{
+                    background: "rgba(26,122,60,0.08)", border: "1px solid rgba(26,122,60,0.25)",
+                    borderRadius: 8, padding: "10px 14px", marginBottom: 16,
+                    display: "flex", alignItems: "center", gap: 10, fontSize: 14,
+                  }}>
+                    <span style={{ fontSize: 18 }}>✅</span>
+                    <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
+                      {lang === "en" ? "Anthropic API key saved" : "Anthropic 密钥已保存"}
+                    </span>
+                    <button onClick={handleClearApiKey} style={{
+                      marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
+                      border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
+                      padding: "3px 10px", cursor: "pointer",
+                    }}>{lang === "en" ? "Remove" : "删除"}</button>
+                  </div>
+                )}
 
-            {/* Steps */}
-            <div style={{
-              background: "#F8F8F8", borderRadius: 10, padding: 16, marginBottom: 20,
-              fontSize: 13, color: "#444444", lineHeight: 1.8,
-            }}>
-              <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
-                {apiProvider === "zhipu"
-                  ? (lang === "en" ? "How to get Zhipu AI API key:" : "如何获取智谱 AI API 密钥：")
-                  : (lang === "en" ? "How to get Anthropic API key:" : "如何获取 Anthropic API 密钥：")}
-              </div>
-              {apiProvider === "zhipu" ? (
-                <>
-                  <div>① {lang === "en" ? "Visit" : "访问"}{" "}
-                    <a href="https://open.bigmodel.cn" target="_blank" rel="noreferrer"
-                       style={{ color: "#1890FF", fontWeight: 600 }}>
-                      open.bigmodel.cn
-                    </a>
+                {/* Steps */}
+                <div style={{
+                  background: "#F8F8F8", borderRadius: 10, padding: 16, marginBottom: 20,
+                  fontSize: 13, color: "#444444", lineHeight: 1.8,
+                }}>
+                  <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
+                    {lang === "en" ? "How to get Anthropic API key:" : "如何获取 Anthropic API 密钥："}
                   </div>
-                  <div>② {lang === "en" ? "Sign up / Log in" : "注册或登录账号"}</div>
-                  <div>③ {lang === "en"
-                    ? 'Go to "API Keys" page and create a new key'
-                    : '进入「API Keys」页面创建新密钥'}</div>
-                  <div>④ {lang === "en" ? "Copy the API key" : "复制 API 密钥"}</div>
-                  <div style={{ marginTop: 8, color: "#DA291C", fontSize: 12, fontWeight: 600 }}>
-                    ⚠ {lang === "en" ? "Important: Zhipu API Key format is id.secret (e.g., 12345678.abcdef)" : "重要：智谱 API Key 格式为 id.secret（例如：12345678.abcdef）"}
-                  </div>
-                </>
-              ) : (
-                <>
                   <div>① {lang === "en" ? "Visit" : "访问"}{" "}
                     <a href="https://console.anthropic.com" target="_blank" rel="noreferrer"
                        style={{ color: "#DA291C", fontWeight: 600 }}>
@@ -2536,85 +2554,277 @@ export default function ALevelMathApp() {
                     </code>
                     {lang === "en" ? ")" : " 开头）"}
                   </div>
-                </>
-              )}
-              <div style={{ marginTop: 8, color: "#888888", fontSize: 12 }}>
-                💡 {lang === "en"
-                  ? "Key is stored only in this browser's localStorage and never sent to any server other than the AI provider."
-                  : "密钥仅存储在浏览器本地（localStorage），不会发送到 AI 提供商以外的任何服务器。"}
-              </div>
-            </div>
-
-            {/* Input */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
-              <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
-                {lang === "en" ? "Paste your API key:" : "粘贴 API 密钥："}
-              </label>
-              <input
-                type="password"
-                value={apiKeyInput}
-                onChange={e => setApiKeyInput(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && handleSaveApiKey()}
-                placeholder={apiProvider === "zhipu" ? "Enter your Zhipu API key..." : "sk-ant-api03-..."}
-                autoFocus
-                style={{
-                  width: "100%", padding: "12px 14px",
-                  border: "1.5px solid #D0D0D0", borderRadius: 8,
-                  fontSize: 14, fontFamily: "monospace",
-                  outline: "none", color: "#1A1A1A", background: "#FAFAFA",
-                  transition: "border-color 0.2s",
-                }}
-                onFocus={e => { e.target.style.borderColor = apiProvider === "zhipu" ? "#1890FF" : "#DA291C"; }}
-                onBlur={e => { e.target.style.borderColor = "#D0D0D0"; }}
-              />
-              {apiKeyInput && apiProvider === "anthropic" && !apiKeyInput.startsWith("sk-ant-") && (
-                <div style={{ fontSize: 12, color: "#DA291C" }}>
-                  ⚠ {lang === "en"
-                    ? 'Key should start with "sk-ant-"'
-                    : '密钥应以 "sk-ant-" 开头'}
                 </div>
-              )}
-              {apiKeyInput && apiProvider === "zhipu" && (!apiKeyInput.includes(".") || apiKeyInput.split(".").length !== 2) && (
-                <div style={{ fontSize: 12, color: "#DA291C" }}>
-                  ⚠ {lang === "en"
-                    ? 'Zhipu key should be in format: id.secret'
-                    : '智谱密钥格式应为：id.密钥'}
-                </div>
-              )}
-            </div>
 
-            {/* Buttons */}
-            <div style={{ display: "flex", gap: 10 }}>
-              <button
-                onClick={handleSaveApiKey}
-                disabled={!apiKeyInput.trim()}
-                style={{
-                  flex: 1, padding: "12px 0",
-                  background: apiKeyInput.trim() ? "linear-gradient(135deg, #DA291C, #B81E14)" : "#CCCCCC",
-                  color: "#FFFFFF", border: "none", borderRadius: 8,
-                  fontSize: 15, fontWeight: 700, cursor: apiKeyInput.trim() ? "pointer" : "not-allowed",
-                  fontFamily: "Georgia, serif",
-                }}
-              >
-                {lang === "en" ? "Save Key" : "保存密钥"}
-              </button>
-              <button
-                onClick={() => setShowApiModal(false)}
-                style={{
-                  padding: "12px 20px", background: "#FFFFFF",
-                  border: "1px solid #D0D0D0", borderRadius: 8,
-                  fontSize: 14, color: "#555555", cursor: "pointer",
-                  fontFamily: "Georgia, serif",
-                }}
-              >
-                {lang === "en" ? "Cancel" : "取消"}
-              </button>
-            </div>
+                {/* Input */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+                  <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
+                    {lang === "en" ? "Paste Anthropic API key:" : "粘贴 Anthropic API 密钥："}
+                  </label>
+                  <input
+                    type="password"
+                    value={apiKeyInput}
+                    onChange={e => setApiKeyInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && handleSaveApiKey()}
+                    placeholder="sk-ant-api03-..."
+                    autoFocus
+                    style={{
+                      width: "100%", padding: "12px 14px",
+                      border: "1.5px solid #D0D0D0", borderRadius: 8,
+                      fontSize: 14, fontFamily: "monospace",
+                      outline: "none", color: "#1A1A1A", background: "#FAFAFA",
+                      transition: "border-color 0.2s",
+                    }}
+                    onFocus={e => e.target.style.borderColor = "#DA291C"}
+                    onBlur={e => e.target.style.borderColor = "#D0D0D0"}
+                  />
+                  {apiKeyInput && !apiKeyInput.startsWith("sk-ant-") && (
+                    <div style={{ fontSize: 12, color: "#DA291C" }}>
+                      ⚠ {lang === "en"
+                        ? 'Key should start with "sk-ant-"'
+                        : '密钥应以 "sk-ant-" 开头'}
+                    </div>
+                  )}
+                </div>
+
+                {/* Buttons */}
+                <div style={{ display: "flex", gap: 10 }}>
+                  <button
+                    onClick={handleSaveApiKey}
+                    disabled={!apiKeyInput.trim()}
+                    style={{
+                      flex: 1, padding: "12px 0",
+                      background: apiKeyInput.trim() ? "linear-gradient(135deg, #DA291C, #B81E14)" : "#CCCCCC",
+                      color: "#FFFFFF", border: "none", borderRadius: 8,
+                      fontSize: 15, fontWeight: 700, cursor: apiKeyInput.trim() ? "pointer" : "not-allowed",
+                      fontFamily: "Georgia, serif",
+                    }}
+                  >
+                    {lang === "en" ? "Save Anthropic Key" : "保存 Anthropic 密钥"}
+                  </button>
+                  <button
+                    onClick={() => setShowApiModal(false)}
+                    style={{
+                      padding: "12px 20px", background: "#FFFFFF",
+                      border: "1px solid #D0D0D0", borderRadius: 8,
+                      fontSize: 14, color: "#555555", cursor: "pointer",
+                      fontFamily: "Georgia, serif",
+                    }}
+                  >
+                    {lang === "en" ? "Cancel" : "取消"}
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* MiniMax API Key Section */}
+            {provider === "minimax" && (
+              <>
+                {/* Current status */}
+                {miniMaxApiKeySaved && (
+                  <div style={{
+                    background: "rgba(26,122,60,0.08)", border: "1px solid rgba(26,122,60,0.25)",
+                    borderRadius: 8, padding: "10px 14px", marginBottom: 16,
+                    display: "flex", alignItems: "center", gap: 10, fontSize: 14,
+                  }}>
+                    <span style={{ fontSize: 18 }}>✅</span>
+                    <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
+                      {lang === "en" ? "MiniMax API key saved" : "MiniMax 密钥已保存"}
+                    </span>
+                    <button onClick={handleClearMiniMaxApiKey} style={{
+                      marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
+                      border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
+                      padding: "3px 10px", cursor: "pointer",
+                    }}>{lang === "en" ? "Remove" : "删除"}</button>
+                  </div>
+                )}
+
+                {/* Steps */}
+                <div style={{
+                  background: "#F8F8F8", borderRadius: 10, padding: 16, marginBottom: 20,
+                  fontSize: 13, color: "#444444", lineHeight: 1.8,
+                }}>
+                  <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
+                    {lang === "en" ? "How to get MiniMax API key:" : "如何获取 MiniMax API 密钥："}
+                  </div>
+                  <div>① {lang === "en" ? "Visit" : "访问"}{" "}
+                    <a href="https://platform.minimaxi.com" target="_blank" rel="noreferrer"
+                       style={{ color: "#8B5CF6", fontWeight: 600 }}>
+                      platform.minimaxi.com
+                    </a>
+                  </div>
+                  <div>② {lang === "en" ? "Sign up / Log in" : "注册或登录账号"}</div>
+                  <div>③ {lang === "en"
+                    ? 'Go to "API Keys" → "Create API Key"'
+                    : '进入「API Keys」→「创建 API 密钥」'}</div>
+                  <div>④ {lang === "en" ? "Copy the key" : "复制密钥"}</div>
+                  <div style={{ marginTop: 8, color: "#888888", fontSize: 12 }}>
+                    💡 {lang === "en"
+                      ? "MiniMax provides free tokens for new users."
+                      : "MiniMax 为新用户提供免费额度。"}
+                  </div>
+                </div>
+
+                {/* Input */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+                  <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
+                    {lang === "en" ? "Paste MiniMax API key:" : "粘贴 MiniMax API 密钥："}
+                  </label>
+                  <input
+                    type="password"
+                    value={miniMaxApiKeyInput}
+                    onChange={e => setMiniMaxApiKeyInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && handleSaveMiniMaxApiKey()}
+                    placeholder="mmt-xxxxx-..."
+                    autoFocus
+                    style={{
+                      width: "100%", padding: "12px 14px",
+                      border: "1.5px solid #D0D0D0", borderRadius: 8,
+                      fontSize: 14, fontFamily: "monospace",
+                      outline: "none", color: "#1A1A1A", background: "#FAFAFA",
+                      transition: "border-color 0.2s",
+                    }}
+                    onFocus={e => e.target.style.borderColor = "#8B5CF6"}
+                    onBlur={e => e.target.style.borderColor = "#D0D0D0"}
+                  />
+                </div>
+
+                {/* Buttons */}
+                <div style={{ display: "flex", gap: 10 }}>
+                  <button
+                    onClick={handleSaveMiniMaxApiKey}
+                    disabled={!miniMaxApiKeyInput.trim()}
+                    style={{
+                      flex: 1, padding: "12px 0",
+                      background: miniMaxApiKeyInput.trim() ? "linear-gradient(135deg, #8B5CF6, #6D28D9)" : "#CCCCCC",
+                      color: "#FFFFFF", border: "none", borderRadius: 8,
+                      fontSize: 15, fontWeight: 700, cursor: miniMaxApiKeyInput.trim() ? "pointer" : "not-allowed",
+                      fontFamily: "Georgia, serif",
+                    }}
+                  >
+                    {lang === "en" ? "Save MiniMax Key" : "保存 MiniMax 密钥"}
+                  </button>
+                  <button
+                    onClick={() => setShowApiModal(false)}
+                    style={{
+                      padding: "12px 20px", background: "#FFFFFF",
+                      border: "1px solid #D0D0D0", borderRadius: 8,
+                      fontSize: 14, color: "#555555", cursor: "pointer",
+                      fontFamily: "Georgia, serif",
+                    }}
+                  >
+                    {lang === "en" ? "Cancel" : "取消"}
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* Zhipu API Key Section */}
+            {provider === "zhipu" && (
+              <>
+                {/* Current status */}
+                {zhipuApiKeySaved && (
+                  <div style={{
+                    background: "rgba(26,122,60,0.08)", border: "1px solid rgba(26,122,60,0.25)",
+                    borderRadius: 8, padding: "10px 14px", marginBottom: 16,
+                    display: "flex", alignItems: "center", gap: 10, fontSize: 14,
+                  }}>
+                    <span style={{ fontSize: 18 }}>✅</span>
+                    <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
+                      {lang === "en" ? "Zhipu API key saved" : "智谱AI 密钥已保存"}
+                    </span>
+                    <button onClick={handleClearZhipuApiKey} style={{
+                      marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
+                      border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
+                      padding: "3px 10px", cursor: "pointer",
+                    }}>{lang === "en" ? "Remove" : "删除"}</button>
+                  </div>
+                )}
+
+                {/* Steps */}
+                <div style={{
+                  background: "#F8F8F8", borderRadius: 10, padding: 16, marginBottom: 20,
+                  fontSize: 13, color: "#444444", lineHeight: 1.8,
+                }}>
+                  <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
+                    {lang === "en" ? "How to get Zhipu API key:" : "如何获取智谱AI API 密钥："}
+                  </div>
+                  <div>① {lang === "en" ? "Visit" : "访问"}{" "}
+                    <a href="https://open.bigmodel.cn" target="_blank" rel="noreferrer"
+                       style={{ color: "#2563EB", fontWeight: 600 }}>
+                      open.bigmodel.cn
+                    </a>
+                  </div>
+                  <div>② {lang === "en" ? "Sign up / Log in" : "注册或登录账号"}</div>
+                  <div>③ {lang === "en"
+                    ? 'Go to "API Keys" → "Create API Key"'
+                    : '进入「API Keys」→「创建 API 密钥」'}</div>
+                  <div>④ {lang === "en" ? "Copy the key" : "复制密钥"}</div>
+                  <div style={{ marginTop: 8, color: "#888888", fontSize: 12 }}>
+                    💡 {lang === "en"
+                      ? "Zhipu provides free tokens for new users."
+                      : "智谱AI 为新用户提供免费额度。"}
+                  </div>
+                </div>
+
+                {/* Input */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+                  <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
+                    {lang === "en" ? "Paste Zhipu API key:" : "粘贴智谱AI API 密钥："}
+                  </label>
+                  <input
+                    type="password"
+                    value={zhipuApiKeyInput}
+                    onChange={e => setZhipuApiKeyInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && handleSaveZhipuApiKey()}
+                    placeholder="glm-xxxxx-..."
+                    autoFocus
+                    style={{
+                      width: "100%", padding: "12px 14px",
+                      border: "1.5px solid #D0D0D0", borderRadius: 8,
+                      fontSize: 14, fontFamily: "monospace",
+                      outline: "none", color: "#1A1A1A", background: "#FAFAFA",
+                      transition: "border-color 0.2s",
+                    }}
+                    onFocus={e => e.target.style.borderColor = "#2563EB"}
+                    onBlur={e => e.target.style.borderColor = "#D0D0D0"}
+                  />
+                </div>
+
+                {/* Buttons */}
+                <div style={{ display: "flex", gap: 10 }}>
+                  <button
+                    onClick={handleSaveZhipuApiKey}
+                    disabled={!zhipuApiKeyInput.trim()}
+                    style={{
+                      flex: 1, padding: "12px 0",
+                      background: zhipuApiKeyInput.trim() ? "linear-gradient(135deg, #2563EB, #1D4ED8)" : "#CCCCCC",
+                      color: "#FFFFFF", border: "none", borderRadius: 8,
+                      fontSize: 15, fontWeight: 700, cursor: zhipuApiKeyInput.trim() ? "pointer" : "not-allowed",
+                      fontFamily: "Georgia, serif",
+                    }}
+                  >
+                    {lang === "en" ? "Save Zhipu Key" : "保存智谱AI 密钥"}
+                  </button>
+                  <button
+                    onClick={() => setShowApiModal(false)}
+                    style={{
+                      padding: "12px 20px", background: "#FFFFFF",
+                      border: "1px solid #D0D0D0", borderRadius: 8,
+                      fontSize: 14, color: "#555555", cursor: "pointer",
+                      fontFamily: "Georgia, serif",
+                    }}
+                  >
+                    {lang === "en" ? "Cancel" : "取消"}
+                  </button>
+                </div>
+              </>
+            )}
 
             <p style={{ fontSize: 11, color: "#AAAAAA", textAlign: "center", marginTop: 14, lineHeight: 1.6 }}>
               {lang === "en"
-                ? "Your key is stored only in this browser's localStorage and never sent to any server other than Anthropic."
-                : "密钥仅存储在浏览器本地（localStorage），不会发送到 Anthropic 以外的任何服务器。"}
+                ? "Your key is stored only in this browser's localStorage."
+                : "密钥仅存储在浏览器本地（localStorage）中。"}
             </p>
           </div>
         </div>
@@ -2637,20 +2847,32 @@ function HomeView({ nav, t }) {
         </h1>
         <p style={styles.heroDesc}>{t.heroDesc}</p>
         <div style={styles.heroBtns}>
-          <button onClick={() => nav("curriculum")} style={styles.btnPrimary}>{t.startLearning}</button>
+          <button onClick={() => nav("subjects")} style={styles.btnPrimary}>{t.startLearning}</button>
           <button onClick={() => nav("mock")} style={styles.btnSecondary}>{t.takeMock}</button>
         </div>
       </div>
 
+      {/* Subjects Grid - Show all subjects including math */}
+      <h2 style={{ ...styles.pageTitle, marginTop: 32, marginBottom: 16 }}>Subjects / 学科</h2>
       <div style={styles.booksGrid}>
-        {Object.entries(CURRICULUM).map(([key, book]) => (
-          <div key={key} style={{ ...styles.bookCard, borderColor: book.color + "55" }}
-            onClick={() => { nav("curriculum", key, null); }}>
-            <div style={{ ...styles.bookIcon, color: book.color }}>{book.icon}</div>
-            <div style={styles.bookKey}>{key}</div>
-            <div style={styles.bookTitle}>{book.title}</div>
-            <div style={styles.bookChapters}>{book.chapters.length} {t.chapters}</div>
-            <div style={{ height: 2, background: book.color, marginTop: 16, borderRadius: 1 }} />
+        {/* Mathematics from CURRICULUM */}
+        <div key="mathematics" style={{ ...styles.bookCard, borderColor: "#DA291C55" }}
+          onClick={() => { nav("curriculum", Object.keys(CURRICULUM)[0], null, "mathematics"); }}>
+          <div style={{ ...styles.bookIcon, color: "#DA291C" }}>📐</div>
+          <div style={styles.bookKey}>爱德思IAL数学</div>
+          <div style={styles.bookTitle}>Mathematics</div>
+          <div style={styles.bookChapters}>{Object.keys(CURRICULUM).join(", ")}</div>
+          <div style={{ height: 2, background: "#DA291C", marginTop: 16, borderRadius: 1 }} />
+        </div>
+        {/* Other subjects from SUBJECTS */}
+        {Object.values(SUBJECTS).map(subject => (
+          <div key={subject.id} style={{ ...styles.bookCard, borderColor: subject.color + "55" }}
+            onClick={() => { nav("curriculum", Object.keys(subject.books)[0], null, subject.id); }}>
+            <div style={{ ...styles.bookIcon, color: subject.color }}>{subject.icon}</div>
+            <div style={styles.bookKey}>{subject.nameFull?.zh || subject.name.zh}</div>
+            <div style={styles.bookTitle}>{subject.name[lang]}</div>
+            <div style={styles.bookChapters}>{Object.keys(subject.books).join(", ")}</div>
+            <div style={{ height: 2, background: subject.color, marginTop: 16, borderRadius: 1 }} />
           </div>
         ))}
       </div>
@@ -2669,21 +2891,178 @@ function HomeView({ nav, t }) {
 }
 
 // ============================================================
-// CURRICULUM VIEW
+// SUBJECTS VIEW - Subject Selection
 // ============================================================
-function CurriculumView({ nav, t, lang }) {
-  const [activeBook, setActiveBook] = useState("P1");
-  const book = CURRICULUM[activeBook];
+function SubjectsView({ nav, lang, selectedSubject }) {
+  // Combine mathematics (from CURRICULUM) and other subjects (from SUBJECTS)
+  const mathSubject = {
+    id: "mathematics",
+    name: { zh: "数学", en: "Mathematics" },
+    nameFull: { zh: "爱德思IAL数学", en: "Pearson Edexcel IAL Mathematics" },
+    icon: "📐",
+    color: "#DA291C",
+    level: "IAL (International A-Level)",
+    books: CURRICULUM
+  };
+
+  const allSubjects = [mathSubject, ...Object.values(SUBJECTS)];
 
   return (
     <div style={styles.pageWrap}>
-      <h2 style={styles.pageTitle}>{t.curriculumTitle}</h2>
+      <div className="subject-warning" style={{
+        background: "#FFF3E0",
+        border: "1px solid #FF9800",
+        borderRadius: 8,
+        padding: "12px 16px",
+        marginBottom: 20,
+        color: "#E65100",
+        fontSize: 14
+      }}>
+        {lang === "zh" ? "⚠️ 请先在上方选择学科，然后再进入课程、练习、考试等功能" : "⚠️ Please select a subject above before accessing Curriculum, Quiz, Exam, etc."}
+      </div>
+      <h2 style={styles.pageTitle}>{lang === "zh" ? "选择学科" : "Select Subject"}</h2>
+      <p style={{ color: "#666", marginBottom: 24 }}>
+        {lang === "zh" ? "选择您想要学习的学科" : "Choose the subject you want to study"}
+      </p>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
+        {allSubjects.map(subject => (
+          <div key={subject.id} style={{
+            ...styles.subjectCard,
+            borderColor: selectedSubject === subject.id ? subject.color : "#e0e0e0",
+            boxShadow: selectedSubject === subject.id ? `0 4px 20px ${subject.color}30` : "0 2px 8px rgba(0,0,0,0.08)"
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+              <span style={{ fontSize: 40 }}>{subject.icon}</span>
+              <div>
+                <h3 style={{ margin: 0, fontSize: 18, color: subject.color }}>{subject.name[lang]}</h3>
+                <span style={{ fontSize: 12, color: "#666" }}>{subject.level}</span>
+              </div>
+            </div>
+
+            <p style={{ fontSize: 13, color: "#666", marginBottom: 16 }}>
+              {subject.nameFull[lang]}
+            </p>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
+              {Object.keys(subject.books).map(bookKey => (
+                <span key={bookKey} style={{
+                  padding: "4px 10px",
+                  background: subject.color + "15",
+                  color: subject.color,
+                  borderRadius: 12,
+                  fontSize: 12,
+                  fontWeight: 500
+                }}>
+                  {bookKey}
+                </span>
+              ))}
+            </div>
+
+            <button
+              onClick={() => nav("curriculum", Object.keys(subject.books)[0], null, subject.id)}
+              style={{
+                width: "100%",
+                padding: "12px 20px",
+                background: subject.color,
+                color: "#fff",
+                border: "none",
+                borderRadius: 8,
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: "pointer"
+              }}
+            >
+              {lang === "zh" ? "进入学习" : "Enter"} →
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Future expansion hint */}
+      <div style={{
+        marginTop: 32,
+        padding: 20,
+        background: "#f5f5f5",
+        borderRadius: 12,
+        textAlign: "center"
+      }}>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// CURRICULUM VIEW
+// ============================================================
+function CurriculumView({ nav, t, lang, subject = "mathematics", book: initialBook }) {
+  // Use CURRICULUM for mathematics, SUBJECTS for other subjects
+  const isMath = subject === "mathematics";
+  let dataSource = isMath ? CURRICULUM : null;
+
+  // Get data from SUBJECTS for non-math subjects
+  if (!isMath && SUBJECTS[subject]?.books) {
+    dataSource = SUBJECTS[subject].books;
+  } else if (!isMath) {
+    // Fallback: use first available subject's books
+    const fallbackSubjectKey = Object.keys(SUBJECTS)[0];
+    if (fallbackSubjectKey && SUBJECTS[fallbackSubjectKey]?.books) {
+      dataSource = SUBJECTS[fallbackSubjectKey].books;
+    }
+  }
+
+  // Get available books
+  const availableBooks = dataSource ? Object.keys(dataSource) : [];
+
+  // Determine which book to use - prefer initialBook, but fallback to first available
+  const targetBook = (initialBook && availableBooks.includes(initialBook))
+    ? initialBook
+    : (availableBooks[0] || "Unit1");
+
+  // Use state for active book
+  const [activeBook, setActiveBook] = useState(targetBook);
+  const book = dataSource?.[activeBook];
+
+  // Update activeBook when initialBook or subject changes
+  useEffect(() => {
+    if (dataSource && availableBooks.length > 0) {
+      if (initialBook && availableBooks.includes(initialBook)) {
+        setActiveBook(initialBook);
+      } else {
+        setActiveBook(availableBooks[0]);
+      }
+    }
+  }, [subject, initialBook, dataSource]);
+
+  // Show loading state if no book data
+  if (!book || availableBooks.length === 0) {
+    return (
+      <div style={styles.pageWrap}>
+        <div style={{ padding: 40, textAlign: 'center' }}>
+          <p>Loading curriculum...</p>
+          <button onClick={() => nav("subjects")} style={{ marginTop: 20, padding: '10px 20px', cursor: 'pointer' }}>
+            Back to Subjects
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Handle both title formats: string (math) vs object {zh, en} (economics)
+  const getBookTitle = (b) => typeof b.title === "object" ? b.title[lang] : b.title;
+  const getBookSubtitle = (b) => b.subtitle ? (typeof b.subtitle === "object" ? b.subtitle[lang] : b.subtitle) : "";
+  const getBookColor = (b) => b.color || "#DA291C";
+
+  return (
+    <div style={styles.pageWrap}>
+      <h2 style={styles.pageTitle}>{getBookTitle(book)}</h2>
+      <p style={{ color: "#666", marginBottom: 16 }}>{getBookSubtitle(book)}</p>
       <div style={styles.bookTabs}>
-        {Object.entries(CURRICULUM).map(([key, b]) => (
+        {Object.entries(dataSource).map(([key, b]) => (
           <button key={key}
-            style={{ ...styles.bookTab, ...(activeBook === key ? { ...styles.bookTabActive, borderColor: b.color, color: b.color } : {}) }}
+            style={{ ...styles.bookTab, ...(activeBook === key ? { ...styles.bookTabActive, borderColor: getBookColor(b), color: getBookColor(b) } : {}) }}
             onClick={() => setActiveBook(key)}>
-            <span style={{ fontSize: 20 }}>{b.icon}</span> {key} — {b.title}
+            {key} — {getBookTitle(b)}
           </button>
         ))}
       </div>
@@ -2694,21 +3073,16 @@ function CurriculumView({ nav, t, lang }) {
           return (
             <div key={ch.id} style={styles.chapterCard}
               onClick={() => nav("curriculum", activeBook, ch)}>
-              <div style={{ ...styles.chNum, background: book.color }}>{ch.num}</div>
+              <div style={{ ...styles.chNum, background: getBookColor(book) }}>{ch.num}</div>
               <div style={styles.chInfo}>
                 <div style={styles.chTitle}>{lch.title}</div>
-                <div style={styles.chOverview}>{lch.overview.substring(0, 120)}...</div>
+                <div style={styles.chOverview}>{lch.overview?.substring?.(0, 120) || ""}...</div>
                 <div style={styles.chMeta}>
-                  <span style={{
-                    ...styles.diffBadge,
-                    background: "#FFFFFF",
-                    border: "1px solid " + (ch.difficulty === "Foundation" ? "#003087" : ch.difficulty === "Intermediate" ? "#555555" : "#8B1A1A"),
-                    color: ch.difficulty === "Foundation" ? "#003087" : ch.difficulty === "Intermediate" ? "#555555" : "#8B1A1A"
-                  }}>
+                  <span style={styles.diffBadge}>
                     {ch.difficulty}
                   </span>
-                  <span style={styles.chMetaText}>{ch.keyPoints.length} {t.keyPointsCount}</span>
-                  <span style={styles.chMetaText}>{ch.formulas.length} {t.formulasCount}</span>
+                  <span style={styles.chMetaText}>{ch.keyPoints?.length || 0} {t.keyPointsCount}</span>
+                  <span style={styles.chMetaText}>{ch.formulas?.length || 0} {t.formulasCount}</span>
                 </div>
               </div>
               <div style={styles.chArrow}>→</div>
@@ -2721,22 +3095,64 @@ function CurriculumView({ nav, t, lang }) {
 }
 
 // ============================================================
+// EXTERNAL RESOURCES BY SUBJECT
+// ============================================================
+const SUBJECT_RESOURCES = {
+  mathematics: [
+    { name: "ExamSolutions", desc: "Video tutorials & worked solutions", url: "https://www.examsolutions.net/a-level-maths/" },
+    { name: "Physics & Maths Tutor", desc: "Past papers by topic", url: "https://www.physicsandmathstutor.com/a-level-maths-papers/" },
+    { name: "Revision Maths", desc: "Past papers & mark schemes", url: "https://revisionmaths.com/level-maths/level-maths-papers/edexcel-level-maths-papers" },
+    { name: "S-Cool", desc: "Revision notes & topics", url: "https://www.s-cool.co.uk/a-level/maths" },
+  ],
+  further_math: [
+    { name: "ExamSolutions", desc: "Video tutorials & worked solutions", url: "https://www.examsolutions.net/a-level-maths/" },
+    { name: "Physics & Maths Tutor", desc: "Past papers by topic", url: "https://www.physicsandmathstutor.com/a-level-maths-papers/" },
+    { name: "Revision Maths", desc: "Past papers & mark schemes", url: "https://revisionmaths.com/level-maths/level-maths-papers/edexcel-level-maths-papers" },
+  ],
+  economics: [
+    { name: "Physics & Maths Tutor", desc: "Past papers by topic", url: "https://www.physicsandmathstutor.com/a-level-economics-papers/" },
+    { name: "Tutor2u", desc: "Revision notes & resources", url: "https://www.tutor2u.net/economics" },
+    { name: "Economics Online", desc: "Diagrams & explanations", url: "https://www.economicsonline.co.uk/" },
+  ],
+  history: [
+    { name: "Tutor2u", desc: "Revision notes & resources", url: "https://www.tutor2u.net/history" },
+    { name: "History Learning Site", desc: "Notes & essays", url: "https://www.historylearningsite.co.uk/" },
+  ],
+  politics: [
+    { name: "Tutor2u", desc: "Revision notes & resources", url: "https://www.tutor2u.net/politics" },
+  ],
+  psychology: [
+    { name: "Tutor2u", desc: "Revision notes & resources", url: "https://www.tutor2u.net/psychology" },
+    { name: "Psychology Online", desc: "Notes & explanations", url: "https://www.psychology.org.uk/" },
+  ],
+};
+
+// ============================================================
 // CHAPTER VIEW
 // ============================================================
-function ChapterView({ chapter, book, nav, t, lang }) {
+function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
   const [tab, setTab] = useState("learn");
-  const bookData = CURRICULUM[book];
+  // Use CURRICULUM for mathematics, SUBJECTS for other subjects
+  const isMath = subject === "mathematics";
+  const bookData = isMath ? CURRICULUM[book] : SUBJECTS[subject]?.books?.[book];
   const tabLabels = { learn: t.tabLearn, videos: t.tabVideos, quiz: t.tabQuiz, exam: t.tabExam };
 
   // Apply localisation — English mode strips all Chinese text
   const ch = localiseChapter(chapter, lang);
 
+  if (!bookData) {
+    return <div style={styles.pageWrap}>Loading...</div>;
+  }
+
+  // Handle both title formats
+  const getBookColor = (b) => b.color || "#DA291C";
+
   return (
     <div style={styles.pageWrap}>
-      <button onClick={() => nav("curriculum", book, null)} style={styles.backBtn}>{t.backCurriculum}</button>
+      <button onClick={() => nav("curriculum", book, null, subject)} style={styles.backBtn}>{t.backCurriculum}</button>
 
-      <div style={{ ...styles.chapterHeader, borderColor: bookData.color }}>
-        <div style={{ ...styles.chapterBookBadge, background: bookData.color }}>
+      <div style={{ ...styles.chapterHeader, borderColor: getBookColor(bookData) }}>
+        <div style={{ ...styles.chapterBookBadge, background: getBookColor(bookData) }}>
           {book} — {t.chapterLabel} {ch.num}
         </div>
         <h2 style={styles.chapterTitle}>{ch.title}</h2>
@@ -2757,7 +3173,7 @@ function ChapterView({ chapter, book, nav, t, lang }) {
           <section style={styles.learnSection}>
             <h3 style={styles.sectionTitle}>{t.secKeyPoints}</h3>
             <ul style={styles.keyPointsList}>
-              {ch.keyPoints.map((kp, i) => (
+              {(ch.keyPoints || []).map((kp, i) => (
                 <li key={i} style={styles.keyPoint}>
                   <span style={{ ...styles.kpNum, background: bookData.color }}>{i + 1}</span>
                   <span style={styles.kpText}>{kp}</span>
@@ -2769,7 +3185,7 @@ function ChapterView({ chapter, book, nav, t, lang }) {
           <section style={styles.learnSection}>
             <h3 style={styles.sectionTitle}>{t.secFormulas}</h3>
             <div style={styles.formulasGrid}>
-              {ch.formulas.map((f, i) => (
+              {(ch.formulas || []).map((f, i) => (
                 <div key={i} style={styles.formulaCard}>
                   <div style={styles.formulaName}>{f.name}</div>
                   <div style={{ ...styles.formulaExpr, borderColor: bookData.color + "66" }}>{f.expr}</div>
@@ -2795,6 +3211,25 @@ function ChapterView({ chapter, book, nav, t, lang }) {
               </div>
             </section>
           )}
+
+          {ch.examples && ch.examples.length > 0 && (
+            <section style={styles.learnSection}>
+              <h3 style={styles.sectionTitle}>{t.secExamples}</h3>
+              {(ch.examples || []).map((ex, i) => (
+                <div key={i} style={{ ...styles.hardPointBox, background: "#FFFDE7", borderColor: "#FDD835", marginBottom: "12px" }}>
+                  <div style={{ fontWeight: "600", marginBottom: "8px", color: "#333" }}>
+                    {lang === 'en' ? ex.question.en : ex.question.zh || ex.question.en}
+                  </div>
+                  <div style={{ background: "rgba(253,216,53,0.2)", padding: "10px", borderRadius: "6px", marginTop: "8px" }}>
+                    <span style={{ fontWeight: "600", color: "#F57F17" }}>{lang === 'en' ? 'Answer: ' : '答案: '}</span>
+                    <span style={{ color: "#333" }}>
+                      {lang === 'en' ? ex.answer.en : ex.answer.zh || ex.answer.en}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </section>
+          )}
         </div>
       )}
 
@@ -2814,242 +3249,47 @@ function ChapterView({ chapter, book, nav, t, lang }) {
             </a>
           ))}
           <a
-            href={`https://www.youtube.com/results?search_query=${encodeURIComponent("A level maths " + titleEn(chapter.title) + " " + book + " Cambridge Edexcel IAL")}`}
+            href={`https://www.youtube.com/results?search_query=${encodeURIComponent("A level " + (typeof ch.title === 'object' ? ch.title.en : ch.title) + " " + book + " Cambridge Edexcel IAL Economics")}`}
             target="_blank" rel="noopener noreferrer"
             style={styles.videoCardAlt}>
             {t.searchMore}
           </a>
+
+          {/* External Resources Section */}
+          <div style={{ marginTop: 32, paddingTop: 24, borderTop: "1px solid #E0E0E0" }}>
+            <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, color: "#1A1A1A" }}>
+              {lang === "zh" ? "📚 外部学习资源" : "📚 External Learning Resources"}
+            </h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 12 }}>
+              {(SUBJECT_RESOURCES[subject] || SUBJECT_RESOURCES.mathematics).map((res, i) => (
+                <a
+                  key={i}
+                  href={res.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "block", padding: 16, background: "#F8F9FA", borderRadius: 8,
+                    textDecoration: "none", border: "1px solid #E8E8E8"
+                  }}>
+                  <div style={{ fontWeight: 600, color: "#DA291C", marginBottom: 4 }}>{res.name}</div>
+                  <div style={{ fontSize: 13, color: "#666" }}>{res.desc}</div>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 
-      {tab === "quiz" && <QuizView chapter={chapter} book={book} nav={nav} t={t} lang={lang} embedded />}
+      {tab === "quiz" && <QuizView chapter={chapter} book={book} nav={nav} t={t} lang={lang} subject={subject} embedded />}
       {tab === "exam" && <ExamView chapter={chapter} book={book} nav={nav} t={t} lang={lang} embedded />}
     </div>
   );
 }
 
 // ============================================================
-// FALLBACK QUESTION GENERATOR
-// ============================================================
-function generateFallbackQuestions(chapterTitle, keyPointsStr, formulasStr, book, lang) {
-  const titleLower = chapterTitle.toLowerCase();
-  const isZh = lang === "zh";
-
-  // Helper to create a question object
-  const createQ = (id, question, options, correct, solution, concept, deepExpl, keyFormula, commonMistake, whyWrong) => ({
-    id, question, options: { A: options[0], B: options[1], C: options[2], D: options[3] }, correct, solution, concept, deepExplanation: deepExpl, keyFormula, commonMistake, whyOthersWrong: { B: whyWrong[0], C: whyWrong[1], D: whyWrong[2] }
-  });
-
-  // Topic-based question generators
-  if (titleLower.includes("algebraic") || titleLower.includes("代数表达式")) {
-    return [
-      createQ("q1",
-        isZh ? "化简：a⁵ × a³ ÷ a²" : "Simplify: a⁵ × a³ ÷ a²",
-        isZh ? ["a⁶", "a⁷", "a⁸", "a¹⁰"] : ["a⁶", "a⁷", "a⁸", "a¹⁰"],
-        "A",
-        isZh ? "a⁵ × a³ ÷ a² = a^(5+3-2) = a⁶" : "a⁵ × a³ ÷ a² = a^(5+3-2) = a⁶",
-        isZh ? "指数法则（同底数幂相乘除）" : "Index Laws (multiplying and dividing like bases)",
-        isZh ? "当底数相同时，指数相加表示乘法，相减表示除法。所以 a⁵ × a³ ÷ a² = a^(5+3-2) = a⁶。" : "When bases are the same, add exponents for multiplication and subtract for division. So a⁵ × a³ ÷ a² = a^(5+3-2) = a⁶.",
-        isZh ? "aᵐ × aⁿ = a^(m+n)；aᵐ ÷ aⁿ = a^(m-n)" : "aᵐ × aⁿ = a^(m+n)；aᵐ ÷ aⁿ = a^(m-n)",
-        isZh ? "学生常忘记指数是相加而不是相乘，或者除法时忘记减指数" : "Students often forget to add/subtract exponents rather than multiply them, or forget to subtract for division",
-        isZh ? ["指数相加错误，误认为 a⁵ × a³ = a¹⁵", "除法时忘记减指数", "符号处理错误"] : ["Adding exponents incorrectly: a⁵ × a³ ≠ a¹⁵", "Forgetting to subtract exponents in division", "Sign errors"]
-      ),
-      createQ("q2",
-        isZh ? "化简：(2x³)²" : "Simplify: (2x³)²",
-        isZh ? ["4x⁶", "2x⁶", "4x⁵", "2x⁵"] : ["4x⁶", "2x⁶", "4x⁵", "2x⁵"],
-        "A",
-        isZh ? "(2x³)² = 2² × (x³)² = 4 × x⁶ = 4x⁶" : "(2x³)² = 2² × (x³)² = 4 × x⁶ = 4x⁶",
-        isZh ? "指数的幂" : "Power of a power",
-        isZh ? "当整个表达式被平方时，系数和变量都要平方。所以 (2x³)² = 2² × (x³)² = 4 × x⁶ = 4x⁶。" : "When the entire expression is squared, both the coefficient and variable must be squared. So (2x³)² = 2² × (x³)² = 4 × x⁶ = 4x⁶.",
-        isZh ? "(ab)^n = a^n × b^n；(a^m)^n = a^(m×n)" : "(ab)^n = a^n × b^n；(a^m)^n = a^(m×n)",
-        isZh ? "只平方了系数或只平方了变量，没有两者都平方" : "Squaring only the coefficient or only the variable, not both",
-        isZh ? ["忘记平方系数", "忘记平方变量的指数", "计算 2² × 3²"] : ["Forgetting to square coefficient", "Forgetting to square variable's power", "Calculating 2² × 3²"]
-      )
-    ];
-  }
-
-  if (titleLower.includes("quadratics") || titleLower.includes("二次函数")) {
-    return [
-      createQ("q1",
-        isZh ? "求二次函数 y = x² - 6x + 11 的顶点坐标" : "Find the vertex of y = x² - 6x + 11",
-        isZh ? ["(3, 2)", "(-3, 2)", "(3, -2)", "(-3, -2)"] : ["(3, 2)", "(-3, 2)", "(3, -2)", "(-3, -2)"],
-        "A",
-        isZh ? "配方：y = (x - 3)² + 2，顶点为 (3, 2)" : "Complete the square: y = (x - 3)² + 2, vertex = (3, 2)",
-        isZh ? "配方法求顶点" : "Completing the square to find vertex",
-        isZh ? "二次函数 y = x² - 6x + 11 配方后为 y = (x - 3)² + 2。顶点的 x 坐标来自括号内 -3 变号，y 坐标是常数项 2。" : "Completing the square for y = x² - 6x + 11 gives y = (x - 3)² + 2. The vertex x-coordinate comes from changing -3 to +3, and y-coordinate is the constant term 2.",
-        isZh ? "顶点 = (-b/2a, c - b²/4a)" : "Vertex = (-b/2a, c - b²/4a)",
-        isZh ? "忘记配方时提出系数，或符号变错" : "Forgetting to factor out coefficient before completing square, or sign errors",
-        isZh ? ["x 坐标忘记变号", "配方错误", "误认为顶点是 (6, 11)"] : ["Forgetting to change sign of x-coordinate", "Completing square error", "Mistaking vertex as (6, 11)"]
-      ),
-      createQ("q2",
-        isZh ? "用判别式判断 x² - 4x + 4 = 0 的根的情况" : "Use discriminant to determine roots of x² - 4x + 4 = 0",
-        isZh ? ["两个相等实根", "两个不同实根", "无实根", "无法确定"] : ["Two equal real roots", "Two distinct real roots", "No real roots", "Cannot determine"],
-        "A",
-        isZh ? "Δ = (-4)² - 4×1×4 = 16 - 16 = 0，有两个相等实根" : "Δ = (-4)² - 4×1×4 = 16 - 16 = 0, two equal real roots",
-        isZh ? "判别式的应用" : "Using the discriminant",
-        isZh ? "对于二次方程 ax² + bx + c = 0，判别式 Δ = b² - 4ac。当 Δ = 0 时，方程有两个相等的实根（重根）。本题中 Δ = (-4)² - 4×1×4 = 0。" : "For quadratic equation ax² + bx + c = 0, the discriminant Δ = b² - 4ac. When Δ = 0, the equation has two equal real roots (repeated root). Here Δ = (-4)² - 4×1×4 = 0.",
-        isZh ? "Δ = b² - 4ac；Δ = 0 有重根，Δ > 0 两不同根，Δ < 0 无实根" : "Δ = b² - 4ac；Δ = 0 repeated root, Δ > 0 two distinct roots, Δ < 0 no real roots",
-        isZh ? "判别式计算错误，尤其是负数的平方" : "Incorrect discriminant calculation, especially with negative numbers",
-        isZh ? ["误认为 Δ > 0", "计算 Δ 时 b² 算错", "忘记 Δ = 0 的含义"] : ["Mistaking Δ > 0", "Calculating Δ incorrectly", "Forgetting meaning of Δ = 0"]
-      )
-    ];
-  }
-
-  if (titleLower.includes("equations") || titleLower.includes("inequalities") || titleLower.includes("方程与不等式")) {
-    return [
-      createQ("q1",
-        isZh ? "解不等式：|x - 2| < 3" : "Solve: |x - 2| < 3",
-        isZh ? ["-1 < x < 5", "x < -1 或 x > 5", "-5 < x < 1", "x < 2"] : ["-1 < x < 5", "x < -1 or x > 5", "-5 < x < 1", "x < 2"],
-        "A",
-        isZh ? "|x - 2| < 3 → -3 < x - 2 < 3 → -1 < x < 5" : "|x - 2| < 3 → -3 < x - 2 < 3 → -1 < x < 5",
-        isZh ? "绝对值不等式（< 型）" : "Absolute value inequality (< type)",
-        isZh ? "绝对值不等式 |x - a| < b 表示 x 在 a-b 到 a+b 之间。所以 |x - 2| < 3 → -3 < x - 2 < 3 → -1 < x < 5。" : "The absolute value inequality |x - a| < b means x is between a-b and a+b. So |x - 2| < 3 → -3 < x - 2 < 3 → -1 < x < 5.",
-        isZh ? "|x - a| < b ↔ a - b < x < a + b" : "|x - a| < b ↔ a - b < x < a + b",
-        isZh ? "忘记将 -3 和 3 分别加到两边" : "Forgetting to add -3 and 3 to both sides",
-        isZh ? ["区间方向搞反", "忘记处理负不等号", "认为有两个区间"] : ["Getting interval direction wrong", "Forgetting to handle negative inequality", "Thinking there are two intervals"]
-      ),
-      createQ("q2",
-        isZh ? "解联立方程：y = 2x + 1, x² + y² = 25" : "Solve simultaneously: y = 2x + 1, x² + y² = 25",
-        isZh ? ["x = -3, 3", "x = -2, 2", "x = -4, 4", "x = 0"] : ["x = -3, 3", "x = -2, 2", "x = -4, 4", "x = 0"],
-        "A",
-        isZh ? "代入 y = 2x + 1：x² + (2x + 1)² = 25 → 5x² + 4x - 24 = 0 → x = -3 或 x = 3" : "Substitute y = 2x + 1: x² + (2x + 1)² = 25 → 5x² + 4x - 24 = 0 → x = -3 or x = 3",
-        isZh ? "线性-二次联立方程" : "Linear-quadratic simultaneous equations",
-        isZh ? "将线性方程代入二次方程中消去一个变量，然后解二次方程。本题代入后得到 5x² + 4x - 24 = 0，可因式分解或用求根公式。" : "Substitute the linear equation into the quadratic to eliminate one variable, then solve the resulting quadratic. This gives 5x² + 4x - 24 = 0, which can be factored or solved with the quadratic formula.",
-        isZh ? "代入消元法" : "Substitution method",
-        isZh ? "代入时展开错误或计算失误" : "Expansion errors during substitution or calculation mistakes",
-        isZh ? ["代入错误", "因式分解错误", "忘记找 y 值"] : ["Substitution error", "Factorization error", "Forgetting to find y value"]
-      )
-    ];
-  }
-
-  if (titleLower.includes("graphs") || titleLower.includes("transformations") || titleLower.includes("图像与变换")) {
-    return [
-      createQ("q1",
-        isZh ? "函数 f(x) = x²，求 f(x - 3) 的图像变换" : "If f(x) = x², describe the graph of f(x - 3)",
-        isZh ? ["向右平移 3 个单位", "向左平移 3 个单位", "向上平移 3 个单位", "向下平移 3 个单位"] : ["Translate right by 3 units", "Translate left by 3 units", "Translate up by 3 units", "Translate down by 3 units"],
-        "A",
-        isZh ? "f(x - 3) 表示将 f(x) 向右平移 3 个单位" : "f(x - 3) represents a translation of f(x) by 3 units to the right",
-        isZh ? "水平变换（平移）" : "Horizontal transformation (translation)",
-        isZh ? "对于函数变换 f(x - a)，图像向右平移 a 个单位。这是常见的陷阱——括号内是 x - a，但图像向右移。" : "For function transformation f(x - a), the graph translates a units to the right. This is a common trap - the bracket shows x - a but the graph moves right.",
-        isZh ? "f(x + a) 左移 a；f(x - a) 右移 a" : "f(x + a) translate left by a；f(x - a) translate right by a",
-        isZh ? "误认为减号对应左移" : "Mistakenly thinking minus sign means left translation",
-        isZh ? ["误认为左移", "与纵向平移混淆", "认为幅度是 -3"] : ["Mistaking for left translation", "Confusing with vertical translation", "Thinking magnitude is -3"]
-      ),
-      createQ("q2",
-        isZh ? "函数 f(x) = x³，求 f(2x) 的图像变换" : "If f(x) = x³, describe the graph of f(2x)",
-        isZh ? ["横向压缩至原来的 1/2", "横向拉伸至原来的 2 倍", "纵向拉伸至原来的 2 倍", "纵向压缩至原来的 1/2"] : ["Horizontal compression by factor 1/2", "Horizontal stretch by factor 2", "Vertical stretch by factor 2", "Vertical compression by factor 1/2"],
-        "A",
-        isZh ? "f(2x) 表示横向压缩至原来的 1/2" : "f(2x) represents a horizontal compression by factor 1/2",
-        isZh ? "水平伸缩变换" : "Horizontal stretch/compression transformation",
-        isZh ? "对于 f(ax)，当 a > 1 时，横向压缩至 1/a；当 0 < a < 1 时，横向拉伸至 1/a。本题中 f(2x) 横向压缩至 1/2。" : "For f(ax), when a > 1, horizontally compress by 1/a; when 0 < a < 1, horizontally stretch by 1/a. Here f(2x) compresses horizontally by 1/2.",
-        isZh ? "f(ax)：横向伸缩至 1/a" : "f(ax): horizontal stretch by 1/a",
-        isZh ? "误认为横向拉伸或搞反方向" : "Mistaking for horizontal stretch or getting direction wrong",
-        isZh ? ["误认为拉伸", "与纵向变换混淆", "系数关系搞反"] : ["Mistaking for stretch", "Confusing with vertical transformation", "Getting coefficient relationship wrong"]
-      )
-    ];
-  }
-
-  if (titleLower.includes("differentiation") || titleLower.includes("求导") || titleLower.includes("导数")) {
-    return [
-      createQ("q1",
-        isZh ? "求函数 y = 3x² - 5x + 2 在 x = 2 处的导数值" : "Find dy/dx at x = 2 for y = 3x² - 5x + 2",
-        isZh ? ["7", "11", "13", "5"] : ["7", "11", "13", "5"],
-        "A",
-        isZh ? "dy/dx = 6x - 5，当 x = 2 时，dy/dx = 12 - 5 = 7" : "dy/dx = 6x - 5, at x = 2: dy/dx = 12 - 5 = 7",
-        isZh ? "多项式函数求导" : "Differentiation of polynomial functions",
-        isZh ? "对多项式求导时，每一项的指数降低 1，并乘以原指数。常数项导数为 0。所以 dy/dx = 6x - 5。" : "When differentiating a polynomial, reduce the power of each term by 1 and multiply by the original power. The derivative of a constant is 0. So dy/dx = 6x - 5.",
-        isZh ? "d/dx(axⁿ) = n·ax^(n-1)" : "d/dx(axⁿ) = n·ax^(n-1)",
-        isZh ? "忘记乘以指数，或常数项求导不为 0" : "Forgetting to multiply by the power, or not setting constant term derivative to 0",
-        isZh ? ["忘记乘以指数", "常数项处理错误", "减号项变号错误"] : ["Forgetting to multiply by power", "Constant term handling error", "Sign error on negative term"]
-      ),
-      createQ("q2",
-        isZh ? "求函数 y = x³ - 3x² + 2x 的驻点" : "Find stationary points of y = x³ - 3x² + 2x",
-        isZh ? ["x = 1/3, 2", "x = 0, 1", "x = -1, 2", "x = 1, 3"] : ["x = 1/3, 2", "x = 0, 1", "x = -1, 2", "x = 1, 3"],
-        "A",
-        isZh ? "dy/dx = 3x² - 6x + 2 = 0 → x = (6 ± √12)/6 = (6 ± 2√3)/6 = 1 ± √3/3" : "dy/dx = 3x² - 6x + 2 = 0 → x = (6 ± √12)/6 = (6 ± 2√3)/6 = 1 ± √3/3",
-        isZh ? "求驻点" : "Finding stationary points",
-        isZh ? "驻点出现在导数为 0 的位置。解二次方程 3x² - 6x + 2 = 0 得到 x 值。" : "Stationary points occur where the derivative is zero. Solve the quadratic equation 3x² - 6x + 2 = 0 for x values.",
-        isZh ? "驻点：dy/dx = 0" : "Stationary points: dy/dx = 0",
-        isZh ? "求导错误或解二次方程出错" : "Differentiation error or solving quadratic incorrectly",
-        isZh ? ["求导错误", "解方程错误", "判别式计算错误"] : ["Differentiation error", "Solving equation error", "Discriminant calculation error"]
-      )
-    ];
-  }
-
-  if (titleLower.includes("integration") || titleLower.includes("积分")) {
-    return [
-      createQ("q1",
-        isZh ? "求不定积分：∫(2x + 3)dx" : "Find indefinite integral: ∫(2x + 3)dx",
-        isZh ? ["x² + 3x + C", "x² + C", "2x² + 3x + C", "x + 3 + C"] : ["x² + 3x + C", "x² + C", "2x² + 3x + C", "x + 3 + C"],
-        "A",
-        isZh ? "∫(2x + 3)dx = x² + 3x + C" : "∫(2x + 3)dx = x² + 3x + C",
-        isZh ? "多项式函数积分" : "Integration of polynomial functions",
-        isZh ? "积分是求导的逆运算。对 xⁿ 积分得到 x^(n+1)/(n+1)。常数项积分得到常数乘以 x。" : "Integration is the reverse of differentiation. Integrating xⁿ gives x^(n+1)/(n+1). Constant terms integrate to constant times x.",
-        isZh ? "∫xⁿdx = x^(n+1)/(n+1) + C" : "∫xⁿdx = x^(n+1)/(n+1) + C",
-        isZh ? "忘记加 1 再除以 n+1" : "Forgetting to add 1 then divide by n+1",
-        isZh ? ["忘记加常数 C", "指数处理错误", "忘记 +1 再除"] : ["Forgetting constant C", "Power handling error", "Forgetting to add 1 then divide"]
-      ),
-      createQ("q2",
-        isZh ? "求定积分：∫(x² + 1)dx 从 0 到 2" : "Find definite integral: ∫(x² + 1)dx from 0 to 2",
-        isZh ? ["14/3", "8/3", "10/3", "4"] : ["14/3", "8/3", "10/3", "4"],
-        "A",
-        isZh ? "∫(x² + 1)dx = x³/3 + x，从 0 到 2：(8/3 + 2) - 0 = 14/3" : "∫(x² + 1)dx = x³/3 + x, from 0 to 2: (8/3 + 2) - 0 = 14/3",
-        isZh ? "定积分的计算" : "Calculation of definite integrals",
-        isZh ? "先求不定积分，然后代入上下限相减。本题不定积分为 x³/3 + x，代入 2 得 8/3 + 2，代入 0 得 0。" : "Find indefinite integral first, then substitute upper and lower limits. Indefinite integral is x³/3 + x, substitute 2 gives 8/3 + 2, substitute 0 gives 0.",
-        isZh ? "定积分：∫[a,b] f(x)dx = F(b) - F(a)" : "Definite integral: ∫[a,b] f(x)dx = F(b) - F(a)",
-        isZh ? "代入错误或计算失误" : "Substitution error or calculation mistake",
-        isZh ? ["下限代入错误", "分数运算错误", "忘记下限是 0"] : ["Lower limit substitution error", "Fraction operation error", "Forgetting lower limit is 0"]
-      )
-    ];
-  }
-
-  if (titleLower.includes("trigonometry") || titleLower.includes("三角")) {
-    return [
-      createQ("q1",
-        isZh ? "解方程 2sin(x) = 1，0 ≤ x ≤ 2π" : "Solve 2sin(x) = 1 for 0 ≤ x ≤ 2π",
-        isZh ? ["π/6, 5π/6", "π/3, 2π/3", "π/6, π/2", "π/4, 3π/4"] : ["π/6, 5π/6", "π/3, 2π/3", "π/6, π/2", "π/4, 3π/4"],
-        "A",
-        isZh ? "sin(x) = 0.5，在 [0, 2π] 中 x = π/6 和 x = 5π/6" : "sin(x) = 0.5, in [0, 2π] x = π/6 and x = 5π/6",
-        isZh ? "基本三角方程求解" : "Solving basic trigonometric equations",
-        isZh ? "首先将方程化为标准形式 sin(x) = 0.5，然后利用特殊角的三角函数值。在第一象限 x = π/6，第二象限 x = 5π/6。" : "First rewrite in standard form sin(x) = 0.5, then use special angle values. In first quadrant x = π/6, in second quadrant x = 5π/6.",
-        isZh ? "sin(x) = k 的解：x = arcsin(k) 或 x = π - arcsin(k)" : "sin(x) = k solutions: x = arcsin(k) or x = π - arcsin(k)",
-        isZh ? "忘记第二象限的解" : "Forgetting the solution in second quadrant",
-        isZh ? ["只给出一个解", "角度单位搞错", "特殊角值记错"] : ["Giving only one solution", "Getting angle unit wrong", "Remembering special angle value incorrectly"]
-      ),
-      createQ("q2",
-        isZh ? "化简：sin²(x) + cos²(x)" : "Simplify: sin²(x) + cos²(x)",
-        isZh ? ["1", "2", "0", "sin(2x)"] : ["1", "2", "0", "sin(2x)"],
-        "A",
-        isZh ? "根据毕达哥拉斯恒等式，sin²(x) + cos²(x) = 1" : "By Pythagorean identity, sin²(x) + cos²(x) = 1",
-        isZh ? "毕达哥拉斯恒等式" : "Pythagorean identity",
-        isZh ? "sin²(x) + cos²(x) = 1 是最基本的三角恒等式之一，来源于单位圆定义：任意角终边与单位圆的交点到原点距离为 1。" : "sin²(x) + cos²(x) = 1 is one of the fundamental trigonometric identities, derived from the unit circle definition: the distance from origin to point where terminal side meets unit circle is 1.",
-        isZh ? "sin²(x) + cos²(x) = 1" : "sin²(x) + cos²(x) = 1",
-        isZh ? "误认为等于 2 或其他值" : "Mistakenly thinking it equals 2 or other values",
-        isZh ? ["误认为等于 2", "与 sin(2x) 混淆", "忘记这是恒等式"] : ["Mistaking for 2", "Confusing with sin(2x)", "Forgetting this is an identity"]
-      )
-    ];
-  }
-
-  // Default fallback questions for unknown topics
-  return [
-    createQ("q1",
-      isZh ? "Solve x² + 5x + 6 = 0" : "Solve x² + 5x + 6 = 0",
-      isZh ? ["x = -2, -3", "x = 2, 3", "x = -2, 3", "x = 2, -3"] : ["x = -2, -3", "x = 2, 3", "x = -2, 3", "x = 2, -3"],
-      "A",
-      isZh ? "因式分解：(x+2)(x+3) = 0，所以 x = -2 或 x = -3" : "Factor: (x+2)(x+3) = 0, so x = -2 or x = -3",
-      isZh ? "二次方程因式分解" : "Quadratic equation factorisation",
-      isZh ? "解 x² + 5x + 6 = 0，需要找到两个数，它们的乘积是 +6（常数项），和是 +5（x 的系数）。这两个数是 +2 和 +3。" : "To solve x² + 5x + 6 = 0, find two numbers that multiply to give +6 (the constant) and add to give +5 (the coefficient of x). Those numbers are +2 and +3.",
-      isZh ? "x² + bx + c = 0：找 p,q 满足 p×q = c 且 p+q = b，则 (x+p)(x+q) = 0" : "For x² + bx + c = 0: find p, q where p×q = c and p+q = b, then (x+p)(x+q) = 0",
-      isZh ? "符号混淆：如果因式是 (x+2)(x+3)，解是 x = -2 和 x = -3（负数！），不是 +2 和 +3" : "Sign confusion: if factors are (x+2)(x+3), solutions are x = -2 and x = -3 (negative!), not +2 and +3",
-      isZh ? ["x=2,3 是正数—忘记 (x+2)=0 得 x=-2", "混合符号—只有当常数项为负时才适用", "只有一个根符号反转—典型粗心错误"] : ["x=2,3 are positive—forgetting (x+2)=0 gives x=-2", "Mixed signs—only works if constant term is negative", "Only one root sign reversed—typical careless error"]
-    )
-  ];
-}
-
-// ============================================================
 // QUIZ VIEW (AI-generated)
 // ============================================================
-function QuizView({ chapter, book, nav, embedded, onAddError, t, lang }) {
+function QuizView({ chapter, book, nav, embedded, onAddError, t, lang, subject = "mathematics" }) {
   const [difficulty, setDifficulty] = useState("medium");
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);
@@ -3058,10 +3298,16 @@ function QuizView({ chapter, book, nav, embedded, onAddError, t, lang }) {
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
   const [started, setStarted] = useState(false);
-  const [selectedBook, setSelectedBook] = useState(book || "P1");
+  const [selectedBook, setSelectedBook] = useState(book || (subject === "mathematics" ? "P1" : "Unit1"));
   const [selectedChapter, setSelectedChapter] = useState(chapter || null);
 
-  const chapterList = selectedBook ? CURRICULUM[selectedBook]?.chapters || [] : [];
+  // Get the correct data source based on subject
+  const isMath = subject === "mathematics";
+  const dataSource = isMath ? CURRICULUM : (SUBJECTS[subject]?.books || {});
+
+  // Get available books for this subject
+  const availableBooks = Object.keys(dataSource);
+  const chapterList = selectedBook ? dataSource[selectedBook]?.chapters || [] : [];
 
   const generateQuestions = async () => {
     setLoading(true);
@@ -3072,27 +3318,97 @@ function QuizView({ chapter, book, nav, embedded, onAddError, t, lang }) {
     setFeedback(null);
 
     const chapterInfo = selectedChapter || (chapterList[0] || null);
-    const chTitle = chapterInfo?.title || "General A-Level Mathematics";
+
+    // Handle title - can be string (math) or object (other subjects)
+    const getTitle = () => {
+      if (typeof chapterInfo?.title === 'object' && chapterInfo.title !== null) {
+        return lang === 'en' ? chapterInfo.title.en : chapterInfo.title.zh;
+      }
+      const subjectNames = {
+        mathematics: "General A-Level Mathematics",
+        economics: "General A-Level Economics",
+        history: "General A-Level History",
+        politics: "General A-Level Politics",
+        psychology: "General A-Level Psychology",
+        further_math: "General A-Level Further Mathematics"
+      };
+      return chapterInfo?.title || (subjectNames[subject] || "General A-Level");
+    };
+
+    const getSubjectType = () => {
+      const types = {
+        mathematics: { name: "Mathematics", adj: "mathematical" },
+        economics: { name: "Economics", adj: "economic" },
+        history: { name: "History", adj: "historical" },
+        politics: { name: "Politics", adj: "political" },
+        psychology: { name: "Psychology", adj: "psychological" },
+        further_math: { name: "Further Mathematics", adj: "mathematical" }
+      };
+      return types[subject] || { name: "the subject", adj: "academic" };
+    };
+
+    const chTitle = getTitle();
+    const subjectType = getSubjectType();
     const keyPoints = chapterInfo?.keyPoints?.join("; ") || "";
     const formulas = chapterInfo?.formulas?.map(f => `${f.name}: ${f.expr}`).join("; ") || "";
 
-    const system = `You are an expert A-Level Mathematics teacher creating exam questions for Pearson Edexcel International A-Level (IAL). The course covers Pure Mathematics (P1–P4, papers WMA11–WMA14), Statistics 1 (S1, WST01), and Mechanics 1 (M1, WME01). 
-Generate questions exactly as a real Cambridge exam would. Always respond in valid JSON only — no markdown, no prose.
-${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`;
+    // Different system prompts for all subjects
+    const prompts = {
+      mathematics: {
+        system: `You are an expert A-Level Mathematics teacher creating exam questions for Pearson Edexcel International A-Level (IAL). The course covers Pure Mathematics (P1–P4, papers WMA11–WMA14), Statistics 1 (S1, WST01), and Mechanics 1 (M1, WME01).
+Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
+${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+        desc: "This is a Mathematics question covering mathematical concepts, formulas, and problem-solving."
+      },
+      economics: {
+        system: `You are an expert A-Level Economics teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Economics. The course covers Unit 1: Markets in action, Unit 2: Macroeconomic performance and policy, Unit 3: Business behaviour, and Unit 4: Developments in the global economy.
+Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
+${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+        desc: "This is an Economics question covering economic concepts, theories, and analysis."
+      },
+      history: {
+        system: `You are an expert A-Level History teacher creating exam questions for Pearson Edexcel International A-Level (IAL) History. The course covers modern international history, the USA 1918-1968, and the British Empire.
+Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
+${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+        desc: "This is a History question covering historical events, analysis, and interpretation."
+      },
+      politics: {
+        system: `You are an expert A-Level Politics teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Politics. The course covers UK Politics, UK Government, US Comparative Politics, and Global Politics.
+Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
+${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+        desc: "This is a Politics question covering political concepts, theories, and analysis."
+      },
+      psychology: {
+        system: `You are an expert A-Level Psychology teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Psychology. The course covers social psychology, cognitive psychology, biological psychology, developmental psychology, and research methods.
+Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
+${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+        desc: "This is a Psychology question covering psychological theories, research, and analysis."
+      },
+      further_math: {
+        system: `You are an expert A-Level Further Mathematics teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Further Mathematics. The course covers Further Pure (FP1-FP3), Further Mechanics (FM1-FM2), and Further Statistics (FS1-FS2).
+Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
+${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+        desc: "This is a Further Mathematics question covering advanced mathematical concepts, formulas, and problem-solving."
+      }
+    };
+
+    const subjectPrompt = prompts[subject] || prompts.mathematics;
+    const system = subjectPrompt.system;
 
     const prompt = `Generate 5 ${difficulty === "hard" ? "challenging A-level exam-style" : "medium difficulty A-level"} questions for the topic: "${chTitle}" (${selectedBook}).
+${subjectPrompt.desc}
 
 Key concepts to cover: ${keyPoints}
-Key formulas: ${formulas}
+${formulas ? `Key formulas: ${formulas}` : ""}
 
 For each question provide ALL of the following fields:
-- question: A clear, specific mathematical question
+- question: A clear, specific ${subjectType.adj} question
 - options: 4 multiple choice options (A, B, C, D), only one correct
 - correct: the correct answer letter
 - solution: A concise worked solution (1-2 lines)
 - concept: The specific exam skill or concept being tested
-- deepExplanation: A thorough 3-5 sentence explanation of WHY the correct answer is right, walking through the mathematical reasoning step by step as a tutor would explain to a student
-- keyFormula: The most important formula or rule needed to solve this question (write it clearly)
+- deepExplanation: A thorough 3-5 sentence explanation of WHY the correct answer is right, walking through the ${subjectType.adj} reasoning step by step as a tutor would explain to a student
+- keyFormula: The most important formula or concept needed to solve this question (write it clearly)
 - commonMistake: The most common mistake students make on this type of question and how to avoid it
 - whyOthersWrong: Briefly explain why each wrong option is a common trap or misconception
 
@@ -3113,19 +3429,23 @@ Return ONLY a JSON array, no markdown:
 ]`;
 
     try {
-      console.log("✍️ [Quiz] Generating questions with provider:", getApiProvider());
-      const raw = await callAI(system, prompt, 8000);
-      console.log("✍️ [Quiz] Raw response:", raw.substring(0, 200) + "...");
+      const raw = await callAI(system, prompt, 2000);
       const clean = raw.replace(/```json|```/g, "").trim();
-      console.log("✍️ [Quiz] Cleaned response:", clean.substring(0, 200) + "...");
       const parsed = JSON.parse(clean);
       setQuestions(parsed);
     } catch (e) {
-      console.error("✍️ [Quiz] Error:", e);
-      console.log("✍️ [Quiz] Using fallback questions based on chapter:", chTitle);
-      // Generate fallback questions based on chapter topic
-      const fallbackQuestions = generateFallbackQuestions(chTitle, keyPoints, formulas, selectedBook, lang);
-      setQuestions(fallbackQuestions);
+      // Show error message instead of fallback math question
+      const errorMsg = e.message || "Unknown error";
+      if (errorMsg.includes("NO_API_KEY") || errorMsg.includes("API key")) {
+        alert(lang === "zh"
+          ? "请先设置API Key才能使用AIQuiz功能。点击右上角的🔑按钮设置。"
+          : "Please set up your API Key first. Click the 🔑 button in the top right to configure.");
+      } else {
+        alert(lang === "zh"
+          ? `AI生成题目失败: ${errorMsg}`
+          : `AI quiz generation failed: ${errorMsg}`);
+      }
+      setStarted(false);
     }
     setLoading(false);
   };
@@ -3147,7 +3467,7 @@ Return ONLY a JSON array, no markdown:
     });
     setScore(s => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }));
     if (!isCorrect && onAddError) {
-      onAddError({ ...q, chapter: selectedChapter?.title || "General", book: selectedBook, userAnswer, timestamp: Date.now() });
+      onAddError({ ...q, chapter: selectedChapter?.title || "General", book: selectedBook, subject, userAnswer, timestamp: Date.now() });
     }
   };
 
@@ -3166,16 +3486,16 @@ Return ONLY a JSON array, no markdown:
             <label style={styles.label}>{t.selectTextbook}</label>
             <select style={styles.select} value={selectedBook}
               onChange={e => { setSelectedBook(e.target.value); setSelectedChapter(null); }}>
-              {Object.entries(CURRICULUM).map(([k, v]) => (
-                <option key={k} value={k}>{k} — {v.title}</option>
+              {Object.entries(dataSource).map(([k, v]) => (
+                <option key={k} value={k}>{k} — {typeof v.title === 'object' ? v.title[lang] || v.title.en || k : v.title}</option>
               ))}
             </select>
             <label style={styles.label}>{t.selectChapter}</label>
             <select style={styles.select} value={selectedChapter?.id || ""}
               onChange={e => setSelectedChapter(chapterList.find(c => c.id === e.target.value) || null)}>
               <option value="">{t.allChapters}</option>
-              {CURRICULUM[selectedBook]?.chapters.map(c => (
-                <option key={c.id} value={c.id}>Ch {c.num}: {c.title}</option>
+              {dataSource[selectedBook]?.chapters.map(c => (
+                <option key={c.id} value={c.id}>Ch {c.num}: {typeof c.title === 'object' ? (c.title[lang] || c.title.en) : c.title}</option>
               ))}
             </select>
           </>
@@ -3312,7 +3632,7 @@ Return ONLY a JSON array, no markdown:
 // ============================================================
 // EXAM VIEW (AI-generated, timed)
 // ============================================================
-function ExamView({ chapter, book, nav, embedded, onAddError, t, lang }) {
+function ExamView({ chapter, book, nav, embedded, onAddError, t, lang, subject = "mathematics" }) {
   const [phase, setPhase] = useState("setup");
   const [difficulty, setDifficulty] = useState("medium");
   const [questions, setQuestions] = useState([]);
@@ -3320,21 +3640,48 @@ function ExamView({ chapter, book, nav, embedded, onAddError, t, lang }) {
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [results, setResults] = useState(null);
-  const [selectedBook, setSelectedBook] = useState(book || "P1");
+  const [selectedBook, setSelectedBook] = useState(book || (subject === "mathematics" ? "P1" : "Unit1"));
   const [selectedChapter, setSelectedChapter] = useState(chapter || null);
   const timerRef = useRef();
+
+  // Get the correct data source based on subject
+  const isMath = subject === "mathematics";
+  const dataSource = isMath ? CURRICULUM : (SUBJECTS[subject]?.books || {});
 
   const NUM_QUESTIONS = 7;
   const EXAM_MINUTES = difficulty === "hard" ? 35 : 25;
 
   const startExam = async () => {
     setLoading(true);
-    const chapterInfo = selectedChapter || CURRICULUM[selectedBook]?.chapters[0];
-    const chTitle = chapterInfo?.title || "Mixed Topics";
-    const keyPoints = chapterInfo?.keyPoints?.join("; ") || "";
+    const chapterInfo = selectedChapter || dataSource[selectedBook]?.chapters[0];
 
-    const system = `You are a Pearson Edexcel International A-Level (IAL) Mathematics examiner. Generate exam questions exactly like a real Cambridge paper. JSON only, no markdown.${lang === "zh" ? " Write ALL content including questions, options, solutions in Simplified Chinese (简体中文)." : ""}`;
-    const prompt = `Create ${NUM_QUESTIONS} ${difficulty === "hard" ? "high difficulty exam-style" : "medium difficulty exam-style"} multiple-choice questions for "${chTitle}" A-Level.
+    // Handle title - can be string (math) or object (other subjects)
+    const getTitle = () => {
+      if (typeof chapterInfo?.title === 'object' && chapterInfo.title !== null) {
+        return lang === 'en' ? chapterInfo.title.en : chapterInfo.title.zh;
+      }
+      return chapterInfo?.title || "Mixed Topics";
+    };
+
+    const getSubjectName = () => {
+      const names = {
+        mathematics: "Mathematics",
+        economics: "Economics",
+        history: "History",
+        politics: "Politics",
+        psychology: "Psychology",
+        further_math: "Further Mathematics"
+      };
+      return names[subject] || "the subject";
+    };
+
+    const chTitle = getTitle();
+    const keyPoints = chapterInfo?.keyPoints?.join("; ") || "";
+    const subjectName = getSubjectName();
+    const examBoard = isMath ? "Cambridge" : "Pearson Edexcel";
+
+    const system = `You are a Pearson Edexcel International A-Level (IAL) ${subjectName} examiner. Generate exam questions exactly like a real ${examBoard} paper. JSON only, no markdown.${lang === "zh" ? " Write ALL content including questions, options, solutions in Simplified Chinese (简体中文)." : ""}`;
+    const prompt = `Create ${NUM_QUESTIONS} ${difficulty === "hard" ? "high difficulty exam-style" : "medium difficulty exam-style"} multiple-choice questions for "${chTitle}" IAL ${subjectName}.
 
 Topics: ${keyPoints}
 
@@ -3342,7 +3689,7 @@ Return ONLY this JSON:
 [{"id":"q1","question":"...","marks":3,"options":{"A":"...","B":"...","C":"...","D":"..."},"correct":"A","solution":"Full worked solution...","topic":"..."}]`;
 
     try {
-      const raw = await callClaude(system, prompt, 2500);
+      const raw = await callAI(system, prompt, 2500);
       const clean = raw.replace(/```json|```/g, "").trim();
       const qs = JSON.parse(clean);
       setQuestions(qs);
@@ -3356,7 +3703,6 @@ Return ONLY this JSON:
   };
 
   useEffect(() => {
-    const timer = timerRef.current;
     if (phase === "exam" && timeLeft > 0) {
       timerRef.current = setInterval(() => {
         setTimeLeft(t => {
@@ -3365,10 +3711,8 @@ Return ONLY this JSON:
         });
       }, 1000);
     }
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [phase, timeLeft]);
+    return () => clearInterval(timerRef.current);
+  }, [phase]);
 
   const submitExam = () => {
     clearInterval(timerRef.current);
@@ -3376,7 +3720,7 @@ Return ONLY this JSON:
     const review = questions.map(q => {
       const isCorrect = answers[q.id] === q.correct;
       if (isCorrect) correct++;
-      else if (onAddError) onAddError({ ...q, chapter: selectedChapter?.title, book: selectedBook, userAnswer: answers[q.id], timestamp: Date.now() });
+      else if (onAddError) onAddError({ ...q, chapter: selectedChapter?.title, book: selectedBook, subject, userAnswer: answers[q.id], timestamp: Date.now() });
       return { ...q, userAnswer: answers[q.id], isCorrect };
     });
     setResults({ correct, total: questions.length, review });
@@ -3395,16 +3739,16 @@ Return ONLY this JSON:
             <label style={styles.label}>{t.textbookLabel}</label>
             <select style={styles.select} value={selectedBook}
               onChange={e => { setSelectedBook(e.target.value); setSelectedChapter(null); }}>
-              {Object.entries(CURRICULUM).map(([k, v]) => (
-                <option key={k} value={k}>{k} — {v.title}</option>
+              {Object.entries(dataSource).map(([k, v]) => (
+                <option key={k} value={k}>{k} — {typeof v.title === 'object' ? v.title[lang] || v.title.en || k : v.title}</option>
               ))}
             </select>
             <label style={styles.label}>{t.chapterOpt}</label>
             <select style={styles.select} value={selectedChapter?.id || ""}
-              onChange={e => setSelectedChapter(CURRICULUM[selectedBook]?.chapters.find(c => c.id === e.target.value) || null)}>
+              onChange={e => setSelectedChapter(dataSource[selectedBook]?.chapters.find(c => c.id === e.target.value) || null)}>
               <option value="">{t.mixedChapters}</option>
-              {CURRICULUM[selectedBook]?.chapters.map(c => (
-                <option key={c.id} value={c.id}>Ch {c.num}: {c.title}</option>
+              {dataSource[selectedBook]?.chapters.map(c => (
+                <option key={c.id} value={c.id}>Ch {c.num}: {typeof c.title === 'object' ? (c.title[lang] || c.title.en) : c.title}</option>
               ))}
             </select>
           </>
@@ -3505,7 +3849,7 @@ Return ONLY this JSON:
 // ============================================================
 // MOCK EXAM VIEW (Past Papers)
 // ============================================================
-function MockExamView({ nav, onAddError, t, lang }) {
+function MockExamView({ nav, onAddError, t, lang, subject = "mathematics" }) {
   const [phase, setPhase] = useState("select");
   const [selectedPaper, setSelectedPaper] = useState(null);
   const [questions, setQuestions] = useState([]);
@@ -3515,16 +3859,34 @@ function MockExamView({ nav, onAddError, t, lang }) {
   const [loading, setLoading] = useState(false);
   const timerRef = useRef();
 
+  // Get the correct data source based on subject
+  const isMath = subject === "mathematics";
+  const dataSource = isMath ? CURRICULUM : (SUBJECTS[subject]?.books || {});
+
   const startMock = async (paper) => {
     setSelectedPaper(paper);
     setLoading(true);
 
-    const system = `You are creating realistic Cambridge A-Level past paper questions. Simulate questions from the ${paper.year} ${paper.session} ${paper.paper} paper. JSON only.`;
-    const bookData = CURRICULUM[paper.paper.replace(/[12]$/, "")];
+    const getSubjectName = () => {
+      const names = {
+        mathematics: "Mathematics",
+        economics: "Economics",
+        history: "History",
+        politics: "Politics",
+        psychology: "Psychology",
+        further_math: "Further Mathematics"
+      };
+      return names[subject] || "the subject";
+    };
+
+    const subjectName = getSubjectName();
+    const examBoard = isMath ? "Cambridge" : "Pearson Edexcel";
+    const system = `You are creating realistic ${examBoard} IAL ${subjectName} past paper questions. Sim ${paper.year} ${paper.session} ${paper.paper} paper. JSONulate questions from the only.`;
+    const bookData = dataSource[paper.paper.replace(/[12]$/, "")] || dataSource[Object.keys(dataSource)[0]];
     const topics = bookData ? bookData.chapters.map(c => c.title).join(", ") : "Pure Mathematics";
 
     const prompt = `Create ${paper.questions} realistic past-paper style questions for Cambridge A-Level ${paper.paper} (${paper.year} ${paper.session}).
-
+    
 Topics to cover from this paper: ${topics}
 
 Make questions feel like authentic Cambridge exam questions with realistic difficulty progression (Q1 easiest, last questions hardest).
@@ -3533,107 +3895,20 @@ Return ONLY JSON array:
 [{"id":"q1","question":"...","marks":4,"options":{"A":"...","B":"...","C":"...","D":"..."},"correct":"B","solution":"Full worked solution with method marks explained...","topic":"...","difficulty":"..."}]`;
 
     try {
-      console.log("🎯 [Mock Exam] Starting with provider:", getApiProvider());
-      const raw = await callAI(system, prompt, 8000);
-      console.log("🎯 [Mock Exam] Raw response:", raw.substring(0, 200) + "...");
+      const raw = await callAI(system, prompt, 3000);
       const clean = raw.replace(/```json|```/g, "").trim();
-      console.log("🎯 [Mock Exam] Cleaned response:", clean.substring(0, 200) + "...");
       const qs = JSON.parse(clean);
       setQuestions(qs);
       setAnswers({});
       setTimeLeft(paper.duration * 60);
       setPhase("exam");
     } catch (e) {
-      console.error("🎯 [Mock Exam] Error:", e);
-      console.log("🎯 [Mock Exam] Using fallback questions");
-      // Fallback questions when API fails
-      const fallbackQuestions = [
-        {
-          id: "q1",
-          question: "Find the value of dy/dx at the point where x = 2 for the function y = 3x^2 - 5x + 7.",
-          marks: 4,
-          options: {
-            A: "5",
-            B: "7",
-            C: "11",
-            D: "13"
-          },
-          correct: "B",
-          solution: "dy/dx = 6x - 5. When x = 2, dy/dx = 6(2) - 5 = 12 - 5 = 7.",
-          topic: "Differentiation",
-          difficulty: "Easy"
-        },
-        {
-          id: "q2",
-          question: "Solve the equation 2sin(x) = 1 for 0 <= x <= 2π.",
-          marks: 4,
-          options: {
-            A: "π/6, 5π/6",
-            B: "π/3, 2π/3",
-            C: "π/6, π/2",
-            D: "π/4, 3π/4"
-          },
-          correct: "A",
-          solution: "sin(x) = 0.5. In [0, 2π], sin(x) = 0.5 at x = π/6 and x = 5π/6.",
-          topic: "Trigonometry",
-          difficulty: "Medium"
-        },
-        {
-          id: "q3",
-          question: "Find the coordinates of the vertex of the parabola y = x^2 - 6x + 11.",
-          marks: 4,
-          options: {
-            A: "(3, 2)",
-            B: "(-3, 2)",
-            C: "(3, -2)",
-            D: "(-3, -2)"
-          },
-          correct: "A",
-          solution: "Complete the square: y = (x-3)^2 + 2. The vertex is at (3, 2).",
-          topic: "Quadratic Functions",
-          difficulty: "Easy"
-        },
-        {
-          id: "q4",
-          question: "Find the value of ∫(2x + 3)dx from x = 0 to x = 4.",
-          marks: 5,
-          options: {
-            A: "24",
-            B: "28",
-            C: "32",
-            D: "36"
-          },
-          correct: "B",
-          solution: "∫(2x + 3)dx = x^2 + 3x. From 0 to 4: (16 + 12) - (0 + 0) = 28.",
-          topic: "Integration",
-          difficulty: "Medium"
-        },
-        {
-          id: "q5",
-          question: "Given that log2(x) = 5, find the value of x.",
-          marks: 3,
-          options: {
-            A: "16",
-            B: "25",
-            C: "32",
-            D: "64"
-          },
-          correct: "C",
-          solution: "log2(x) = 5 means 2^5 = x, so x = 32.",
-          topic: "Logarithms",
-          difficulty: "Easy"
-        }
-      ];
-      setQuestions(fallbackQuestions);
-      setAnswers({});
-      setTimeLeft(paper.duration * 60);
-      setPhase("exam");
+      alert("Failed to load paper. Please try again.");
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    const timer = timerRef.current;
     if (phase === "exam" && timeLeft > 0) {
       timerRef.current = setInterval(() => {
         setTimeLeft(t => {
@@ -3642,10 +3917,8 @@ Return ONLY JSON array:
         });
       }, 1000);
     }
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [phase, timeLeft]);
+    return () => clearInterval(timerRef.current);
+  }, [phase]);
 
   const submitMock = () => {
     clearInterval(timerRef.current);
@@ -3653,7 +3926,7 @@ Return ONLY JSON array:
     const review = questions.map(q => {
       const isCorrect = answers[q.id] === q.correct;
       if (isCorrect) correct++;
-      else if (onAddError) onAddError({ ...q, timestamp: Date.now(), userAnswer: answers[q.id] });
+      else if (onAddError) onAddError({ ...q, subject, timestamp: Date.now(), userAnswer: answers[q.id] });
       return { ...q, userAnswer: answers[q.id], isCorrect };
     });
     setResults({ correct, total: questions.length, review });
@@ -3662,18 +3935,29 @@ Return ONLY JSON array:
 
   const fmt = (s) => `${Math.floor(s / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
 
+  // Generate papers dynamically based on subject
+  const papers = isMath ? PAST_PAPERS : Object.keys(dataSource).map((unit, idx) => ({
+    year: 2024,
+    session: "May/Jun",
+    paper: unit,
+    code: `WEC0${idx + 1}`,
+    duration: 90,
+    questions: 8,
+    desc: dataSource[unit]?.title?.en || dataSource[unit]?.title || unit
+  }));
+
   if (phase === "select") {
     return (
       <div style={styles.pageWrap}>
         <h2 style={styles.pageTitle}>{t.mockTitle}</h2>
-        <p style={styles.pageDesc}>{t.mockDesc}</p>
+        <p style={styles.pageDesc}>{isMath ? t.mockDesc : (lang === "zh" ? "基于历年真题的模拟考试" : "Realistic mock exams based on past papers")}</p>
         {loading && <LoadingSpinner message={t.loadingPaper} />}
         <div style={styles.papersGrid}>
-          {PAST_PAPERS.map((paper, i) => (
+          {papers.map((paper, i) => (
             <div key={i} style={styles.paperCard}>
               <div style={styles.paperYear}>{paper.year}</div>
               <div style={styles.paperSession}>{paper.session}</div>
-              <div style={styles.paperPaper}>{paper.code}</div>
+              <div style={styles.paperPaper}>{paper.paper}</div>
               <div style={{ fontSize: 12, color: "#888888", marginBottom: 4 }}>{paper.desc}</div>
               <div style={styles.paperMeta}>
                 <span>⏱️ {paper.duration} min</span>
@@ -3790,17 +4074,26 @@ Return ONLY JSON array:
 // ============================================================
 // ERROR BOOK VIEW
 // ============================================================
-function ErrorBookView({ errors, onClear, nav, t, lang }) {
+function ErrorBookView({ errors, onClear, nav, t, lang, subject = "mathematics" }) {
   const [selectedError, setSelectedError] = useState(null);
   const [explanation, setExplanation] = useState("");
   const [loadingExp, setLoadingExp] = useState(false);
+
+  const subjectName = {
+    mathematics: "Mathematics",
+    economics: "Economics",
+    history: "History",
+    politics: "Politics",
+    psychology: "Psychology",
+    further_math: "Further Mathematics"
+  }[subject] || "A-Level";
 
   const getAIExplanation = async (err) => {
     setSelectedError(err);
     setLoadingExp(true);
     setExplanation("");
-    const text = await callClaude(
-      `You are an A-Level Maths tutor. Explain the concept clearly and concisely for a student who got this wrong.${lang === "zh" ? " Please respond entirely in Simplified Chinese (简体中文)." : ""}`,
+    const text = await callAI(
+      `You are an A-Level ${subjectName} tutor. Explain the concept clearly and concisely for a student who got this wrong.${lang === "zh" ? " 请完全使用简体中文回复。" : ""}`,
       `Student got this wrong:\nQuestion: ${err.question}\nTheir answer: ${err.userAnswer}\nCorrect answer: ${err.correct}\nSolution: ${err.solution}\n\nProvide: 1) Where they went wrong, 2) The key concept, 3) A tip to remember it`
     );
     setExplanation(text);
@@ -3915,6 +4208,23 @@ const styles = {
   },
   logoTitle: { fontSize: 16, fontWeight: 700, color: "#111111", letterSpacing: 0.5 },
   logoSub: { fontSize: 11, color: "#888888", marginTop: 2, letterSpacing: 1, textTransform: "uppercase" },
+  subjectBadge: {
+    padding: "6px 14px",
+    borderRadius: 20,
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: 600,
+    cursor: "pointer",
+    border: "none",
+    marginLeft: 8,
+  },
+  subjectCard: {
+    background: "#fff",
+    borderRadius: 16,
+    padding: 24,
+    border: "2px solid #e0e0e0",
+    transition: "all 0.3s ease",
+  },
   headerNav: { display: "flex", gap: 6, flexWrap: "wrap" },
   navBtn: {
     background: "none", border: "1px solid transparent", borderRadius: 6,
@@ -3993,7 +4303,7 @@ const styles = {
 
   chapterList: { display: "flex", flexDirection: "column", gap: 12 },
   chapterCard: {
-    background: "#FAFAFA", border: "1px solid #E8E8E8",
+    background: "transparent", border: "1px solid #E8E8E8",
     borderRadius: 10, padding: 20, display: "flex", alignItems: "center", gap: 16,
     cursor: "pointer", transition: "all 0.2s",
   },
@@ -4006,7 +4316,7 @@ const styles = {
   chTitle: { fontSize: 16, fontWeight: 600, color: "#1A1A1A" },
   chOverview: { fontSize: 13, color: "#777777", marginTop: 4, lineHeight: 1.5 },
   chMeta: { display: "flex", gap: 10, marginTop: 10, alignItems: "center", flexWrap: "wrap" },
-  diffBadge: { fontSize: 11, padding: "3px 8px", borderRadius: 4, color: "#111111", fontFamily: "sans-serif" },
+  diffBadge: { fontSize: 11, padding: "3px 8px", borderRadius: 4, color: "#111111", fontFamily: "sans-serif", background: "transparent" },
   chMetaText: { fontSize: 12, color: "#AAAAAA" },
   chArrow: { color: "#BBBBBB", fontSize: 20 },
 
