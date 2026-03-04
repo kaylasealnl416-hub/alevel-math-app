@@ -740,7 +740,10 @@ export const SUBJECTS = {
               "Anti-competitive behaviour: Cartels, price-fixing, market sharing, abuse of dominance",
               "Competition authorities: Investigate and penalise anti-competitive practices"
             ],
-            formulas: [],
+            formulas: [
+              { name: "HHI指数", expr: "HHI = Σ(Market share)², >2500=高集中度" },
+              { name: "自然垄断管制", expr: "成本加成: 允许成本+合理利润；价格上限: RPI-X" }
+            ],
             examples: [
               {
                 question: { zh: "为什么自然垄断需要政府管制？", en: "Why do natural monopolies require government regulation?" },
@@ -778,7 +781,10 @@ export const SUBJECTS = {
               "Anti-globalisation movement: Protests against perceived negative impacts",
               "Fair trade: Movement to ensure better prices and conditions for producers in developing countries"
             ],
-            formulas: [],
+            formulas: [
+              { name: "全球化指数", expr: "贸易开放度 = (X+M)/GDP × 100%" },
+              { name: "FDI流入", expr: "Foreign Direct Investment - 外国直接投资" }
+            ],
             examples: [
               {
                 question: { zh: "分析全球化对发展中国家的利弊。", en: "Analyse the advantages and disadvantages of globalisation for developing countries." },
