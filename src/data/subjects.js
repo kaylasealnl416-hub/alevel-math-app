@@ -542,7 +542,7 @@ export const SUBJECTS = {
           {
             id: "e3c1", num: 1,
             title: { zh: "企业类型与规模", en: "Business Types & Size" },
-            overview: { zh: "学习不同类型企业的特点、优势与劣势。", en: "Learn about different types of businesses, their characteristics, advantages and disadvantages." },
+            overview: { zh: "学习不同类型企业的特点、优势与劣势，以及规模经济。", en: "Learn about different types of businesses, their characteristics, advantages and disadvantages, and economies of scale." },
             keyPoints: [
               "Sole proprietorships (个体企业): Single owner, unlimited liability, easy to set up, all profits kept, difficulty raising capital",
               "Partnerships (合伙企业): 2-20 partners, shared ownership, joint liability (or limited liability for LLP), combines skills",
@@ -551,9 +551,25 @@ export const SUBJECTS = {
               "Private sector (私人部门): Privately owned, aims to maximize profit",
               "Multinational corporations (MNCs): Operate in multiple countries, benefit from economies of scale, can exploit differences in costs",
               "Small and medium enterprises (SMEs): Significant employer, flexible, local market focus, limited access to finance",
-              "Business objectives: Profit maximization, revenue maximization, market share growth, survival, stakeholder interests"
+              "Business objectives: Profit maximization, revenue maximization, market share growth, survival, stakeholder interests",
+              // Economies of scale content
+              "Economies of scale (规模经济): Unit costs fall as output increases",
+              "Internal economies of scale: Cost advantages from within the firm",
+              "  - Technical economies: Larger machines, specialisation, by-products",
+              "  - Managerial economies: Specialised management, better monitoring",
+              "  - Financial economies: Lower interest rates, easier access to capital",
+              "  - Marketing economies: Bulk buying, advertising spread over larger output",
+              "  - Risk-bearing economies: Diversification across products/markets",
+              "External economies of scale: Cost advantages from industry growth",
+              "  - Infrastructure development, skilled labour pool, support services",
+              "Diseconomies of scale: Unit costs rise at very high output levels",
+              "  - Communication problems, bureaucracy, reduced motivation, coordination difficulties"
             ],
-            formulas: [],
+            formulas: [
+              { name: "规模经济", expr: "AC falls as Q increases" },
+              { name: "规模不经济", expr: "AC rises as Q increases" },
+              { name: "长期平均成本", expr: "LAC = Lowest point of short-run AC curves" }
+            ],
             examples: [
               {
                 question: { zh: "比较个体企业与公司的优缺点。", en: "Compare the advantages and disadvantages of sole proprietorships versus corporations." },
@@ -617,7 +633,7 @@ export const SUBJECTS = {
           {
             id: "e3c3", num: 3,
             title: { zh: "市场结构", en: "Market Structure" },
-            overview: { zh: "学习不同市场结构的特点与企业行为。", en: "Learn about different market structures and business behaviour." },
+            overview: { zh: "学习不同市场结构的特点与企业行为，包括博弈论分析。", en: "Learn about different market structures and business behaviour, including game theory analysis." },
             keyPoints: [
               "Perfect competition (完全竞争): Many buyers/sellers, homogeneous product, no barriers to entry/exit, price takers, normal profit in long-run",
               "Monopoly (垄断): Single seller, high barriers to entry, price maker, can earn supernormal profit",
@@ -629,27 +645,42 @@ export const SUBJECTS = {
               "Allocative efficiency: Producing what society values most (where P = MC)",
               "X-inefficiency: Costs above minimum due to lack of competition",
               "Lerner Index: Measures market power L = (P - MC) / P, higher = more monopoly power",
-              "Price discrimination: Charging different prices to different groups for same product"
+              "Price discrimination: Charging different prices to different groups for same product",
+              // Game Theory content
+              "Game theory (博弈论): Strategic interaction between firms in oligopoly markets",
+              "Payoff matrix (收益矩阵): Shows outcomes for each firm based on their choices",
+              "Nash equilibrium (纳什均衡): Each firm chooses best strategy given what others are doing",
+              "Dominant strategy: Best choice regardless of what other firms do",
+              "Prisoners' dilemma (囚徒困境): Individual rationality leads to worse collective outcome",
+              "Collusion vs Competition: Firms may collude to earn monopoly profits or compete aggressively",
+              "Cartels (卡特尔): Formal agreement to fix prices/output, often illegal",
+              "Tit-for-tat strategy: Begin with cooperation, then copy opponent's last move"
             ],
             formulas: [
               { name: "垄断定价", expr: "MR = MC for profit maximisation" },
               { name: "勒纳指数 (Lerner Index)", expr: "L = (P - MC) / P" },
-              { name: "赫芬达尔指数 (HHI)", expr: "HHI = Σ(Market share)²" }
+              { name: "赫芬达尔指数 (HHI)", expr: "HHI = Σ(Market share)²" },
+              { name: "博弈论收益", expr: "Each cell shows (Payoff A, Payoff B)" }
             ],
             examples: [
               {
                 question: { zh: "比较完全竞争与垄断的效率差异。", en: "Compare the efficiency of perfect competition versus monopoly." },
                 answer: { zh: "完全竞争：生产效率高(P=MC=AC最低)，配置效率高(P=MC)。垄断：产量低，价格高，存在无谓损失(DWL)。", en: "Perfect competition: High productive efficiency (P=MC=AC at minimum), high allocative efficiency. Monopoly: Lower output, higher price, deadweight loss." }
+              },
+              {
+                question: { zh: "使用博弈论解释寡头企业为什么会陷入'囚徒困境'。", en: "Use game theory to explain why oligopoly firms fall into a 'prisoners' dilemma'." },
+                answer: { zh: "每个企业都担心对手会背叛合作协议来获取优势，因此都选择不合作。即使双方合作能带来更高的集体收益（像垄断一样），但个体理性的选择导致竞争结局。", en: "Each firm fears the opponent will betray the cooperation agreement to gain advantage, so both choose not to cooperate. Even though cooperation would bring higher collective payoffs (like monopoly), individual rational choice leads to competitive outcome." }
               }
             ],
             difficulty: "Intermediate",
-            hardPoints: "不同市场结构的长期与短期均衡分析；理解效率概念",
-            examTips: "比较各市场结构的效率；掌握图形分析",
+            hardPoints: "不同市场结构的长期与短期均衡分析；理解效率概念；博弈论矩阵分析；纳什均衡的识别",
+            examTips: "比较各市场结构的效率；掌握图形分析；理解博弈论在寡头市场中的应用",
             youtube: [
               { title: "Perfect Competition", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=9lN4Y2hT3Kj" },
               { title: "Monopoly", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5mK7Y2hT6Ls" },
               { title: "Monopolistic Competition", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=6nL7Y2hT4Kq" },
-              { title: "Oligopoly", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=8pK8Y2hT4Mm" }
+              { title: "Oligopoly", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=8pK8Y2hT4Mm" },
+              { title: "Game Theory in Oligopoly", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=7mK8Y2hT5Lq" }
             ]
           },
           {
