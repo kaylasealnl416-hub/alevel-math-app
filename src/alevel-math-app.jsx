@@ -1,5 +1,68 @@
 import { useState, useEffect, useRef } from "react";
 import { SUBJECTS } from "./data/subjects.js";
+import katex from "katex";
+import "katex/dist/katex.min.css";
+
+// ============================================================
+// AI 数据解析辅助函数 (V1.1 修复)
+// ============================================================
+function parseAIResponse(rawText) {
+  try {
+    const startIndex = rawText.indexOf('[');
+    const endIndex = rawText.lastIndexOf(']');
+
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+      const jsonString = rawText.substring(startIndex, endIndex + 1);
+      return JSON.parse(jsonString);
+    }
+    return JSON.parse(rawText.replace(/```json|```/gi, "").trim());
+  } catch (error) {
+    console.error("AI 返回的原始文本:", rawText);
+    throw new Error("无法解析 AI 返回的数据，请重试。");
+  }
+}
+
+// ============================================================
+// 数学公式渲染组件 (使用 KaTeX)
+// ============================================================
+function MathText({ text, displayMode = false }) {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      // 处理块级公式 $$...$$ 和行内公式 $...$
+      let processed = text
+        .replace(/\$\$([^$]+)\$\$/g, (_, formula) => {
+          try {
+            return katex.renderToString(formula.trim(), {
+              throwOnError: false,
+              displayMode: true,
+            });
+          } catch (e) {
+            return formula;
+          }
+        })
+        .replace(/\$([^$\n]+)\$/g, (_, formula) => {
+          try {
+            return katex.renderToString(formula.trim(), {
+              throwOnError: false,
+              displayMode: false,
+            });
+          } catch (e) {
+            return formula;
+          }
+        });
+      containerRef.current.innerHTML = processed;
+    }
+  }, [text, displayMode]);
+
+  return (
+    <span
+      ref={containerRef}
+      style={{ lineHeight: "1.6" }}
+    />
+  );
+}
 
 // ============================================================
 // DATA: A-Level Math Curriculum (P1, P2, P3, P4, S1, M1)
@@ -2234,7 +2297,15 @@ export default function ALevelMathApp() {
   const [selectedSubject, setSelectedSubject] = useState("mathematics");
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedChapter, setSelectedChapter] = useState(null);
-  const [errorBook, setErrorBook] = useState([]);
+  const [errorBook, setErrorBook] = useState(() => {
+    try {
+      const saved = localStorage.getItem("alevel_math_errorbook");
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error("读取错题本失败", e);
+      return [];
+    }
+  });
   const [examSession, setExamSession] = useState(null);
   const [quizSession, setQuizSession] = useState(null);
   const [mockExamSession, setMockExamSession] = useState(null);
@@ -2247,6 +2318,11 @@ export default function ALevelMathApp() {
   const [miniMaxApiKeySaved, setMiniMaxApiKeySaved] = useState(!!getMiniMaxApiKey());
   const [zhipuApiKeySaved, setZhipuApiKeySaved] = useState(!!getZhipuApiKey());
   const [provider, setProvider] = useState(getProvider());
+  // 自动保存错题本到本地存储
+  useEffect(() => {
+    localStorage.setItem("alevel_math_errorbook", JSON.stringify(errorBook));
+  }, [errorBook]);
+
   const t = T[lang];
 
   function handleSaveApiKey() {
@@ -3218,7 +3294,7 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
               {(ch.examples || []).map((ex, i) => (
                 <div key={i} style={{ ...styles.hardPointBox, background: "#FFFDE7", borderColor: "#FDD835", marginBottom: "12px" }}>
                   <div style={{ fontWeight: "600", marginBottom: "8px", color: "#333" }}>
-                    {lang === 'en' ? ex.question.en : ex.question.zh || ex.question.en}
+                    <MathText text={lang === 'en' ? ex.question.en : ex.question.zh || ex.question.en} />
                   </div>
                   <div style={{ background: "rgba(253,216,53,0.2)", padding: "10px", borderRadius: "6px", marginTop: "8px" }}>
                     <span style={{ fontWeight: "600", color: "#F57F17" }}>{lang === 'en' ? 'Answer: ' : '答案: '}</span>
@@ -3430,8 +3506,7 @@ Return ONLY a JSON array, no markdown:
 
     try {
       const raw = await callAI(system, prompt, 2000);
-      const clean = raw.replace(/```json|```/g, "").trim();
-      const parsed = JSON.parse(clean);
+      const parsed = parseAIResponse(raw);
       setQuestions(parsed);
     } catch (e) {
       // Show error message instead of fallback math question
@@ -3547,7 +3622,7 @@ Return ONLY a JSON array, no markdown:
         </span>
       </div>
       <div style={styles.questionBox}>
-        <div style={styles.questionText}>{q.question}</div>
+        <div style={styles.questionText}><MathText text={q.question} /></div>
       </div>
       <div style={styles.optionsGrid}>
         {Object.entries(q.options).map(([letter, text]) => (
@@ -3789,7 +3864,7 @@ Return ONLY this JSON:
                 <span style={styles.examQNum}>Q{i + 1}</span>
                 {q.marks && <span style={styles.examQMarks}>[{q.marks} {t.marks}]</span>}
               </div>
-              <div style={styles.examQText}>{q.question}</div>
+              <div style={styles.examQText}><MathText text={q.question} /></div>
               <div style={styles.examOptions}>
                 {Object.entries(q.options).map(([letter, text]) => (
                   <button key={letter}
@@ -3831,7 +3906,7 @@ Return ONLY this JSON:
               <div style={styles.reviewQuestion}>{q.question}</div>
               {!q.isCorrect && (
                 <>
-                  <div style={styles.reviewSolution}><strong>Solution:</strong> {q.solution}</div>
+                  <div style={styles.reviewSolution}><strong>Solution:</strong> <MathText text={q.solution} /></div>
                   <div style={styles.reviewTopic}><strong>Topic:</strong> {q.topic}</div>
                 </>
               )}
@@ -4000,7 +4075,7 @@ Return ONLY JSON array:
                   {q.difficulty}
                 </span>
               </div>
-              <div style={styles.examQText}>{q.question}</div>
+              <div style={styles.examQText}><MathText text={q.question} /></div>
               <div style={styles.examOptions}>
                 {Object.entries(q.options || {}).map(([letter, text]) => (
                   <button key={letter}
@@ -4053,7 +4128,7 @@ Return ONLY JSON array:
               </div>
               <div style={styles.reviewQuestion}>{q.question}</div>
               <div style={styles.reviewSolution}>
-                <strong>{t.modelAnswer} ({q.correct}):</strong> {q.solution}
+                <strong>{t.modelAnswer} ({q.correct}):</strong> <MathText text={q.solution} />
               </div>
               {!q.isCorrect && (
                 <div style={styles.aiExplanation}>
@@ -4124,7 +4199,7 @@ function ErrorBookView({ errors, onClear, nav, t, lang, subject = "mathematics" 
             <div style={styles.errorCardHeader}>
               <div>
                 <span style={styles.errorChapter}>{err.chapter || "General"} · {err.book || ""}</span>
-                <div style={styles.errorQuestion}>{err.question}</div>
+                <div style={styles.errorQuestion}><MathText text={err.question} /></div>
               </div>
               <div style={styles.errorCardBtns}>
                 <button onClick={() => getAIExplanation(err)} style={styles.btnSmall}>{t.aiExplainBtn}</button>
@@ -4133,7 +4208,7 @@ function ErrorBookView({ errors, onClear, nav, t, lang, subject = "mathematics" 
             </div>
             <div style={styles.errorAnswers}>
               <span style={styles.errorWrong}>{t.yourAnswerLabel} {err.userAnswer || t.noAnswer}</span>
-              <span style={styles.errorCorrect}>{t.correctLabel} {err.correct}</span>
+              <span style={styles.errorCorrect}><MathText text={t.correctLabel + " " + err.correct} /></span>
             </div>
             {selectedError?.id === err.id && (
               <div style={styles.explanationBox}>
