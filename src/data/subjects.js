@@ -1139,7 +1139,14 @@ export const SUBJECTS = {
             difficulty: "Intermediate",
             hardPoints: "分析帝国扩张的动机",
             examTips: "理解殖民统治的多重影响",
-            youtube: []
+            formulas: [
+              { name: "帝国扩张动机", expr: "经济利益 + 战略安全 + 意识形态 = 扩张动力" },
+              { name: "殖民统治模式", expr: "直接统治 vs 间接统治" }
+            ],
+            youtube: [
+              { title: "British Empire Overview", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=H5i2oMg1P7w" },
+              { title: "Empire and Identity", channel: "BBC", url: "https://www.youtube.com/watch?v=RlMJ2pGMkg" }
+            ]
           },
           {
             id: "h3c2", num: 2,
@@ -1151,10 +1158,19 @@ export const SUBJECTS = {
               "African nationalist movements",
               "Role of education and western ideas"
             ],
+            formulas: [
+              { name: "抵抗运动类型", expr: "武装抵抗 + 政治运动 + 文化觉醒" }
+            ],
             difficulty: "Advanced",
             hardPoints: "理解抵抗运动的多样性",
             examTips: "分析不同地区抵抗运动的差异",
-            youtube: []
+            formulas: [
+              { name: "非殖民化因素", expr: "二战影响 + 民族主义 + 冷战格局 = 非殖民化动力" }
+            ],
+            youtube: [
+              { title: "Indian Independence Movement", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=7T5Kk4jU7" },
+              { title: "African Independence", channel: "Al Jazeera", url: "https://www.youtube.com/watch?v=KlDWvj2Y" }
+            ]
           },
           {
             id: "h3c3", num: 3,
@@ -1166,10 +1182,98 @@ export const SUBJECTS = {
               "Wind of Change speech (1960)",
               "Impact on Britain and former colonies"
             ],
+            formulas: [
+              { name: "非殖民化进程", expr: "独立运动 + 谈判/战争 + 新国家形成" }
+            ],
             difficulty: "Advanced",
             hardPoints: "分析非殖民化的原因和影响",
             examTips: "理解英国政策的转变",
-            youtube: []
+            youtube: [
+              { title: "Decolonisation Overview", channel: "BBC", url: "https://www.youtube.com/watch?v=LYH7h9jG" },
+              { title: "Wind of Change Speech", channel: "British Pathé", url: "https://www.youtube.com/watch?v=wT1X5cEe" }
+            ]
+          }
+        ]
+      },
+      Unit4: {
+        id: "Unit4",
+        title: { zh: "来源评估与历史解释", en: "Thematic Study with Source Evaluation" },
+        subtitle: { zh: "史料评估与解释", en: "Source Analysis & Historical Interpretations" },
+        color: "#5D4037",
+        chapters: [
+          {
+            id: "h4c1", num: 1,
+            title: { zh: "美国历史：独立到内战", en: "US History: Independence to Civil War (1763-1865)" },
+            overview: { zh: "学习美国从独立到内战的历史。", en: "Learn US history from independence to the Civil War." },
+            keyPoints: [
+              "Causes of American Revolution",
+              "Constitution and Bill of Rights",
+              "Expansion and Manifest Destiny",
+              "Slavery and Abolition",
+              "Civil War (1861-1865) and Reconstruction"
+            ],
+            definitions: [
+              { term: "Manifest Destiny", definition: "19世纪美国扩张的理念" },
+              { term: "Reconstruction", definition: "战后重建时期(1865-1877)" }
+            ],
+            formulas: [
+              { name: "美国革命原因", expr: " taxation + representation + ideology = revolution" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解因果关系的复杂性",
+            examTips: "能够评估历史学家观点",
+            youtube: [
+              { title: "American Revolution", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=5Da3cP4b" },
+              { title: "Civil War Overview", channel: "John Green", url: "https://www.youtube.com/watch?v=wE1oX8jP" }
+            ]
+          },
+          {
+            id: "h4c2", num: 2,
+            title: { zh: "英国战争经历", en: "British War Experience (1803-1945)" },
+            overview: { zh: "学习英国在主要战争中的角色和影响。", en: "Study Britain's role in major wars." },
+            keyPoints: [
+              "Napoleonic Wars",
+              "Crimean War causes and consequences",
+              "World War I: Western Front",
+              "World War II: Blitz and Home Front",
+              "War economics and social change"
+            ],
+            formulas: [
+              { name: "战争影响分析", expr: "经济影响 + 社会变革 + 政治格局 = 全面影响" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "分析战争对社会的影响",
+            examTips: "能够比较不同战争的异同",
+            youtube: [
+              { title: "World War I Overview", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=Zy19o6v3" },
+              { title: "World War II Overview", channel: "History Channel", url: "https://www.youtube.com/watch?v=HQH8X3y" }
+            ]
+          },
+          {
+            id: "h4c3", num: 3,
+            title: { zh: "德国：统一、分裂与再统一", en: "Germany: Unity, Division & Reunification (1870-1990)" },
+            overview: { zh: "学习德国现代史的关键时期。", en: "Study key periods in modern German history." },
+            keyPoints: [
+              "German unification (1871)",
+              "Kaiserreich and World War I",
+              "Weimar Republic and Nazi Germany",
+              "Division after World War II",
+              "Reunification (1990)"
+            ],
+            definitions: [
+              { term: "Weimar Republic", definition: "德国魏玛共和国(1919-1933)" },
+              { term: "Cold War", definition: "冷战时期的东西方对抗" }
+            ],
+            formulas: [
+              { name: "德国历史主线", expr: "统一 → 一战 → 魏玛 → 纳粹 → 二战 → 分裂 → 统一" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解德国历史转折点",
+            examTips: "能够评估不同历史时期",
+            youtube: [
+              { title: "German Unification", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=Q2W7dN3" },
+              { title: "Nazi Germany", channel: "John Green", url: "https://www.youtube.com/watch?v=hH1g1s6" }
+            ]
           }
         ]
       }
@@ -1295,7 +1399,12 @@ export const SUBJECTS = {
             difficulty: "Intermediate",
             hardPoints: "理解总统权力的限制",
             examTips: "分析总统与国会的关系",
-            youtube: []
+            formulas: [
+              { name: "总统权力来源", expr: "宪法 + 行政命令 + 政治资本 = 总统权力" }
+            ],
+            youtube: [
+              { title: "US Presidency Explained", channel: "CGP Grey", url: "https://www.youtube.com/watch?v=5K3Z3k1" }
+            ]
           }
         ]
       },
@@ -1315,10 +1424,15 @@ export const SUBJECTS = {
               "Globalisation's winners and losers",
               "Anti-globalisation movements"
             ],
+            formulas: [
+              { name: "全球化维度", expr: "经济全球化 + 政治全球化 + 文化全球化" }
+            ],
             difficulty: "Intermediate",
             hardPoints: "理解全球化的多维影响",
             examTips: "分析全球化的利弊",
-            youtube: []
+            youtube: [
+              { title: "Globalisation Explained", channel: "Economics Explained", url: "https://www.youtube.com/watch?v=YaH4k9sA" }
+            ]
           },
           {
             id: "p3c2", num: 2,
@@ -1330,10 +1444,15 @@ export const SUBJECTS = {
               "NATO: purpose, expansion, current challenges",
               "Effectiveness of international organisations"
             ],
+            formulas: [
+              { name: "国际组织评估标准", expr: "成员国支持 + 执行能力 + 解决问题效率" }
+            ],
             difficulty: "Advanced",
             hardPoints: "分析国际组织的有效性",
             examTips: "评估国际组织的作用",
-            youtube: []
+            youtube: [
+              { title: "United Nations Explained", channel: "CGP Grey", url: "https://www.youtube.com/watch?v=yp1En5f5" }
+            ]
           },
           {
             id: "p3c3", num: 3,
@@ -1345,10 +1464,95 @@ export const SUBJECTS = {
               "Constructivism: identity, norms, social construction",
               "Applying theories to case studies"
             ],
+            formulas: [
+              { name: "IR理论框架", expr: "现实主义 + 自由主义 + 建构主义 = 国际关系理论" }
+            ],
             difficulty: "Advanced",
             hardPoints: "理解不同理论视角",
             examTips: "用理论分析实际问题",
-            youtube: []
+            youtube: [
+              { title: "IR Theories Overview", channel: "IR Theory", url: "https://www.youtube.com/watch?v=7f8S2c4" }
+            ]
+          }
+        ]
+      },
+      Unit4: {
+        id: "Unit4",
+        title: { zh: "比较政治学", en: "Comparative Politics" },
+        subtitle: { zh: "政治制度比较与全球治理", en: "Comparative Political Systems & Global Governance" },
+        color: "#37474F",
+        chapters: [
+          {
+            id: "p4c1", num: 1,
+            title: { zh: "比较政治学方法", en: "Comparative Politics Methods" },
+            overview: { zh: "学习比较不同政治体系的方法。", en: "Learn methods for comparing different political systems." },
+            keyPoints: [
+              "Comparative politics: definition and scope",
+              "Political systems: presidential vs parliamentary",
+              "Federal vs unitary systems",
+              " Democratisation and transitions",
+              "Political culture and socialization"
+            ],
+            definitions: [
+              { term: "Presidential system", definition: "总统制，如美国" },
+              { term: "Parliamentary system", definition: "议会制，如英国" }
+            ],
+            formulas: [
+              { name: "比较政治学研究方法", expr: "比较方法 + 制度分析 + 过程追踪" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解不同政治制度差异",
+            examTips: "能够比较和分析不同政治体系",
+            youtube: [
+              { title: "Comparative Politics", channel: "Political Science", url: "https://www.youtube.com/watch?v=8f9k6b2" }
+            ]
+          },
+          {
+            id: "p4c2", num: 2,
+            title: { zh: "美国政治体系", en: "US Political System" },
+            overview: { zh: "深入学习美国政治制度。", en: "Study the US political system in depth." },
+            keyPoints: [
+              "US Constitution and federalism",
+              "Separation of powers: executive, legislative, judicial",
+              "Congress: House and Senate",
+              "Presidential power and limitations",
+              "Supreme Court and judicial review",
+              "US electoral system: Electoral College"
+            ],
+            formulas: [
+              { name: "权力分立与制衡", expr: "行政权 + 立法权 + 司法权 = 三权分立" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解权力分立与制衡",
+            examTips: "能比较英美政治体系",
+            youtube: [
+              { title: "US Constitution Explained", channel: "CGP Grey", url: "https://www.youtube.com/watch?v=UrYkzJ4e" }
+            ]
+          },
+          {
+            id: "p4c3", num: 3,
+            title: { zh: "全球治理与国际组织", en: "Global Governance & International Organisations" },
+            overview: { zh: "学习全球治理机制和国际组织。", en: "Study global governance mechanisms and international organisations." },
+            keyPoints: [
+              "United Nations: structure and functions",
+              "UN Security Council and veto power",
+              "International courts: ICC, ICJ",
+              "Global economic institutions: WTO, IMF, World Bank",
+              "Regional organisations: EU, NATO, ASEAN"
+            ],
+            definitions: [
+              { term: "Sovereignty", definition: "国家主权概念" },
+              { term: "Human rights", definition: "人权与国际保护" }
+            ],
+            formulas: [
+              { name: "全球治理框架", expr: "国际组织 + 国际法 + 主权国家 = 全球治理" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解国际组织的作用",
+            examTips: "评估全球治理的有效性",
+            youtube: [
+              { title: "Global Governance", channel: "UNDP", url: "https://www.youtube.com/watch?v=6c5Z8e1" }
+            ]
           }
         ]
       }
@@ -1443,30 +1647,84 @@ export const SUBJECTS = {
       },
       Unit2: {
         id: "Unit2",
-        title: { zh: "应用心理学", en: "Applications of Psychology" },
-        subtitle: { zh: "临床、犯罪、健康心理学", en: "Clinical, Criminal, Health Psychology" },
+        title: { zh: "生物心理学与学习理论", en: "Biological Psychology & Learning Theories" },
+        subtitle: { zh: "生物心理学、学习理论与发展", en: "Biological Psychology, Learning Theories & Development" },
         color: "#004D40",
         chapters: [
           {
             id: "psy2c1", num: 1,
-            title: { zh: "临床心理学", en: "Clinical Psychology" },
-            overview: { zh: "学习心理障碍的定义、诊断和治疗。", en: "Learn about definition, diagnosis and treatment of psychological disorders." },
+            title: { zh: "生物心理学", en: "Biological Psychology" },
+            overview: { zh: "学习生物心理学基础，理解神经系统如何影响行为。", en: "Learn the foundations of biological psychology and how the nervous system affects behavior." },
             keyPoints: [
-              "Classification of mental disorders: DSM, ICD",
-              "Anxiety disorders: phobias, OCD, PTSD",
-              "Depression: symptoms, causes, treatments",
-              "Biological therapies: drug therapy",
-              "Psychological therapies: CBT, psychoanalysis"
+              "Neurons: structure and function",
+              "Central and peripheral nervous system",
+              "Endocrine system and hormones",
+              "Brain structure: cortex, limbic system, brain stem",
+              "Biological explanations of aggression",
+              "Circadian rhythms"
+            ],
+            formulas: [
+              { name: "神经元结构", expr: "树突 → 细胞体 → 轴突 → 突触" }
             ],
             difficulty: "Intermediate",
-            hardPoints: "比较不同治疗方法",
-            examTips: "能分析案例并提出治疗方案",
+            hardPoints: "理解大脑结构与功能的关系",
+            examTips: "能够将生物学知识应用于行为解释",
             youtube: [
-              { title: "Introduction to Clinical Psychology", channel: "Dr. Grande", url: "https://www.youtube.com/watch?v=qE3X7wX7" }
+              { title: "Biological Psychology", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=4K8G7Lm" }
             ]
           },
           {
             id: "psy2c2", num: 2,
+            title: { zh: "学习理论", en: "Learning Theories" },
+            overview: { zh: "学习经典条件反射、操作条件反射和社会学习理论。", en: "Learn classical conditioning, operant conditioning, and social learning theory." },
+            keyPoints: [
+              "Classical conditioning: Pavlov's experiments",
+              "Operant conditioning: reinforcement, punishment",
+              "Schedules of reinforcement",
+              "Social learning theory: Bandura",
+              "Observational learning"
+            ],
+            formulas: [
+              { name: "操作性条件反射", expr: "强化 + 惩罚 = 行为改变" }
+            ],
+            difficulty: "Intermediate",
+            hardPoints: "区分经典条件反射与操作性条件反射",
+            examTips: "能用条件反射原理解释行为现象",
+            youtube: [
+              { title: "Learning Theories", channel: "Simply Psychology", url: "https://www.youtube.com/watch?v=5L8H9Mk" }
+            ]
+          },
+          {
+            id: "psy2c3", num: 3,
+            title: { zh: "发展心理学", en: "Developmental Psychology" },
+            overview: { zh: "学习从婴儿到成年的心理发展过程。", en: "Learn about psychological development from infancy to adulthood." },
+            keyPoints: [
+              "Piaget's stages of cognitive development",
+              "Erikson's psychosocial stages",
+              "Attachment theory: Bowlby, Ainsworth",
+              "Deprivation and privation",
+              "Social development across lifespan"
+            ],
+            formulas: [
+              { name: "皮亚杰认知发展阶段", expr: "感觉运动 → 前运算 → 具体运算 → 形式运算" }
+            ],
+            difficulty: "Intermediate",
+            hardPoints: "理解发展理论的应用",
+            examTips: "能够分析儿童发展案例",
+            youtube: [
+              { title: "Developmental Psychology", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=6M9J8Kk" }
+            ]
+          }
+        ]
+      },
+      Unit3: {
+        id: "Unit3",
+        title: { zh: "心理学应用", en: "Applications of Psychology" },
+        subtitle: { zh: "犯罪、健康、发展心理学应用", en: "Applications: Criminal, Health, Development" },
+        color: "#00332a",
+        chapters: [
+          {
+            id: "psy3c1", num: 1,
             title: { zh: "犯罪心理学", en: "Criminal Psychology" },
             overview: { zh: "学习犯罪行为的心理学解释。", en: "Learn psychological explanations for criminal behaviour." },
             keyPoints: [
@@ -1479,10 +1737,15 @@ export const SUBJECTS = {
             difficulty: "Intermediate",
             hardPoints: "理解犯罪行为的多种解释",
             examTips: "分析不同理论的优缺点",
-            youtube: []
+            formulas: [
+              { name: "犯罪心理学理论", expr: "生物学 + 精神分析 + 行为主义 = 犯罪解释" }
+            ],
+            youtube: [
+              { title: "Criminal Psychology", channel: "Psychology Today", url: "https://www.youtube.com/watch?v=8K7G9Qk" }
+            ]
           },
           {
-            id: "psy2c3", num: 3,
+            id: "psy3c2", num: 2,
             title: { zh: "健康心理学", en: "Health Psychology" },
             overview: { zh: "学习心理因素对健康的影响。", en: "Learn about psychological factors affecting health." },
             keyPoints: [
@@ -1492,21 +1755,18 @@ export const SUBJECTS = {
               "Psychoneuroimmunology",
               "Health promotion strategies"
             ],
+            formulas: [
+              { name: "健康心理学模型", expr: "健康信念 + 行为意图 + 自我效能 = 健康行为" }
+            ],
             difficulty: "Advanced",
             hardPoints: "理解心理与生理的相互作用",
             examTips: "分析健康行为改变的策略",
-            youtube: []
-          }
-        ]
-      },
-      Unit3: {
-        id: "Unit3",
-        title: { zh: "心理学辩论与方法", en: "Debates in Psychology & Research Methods" },
-        subtitle: { zh: "本质论战、高级研究方法", en: "Nature vs Nurture, Advanced Methods" },
-        color: "#00332a",
-        chapters: [
+            youtube: [
+              { title: "Health Psychology", channel: "Simply Psychology", url: "https://www.youtube.com/watch?v=9K7G8Lm" }
+            ]
+          },
           {
-            id: "psy3c1", num: 1,
+            id: "psy3c3", num: 3,
             title: { zh: "心理学辩论", en: "Debates in Psychology" },
             overview: { zh: "学习心理学的主要理论辩论。", en: "Learn major theoretical debates in psychology." },
             keyPoints: [
@@ -1516,13 +1776,18 @@ export const SUBJECTS = {
               "Idiographic vs Nomothetic approaches",
               "Science vs Humanistic perspectives"
             ],
+            formulas: [
+              { name: "心理学辩论框架", expr: "先天 vs 后天 / 决定论 vs 自由意志" }
+            ],
             difficulty: "Advanced",
             hardPoints: "理解不同理论视角",
             examTips: "能用辩论观点分析研究",
-            youtube: []
+            youtube: [
+              { title: "Nature vs Nurture", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=5K8G7Lm" }
+            ]
           },
           {
-            id: "psy3c2", num: 2,
+            id: "psy3c4", num: 4,
             title: { zh: "高级研究方法", en: "Advanced Research Methods" },
             overview: { zh: "学习更高级的研究设计和统计方法。", en: "Learn advanced research designs and statistical methods." },
             keyPoints: [
@@ -1538,7 +1803,112 @@ export const SUBJECTS = {
             difficulty: "Advanced",
             hardPoints: "选择合适的研究设计",
             examTips: "能设计和评估心理学研究",
-            youtube: []
+            youtube: [
+              { title: "Research Methods", channel: "Simply Psychology", url: "https://www.youtube.com/watch?v=6L9M8K" }
+            ]
+          }
+        ]
+      },
+      Unit4: {
+        id: "Unit4",
+        title: { zh: "临床心理学与心理技能", en: "Clinical Psychology & Psychological Skills" },
+        subtitle: { zh: "心理障碍诊断与治疗", en: "Diagnosis & Treatment of Psychological Disorders" },
+        color: "#00695C",
+        chapters: [
+          {
+            id: "psy4c1", num: 1,
+            title: { zh: "临床心理学导论", en: "Introduction to Clinical Psychology" },
+            overview: { zh: "学习临床心理学的基本概念和评估方法。", en: "Learn fundamental concepts and assessment methods in clinical psychology." },
+            keyPoints: [
+              "Historical development of clinical psychology",
+              "Classification of mental disorders: DSM and ICD",
+              "Assessment methods: interviews, psychometric tests",
+              "Clinical observation and diagnosis",
+              "Prevalence and incidence of psychological disorders"
+            ],
+            definitions: [
+              { term: "DSM", definition: "精神疾病诊断与统计手册" },
+              { term: "ICD", definition: "国际疾病分类" }
+            ],
+            formulas: [
+              { name: "临床评估流程", expr: "面谈 + 心理测验 + 观察 = 全面评估" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解不同诊断系统的差异",
+            examTips: "能够评估不同心理障碍",
+            youtube: [
+              { title: "Clinical Psychology Overview", channel: "American Psychological Association", url: "https://www.youtube.com/watch?v=7K8L9Mm" }
+            ]
+          },
+          {
+            id: "psy4c2", num: 2,
+            title: { zh: "焦虑障碍", en: "Anxiety Disorders" },
+            overview: { zh: "学习焦虑障碍的类型、原因和治疗方法。", en: "Study types, causes and treatments of anxiety disorders." },
+            keyPoints: [
+              "Generalised Anxiety Disorder (GAD)",
+              "Phobias: specific and social",
+              "Panic disorder and agoraphobia",
+              "Obsessive-Compulsive Disorder (OCD)",
+              "Biological and psychological explanations",
+              "Treatments: CBT, medication, exposure therapy"
+            ],
+            formulas: [
+              { name: "暴露疗法原理", expr: "系统脱敏 = 放松 + 等级暴露" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "区分不同焦虑障碍",
+            examTips: "能够比较不同治疗方法",
+            youtube: [
+              { title: "Anxiety Disorders", channel: "Khan Academy", url: "https://www.youtube.com/watch?v=8L9M0Nk" }
+            ]
+          },
+          {
+            id: "psy4c3", num: 3,
+            title: { zh: "心境障碍", en: "Mood Disorders" },
+            overview: { zh: "学习抑郁症和双相情感障碍。", en: "Study depression and bipolar disorder." },
+            keyPoints: [
+              "Major Depressive Disorder: symptoms and diagnosis",
+              "Bipolar I and Bipolar II disorders",
+              "Biological explanations: neurotransmitters, genetics",
+              "Psychological theories: cognitive, behavioural",
+              "Treatments: antidepressants, ECT, psychotherapy",
+              "Suicide and self-harm considerations"
+            ],
+            definitions: [
+              { term: "Mania", definition: "躁狂发作时期" },
+              { term: "Anhedonia", definition: "快感缺失" }
+            ],
+            formulas: [
+              { name: "抑郁症诊断标准", expr: "情绪 + 认知 + 生理 + 行为 = 全面症状" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解心境障碍的复杂性",
+            examTips: "能够评估病因和治疗方法",
+            youtube: [
+              { title: "Mood Disorders", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=9M0N1Pk" }
+            ]
+          },
+          {
+            id: "psy4c4", num: 4,
+            title: { zh: "心理治疗技术", en: "Psychotherapeutic Techniques" },
+            overview: { zh: "学习主要的心理治疗方法。", en: "Learn major psychotherapeutic treatment approaches." },
+            keyPoints: [
+              "Cognitive Behavioral Therapy (CBT): principles and techniques",
+              "Psychodynamic therapy: free association, dream analysis",
+              "Humanistic therapy: client-centered approach",
+              "Biological treatments: psychopharmacology",
+              "Ethical considerations in treatment",
+              "Effectiveness research and evidence-based practice"
+            ],
+            formulas: [
+              { name: "CBT核心原理", expr: "认知-情绪-行为三角关系" }
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解不同治疗方法的适用性",
+            examTips: "能够评估治疗效果",
+            youtube: [
+              { title: "Psychotherapy Approaches", channel: "Simply Psychology", url: "https://www.youtube.com/watch?v=0N2M2Lk" }
+            ]
           }
         ]
       }
