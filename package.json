@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "katex": "^0.16.33",
@@ -17,6 +18,10 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "jsdom": "^28.1.0",
     "vite": "^5.1.0",
     "vitest": "^2.0.0"

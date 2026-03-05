@@ -1201,9 +1201,6 @@ export const SUBJECTS = {
             difficulty: "Advanced",
             hardPoints: "理解抵抗运动的多样性",
             examTips: "分析不同地区抵抗运动的差异",
-            formulas: [
-              { name: "非殖民化因素", expr: "二战影响 + 民族主义 + 冷战格局 = 非殖民化动力" }
-            ],
             youtube: [
               { title: "Indian Independence Movement", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=7T5Kk4jU7" },
               { title: "African Independence", channel: "Al Jazeera", url: "https://www.youtube.com/watch?v=KlDWvj2Y" }

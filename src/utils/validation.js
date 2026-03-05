@@ -162,12 +162,13 @@ export function validateQuizAnswer(answer, questionType = 'multiple_choice') {
       }
       return { valid: true, answer: sanitizeString(answer, 500) };
 
-    case 'numeric':
+    case 'numeric': {
       const num = Number(answer);
       if (isNaN(num)) {
         return { valid: false, error: 'Answer must be a number' };
       }
       return { valid: true, answer: num };
+    }
 
     default:
       return { valid: true, answer: sanitizeString(answer, 500) };
@@ -197,7 +198,7 @@ export function validateYouTubeUrl(url) {
     return { valid: false, error: 'URL is required' };
   }
 
-  const youtubeRegex = /^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+  const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
   if (!youtubeRegex.test(url)) {
     return { valid: false, error: 'Invalid YouTube URL' };
   }
