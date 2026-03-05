@@ -3778,16 +3778,26 @@ Return ONLY this JSON:
   };
 
   useEffect(() => {
-    if (phase === "exam" && timeLeft > 0) {
-      timerRef.current = setInterval(() => {
-        setTimeLeft(t => {
-          if (t <= 1) { clearInterval(timerRef.current); submitExam(); return 0; }
-          return t - 1;
-        });
-      }, 1000);
+    if (phase !== "exam" || timeLeft <= 0) {
+      if (timerRef.current) clearInterval(timerRef.current);
+      return;
     }
-    return () => clearInterval(timerRef.current);
-  }, [phase]);
+
+    timerRef.current = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current);
+          submitExam();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [phase, timeLeft]);
 
   const submitExam = () => {
     clearInterval(timerRef.current);
@@ -3984,16 +3994,26 @@ Return ONLY JSON array:
   };
 
   useEffect(() => {
-    if (phase === "exam" && timeLeft > 0) {
-      timerRef.current = setInterval(() => {
-        setTimeLeft(t => {
-          if (t <= 1) { clearInterval(timerRef.current); submitMock(); return 0; }
-          return t - 1;
-        });
-      }, 1000);
+    if (phase !== "exam" || timeLeft <= 0) {
+      if (timerRef.current) clearInterval(timerRef.current);
+      return;
     }
-    return () => clearInterval(timerRef.current);
-  }, [phase]);
+
+    timerRef.current = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current);
+          submitMock();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [phase, timeLeft]);
 
   const submitMock = () => {
     clearInterval(timerRef.current);
