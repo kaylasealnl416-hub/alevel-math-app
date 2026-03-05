@@ -24,42 +24,41 @@ function parseAIResponse(rawText) {
 
 // ============================================================
 // 数学公式渲染组件 (使用 KaTeX)
+// Fixed: 使用 dangerouslySetInnerHTML 替代 innerHTML
 // ============================================================
 function MathText({ text, displayMode = false }) {
-  const containerRef = useRef(null);
+  const [html, setHtml] = useState('');
 
   useEffect(() => {
-    if (containerRef.current) {
-      // 处理块级公式 $$...$$ 和行内公式 $...$
-      let processed = text
-        .replace(/\$\$([^$]+)\$\$/g, (_, formula) => {
-          try {
-            return katex.renderToString(formula.trim(), {
-              throwOnError: false,
-              displayMode: true,
-            });
-          } catch (e) {
-            return formula;
-          }
-        })
-        .replace(/\$([^$\n]+)\$/g, (_, formula) => {
-          try {
-            return katex.renderToString(formula.trim(), {
-              throwOnError: false,
-              displayMode: false,
-            });
-          } catch (e) {
-            return formula;
-          }
-        });
-      containerRef.current.innerHTML = processed;
-    }
+    // 处理块级公式 $$...$$ 和行内公式 $...$
+    const processed = text
+      .replace(/\$\$([^$]+)\$\$/g, (_, formula) => {
+        try {
+          return katex.renderToString(formula.trim(), {
+            throwOnError: false,
+            displayMode: true,
+          });
+        } catch (e) {
+          return formula;
+        }
+      })
+      .replace(/\$([^$\n]+)\$/g, (_, formula) => {
+        try {
+          return katex.renderToString(formula.trim(), {
+            throwOnError: false,
+            displayMode: false,
+          });
+        } catch (e) {
+          return formula;
+        }
+      });
+    setHtml(processed);
   }, [text, displayMode]);
 
   return (
     <span
-      ref={containerRef}
       style={{ lineHeight: "1.6" }}
+      dangerouslySetInnerHTML={{ __html: html }}
     />
   );
 }
