@@ -2343,8 +2343,93 @@ const T = {
 };
 
 // ============================================================
+// ERROR BOUNDARY - Catches React errors to prevent app crash
+// ============================================================
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught:", error, errorInfo);
+  }
+
+  handleReload = () => {
+    this.setState({ hasError: false, error: null });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 40,
+          background: "#F2F2F2",
+          fontFamily: "Georgia, serif"
+        }}>
+          <div style={{
+            background: "white",
+            padding: 32,
+            borderRadius: 12,
+            maxWidth: 500,
+            textAlign: "center",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.1)"
+          }}>
+            <h2 style={{ color: "#DA291C", marginBottom: 16 }}>Something went wrong</h2>
+            <p style={{ color: "#666", marginBottom: 20 }}>
+              An unexpected error occurred. Please try reloading the page.
+            </p>
+            {this.state.error && (
+              <pre style={{
+                background: "#FFF5F5",
+                padding: 12,
+                borderRadius: 6,
+                fontSize: 12,
+                textAlign: "left",
+                overflow: "auto",
+                maxHeight: 150,
+                marginBottom: 20,
+                color: "#C00"
+              }}>
+                {this.state.error.message || String(this.state.error)}
+              </pre>
+            )}
+            <button
+              onClick={this.handleReload}
+              style={{
+                background: "#DA291C",
+                color: "white",
+                border: "none",
+                padding: "12px 24px",
+                borderRadius: 6,
+                cursor: "pointer",
+                fontSize: 14,
+                fontWeight: 600
+              }}
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+// ============================================================
 // MAIN APP
 // ============================================================
+export { ErrorBoundary };
 export default function ALevelMathApp() {
   const [activeView, setActiveView] = useState("subjects"); // Start with subject selection
   const [selectedSubject, setSelectedSubject] = useState("mathematics");
