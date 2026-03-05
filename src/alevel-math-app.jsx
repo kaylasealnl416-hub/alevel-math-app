@@ -22,6 +22,34 @@ function parseAIResponse(rawText) {
   }
 }
 
+// Validate AI question response to prevent crashes
+function validateQuestions(parsed, source = "quiz") {
+  if (!Array.isArray(parsed)) {
+    throw new Error("AI response is not an array");
+  }
+  if (parsed.length === 0) {
+    throw new Error("AI returned empty question list");
+  }
+
+  // Filter and validate each question
+  const validated = parsed.filter(q => {
+    const hasRequired = q.id && q.question &&
+      q.options && typeof q.options === 'object' &&
+      q.correct && q.correct in q.options;
+    return hasRequired;
+  });
+
+  if (validated.length < parsed.length) {
+    console.warn(`Filtered out ${parsed.length - validated.length} invalid questions from ${source}`);
+  }
+
+  if (validated.length === 0) {
+    throw new Error("No valid questions in AI response");
+  }
+
+  return validated;
+}
+
 // ============================================================
 // 数学公式渲染组件 (使用 KaTeX)
 // ============================================================
@@ -3645,7 +3673,8 @@ Return ONLY a JSON array, no markdown:
     try {
       const raw = await callAI(system, prompt, 2000);
       const parsed = parseAIResponse(raw);
-      setQuestions(parsed);
+      const validated = validateQuestions(parsed, "quiz");
+      setQuestions(validated);
     } catch (e) {
       // Show error message instead of fallback math question
       const errorMsg = e.message || "Unknown error";
@@ -3904,8 +3933,9 @@ Return ONLY this JSON:
     try {
       const raw = await callAI(system, prompt, 2500);
       const clean = raw.replace(/```json|```/g, "").trim();
-      const qs = JSON.parse(clean);
-      setQuestions(qs);
+      const parsed = JSON.parse(clean);
+      const validated = validateQuestions(parsed, "exam");
+      setQuestions(validated);
       setAnswers({});
       setTimeLeft(EXAM_MINUTES * 60);
       setPhase("exam");
@@ -4120,8 +4150,9 @@ Return ONLY JSON array:
     try {
       const raw = await callAI(system, prompt, 3000);
       const clean = raw.replace(/```json|```/g, "").trim();
-      const qs = JSON.parse(clean);
-      setQuestions(qs);
+      const parsed = JSON.parse(clean);
+      const validated = validateQuestions(parsed, "mock");
+      setQuestions(validated);
       setAnswers({});
       setTimeLeft(paper.duration * 60);
       setPhase("exam");
