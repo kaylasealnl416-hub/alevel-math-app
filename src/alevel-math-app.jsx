@@ -2087,23 +2087,49 @@ function validateErrorBook(data) {
   ).slice(0, 1000); // Limit to 1000 entries
 }
 
+// Custom hook for unified localStorage + useState management (SSOT)
+function useLocalStorageState(key, initialValue) {
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.warn(`Error reading localStorage key "${key}":`, error);
+      return initialValue;
+    }
+  });
+
+  const setValue = (value) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.warn(`Error setting localStorage key "${key}":`, error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
+
+// Legacy helper functions (for backward compatibility)
 function getApiKey() {
-  return localStorage.getItem(API_KEY_STORAGE) || "";
+  try { return localStorage.getItem(API_KEY_STORAGE) || ""; } catch { return ""; }
 }
 function saveApiKey(key) {
-  localStorage.setItem(API_KEY_STORAGE, key.trim());
+  try { localStorage.setItem(API_KEY_STORAGE, key.trim()); } catch { console.warn("Failed to save API key"); }
 }
 function getMiniMaxApiKey() {
-  return localStorage.getItem(MINIMAX_API_KEY_STORAGE) || "";
+  try { return localStorage.getItem(MINIMAX_API_KEY_STORAGE) || ""; } catch { return ""; }
 }
 function saveMiniMaxApiKey(key) {
-  localStorage.setItem(MINIMAX_API_KEY_STORAGE, key.trim());
+  try { localStorage.setItem(MINIMAX_API_KEY_STORAGE, key.trim()); } catch { console.warn("Failed to save MiniMax API key"); }
 }
 function getZhipuApiKey() {
-  return localStorage.getItem(ZHIPU_API_KEY_STORAGE) || "";
+  try { return localStorage.getItem(ZHIPU_API_KEY_STORAGE) || ""; } catch { return ""; }
 }
 function saveZhipuApiKey(key) {
-  localStorage.setItem(ZHIPU_API_KEY_STORAGE, key.trim());
+  try { localStorage.setItem(ZHIPU_API_KEY_STORAGE, key.trim()); } catch { console.warn("Failed to save Zhipu API key"); }
 }
 function getProvider() {
   return localStorage.getItem(PROVIDER_STORAGE) || "anthropic";
@@ -2463,31 +2489,29 @@ export default function ALevelMathApp() {
   const [selectedSubject, setSelectedSubject] = useState("mathematics");
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedChapter, setSelectedChapter] = useState(null);
-  const [errorBook, setErrorBook] = useState(() => {
-    try {
-      const saved = localStorage.getItem("alevel_math_errorbook");
-      return saved ? validateErrorBook(JSON.parse(saved)) : [];
-    } catch (e) {
-      console.warn("Failed to load error book:", e);
-      return [];
-    }
-  });
+  // Use unified localStorage + useState management (SSOT)
+  // Error book with validation on load
+  const [errorBook, setErrorBook] = useLocalStorageState("alevel_math_errorbook", []);
+  // Apply validation when setting error book to ensure data integrity
+  const addToErrorBook = (error) => {
+    setErrorBook(prev => {
+      const validated = validateErrorBook([...prev, error]);
+      return validated.slice(0, 1000); // Keep max 1000 entries
+    });
+  };
   const [examSession, setExamSession] = useState(null);
   const [quizSession, setQuizSession] = useState(null);
   const [mockExamSession, setMockExamSession] = useState(null);
-  const [lang, setLang] = useState("en");
+  const [lang, setLang] = useLocalStorageState("alevel_math_lang", "en");
   const [showApiModal, setShowApiModal] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
   const [miniMaxApiKeyInput, setMiniMaxApiKeyInput] = useState("");
   const [zhipuApiKeyInput, setZhipuApiKeyInput] = useState("");
-  const [apiKeySaved, setApiKeySaved] = useState(!!getApiKey());
-  const [miniMaxApiKeySaved, setMiniMaxApiKeySaved] = useState(!!getMiniMaxApiKey());
-  const [zhipuApiKeySaved, setZhipuApiKeySaved] = useState(!!getZhipuApiKey());
-  const [provider, setProvider] = useState(getProvider());
-  // 自动保存错题本到本地存储
-  useEffect(() => {
-    localStorage.setItem("alevel_math_errorbook", JSON.stringify(errorBook));
-  }, [errorBook]);
+  // Unified API key state management
+  const [apiKeySaved, setApiKeySaved] = useLocalStorageState(API_KEY_STORAGE + "_saved", !!getApiKey());
+  const [miniMaxApiKeySaved, setMiniMaxApiKeySaved] = useLocalStorageState(MINIMAX_API_KEY_STORAGE + "_saved", !!getMiniMaxApiKey());
+  const [zhipuApiKeySaved, setZhipuApiKeySaved] = useLocalStorageState(ZHIPU_API_KEY_STORAGE + "_saved", !!getZhipuApiKey());
+  const [provider, setProvider] = useLocalStorageState(PROVIDER_STORAGE, getProvider());
 
   const t = T[lang];
 
@@ -2512,6 +2536,7 @@ export default function ALevelMathApp() {
     setShowApiModal(false);
     setZhipuApiKeyInput("");
   }
+  // useLocalStorageState 自动同步 localStorage，只需要更新状态
   function handleClearApiKey() {
     localStorage.removeItem(API_KEY_STORAGE);
     setApiKeySaved(false);
@@ -2524,9 +2549,9 @@ export default function ALevelMathApp() {
     localStorage.removeItem(ZHIPU_API_KEY_STORAGE);
     setZhipuApiKeySaved(false);
   }
+  // useLocalStorageState 自动同步，只需要更新状态
   function handleProviderChange(newProvider) {
     setProvider(newProvider);
-    saveProvider(newProvider);
   }
 
   const nav = (view, book = undefined, chapter = undefined, subject = undefined) => {
@@ -2633,7 +2658,7 @@ export default function ALevelMathApp() {
             t={t}
             lang={lang}
             subject={selectedSubject}
-            onAddError={(q) => setErrorBook(prev => [...prev.filter(e => e.id !== q.id), q])}
+            onAddError={(q) => setErrorBook(prev => validateErrorBook([...prev.filter(e => e.id !== q.id), q]).slice(0, 1000))}
           />
         )}
         {activeView === "exam" && (
@@ -2644,7 +2669,7 @@ export default function ALevelMathApp() {
             t={t}
             lang={lang}
             subject={selectedSubject}
-            onAddError={(q) => setErrorBook(prev => [...prev.filter(e => e.id !== q.id), q])}
+            onAddError={(q) => setErrorBook(prev => validateErrorBook([...prev.filter(e => e.id !== q.id), q]).slice(0, 1000))}
           />
         )}
         {activeView === "mock" && (
@@ -2653,7 +2678,7 @@ export default function ALevelMathApp() {
             t={t}
             lang={lang}
             subject={selectedSubject}
-            onAddError={(q) => setErrorBook(prev => [...prev.filter(e => e.id !== q.id), q])}
+            onAddError={(q) => setErrorBook(prev => validateErrorBook([...prev.filter(e => e.id !== q.id), q]).slice(0, 1000))}
           />
         )}
         {activeView === "errorbook" && (
