@@ -61,7 +61,8 @@ export const SUBJECTS = {
               { title: "Positive and Normative Statements | A Level Economics", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=OkIr3Mfx-o0" },
               { title: "Y1 2) Production Possibility Curves - PPCs / PPFs", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=IzccVWouIxM" },
               { title: "PPF and Opportunity Cost | A Level Economics", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=-XK9KW9dYwU" },
-              { title: "Production Possibility Frontier (PPF) - Edexcel Economics Unit 1", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=w5jz9sphFfQ" }
+              { title: "Production Possibility Frontier (PPF) - Edexcel Economics Unit 1", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=w5jz9sphFfQ" },
+              { title: "The Economic Problem - Scarcity", channel: "Edexcel", url: "https://www.youtube.com/watch?v=dMxy-9piB14" }
             ]
           },
           {
@@ -116,7 +117,8 @@ export const SUBJECTS = {
               { title: "The Law of Diminishing Marginal Utility", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=0eEMWQPRn1Q" },
               { title: "Edexcel Economics: Behavioural Economics (Intro)", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=4_h0kT4DrYE" },
               { title: "Alternative Views of Consumer Behaviour: Edexcel Economics A Level", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=F7qiOihAgUo" },
-              { title: "Edexcel Economics: Rational Decision Making & How Markets Work", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=VSiDQ_z0q74" }
+              { title: "Edexcel Economics: Rational Decision Making & How Markets Work", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=VSiDQ_z0q74" },
+              { title: "Scarcity & Opportunity Cost", channel: "Edexcel", url: "https://www.youtube.com/watch?v=1R8laUo-kJ4" }
             ]
           },
           {
@@ -157,7 +159,8 @@ export const SUBJECTS = {
               { title: "Supply and Demand in 8 Minutes (Core Concept Review)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=kIFBaaPJUO0" },
               { title: "Y1 12) Price Elasticity of Supply (PES)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=ICjglEvPL44" },
               { title: "Price Elasticity of Supply | A-level Economics Edexcel", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=W5ZrRrKEqBA" },
-              { title: "A Level Economics - Price Elasticity Of Supply Explained", channel: "EconPlusDal", url: "https://www.youtube.com/watch?v=IzjtR6_-1qI" }
+              { title: "A Level Economics - Price Elasticity Of Supply Explained", channel: "EconPlusDal", url: "https://www.youtube.com/watch?v=IzjtR6_-1qI" },
+              { title: "Markets, Consumers and Firms", channel: "Edexcel", url: "https://www.youtube.com/watch?v=TqFw49LWMc8" }
             ]
           },
           {
@@ -198,7 +201,8 @@ export const SUBJECTS = {
               { title: "Y2 17) Monopoly (垄断)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=UXC51iTDEJI" },
               { title: "Y2 25) Oligopoly - Kinked Demand Curve (寡头垄断与拐折需求曲线)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=Ec19ljjvlCI" },
               { title: "Oligopoly Behaviour - Compete or Collude? (寡头博弈行为)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=qNIiBJYeO_c" },
-              { title: "Y2 23) Monopolistic Competition (垄断竞争)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=DHgSBazfTEk" }
+              { title: "Y2 23) Monopolistic Competition (垄断竞争)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=DHgSBazfTEk" },
+              { title: "Needs and Wants & Factors of Production", channel: "Edexcel", url: "https://www.youtube.com/watch?v=W4oQ51_f6to" }
             ]
           },
           {
@@ -247,7 +251,8 @@ export const SUBJECTS = {
               { title: "Y1 23) Negative Externalities in Production & Consumption", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=2bI_EX3U5xc" },
               { title: "Y1 24) Positive Externalities in Consumption and Production", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=mcQvtKDiTho" },
               { title: "Edexcel A level Economics: Solutions to Negative Externalities", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=KrQZsDhmMac" },
-              { title: "Market Failure | A-level Economics | Edexcel Focus", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=YE3oALZ5pl8" }
+              { title: "Market Failure | A-level Economics | Edexcel Focus", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=YE3oALZ5pl8" },
+              { title: "What is Scarcity?", channel: "Edexcel", url: "https://www.youtube.com/watch?v=-YYAqt3-79w" }
             ]
           },
           {
