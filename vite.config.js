@@ -8,4 +8,17 @@ export default defineConfig({
     port: 3000,
     open: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // 分割 React 核心
+          'react-vendor': ['react', 'react-dom'],
+          // 分割 KaTeX 数学渲染库
+          'katex': ['katex'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 500,
+  },
 })
