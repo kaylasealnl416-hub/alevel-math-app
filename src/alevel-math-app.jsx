@@ -2077,84 +2077,126 @@ async function callClaude(systemPrompt, userMessage, maxTokens = 1500) {
   const apiKey = getApiKey();
   if (!apiKey) throw new Error("NO_API_KEY");
 
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: maxTokens,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userMessage }]
-    })
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    if (response.status === 401) throw new Error("INVALID_API_KEY");
-    throw new Error(err?.error?.message || `HTTP ${response.status}`);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: maxTokens,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userMessage }]
+      }),
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      if (response.status === 401) throw new Error("INVALID_API_KEY");
+      throw new Error(err?.error?.message || `HTTP ${response.status}`);
+    }
+    const data = await response.json();
+    return data.content?.[0]?.text || "";
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error("REQUEST_TIMEOUT: AI service took too long to respond");
+    }
+    throw error;
   }
-  const data = await response.json();
-  return data.content?.[0]?.text || "";
 }
 
 async function callMiniMax(systemPrompt, userMessage, maxTokens = 1500) {
   const apiKey = getMiniMaxApiKey();
   if (!apiKey) throw new Error("NO_MINIMAX_API_KEY");
 
-  const response = await fetch("https://api.minimax.chat/v1/text/chatcompletion_pro", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "abab6.5s-chat",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userMessage }
-      ],
-      max_tokens: maxTokens,
-    })
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    if (response.status === 401) throw new Error("INVALID_MINIMAX_API_KEY");
-    throw new Error(err?.base_resp?.status_msg || `HTTP ${response.status}`);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    const response = await fetch("https://api.minimax.chat/v1/text/chatcompletion_pro", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "abab6.5s-chat",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userMessage }
+        ],
+        max_tokens: maxTokens,
+      }),
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      if (response.status === 401) throw new Error("INVALID_MINIMAX_API_KEY");
+      throw new Error(err?.base_resp?.status_msg || `HTTP ${response.status}`);
+    }
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content || "";
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error("REQUEST_TIMEOUT: AI service took too long to respond");
+    }
+    throw error;
   }
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
 }
 
 async function callZhipu(systemPrompt, userMessage, maxTokens = 1500) {
   const apiKey = getZhipuApiKey();
   if (!apiKey) throw new Error("NO_ZHIPU_API_KEY");
 
-  const response = await fetch("https://open.bigmodel.cn/api/paas/v4/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "glm-4",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userMessage }
-      ],
-      max_tokens: maxTokens,
-    })
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    if (response.status === 401) throw new Error("INVALID_ZHIPU_API_KEY");
-    throw new Error(err?.error?.message || `HTTP ${response.status}`);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    const response = await fetch("https://open.bigmodel.cn/api/paas/v4/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "glm-4",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userMessage }
+        ],
+        max_tokens: maxTokens,
+      }),
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      if (response.status === 401) throw new Error("INVALID_ZHIPU_API_KEY");
+      throw new Error(err?.error?.message || `HTTP ${response.status}`);
+    }
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content || "";
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error("REQUEST_TIMEOUT: AI service took too long to respond");
+    }
+    throw error;
   }
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
 }
 
 // Unified AI call function
