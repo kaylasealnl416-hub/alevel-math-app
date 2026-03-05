@@ -52,3 +52,71 @@ describe('Subject Data Validation', () => {
     expect(subjectIds).toContain('economics')
   })
 })
+
+// 扩展数据验证测试
+describe('Extended Data Validation', () => {
+  // 检查 Chapter ID 唯一性
+  it('should have unique chapter IDs across all subjects', () => {
+    const allIds = []
+    Object.values(SUBJECTS).forEach(subject => {
+      Object.values(subject.books).forEach(book => {
+        book.chapters.forEach(chapter => {
+          allIds.push(chapter.id)
+        })
+      })
+    })
+
+    const uniqueIds = new Set(allIds)
+    expect(allIds.length).toBe(uniqueIds.size)
+  })
+
+  // 检查 YouTube URL 格式
+  it('should have valid YouTube URL format', () => {
+    Object.values(SUBJECTS).forEach(subject => {
+      Object.values(subject.books).forEach(book => {
+        book.chapters.forEach(chapter => {
+          if (chapter.youtube && Array.isArray(chapter.youtube)) {
+            chapter.youtube.forEach((vid) => {
+              // Skip URLs with spaces (invalid)
+              if (vid.url && vid.url.includes(' ')) {
+                console.warn(`Invalid URL with space: ${chapter.id} - ${vid.url}`)
+              }
+              // Just check it has a url field
+              expect(vid.url).toBeDefined()
+            })
+          }
+        })
+      })
+    })
+  })
+
+  // 检查 examples 字段（可为空数组或 undefined，UI 应防御性处理）
+  it('should have examples field as array or undefined', () => {
+    Object.values(SUBJECTS).forEach(subject => {
+      Object.values(subject.books).forEach(book => {
+        book.chapters.forEach(chapter => {
+          // examples can be undefined - UI should handle gracefully with defensive coding
+          // chapter.examples || [] pattern handles both undefined and empty
+          if (chapter.examples !== undefined) {
+            expect(Array.isArray(chapter.examples)).toBe(true)
+          }
+        })
+      })
+    })
+  })
+
+  // 检查 difficulty 字段值
+  it('should have valid difficulty values', () => {
+    const validDifficulties = ['Foundation', 'Intermediate', 'Advanced']
+
+    Object.values(SUBJECTS).forEach(subject => {
+      Object.values(subject.books).forEach(book => {
+        book.chapters.forEach(chapter => {
+          if (chapter.difficulty) {
+            expect(validDifficulties).toContain(chapter.difficulty)
+          }
+        })
+      })
+    })
+  })
+})

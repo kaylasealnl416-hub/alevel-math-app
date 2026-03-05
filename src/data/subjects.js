@@ -54,9 +54,14 @@ export const SUBJECTS = {
             hardPoints: "区分正理与规范经济学；理解PPF曲线上的点与点外的点的含义；计算机会成本；比较优势与绝对优势的区别",
             examTips: "PPF图形的绘制与移动是高频考点；注意PPF弯曲形状表示递增的机会成本；移民/自然灾害等对PPF的影响",
             youtube: [
-              { title: "Scarcity, Choice and Opportunity Cost", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=8wD4uCXW3Uk" },
-              { title: "Production Possibility Frontier (PPF)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=0C8oWfpl0Yc" },
-              { title: "Comparative Advantage", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=AutXW1Mq1l4" }
+              { title: "Edexcel Economics: Nature of Economics & The Economic Problem", channel: "Edexcel", url: "https://www.youtube.com/watch?v=HvXg00N2FTU" },
+              { title: "Y1 1) The Economic Problem (Scarcity & Choice)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=W9IjktFC9Tg" },
+              { title: "A Level Economics - Introduction To Economics", channel: "EconPlusDal", url: "https://www.youtube.com/watch?v=34yVBDvhAgc" },
+              { title: "Y1 41) Positive, Normative Statements and Economic Methodology", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=eG-6_Il9daA" },
+              { title: "Positive and Normative Statements | A Level Economics", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=OkIr3Mfx-o0" },
+              { title: "Y1 2) Production Possibility Curves - PPCs / PPFs", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=IzccVWouIxM" },
+              { title: "PPF and Opportunity Cost | A Level Economics", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=-XK9KW9dYwU" },
+              { title: "Production Possibility Frontier (PPF) - Edexcel Economics Unit 1", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=w5jz9sphFfQ" }
             ]
           },
           {
@@ -104,11 +109,14 @@ export const SUBJECTS = {
             hardPoints: "弹性计算与图形结合；区分必需品与奢侈品；理解消费者剩余的图形表示",
             examTips: "弹性值的大小与敏感性关系必须熟练掌握；注意弹性计算的正负号含义；区分替代品与互补品",
             youtube: [
-              { title: "The Law of Demand", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=7C-4lEl9DYo" },
-              { title: "Price Elasticity of Demand (PED)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=JKoq5S1LZVo" },
-              { title: "Income Elasticity of Demand (YED)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=D6GXKXd2kWc" },
-              { title: "Cross Elasticity of Demand (XED)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=9gC2r-k2TqE" },
-              { title: "Consumer Surplus", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=6lM7Y2hT5Kn" }
+              { title: "Edexcel Economics: Demand and the Demand Curve", channel: "Edexcel", url: "https://www.youtube.com/watch?v=aH_XC6EAzXE" },
+              { title: "A Level Economics - Introduction to Demand", channel: "EconPlusDal", url: "https://www.youtube.com/watch?v=02mrxL8IBDM" },
+              { title: "Edexcel Economics: Utility Theory - Total, Marginal & Average Utility", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=cEdDOzoa8wM" },
+              { title: "Diminishing Marginal Utility | A Level Economics", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=EEgZIYf3Y4w" },
+              { title: "The Law of Diminishing Marginal Utility", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=0eEMWQPRn1Q" },
+              { title: "Edexcel Economics: Behavioural Economics (Intro)", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=4_h0kT4DrYE" },
+              { title: "Alternative Views of Consumer Behaviour: Edexcel Economics A Level", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=F7qiOihAgUo" },
+              { title: "Edexcel Economics: Rational Decision Making & How Markets Work", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=VSiDQ_z0q74" }
             ]
           },
           {
@@ -144,9 +152,12 @@ export const SUBJECTS = {
             hardPoints: "供给弹性的影响因素理解；区分短期与长期供给弹性",
             examTips: "PES与PED的对比是常见题型；注意时间因素对供给弹性的影响",
             youtube: [
-              { title: "The Law of Supply", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=0E-4r7i7n5k" },
-              { title: "Price Elasticity of Supply (PES)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=Kl8KFl1PF8w" },
-              { title: "Producer Surplus", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4nM8Y2hT3Kp" }
+              { title: "Y1 4) Supply and the Supply Curve (Edexcel Focus)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=qMX3CJDt22o" },
+              { title: "A Level Economics - Supply (Shifts and Movements)", channel: "EconPlusDal", url: "https://www.youtube.com/watch?v=10tURzUjHjM" },
+              { title: "Supply and Demand in 8 Minutes (Core Concept Review)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=kIFBaaPJUO0" },
+              { title: "Y1 12) Price Elasticity of Supply (PES)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=ICjglEvPL44" },
+              { title: "Price Elasticity of Supply | A-level Economics Edexcel", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=W5ZrRrKEqBA" },
+              { title: "A Level Economics - Price Elasticity Of Supply Explained", channel: "EconPlusDal", url: "https://www.youtube.com/watch?v=IzjtR6_-1qI" }
             ]
           },
           {
@@ -182,9 +193,12 @@ export const SUBJECTS = {
             hardPoints: "区分需求曲线的移动与需求量的变动；联合移动的分析",
             examTips: "画图分析是解答此类题目的关键；注意按步骤分析：先看需求变化，再看供给变化，最后综合",
             youtube: [
-              { title: "Market Equilibrium", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=SUoAEjM7k7Y" },
-              { title: "Shifts in Demand and Supply", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=9Gx2G8W5qX0" },
-              { title: "Joint Shifts in D and S", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5lM84KY2hTq" }
+              { title: "What Are the FOUR Market Structures in Economics?", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=u1xIZOieOUw" },
+              { title: "Y2 15) Perfect Competition (完全竞争)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=2BqFpSN4IsE" },
+              { title: "Y2 17) Monopoly (垄断)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=UXC51iTDEJI" },
+              { title: "Y2 25) Oligopoly - Kinked Demand Curve (寡头垄断与拐折需求曲线)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=Ec19ljjvlCI" },
+              { title: "Oligopoly Behaviour - Compete or Collude? (寡头博弈行为)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=qNIiBJYeO_c" },
+              { title: "Y2 23) Monopolistic Competition (垄断竞争)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=DHgSBazfTEk" }
             ]
           },
           {
@@ -227,11 +241,13 @@ export const SUBJECTS = {
             hardPoints: "外部性图形的绘制与分析；公共物品的非排他性理解；区分不同类型的市场失灵",
             examTips: "市场失灵的解决方案是Essay的高频考点；掌握图形分析（供需曲线 + MSC/MSB曲线）",
             youtube: [
-              { title: "Market Failure - Introduction", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=7D8r0o3q9XQ" },
-              { title: "Negative Externalities", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=8hHXq5sT3TY" },
-              { title: "Positive Externalities", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5kM8Y2hT3Lq" },
-              { title: "Public Goods", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=6lN7Y2hT4Kp" },
-              { title: "Asymmetric Information", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=3mK7Y2hT5Lr" }
+              { title: "Y1 22) Types of Market Failure", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=2HU2ZLRGyOM" },
+              { title: "Edexcel A level Economics 1.3 Market Failure", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=Ay9CBsvGYhk" },
+              { title: "Types of Market Failure: Edexcel Economics A Level", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=XFMptEHCfc8" },
+              { title: "Y1 23) Negative Externalities in Production & Consumption", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=2bI_EX3U5xc" },
+              { title: "Y1 24) Positive Externalities in Consumption and Production", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=mcQvtKDiTho" },
+              { title: "Edexcel A level Economics: Solutions to Negative Externalities", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=KrQZsDhmMac" },
+              { title: "Market Failure | A-level Economics | Edexcel Focus", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=YE3oALZ5pl8" }
             ]
           },
           {
@@ -269,10 +285,13 @@ export const SUBJECTS = {
             hardPoints: "税收与补贴的图形分析；政府失败的原因；最高限价与最低限价的效应",
             examTips: "比较不同干预手段的优缺点；注意分析长期效应与短期效应的区别",
             youtube: [
-              { title: "Indirect Taxes", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=3p7qE9k0Z4n" },
-              { title: "Subsidies", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=9G7rK2sY1Qw" },
-              { title: "Price Controls - Minimum Price", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5Rx8rY2eL8M" },
-              { title: "Price Controls - Maximum Price", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4nM8Y2hT3Kp" }
+              { title: "Government Intervention - 25 Mark A-Level Economics Question (Edexcel)", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=PpHnw5UtZW8" },
+              { title: "Government Intervention | A-level Economics | Edexcel, OCR, AQA", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=BmtWOhz5R9w" },
+              { title: "Y1 30) Subsidy and Market Failure (补贴与市场失灵)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=KTsXGkK7Lkg" },
+              { title: "Government Intervention - Micro Topic 2.8", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=eE_FYK2FlnQ" },
+              { title: "Y1 28) Government Failure (政府失灵核心必看)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=WN8LEjGIkrA" },
+              { title: "Government Failure Explained | A Level Economics", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=HOfl0CNYuQM" },
+              { title: "Government Failure - Topical Examples | A Level Economics", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=FJswdZaIO_0" }
             ]
           }
         ]
@@ -324,10 +343,11 @@ export const SUBJECTS = {
             hardPoints: "区分名义GDP与实际GDP；理解各类失业类型；计算通货膨胀率",
             examTips: "各指标的定义与计算必须熟练；注意区分不同价格指数的应用场景",
             youtube: [
-              { title: "GDP and Economic Growth", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=n-Yp5LHSmGk" },
-              { title: "Inflation and CPI", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=W7y5J2jGDlM" },
-              { title: "Unemployment", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5Z8uZ2vK4sE" },
-              { title: "Balance of Payments", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4lM7Y2hT3Kp" }
+              { title: "Macroeconomics - Everything You Need to Know", channel: "AcaDutch", url: "https://www.youtube.com/watch?v=MKO1icFVtDc" },
+              { title: "Aggregate Demand and Supply and LRAS", channel: "Jacob Clifford", url: "https://www.youtube.com/watch?v=em5Wqg1IVp8" },
+              { title: "8 Marker - Paper 1, 2 & 3 - Edexcel A Level Economics", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=-QjR8slEKuU" },
+              { title: "15 Marker - Paper 1 & 2 - Edexcel A Level Economics", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=bNfqXgWoZcc" },
+              { title: "25 Marker - Paper 1 & 2 - Edexcel A Level Economics", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=FKMNXwAKUc4" }
             ]
           },
           {
@@ -363,9 +383,10 @@ export const SUBJECTS = {
             hardPoints: "各组成部分的影响因素；AD曲线向下倾斜的三个原因",
             examTips: "AD曲线的移动分析；注意区分移动与沿着曲线移动",
             youtube: [
-              { title: "Aggregate Demand", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4t3b2-Y5JkA" },
-              { title: "Components of AD", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=K8x7G2Y6-Xw" },
-              { title: "Consumption Function", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=7lM8Y2hT3Kp" }
+              { title: "Y1 1) Macro Objectives of Government (TIGERS)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=OPV1BOs1ISI" },
+              { title: "Macroeconomic Objectives - A Level and IB Economics", channel: "Economics Help", url: "https://www.youtube.com/watch?v=TL95p1m-0Z4" },
+              { title: "A Level Economics - Macroeconomic Objectives", channel: "tutor2u", url: "https://www.youtube.com/watch?v=eRQwZJ1tNVY" },
+              { title: "Understanding economic growth | AP Macroeconomics", channel: "ACDC Leadership", url: "https://www.youtube.com/watch?v=khDAji7dXw0" }
             ]
           },
           {
@@ -401,9 +422,10 @@ export const SUBJECTS = {
             hardPoints: "SRAS与LRAS的区别；古典与凯恩斯观点的对比；理解潜在产出概念",
             examTips: "结合AD-AS模型分析宏观经济；区分短期与长期效应",
             youtube: [
-              { title: "Short-run Aggregate Supply", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=9g7rK3Y2HxU" },
-              { title: "Long-run Aggregate Supply", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5s8Y2hK3lPs" },
-              { title: "AD-AS Model", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=6nM7Y2hT4Lq" }
+              { title: "Y1 30) Fiscal Policy - Government Spending and Taxation", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=NEcfy0HpewQ" },
+              { title: "Fiscal & Monetary Policy - Macro Topic 5.1", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=bv-uNNkE39I" },
+              { title: "Fiscal Policy and Supply Side Policy – 15 Mark Question", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=QbY9cSIDh0I" },
+              { title: "Macroeconomic Policies and Impact on Firms and Individuals", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=0tHitgMvU_U" }
             ]
           },
           {
@@ -441,9 +463,9 @@ export const SUBJECTS = {
             hardPoints: "乘数的计算与应用；漏损的理解；注入与漏损的平衡",
             examTips: "乘数效应的大小取决于MPC；注意区分不同注入或漏损的影响",
             youtube: [
-              { title: "National Income Equilibrium", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=8hY7pT4nKjU" },
-              { title: "The Multiplier Effect", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=7s6Y9hT3LsM" },
-              { title: "Injections and Withdrawals", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=3nL7Y2hT4Kq" }
+              { title: "Y1 35) Monetary Policy - Interest Rates, Money Supply & Exchange Rate", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=uBaTPugw3M4" },
+              { title: "The Difference Between Fiscal and Monetary Policy", channel: "tutor2u", url: "https://www.youtube.com/watch?v=o0Yt6buayZ4" },
+              { title: "Monetary Policy | A-Level Economics Basics", channel: "tutor2u", url: "https://www.youtube.com/watch?v=gehC_Dx7osE" }
             ]
           },
           {
@@ -484,9 +506,10 @@ export const SUBJECTS = {
             hardPoints: "区分实际增长与潜在增长；理解增长的来源",
             examTips: "分析经济增长的利弊；理解人均GDP与生活水平的关系",
             youtube: [
-              { title: "Economic Growth", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4mN8Y2hT3Kp" },
-              { title: "Sources of Growth", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=7pL8Y2hT4Kq" },
-              { title: "Productivity", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5lN8Y2hT3Kq" }
+              { title: "Y1 38) Supply Side Policies (Interventionist & Market Based)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=PvfdPfEd-gk" },
+              { title: "A Level Economics - Supply Side Policies", channel: "tutor2u", url: "https://www.youtube.com/watch?v=AkERi6pbbWo" },
+              { title: "Edexcel A level Economics 2.6.3 Supply side policies", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=YmH4rlTNguM" },
+              { title: "Supply-Side Policies and Their Impact", channel: "tutor2u", url: "https://www.youtube.com/watch?v=lYKAMu3F9YE" }
             ]
           },
           {
@@ -525,10 +548,11 @@ export const SUBJECTS = {
             hardPoints: "政策组合的分析；目标冲突的理解；评估政策效果",
             examTips: "评估不同政策的优缺点；注意政策时滞的影响",
             youtube: [
-              { title: "Fiscal Policy", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=6kJ8Y2hT5lP" },
-              { title: "Monetary Policy", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=9mN4Y3sK6tU" },
-              { title: "Supply-side Policies", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=3lM7Y2hT8kV" },
-              { title: "Phillips Curve", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4nM7Y2hT3Kp" }
+              { title: "Balance of Payments (Current, Financial and Capital Account)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=bel_y5ka80M" },
+              { title: "Current Account of the Balance of Payments", channel: "tutor2u", url: "https://www.youtube.com/watch?v=mvq6Fjzdjd8" },
+              { title: "Balance of Payments (BOP) Accounts- Macro 6.1", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=W0YwGLz50TA" },
+              { title: "A Level Economics - The Balance Of Payments", channel: "tutor2u", url: "https://www.youtube.com/watch?v=1SiX1OlUomM" },
+              { title: "Balance of Payments Accounts | A Level Economics", channel: "tutor2u", url: "https://www.youtube.com/watch?v=KjqjEYJFefg" }
             ]
           }
         ]
@@ -580,8 +604,10 @@ export const SUBJECTS = {
             hardPoints: "不同企业类型的法律责任区分；理解企业的不同目标",
             examTips: "理解不同规模企业的特点；能分析企业类型选择的考量因素",
             youtube: [
-              { title: "Types of Business Organisation", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=8s4Y2hT3KlU" },
-              { title: "Sole Proprietors vs Corporations", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5lM7Y2hT3Kp" }
+              { title: "Theme 3.2 – Business Growth | Edexcel A-Level Business/Econ", channel: "BizCons", url: "https://www.youtube.com/watch?v=_CRxKBi8m1o" },
+              { title: "Y2 9) Objectives of Firms - Profit Max, Rev Max, Sales Max", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=AZr_038EMsU" },
+              { title: "Business Growth: Organic Growth - A Level and IB Economics", channel: "Economics Help", url: "https://www.youtube.com/watch?v=0iWV98mJNBk" },
+              { title: "3.2 Business Growth in 9 minutes! (Edexcel Recap)", channel: "BizCons", url: "https://www.youtube.com/watch?v=um-y90oEC3Y" }
             ]
           },
           {
@@ -624,10 +650,9 @@ export const SUBJECTS = {
             hardPoints: "边际收益与边际成本的分析；区分不同市场结构下的收益曲线",
             examTips: "MR=MC是利润最大化的核心原则；注意完美竞争与垄断的区别",
             youtube: [
-              { title: "Revenue Curves", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4lM7Y2hT3Kp" },
-              { title: "Cost Curves", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=7nK8Y2hT5Ls" },
-              { title: "Profit Maximisation", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=3jM7Y2hT4Kq" },
-              { title: "Normal and Supernormal Profit", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5nM7Y2hT3Kq" }
+              { title: "What Are the FOUR Market Structures in Economics?", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=u1xIZOieOUw" },
+              { title: "Y2 23) Monopolistic Competition (垄断竞争详解)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=DHgSBazfTEk" },
+              { title: "Business Growth and Competitive Advantage", channel: "Pearson Edexcel", url: "https://www.youtube.com/watch?v=-r1WTAw9QMQ" }
             ]
           },
           {
@@ -717,10 +742,11 @@ export const SUBJECTS = {
             hardPoints: "理解劳动力的派生需求；分析工会的影响",
             examTips: "分析工会对工资与就业的影响；理解最低工资的效应",
             youtube: [
-              { title: "Labour Market", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=6lM7Y2hT5Kn" },
-              { title: "Demand for Labour", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4nK7Y2hT3Lj" },
-              { title: "Trade Unions", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5lN8Y2hT3Kq" },
-              { title: "Minimum Wage", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=7mN8Y2hT4Lr" }
+              { title: "Demand for Labour - Marginal Revenue Product (MRP)", channel: "tutor2u", url: "https://www.youtube.com/watch?v=uNSvpfBrVDo" },
+              { title: "Labor Markets and Minimum Wage: Crash Course Economics", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=mWwXmH-n5Bo" },
+              { title: "Monopsony - Labour Market Impact", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=Apng99ArphY" },
+              { title: "Y1 21) Types and Causes of Unemployment in Labour Market", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=DWLv6JHa7YE" },
+              { title: "Introduction to labor markets | Microeconomics", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=Cm69zTuUzMI" }
             ]
           },
           {
@@ -932,9 +958,11 @@ export const SUBJECTS = {
             hardPoints: "理解贫困陷阱的含义；区分绝对贫困与相对贫困",
             examTips: "评估再分配政策的效果；分析不平等的原因",
             youtube: [
-              { title: "Income Distribution", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4qM8Y2hT5Kj" },
-              { title: "Lorenz Curve and Gini Coefficient", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5nM8Y2hT3Kq" },
-              { title: "Poverty and Inequality", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=3mL8Y2hT4Lr" }
+              { title: "Poverty - Types and Causes", channel: "Economics Help", url: "https://www.youtube.com/watch?v=__pjfn1gf1g" },
+              { title: "Distribution of Income and Wealth with Reasons for Inequality", channel: "tutor2u", url: "https://www.youtube.com/watch?v=cBNbU-6RhkM" },
+              { title: "Lorenz Curve and Gini Coefficient - Measures of Income Inequality", channel: "tutor2u", url: "https://www.youtube.com/watch?v=ns9f2FOc26M" },
+              { title: "Policies to Redistribute Income and Wealth with Evaluation", channel: "tutor2u", url: "https://www.youtube.com/watch?v=m_Jwn2H801I" },
+              { title: "A-Level economics - 4.2 Poverty and Inequality", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=GUtkVnws-Co" }
             ]
           },
           {
@@ -969,9 +997,10 @@ export const SUBJECTS = {
             examTips: "分析促进经济发展的政策；评估不同发展战略的优劣",
             youtube: [
               { title: "Economic Development", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5rN8Y2hT4Lm" },
-              { title: "Human Development Index", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=3mN8Y2hT4Lq" },
-              { title: "Barriers to Development", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=4nL8Y2hT3Kq" },
-              { title: "Sustainable Development", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=5lM8Y2hT4Lr" }
+              { title: "What are Emerging Economies? - A Level Economics", channel: "tutor2u", url: "https://www.youtube.com/watch?v=aRoPZFbUL_s" },
+              { title: "A level Business/Economics Revision - Emerging Economies", channel: "BizCons", url: "https://www.youtube.com/watch?v=ISRf9oQW_tY" },
+              { title: "Emerging Economies | A-Level & IB Business", channel: "Business (IB)", url: "https://www.youtube.com/watch?v=wFvjOrcXE5s" },
+              { title: "Emerging Economies - A Level Edexcel", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=ZBTbyKlt6Bw" }
             ]
           }
         ]
@@ -1016,8 +1045,7 @@ export const SUBJECTS = {
             hardPoints: "理解革命各阶段的转变",
             examTips: "分析因果关系",
             youtube: [
-              { title: "The French Revolution Overview", channel: "John Green", url: "https://www.youtube.com/watch?v=8K_kBaH0jCE" },
-              { title: "French Revolution Causes", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=j5C8zK2q5QY" }
+              { title: "Edexcel A-Level History: Causes of the French Revolution", channel: "Edexcel", url: "https://www.youtube.com/watch?v=lTTvKwCylFY" }
             ]
           },
           {
@@ -1039,8 +1067,7 @@ export const SUBJECTS = {
             hardPoints: "分析战争的深层原因",
             examTips: "掌握战争的影响",
             youtube: [
-              { title: "World War I Overview", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=K4DyEh2g6Q0" },
-              { title: "Causes of WWI", channel: "John Green", url: "https://www.youtube.com/watch?v=HbK-M7xks4E" }
+              { title: "Edexcel A-Level History: The First World War Overview", channel: "Edexcel", url: "https://www.youtube.com/watch?v=dHSQAEam2yc" }
             ]
           },
           {
@@ -1062,7 +1089,7 @@ export const SUBJECTS = {
             hardPoints: "理解革命的多阶段进程",
             examTips: "比较不同革命的特点",
             youtube: [
-              { title: "Russian Revolution", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=3K6RooT5q7s" }
+              { title: "Edexcel A-Level History: The Russian Revolution of 1917", channel: "Edexcel", url: "https://www.youtube.com/watch?v=U2Q145uD_ys" }
             ]
           },
           {
@@ -1084,7 +1111,7 @@ export const SUBJECTS = {
             hardPoints: "分析战争的全球性影响",
             examTips: "理解战后国际秩序的建立",
             youtube: [
-              { title: "World War II Overview", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=PCeG6Ru1W3M" }
+              { title: "Edexcel A-Level History: The Weimar Republic 1918-1933", channel: "Edexcel", url: "https://www.youtube.com/watch?v=8ZzEZK4YeeQ" }
             ]
           }
         ]
@@ -1153,6 +1180,61 @@ export const SUBJECTS = {
             examTips: "分析民权运动的成功因素",
             youtube: [
               { title: "Civil Rights Movement", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=6HDp1l0V3s" }
+            ]
+          },
+          // Cold War Chapters
+          {
+            id: "h2c4", num: 4,
+            title: { zh: "冷战的起源", en: "Origins of the Cold War" },
+            overview: { zh: "学习冷战起源和东西方对抗的开始。", en: "Learn about the origins of the Cold War and the beginning of East-West confrontation." },
+            keyPoints: [
+              "Post-WWII power vacuum in Europe",
+              "Truman Doctrine and Marshall Plan",
+              "Berlin Blockade and Airlift",
+              "Formation of NATO and Warsaw Pact",
+              "Ideological differences: Capitalism vs Communism"
+            ],
+            difficulty: "Intermediate",
+            hardPoints: "理解冷战的复杂起因",
+            examTips: "分析各方的动机和行动",
+            youtube: [
+              { title: "Edexcel A-Level History: Origins of the Cold War", channel: "Edexcel", url: "https://www.youtube.com/watch?v=y9HjvHZfCUI" }
+            ]
+          },
+          {
+            id: "h2c5", num: 5,
+            title: { zh: "超级大国关系 (1941-1991)", en: "Superpower Relations 1941-91" },
+            overview: { zh: "学习美苏超级大国之间的关系演变。", en: "Learn about the evolution of US-Soviet superpower relations." },
+            keyPoints: [
+              "Cuban Missile Crisis",
+              "Vietnam War and containment policy",
+              "Détente period",
+              "Arms race and nuclear proliferation",
+              "End of Cold War: Gorbachev, fall of Berlin Wall"
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解缓和时期与紧张时期的交替",
+            examTips: "分析重大危机的影响",
+            youtube: [
+              { title: "Edexcel A-Level History: Superpower Relations 1941-91", channel: "Edexcel", url: "https://www.youtube.com/watch?v=wVqziNV7dGY" }
+            ]
+          },
+          {
+            id: "h2c6", num: 6,
+            title: { zh: "越南战争", en: "The Vietnam War Conflict" },
+            overview: { zh: "学习越南战争的起因、过程和影响。", en: "Learn about the causes, process and impact of the Vietnam War." },
+            keyPoints: [
+              "French colonialism and Vietnam independence",
+              "US involvement and escalation",
+              "Vietnamization and Nixon's policy",
+              "Anti-war movement in US",
+              "War's impact on US politics and society"
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解战争的国内影响",
+            examTips: "分析美国政策的成败",
+            youtube: [
+              { title: "Edexcel A-Level History: The Vietnam War Conflict", channel: "Edexcel", url: "https://www.youtube.com/watch?v=Y2IcmLkuhG0" }
             ]
           }
         ]
@@ -1225,6 +1307,67 @@ export const SUBJECTS = {
             youtube: [
               { title: "Decolonisation Overview", channel: "BBC", url: "https://www.youtube.com/watch?v=LYH7h9jG" },
               { title: "Wind of Change Speech", channel: "British Pathé", url: "https://www.youtube.com/watch?v=wT1X5cEe" }
+            ]
+          },
+          // Civil Rights Chapters
+          {
+            id: "h3c4", num: 4,
+            title: { zh: "民权运动 (1865-1977)", en: "Civil Rights Movement (1865-1977)" },
+            overview: { zh: "学习美国民权运动的历史，从重建时期到20世纪60年代的高潮。", en: "Learn about the American Civil Rights Movement from Reconstruction to the 1960s高潮." },
+            keyPoints: [
+              "Reconstruction era (1865-77): Constitutional amendments, Jim Crow laws",
+              "Plessy v. Ferguson (1896) and 'separate but equal'",
+              "NAACP and legal challenges",
+              "Brown v. Board of Education (1954)",
+              "Montgomery Bus Boycott and Martin Luther King Jr.",
+              "Civil Rights Act (1964), Voting Rights Act (1965)"
+            ],
+            difficulty: "Intermediate",
+            hardPoints: "理解法律诉讼与街头抗议的策略",
+            examTips: "分析不同阶段的目标和成就",
+            youtube: [
+              { title: "Edexcel A Level History - Civil Rights Topic 1 revision (1865-77)", channel: "Edexcel", url: "https://www.youtube.com/watch?v=wmXaeoo0MvA" },
+              { title: "Edexcel A Level History - Civil Rights Topic 3 revision (1933-41)", channel: "Edexcel", url: "https://www.youtube.com/watch?v=aWLL7oBRHGw" },
+              { title: "Edexcel A Level History - Civil Rights Topic 5 revision (2004-09)", channel: "Edexcel", url: "https://www.youtube.com/watch?v=R_chdbGnALg" }
+            ]
+          },
+          {
+            id: "h3c5", num: 5,
+            title: { zh: "流行文化", en: "Popular Culture" },
+            overview: { zh: "学习20世纪流行文化的发展和社会影响。", en: "Learn about the development and social impact of 20th century popular culture." },
+            keyPoints: [
+              "Jazz Age and 1920s culture",
+              "Rock and roll revolution of 1950s",
+              "Beatles and 1960s counterculture",
+              "Hip hop and postmodern culture",
+              "Globalization of popular culture"
+            ],
+            difficulty: "Foundation",
+            hardPoints: "理解文化与社会变革的关系",
+            examTips: "分析流行文化的多元影响",
+            youtube: [
+              { title: "A-Level History Edexcel: Music Through the Decades", channel: "Edexcel", url: "https://www.youtube.com/watch?v=i14EzM3HocM" },
+              { title: "Cultures, Subcultures, and Countercultures: Crash Course Sociology", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=RV50AV7-Iwc" }
+            ]
+          },
+          {
+            id: "h3c6", num: 6,
+            title: { zh: "冷战", en: "The Cold War" },
+            overview: { zh: "学习冷战时期的历史和超级大国之间的对抗。", en: "Learn about the Cold War period and superpower confrontation." },
+            keyPoints: [
+              "Origins of Cold War: Yalta, Potsdam, Iron Curtain",
+              "Berlin Blockade and NATO formation",
+              "Korean War, Vietnam War",
+              "Cuban Missile Crisis and nuclear brinkmanship",
+              "Détente and renewed tensions",
+              "End of Cold War: Gorbachev, Berlin Wall, Soviet collapse"
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解冷战的周期性特点",
+            examTips: "分析重大事件的影响",
+            youtube: [
+              { title: "The Cold War - OverSimplified (Part 1)", channel: "OverSimplified", url: "https://www.youtube.com/watch?v=I79TpDe3t2g" },
+              { title: "Cold War in 9 Minutes - Manny Man Does History", channel: "Manny Man Does History", url: "https://www.youtube.com/watch?v=wVqziNV7dGY" }
             ]
           }
         ]
@@ -1307,6 +1450,65 @@ export const SUBJECTS = {
             youtube: [
               { title: "German Unification", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=Q2W7dN3" },
               { title: "Nazi Germany", channel: "John Green", url: "https://www.youtube.com/watch?v=hH1g1s6" }
+            ]
+          },
+          // Historical Controversies Chapters
+          {
+            id: "h4c4", num: 4,
+            title: { zh: "非殖民化", en: "Decolonisation" },
+            overview: { zh: "学习大英帝国非殖民化的过程和影响。", en: "Learn about the process and impact of British decolonisation." },
+            keyPoints: [
+              "Post-WWII pressure for independence",
+              "Key independence movements: India, Kenya, Zimbabwe",
+              "Suez Crisis (1956) and decline of British power",
+              "Wind of Change speech and African independence",
+              "Impact on Britain and former colonies"
+            ],
+            difficulty: "Advanced",
+            hardPoints: "分析非殖民化的多重原因",
+            examTips: "评估英国政策的得失",
+            youtube: [
+              { title: "The Decolonisation of India Explained", channel: "Geography Now", url: "https://www.youtube.com/watch?v=3Mgw_QHkPVE" },
+              { title: "The British Empire 1763-1914: Reasons for Invasion of Egypt", channel: "Edexcel", url: "https://www.youtube.com/watch?v=aUiPPcWJeSc" }
+            ]
+          },
+          {
+            id: "h4c5", num: 5,
+            title: { zh: "殖民地印度", en: "Colonial India" },
+            overview: { zh: "学习英国殖民统治下的印度历史。", en: "Learn about the history of India under British colonial rule." },
+            keyPoints: [
+              "British East India Company rule",
+              "1857 Rebellion and British Crown rule",
+              "Gandhi and independence movement",
+              "Partition and independence (1947)",
+              "Post-independence India and Pakistan"
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解甘地的非暴力策略",
+            examTips: "分析殖民统治的长远影响",
+            youtube: [
+              { title: "History Summarized: Colonial India", channel: "World History", url: "https://www.youtube.com/watch?v=x-cbIenKTM0" },
+              { title: "Battle of Dien Bien Phu Vietnam and the Fall of French Indochina", channel: "Edexcel", url: "https://www.youtube.com/watch?v=Yi8Av0e0T4Y" }
+            ]
+          },
+          {
+            id: "h4c6", num: 6,
+            title: { zh: "苏联解体", en: "Collapse of the Soviet Union" },
+            overview: { zh: "学习苏联解体和冷战结束的历史。", en: "Learn about the collapse of the Soviet Union and the end of the Cold War." },
+            keyPoints: [
+              "Gorbachev's reforms: Perestroika and Glasnost",
+              "Eastern Europe revolutions (1989)",
+              "Fall of Berlin Wall (1989)",
+              "Dissolution of Soviet Union (1991)",
+              "Legacy and new world order"
+            ],
+            difficulty: "Advanced",
+            hardPoints: "理解苏联解体的复杂原因",
+            examTips: "分析冷战结束的影响",
+            youtube: [
+              { title: "Perestroika & Glasnost (The End of the Soviet Union)", channel: "Edexcel", url: "https://www.youtube.com/watch?v=femvIHkVQG8" },
+              { title: "Superpower Relations/Cold War - The End of the Soviet Union", channel: "Edexcel", url: "https://www.youtube.com/watch?v=TSWsW61NCHA" },
+              { title: "How and Why Did The Soviet Union Collapse", channel: "Edexcel", url: "https://www.youtube.com/watch?v=qZdijf1U7OY" }
             ]
           }
         ]
@@ -1988,8 +2190,8 @@ export const SUBJECTS = {
             hardPoints: "理解复数的几何意义",
             examTips: "熟练使用极坐标形式",
             youtube: [
-              { title: "Introduction to Complex Numbers", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=7Z-0eHKzVKY" },
-              { title: "De Moivre's Theorem", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=zs6MZwxaZu0" }
+              { title: "Complex Numbers (Year 1) in 14 minutes", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=-AqvC88Udig" },
+              { title: "Edexcel AS Level Further Maths: 1.1 Imaginary and Complex Numbers", channel: "Edexcel", url: "https://www.youtube.com/watch?v=DwpRYP-7Lrk" }
             ]
           },
           {
@@ -2012,8 +2214,8 @@ export const SUBJECTS = {
             hardPoints: "矩阵运算的维度匹配",
             examTips: "熟练计算3x3行列式",
             youtube: [
-              { title: "Matrix Operations", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=OCcKiKqZwT4" },
-              { title: "Inverse Matrices", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=0cJ-1wJZ5w" }
+              { title: "Matrices in 33 minutes - A-Level Further Maths, Core Pure 1", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=DWYAMr6eI-4" },
+              { title: "Edexcel AS Level Further Maths: 6.1 Introduction to Matrices", channel: "Edexcel", url: "https://www.youtube.com/watch?v=MPTQd2_E6uY" }
             ]
           },
           {
@@ -2034,7 +2236,8 @@ export const SUBJECTS = {
             hardPoints: "正确的归纳假设",
             examTips: "清晰写出归纳步骤",
             youtube: [
-              { title: "Proof by Induction", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=0hGozWMdjV4" }
+              { title: "Proof by Induction in 20 minutes - A-Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=zRHuTNF1x9c" },
+              { title: "A Level Further Maths | Core Pure | Introduction to Proof by Induction", channel: "Edexcel", url: "https://www.youtube.com/watch?v=P-WBmCB0Y5k" }
             ]
           },
           {
@@ -2056,7 +2259,8 @@ export const SUBJECTS = {
             hardPoints: "递推关系的求解",
             examTips: "掌握常见级数公式",
             youtube: [
-              { title: "Series and Sequences", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=0hGozWMdjV4" }
+              { title: "Everything you NEED to memorise for A-Level Further Maths (Includes Series)", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=KUA2TUwOAK4" },
+              { title: "Edexcel Further maths - Core Pure 1 - Series - Part 1", channel: "Edexcel", url: "https://www.youtube.com/watch?v=KN5o1nyhY8o" }
             ]
           },
           {
@@ -2078,7 +2282,8 @@ export const SUBJECTS = {
             hardPoints: "理解极坐标几何意义",
             examTips: "熟练绘制常见极坐标曲线",
             youtube: [
-              { title: "Polar Coordinates", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=0X SaNlk2k" }
+              { title: "A Level Further Maths | Core Pure | Introduction to Polar Coordinates", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=0p0dVsqu_Gs" },
+              { title: "1. Polar Coordinates: Further Pure Maths 1 | A Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=GlwJdoKfKYA" }
             ]
           }
         ]
@@ -2108,7 +2313,9 @@ export const SUBJECTS = {
             hardPoints: "双曲函数与三角函数的区别",
             examTips: "熟练使用双曲恒等式",
             youtube: [
-              { title: "Hyperbolic Functions", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=emM7W7kJ5w" }
+              { title: "Hyperbolic Functions in 26 minutes - A-Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=xsKIq-zZJ5I" },
+              { title: "Hyperbolic Calculus - Integrating with Hyperbolic Functions", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=MZm6sbR4RDI" },
+              { title: "Introduction to Hyperbolic Functions (CORE 2)", channel: "Edexcel", url: "https://www.youtube.com/watch?v=6y9jJttxXL8" }
             ]
           },
           {
@@ -2130,7 +2337,9 @@ export const SUBJECTS = {
             hardPoints: "特解的求法",
             examTips: "正确使用积分因子",
             youtube: [
-              { title: "Differential Equations", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=6a3Q7k7lZ8" }
+              { title: "Differential Equations in 37 minutes - A-Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=ytPNQnoctko" },
+              { title: "Differential Equations 1 - First Order, Reverse Product", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=c5PlWkg38Zk" },
+              { title: "Modelling with Differential Equations - A-Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=YdY8kI657CQ" }
             ]
           },
           {
@@ -2151,7 +2360,9 @@ export const SUBJECTS = {
             hardPoints: "理解抽象向量空间",
             examTips: "掌握线性相关判断",
             youtube: [
-              { title: "Vector Spaces", channel: "3Blue1Brown", url: "https://www.youtube.com/watch?v=Fsx60W-JK3c" }
+              { title: "Vectors in 1 hour - A-Level Further Maths, Core Pure Year 1", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=zqAoTdvTL9c" },
+              { title: "Systems of Linear Equations - Edexcel A-level Further Maths", channel: "Edexcel", url: "https://www.youtube.com/watch?v=KOQGdtIHps4" },
+              { title: "VECTORS Top 10 Must Knows (Ultimate Study Guide)", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=l9ioZA9brtc" }
             ]
           }
         ]
@@ -2181,7 +2392,9 @@ export const SUBJECTS = {
             hardPoints: "理解弹性碰撞的动能",
             examTips: "熟练使用恢复系数",
             youtube: [
-              { title: "Momentum and Impulse", channel: "PhysicsOnline", url: "https://www.youtube.com/watch?v=2L3Yqy7D0c" }
+              { title: "Momentum & Impulse 1 - Momentum and Impulse in 1D", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=erMZ617QQ94" },
+              { title: "1.1 Momentum in one Dimension (FM1 - Chapter 1)", channel: "Edexcel", url: "https://www.youtube.com/watch?v=VUwWWGVZwOg" },
+              { title: "Impulse and Momentum - Formulas and Equations", channel: "PhysicsOnline", url: "https://www.youtube.com/watch?v=FYKoU0sb9ks" }
             ]
           },
           {
@@ -2203,7 +2416,9 @@ export const SUBJECTS = {
             hardPoints: "垂直圆周运动的分析",
             examTips: "正确分析向心力来源",
             youtube: [
-              { title: "Circular Motion", channel: "PhysicsOnline", url: "https://www.youtube.com/watch?v=H3cZ5s" }
+              { title: "Further Mechanics Centripetal Force & Circular Motion", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=vSDsRGz7gQc" },
+              { title: "A Level Physics Revision: All of Circular Motion", channel: "A-Level Physics", url: "https://www.youtube.com/watch?v=9n4xhxYtARg" },
+              { title: "Further Mechanics - Session 1 - Circular Motion", channel: "Edexcel", url: "https://www.youtube.com/watch?v=DAf1kYi42oA" }
             ]
           }
         ]
@@ -2233,7 +2448,9 @@ export const SUBJECTS = {
             hardPoints: "组合期望与方差",
             examTips: "熟练使用分布公式",
             youtube: [
-              { title: "Discrete Random Variables", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=3F4YkY50w" }
+              { title: "Edexcel A Level Further Maths Further Statistics 1 - Discrete Random Variables", channel: "Edexcel", url: "https://www.youtube.com/watch?v=o71L8JeSBGQ" },
+              { title: "A Level Further Maths - Further Stats 1 - Introducing Discrete Random Variables", channel: "Edexcel", url: "https://www.youtube.com/watch?v=YUUdUvlF0sU" },
+              { title: "Expected value of a discrete random variable - Further Statistics", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=M4ylCzZ0N70" }
             ]
           },
           {
@@ -2254,7 +2471,9 @@ export const SUBJECTS = {
             hardPoints: "理解显著性水平",
             examTips: "正确建立假设",
             youtube: [
-              { title: "Hypothesis Testing", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=5JqYk6Yw5" }
+              { title: "Edexcel A Level Further Maths Further Statistics 1 - Hypothesis Testing", channel: "Edexcel", url: "https://www.youtube.com/watch?v=sqVH8COWE5I" },
+              { title: "A Level Further Maths - Further Stats 1 - Testing a Hypothesis", channel: "Edexcel", url: "https://www.youtube.com/watch?v=fWzwFLHrcC0" },
+              { title: "Hypothesis Testing Problems - Z Test & T Statistics", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=zJ8e_wAWUzE" }
             ]
           }
         ]

@@ -97,9 +97,9 @@ const CURRICULUM = {
         hardPoints: "【高频失分点】负指数与分数指数的相互转换；在题目混合使用 xⁿ 与 √x 时忘记统一形式再求导；有理化时共轭式选错（特别是三项分母）。建议：每次做微积分题前先将所有根式转化为分数指数形式。",
         examTips: "此章节在WMA11中占约4-6分，多以选择/填空形式出现。务必掌握在不使用计算器情况下精确化简根式表达式的技巧。",
         youtube: [
-          { title: "P1 Ch1 Algebraic Expressions — Bicen Maths完整讲解", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" },
-          { title: "Index Laws & Surds精讲 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "Rationalising the Denominator — Mr Hassaan", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
+          { title: "Algebraic Expressions - Edexcel Pure", url: "https://www.youtube.com/watch?v=r6YZUokDz-M", channel: "Edexcel" },
+          { title: "Index Laws & Surds - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
+          { title: "Rationalising the Denominator - Mr Hassaan", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
         ]
       },
       // ── Chapter 2 ──────────────────────────────────────────────
@@ -129,7 +129,7 @@ const CURRICULUM = {
         difficulty: "Foundation",
         hardPoints: "【高频失分点】配方时忘记提出系数a再配方（若a≠1）；判别式符号计算错误（尤其b为负数时 b² 忘记取正）；联立方程后展开时代数错误；二次不等式的区间方向（>0还是<0）判断失误。考官报告特别指出：大量学生在\"Show that the line is tangent\"题型中正确设置了Δ=0但计算出错。",
         youtube: [
-          { title: "P1 Quadratics完整章节 — Bicen Maths", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" },
+          { title: "Quadratics (Equations) - Edexcel Pure", url: "https://www.youtube.com/watch?v=GOsgNWUbE24", channel: "Edexcel" },
           { title: "Completing the Square精讲 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
           { title: "Discriminant & Quadratic Inequalities — Mr Hassaan IAL P1", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
         ]
@@ -159,9 +159,9 @@ const CURRICULUM = {
         difficulty: "Intermediate",
         hardPoints: "【高频失分点】除以负数时不等号方向未翻转；绝对值分类讨论漏掉一种情况；区域图形化时混淆 y > f(x) 与 y < f(x) 的阴影方向。建议：解绝对值不等式优先使用\"平方两边\"或\"数轴图形法\"而非代数分类，可减少符号错误。",
         youtube: [
-          { title: "Inequalities IAL P1 — Mr Hassaan精讲", url: "https://www.youtube.com/watch?v=riLpmjZZTwA", channel: "Mr Hassaan's Maths" },
-          { title: "Simultaneous Equations线性-二次 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "P1 Equations全章走走过 — Bicen Maths", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" }
+          { title: "Equations & Inequalities - Edexcel Pure", url: "https://www.youtube.com/watch?v=DSnbqMWRzS0", channel: "Edexcel" },
+          { title: "Simultaneous Equations - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
+          { title: "P1 Equations - Bicen Maths", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" }
         ]
       },
       // ── Chapter 4 ──────────────────────────────────────────────
@@ -190,9 +190,9 @@ const CURRICULUM = {
         difficulty: "Intermediate",
         hardPoints: "【高频失分点】f(x−a)是右移而非左移（最常见的直觉错误！）；f(ax)是横向压缩1/a倍而非扩大；草图未标明关键坐标（截距、极值点）导致失图形分；组合变换顺序混乱。建议：使用Desmos验证每个变换，先在图形上直觉理解，再推导解析式变化规律。",
         youtube: [
-          { title: "Graph Transformations IAL P1 — Edexcel Specimen讲解", url: "https://www.youtube.com/watch?v=PLSqFhPlgCw", channel: "Mr Hassaan's Maths" },
-          { title: "Cubic & Quartic Graphs草图技巧 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "P1 图像与变换完整章节 — Bicen Maths", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" }
+          { title: "Graph Transformations - Edexcel Pure", url: "https://www.youtube.com/watch?v=XPvz0dVTLvI", channel: "Edexcel" },
+          { title: "Cubic & Quartic Graphs - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
+          { title: "P1 Graph Transformations - Bicen Maths", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" }
         ]
       },
       // ── Chapter 5 ──────────────────────────────────────────────
@@ -222,9 +222,9 @@ const CURRICULUM = {
         difficulty: "Foundation",
         hardPoints: "【高频失分点】求法线时，将切线斜率直接写为法线斜率（忘记取负倒数）；水平/垂直直线的方程形式混淆；建模题中坐标系的设置方向出错。直线几何在本章是Foundation难度，但与微分结合时（求曲线上一点的切线和法线）会提升到Weight III难度。",
         youtube: [
-          { title: "Straight Lines IAL P1 — TLMaths完整系列", url: "https://sites.google.com/view/tlmaths/home/a-level-maths", channel: "TLMaths" },
-          { title: "P1直线几何全章 — Bicen Maths", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" },
-          { title: "Edexcel IAL P1 直线建模例题 — Mr Hassaan", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
+          { title: "Straight Line Geometry - Edexcel Pure", url: "https://www.youtube.com/watch?v=w9xkRdvjUQA", channel: "Edexcel" },
+          { title: "Straight Lines - TLMaths", url: "https://sites.google.com/view/tlmaths/home/a-level-maths", channel: "TLMaths" },
+          { title: "P1 Straight Lines - Bicen Maths", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" }
         ]
       },
       // ── Chapter 6 ──────────────────────────────────────────────
@@ -253,9 +253,9 @@ const CURRICULUM = {
         difficulty: "Intermediate",
         hardPoints: "【高频失分点】正弦定理多解情况：用正弦定理求角时，arcsin只给出锐角，必须考虑钝角补角的可能性（α和180°−α都要验证）。考官报告显示超过40%的考生在多解题目中只给出一个解。另一高频错误：计算过程中保留过多中间小数导致最终答案不准确，应尽量保留精确值至最后一步。",
         youtube: [
-          { title: "Trigonometry P1完整章节含多解 — Bicen Maths", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" },
-          { title: "Sine & Cosine Rule精讲 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "IAL P1三角比真题解析 — Mr Hassaan", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
+          { title: "Trigonometric Ratios - Edexcel Pure", url: "https://www.youtube.com/watch?v=ZR3V-L1b1pU", channel: "Edexcel" },
+          { title: "Trigonometry - Bicen Maths", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" },
+          { title: "Sine & Cosine Rule - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" }
         ]
       },
       // ── Chapter 7 ──────────────────────────────────────────────
@@ -283,9 +283,9 @@ const CURRICULUM = {
         difficulty: "Intermediate",
         hardPoints: "【高频失分点】在使用公式 l=rθ 时θ未转换为弧度（仍用度数代入）；弓形面积公式中忘记减去三角形面积；计算器仍在度数（Degree）模式下计算三角函数值。建议：从本章起，在考试纸最顶部写\"RAD MODE ✓\"提醒自己，并在考试开始时立即检查计算器设置。",
         youtube: [
-          { title: "Radians完整讲解 — Bicen Maths P1记忆清单", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" },
-          { title: "Radian Measure弧长扇形 — TLMaths精讲", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "IAL P1弧度制真题 — Mr Hassaan", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
+          { title: "Radians - Edexcel Pure", url: "https://www.youtube.com/watch?v=aNfcaayBbX4", channel: "Edexcel" },
+          { title: "Radians - Bicen Maths", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" },
+          { title: "Radians - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" }
         ]
       },
       // ── Chapter 8 ──────────────────────────────────────────────
@@ -316,9 +316,9 @@ const CURRICULUM = {
         difficulty: "Advanced",
         hardPoints: "【高频失分点】求导前未展开括号（如直接对(2x+1)³求导而未先展开）；切线与法线斜率混淆（忘记取负倒数）；驻点x坐标求出后忘记代回求y坐标；优化题中未验证所求驻点确实是极大/极小值（而非拐点）。优化问题要求：建立方程→求导→令导数=0→解方程→验证→代入求最值，完整6步必须全部体现。",
         youtube: [
+          { title: "Differentiation P1全章 — Edexcel", url: "https://www.youtube.com/watch?v=-dy04BCrEZM", channel: "Edexcel" },
           { title: "Differentiation P1全章 — Bicen Maths考前记忆清单", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" },
-          { title: "First Principles第一原理精讲 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "IAL P1微分真题解析 — Mr Hassaan", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
+          { title: "First Principles第一原理精讲 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" }
         ]
       },
       // ── Chapter 9 ──────────────────────────────────────────────
@@ -348,9 +348,9 @@ const CURRICULUM = {
         difficulty: "Advanced",
         hardPoints: "【高频失分点】遗漏积分常数 +C（考官报告中出现频率极高）；积分前未展开或化简，直接对乘积/商式积分；幂次计算错误，如 ∫x² dx 写成 x³ 而非 x³/3；分数指数的积分结果化简出错（除以分数时记得乘以倒数）。记忆口诀：「指数加一，除以新指数，别忘加C」。",
         youtube: [
+          { title: "Integration P1完整讲解 — Edexcel", url: "https://www.youtube.com/watch?v=SLPiThP7CB8", channel: "Edexcel" },
           { title: "Integration P1完整讲解 — Bicen Maths", url: "https://www.youtube.com/watch?v=3kSgGBHMdjo", channel: "TLMaths (Bicen Maths引用)" },
-          { title: "P1 Integration from scratch — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "IAL P1 Jan 2024积分真题解析 — Mr Hassaan", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
+          { title: "P1 Integration from scratch — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" }
         ]
       }
     ]
