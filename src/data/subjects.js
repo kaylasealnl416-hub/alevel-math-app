@@ -1400,8 +1400,8 @@ export const SUBJECTS = {
             hardPoints: "理解因果关系的复杂性",
             examTips: "能够评估历史学家观点",
             youtube: [
-              { title: "American Revolution", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=5Da3cP4b" },
-              { title: "Civil War Overview", channel: "John Green", url: "https://www.youtube.com/watch?v=wE1oX8jP" }
+              { title: "The Decolonisation of India Explained", channel: "Geography Now", url: "https://www.youtube.com/watch?v=3Mgw_QHkPVE" },
+              { title: "The British Empire 1763-1914: Reasons for Invasion of Egypt", channel: "Edexcel", url: "https://www.youtube.com/watch?v=aUiPPcWJeSc" }
             ]
           },
           {
