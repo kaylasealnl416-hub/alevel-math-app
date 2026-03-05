@@ -1284,8 +1284,8 @@ export const SUBJECTS = {
             hardPoints: "理解抵抗运动的多样性",
             examTips: "分析不同地区抵抗运动的差异",
             youtube: [
-              { title: "Indian Independence Movement", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=7T5Kk4jU7" },
-              { title: "African Independence", channel: "Al Jazeera", url: "https://www.youtube.com/watch?v=KlDWvj2Y" }
+              { title: "A-Level History Edexcel: Music Through the Decades", channel: "Edexcel", url: "https://www.youtube.com/watch?v=i14EzM3HocM" },
+              { title: "Cultures, Subcultures, and Countercultures: Crash Course Sociology", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=RV50AV7-Iwc" }
             ]
           },
           {
