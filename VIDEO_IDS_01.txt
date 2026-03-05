@@ -1,0 +1,25 @@
+# YouTube Video ID 映射表
+# 格式: chapter_id | video_id | title
+
+## Mathematics - P1
+P1-Ch1 | r6YZUokDz-M | Algebraic Expressions
+P1-Ch2 | GOsgNWUbE24 | Quadratics
+P1-Ch3 | DSnbqMWRzS0 | Equations & Inequalities
+P1-Ch4 | XPvz0dVTLvI | Graph Transformations
+P1-Ch5 | w9xkRdvjUQA | Straight Line Geometry
+P1-Ch6 | ZR3V-L1b1pU | Trigonometric Ratios
+P1-Ch7 | aNfcaayBbX4 | Radians
+P1-Ch8 | -dy04BCrEZM | Differentiation
+P1-Ch9 | SLPiThP7CB8 | Integration
+
+## Economics - Unit 1
+Econs-U1-Ch1 | dMxy-9piB14 | The Economic Problem
+Econs-U1-Ch2 | 1R8laUo-kJ4 | Scarcity & Opportunity Cost
+Econs-U1-Ch3 | TqFw49LWMc8 | Markets Consumers Firms
+Econs-U1-Ch4 | W4oQ51_f6to | Needs and Wants
+Econs-U1-Ch5 | -YYAqt3-79w | What is Scarcity
+
+## History
+Hist-U1-Ch1 | 0lAzq1hM5xE | French Revolution
+Hist-U1-Ch2 | 6UyfHK1P0YI | First World War
+Hist-U1-Ch3 | 05ZanJDeAzM | Russian Revolution

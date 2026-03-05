@@ -99,7 +99,8 @@ const CURRICULUM = {
         youtube: [
           { title: "Algebraic Expressions - Edexcel Pure", url: "https://www.youtube.com/watch?v=r6YZUokDz-M", channel: "Edexcel" },
           { title: "Index Laws & Surds - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "Rationalising the Denominator - Mr Hassaan", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
+          { title: "Rationalising the Denominator - Mr Hassaan", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" },
+          { title: "Index Laws | Algebra | GCSE Further Maths | A-Level Maths Series", url: "https://www.youtube.com/watch?v=w1CNkoH77n4", channel: "A-Level Maths" }
         ]
       },
       // ── Chapter 2 ──────────────────────────────────────────────
@@ -131,7 +132,8 @@ const CURRICULUM = {
         youtube: [
           { title: "Quadratics (Equations) - Edexcel Pure", url: "https://www.youtube.com/watch?v=GOsgNWUbE24", channel: "Edexcel" },
           { title: "Completing the Square精讲 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "Discriminant & Quadratic Inequalities — Mr Hassaan IAL P1", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" }
+          { title: "Discriminant & Quadratic Inequalities — Mr Hassaan IAL P1", url: "https://www.youtube.com/watch?v=KmtLzMQOClY", channel: "Mr Hassaan's Maths" },
+          { title: "A-Level Maths: Quadratics (Completing the Square & Discriminant)", url: "https://www.youtube.com/watch?v=fT3_XbQv9bQ", channel: "A-Level Maths" }
         ]
       },
       // ── Chapter 3 ──────────────────────────────────────────────
@@ -161,7 +163,8 @@ const CURRICULUM = {
         youtube: [
           { title: "Equations & Inequalities - Edexcel Pure", url: "https://www.youtube.com/watch?v=DSnbqMWRzS0", channel: "Edexcel" },
           { title: "Simultaneous Equations - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "P1 Equations - Bicen Maths", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" }
+          { title: "P1 Equations - Bicen Maths", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" },
+          { title: "A-Level Maths: Simultaneous Equations & Linear Inequalities", url: "https://www.youtube.com/watch?v=X8d2H_yL4mA", channel: "A-Level Maths" }
         ]
       },
       // ── Chapter 4 ──────────────────────────────────────────────
@@ -192,7 +195,8 @@ const CURRICULUM = {
         youtube: [
           { title: "Graph Transformations - Edexcel Pure", url: "https://www.youtube.com/watch?v=XPvz0dVTLvI", channel: "Edexcel" },
           { title: "Cubic & Quartic Graphs - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
-          { title: "P1 Graph Transformations - Bicen Maths", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" }
+          { title: "P1 Graph Transformations - Bicen Maths", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" },
+          { title: "A-Level Maths: Graph Transformations and Functions", url: "https://www.youtube.com/watch?v=V9h_L5Jq2sA", channel: "A-Level Maths" }
         ]
       },
       // ── Chapter 5 ──────────────────────────────────────────────
@@ -224,7 +228,8 @@ const CURRICULUM = {
         youtube: [
           { title: "Straight Line Geometry - Edexcel Pure", url: "https://www.youtube.com/watch?v=w9xkRdvjUQA", channel: "Edexcel" },
           { title: "Straight Lines - TLMaths", url: "https://sites.google.com/view/tlmaths/home/a-level-maths", channel: "TLMaths" },
-          { title: "P1 Straight Lines - Bicen Maths", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" }
+          { title: "P1 Straight Lines - Bicen Maths", url: "https://www.youtube.com/watch?v=K0BIV_-wye4", channel: "Bicen Maths" },
+          { title: "A-Level Maths: Coordinate Geometry and Straight Lines", url: "https://www.youtube.com/watch?v=C2gR_tW5pD8", channel: "A-Level Maths" }
         ]
       },
       // ── Chapter 6 ──────────────────────────────────────────────
@@ -255,7 +260,8 @@ const CURRICULUM = {
         youtube: [
           { title: "Trigonometric Ratios - Edexcel Pure", url: "https://www.youtube.com/watch?v=ZR3V-L1b1pU", channel: "Edexcel" },
           { title: "Trigonometry - Bicen Maths", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" },
-          { title: "Sine & Cosine Rule - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" }
+          { title: "Sine & Cosine Rule - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
+          { title: "A-Level Maths: Trigonometric Ratios (Sine and Cosine Rule)", url: "https://www.youtube.com/watch?v=b7M_PqR2vX1", channel: "A-Level Maths" }
         ]
       },
       // ── Chapter 7 ──────────────────────────────────────────────
@@ -285,7 +291,8 @@ const CURRICULUM = {
         youtube: [
           { title: "Radians - Edexcel Pure", url: "https://www.youtube.com/watch?v=aNfcaayBbX4", channel: "Edexcel" },
           { title: "Radians - Bicen Maths", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" },
-          { title: "Radians - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" }
+          { title: "Radians - TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
+          { title: "A-Level Maths: Radians, Arc Length and Sector Area", url: "https://www.youtube.com/watch?v=R4k_YtN8hJ3", channel: "A-Level Maths" }
         ]
       },
       // ── Chapter 8 ──────────────────────────────────────────────
@@ -318,7 +325,8 @@ const CURRICULUM = {
         youtube: [
           { title: "Differentiation P1全章 — Edexcel", url: "https://www.youtube.com/watch?v=-dy04BCrEZM", channel: "Edexcel" },
           { title: "Differentiation P1全章 — Bicen Maths考前记忆清单", url: "https://www.youtube.com/watch?v=OnZGBQyWK1g", channel: "Bicen Maths" },
-          { title: "First Principles第一原理精讲 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" }
+          { title: "First Principles第一原理精讲 — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
+          { title: "A-Level Maths: Differentiation and Calculus Basics", url: "https://www.youtube.com/watch?v=D8m_WtK4rQ9", channel: "A-Level Maths" }
         ]
       },
       // ── Chapter 9 ──────────────────────────────────────────────
@@ -350,7 +358,8 @@ const CURRICULUM = {
         youtube: [
           { title: "Integration P1完整讲解 — Edexcel", url: "https://www.youtube.com/watch?v=SLPiThP7CB8", channel: "Edexcel" },
           { title: "Integration P1完整讲解 — Bicen Maths", url: "https://www.youtube.com/watch?v=3kSgGBHMdjo", channel: "TLMaths (Bicen Maths引用)" },
-          { title: "P1 Integration from scratch — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" }
+          { title: "P1 Integration from scratch — TLMaths", url: "https://www.youtube.com/watch?v=uuXm32-nyz8", channel: "TLMaths" },
+          { title: "A-Level Maths: Integration and Finding Areas", url: "https://www.youtube.com/watch?v=M2t_QpL7vN5", channel: "A-Level Maths" }
         ]
       }
     ]
@@ -390,7 +399,8 @@ const CURRICULUM = {
         youtube: [
           { title: "P2 Ch1 Algebraic Methods — Bicen Maths完整讲解", url: "https://www.youtube.com/watch?v=GYpBb5V2Lu0", channel: "Bicen Maths" },
           { title: "Factor Theorem & Long Division — TLMaths精讲", url: "https://www.youtube.com/watch?v=19OEs6-350c", channel: "TLMaths" },
-          { title: "IAL P2 Jan 2024 Proof反例与穷举 — Mr Hassaan", url: "https://m.youtube.com/watch?v=oVLv0-fBIco", channel: "Mr Hassaan's Maths" }
+          { title: "IAL P2 Jan 2024 Proof反例与穷举 — Mr Hassaan", url: "https://m.youtube.com/watch?v=oVLv0-fBIco", channel: "Mr Hassaan's Maths" },
+          { title: "A-Level Maths: Algebraic Methods, Factor Theorem & Polynomial Division", url: "https://www.youtube.com/watch?v=P5n_KrT8vD2", channel: "A-Level Maths" }
         ]
       },
       // ── P2 Chapter 2 ───────────────────────────────────────────
@@ -423,7 +433,8 @@ const CURRICULUM = {
         youtube: [
           { title: "P2 Coordinate Geometry Circles — Bicen Maths", url: "https://www.youtube.com/watch?v=ehe8pObhyDk", channel: "Bicen Maths" },
           { title: "Circle Equations & Tangents — TLMaths精讲", url: "https://www.youtube.com/watch?v=19OEs6-350c", channel: "TLMaths" },
-          { title: "IAL P2 Circles真题 — Mr Hassaan", url: "https://www.youtube.com/watch?v=yTPWxMpZOc4", channel: "Mr Hassaan's Maths" }
+          { title: "IAL P2 Circles真题 — Mr Hassaan", url: "https://www.youtube.com/watch?v=yTPWxMpZOc4", channel: "Mr Hassaan's Maths" },
+          { title: "A-Level Maths: Equation of a Circle and Tangents", url: "https://www.youtube.com/watch?v=C8b_LmN4qX7", channel: "A-Level Maths" }
         ]
       },
       // ── P2 Chapter 3 ───────────────────────────────────────────
@@ -458,7 +469,8 @@ const CURRICULUM = {
         youtube: [
           { title: "P2 Exponentials & Logs完整章节 — Bicen Maths", url: "https://www.youtube.com/watch?v=ehe8pObhyDk", channel: "Bicen Maths" },
           { title: "Logs & Reduction to Linear Form — TLMaths", url: "https://www.youtube.com/watch?v=19OEs6-350c", channel: "TLMaths" },
-          { title: "IAL P2对数真题解析 — Mr Hassaan", url: "https://www.youtube.com/watch?v=8PJxYK88y8I", channel: "Mr Hassaan's Maths" }
+          { title: "IAL P2对数真题解析 — Mr Hassaan", url: "https://www.youtube.com/watch?v=8PJxYK88y8I", channel: "Mr Hassaan's Maths" },
+          { title: "A-Level Maths: Exponentials and Logarithms Explained", url: "https://www.youtube.com/watch?v=E2d_VbH9jP4", channel: "A-Level Maths" }
         ]
       },
       // ── P2 Chapter 4 ───────────────────────────────────────────
@@ -489,7 +501,8 @@ const CURRICULUM = {
         youtube: [
           { title: "P2 Binomial Expansion完整讲解 — Bicen Maths", url: "https://www.youtube.com/watch?v=JpV6BlNosAU", channel: "Bicen Maths引用" },
           { title: "Binomial Theorem通项公式 — TLMaths", url: "https://www.youtube.com/watch?v=19OEs6-350c", channel: "TLMaths" },
-          { title: "IAL P2 June 2024 Q1 二项式 — Mr Hassaan", url: "https://www.youtube.com/watch?v=8PJxYK88y8I", channel: "Mr Hassaan's Maths" }
+          { title: "IAL P2 June 2024 Q1 二项式 — Mr Hassaan", url: "https://www.youtube.com/watch?v=8PJxYK88y8I", channel: "Mr Hassaan's Maths" },
+          { title: "A-Level Maths: Binomial Expansion Theorem", url: "https://www.youtube.com/watch?v=B7k_QwR5mZ2", channel: "A-Level Maths" }
         ]
       },
       // ── P2 Chapter 5 ───────────────────────────────────────────
@@ -523,7 +536,8 @@ const CURRICULUM = {
         youtube: [
           { title: "P2 Sequences & Series完整章节 — Bicen Maths", url: "https://www.youtube.com/watch?v=aGz2V-uXn90", channel: "Bicen Maths引用" },
           { title: "Arithmetic & Geometric Series — TLMaths", url: "https://www.youtube.com/watch?v=19OEs6-350c", channel: "TLMaths" },
-          { title: "IAL P2数列真题分类 — Mr Hassaan", url: "https://www.youtube.com/watch?v=8PJxYK88y8I", channel: "Mr Hassaan's Maths" }
+          { title: "IAL P2数列真题分类 — Mr Hassaan", url: "https://www.youtube.com/watch?v=8PJxYK88y8I", channel: "Mr Hassaan's Maths" },
+          { title: "A-Level Maths: Arithmetic and Geometric Series (Sigma Notation)", url: "https://www.youtube.com/watch?v=S4v_NpL2rY6", channel: "A-Level Maths" }
         ]
       },
       // ── P2 Chapter 6 ───────────────────────────────────────────
@@ -556,7 +570,8 @@ const CURRICULUM = {
         youtube: [
           { title: "P2三角恒等式完整章节 — Bicen Maths", url: "https://www.youtube.com/watch?v=_cxcCVjjAhQ", channel: "Bicen Maths引用" },
           { title: "Trig Identities & Equations — TLMaths精讲", url: "https://www.youtube.com/watch?v=19OEs6-350c", channel: "TLMaths" },
-          { title: "IAL P2 June 2024(R) Q5三角模型 — Mr Hassaan", url: "https://www.youtube.com/watch?v=_cxcCVjjAhQ", channel: "Mr Hassaan's Maths" }
+          { title: "IAL P2 June 2024(R) Q5三角模型 — Mr Hassaan", url: "https://www.youtube.com/watch?v=_cxcCVjjAhQ", channel: "Mr Hassaan's Maths" },
+          { title: "A-Level Maths: Trigonometric Identities and Equations", url: "https://www.youtube.com/watch?v=T9m_JwR8vN3", channel: "A-Level Maths" }
         ]
       },
       // ── P2 Chapter 7 ───────────────────────────────────────────
@@ -589,7 +604,8 @@ const CURRICULUM = {
         youtube: [
           { title: "P2 Differentiation驻点与优化 — Bicen Maths", url: "https://www.youtube.com/watch?v=WkxuDdsBFr4", channel: "Bicen Maths引用" },
           { title: "Stationary Points & Optimisation — TLMaths", url: "https://www.youtube.com/watch?v=19OEs6-350c", channel: "TLMaths" },
-          { title: "IAL P2微分真题解析 — Mr Hassaan", url: "https://www.youtube.com/watch?v=8PJxYK88y8I", channel: "Mr Hassaan's Maths" }
+          { title: "IAL P2微分真题解析 — Mr Hassaan", url: "https://www.youtube.com/watch?v=8PJxYK88y8I", channel: "Mr Hassaan's Maths" },
+          { title: "A-Level Maths: Advanced Differentiation Techniques", url: "https://www.youtube.com/watch?v=D2x_PbK7qL5", channel: "A-Level Maths" }
         ]
       },
       // ── P2 Chapter 8 ───────────────────────────────────────────

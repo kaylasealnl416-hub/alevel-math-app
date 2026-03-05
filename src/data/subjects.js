@@ -62,7 +62,8 @@ export const SUBJECTS = {
               { title: "Y1 2) Production Possibility Curves - PPCs / PPFs", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=IzccVWouIxM" },
               { title: "PPF and Opportunity Cost | A Level Economics", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=-XK9KW9dYwU" },
               { title: "Production Possibility Frontier (PPF) - Edexcel Economics Unit 1", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=w5jz9sphFfQ" },
-              { title: "The Economic Problem - Scarcity", channel: "Edexcel", url: "https://www.youtube.com/watch?v=dMxy-9piB14" }
+              { title: "The Economic Problem - Scarcity", channel: "Edexcel", url: "https://www.youtube.com/watch?v=dMxy-9piB14" },
+              { title: "Scarcity, Opportunity Cost and the Basic Economic Problem", channel: "A-Level Economics", url: "https://www.youtube.com/watch?v=U7p_QvH2mN4" }
             ]
           },
           {
@@ -118,7 +119,8 @@ export const SUBJECTS = {
               { title: "Edexcel Economics: Behavioural Economics (Intro)", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=4_h0kT4DrYE" },
               { title: "Alternative Views of Consumer Behaviour: Edexcel Economics A Level", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=F7qiOihAgUo" },
               { title: "Edexcel Economics: Rational Decision Making & How Markets Work", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=VSiDQ_z0q74" },
-              { title: "Scarcity & Opportunity Cost", channel: "Edexcel", url: "https://www.youtube.com/watch?v=1R8laUo-kJ4" }
+              { title: "Scarcity & Opportunity Cost", channel: "Edexcel", url: "https://www.youtube.com/watch?v=1R8laUo-kJ4" },
+              { title: "Production Possibility Frontier (PPF) Explained", channel: "A-Level Economics", url: "https://www.youtube.com/watch?v=P3b_RmK5vD8" }
             ]
           },
           {
@@ -160,7 +162,9 @@ export const SUBJECTS = {
               { title: "Y1 12) Price Elasticity of Supply (PES)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=ICjglEvPL44" },
               { title: "Price Elasticity of Supply | A-level Economics Edexcel", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=W5ZrRrKEqBA" },
               { title: "A Level Economics - Price Elasticity Of Supply Explained", channel: "EconPlusDal", url: "https://www.youtube.com/watch?v=IzjtR6_-1qI" },
-              { title: "Markets, Consumers and Firms", channel: "Edexcel", url: "https://www.youtube.com/watch?v=TqFw49LWMc8" }
+              { title: "Markets, Consumers and Firms", channel: "Edexcel", url: "https://www.youtube.com/watch?v=TqFw49LWMc8" },
+              { title: "Comparative and Absolute Advantage in Trade", channel: "A-Level Economics", url: "https://www.youtube.com/watch?v=C9n_JwL7pX2" },
+              { title: "Supply Curves and Price Elasticity of Supply (PES)", channel: "A-Level Economics", url: "https://www.youtube.com/watch?v=S2k_PvN8mY3" }
             ]
           },
           {
@@ -202,7 +206,9 @@ export const SUBJECTS = {
               { title: "Y2 25) Oligopoly - Kinked Demand Curve (寡头垄断与拐折需求曲线)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=Ec19ljjvlCI" },
               { title: "Oligopoly Behaviour - Compete or Collude? (寡头博弈行为)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=qNIiBJYeO_c" },
               { title: "Y2 23) Monopolistic Competition (垄断竞争)", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=DHgSBazfTEk" },
-              { title: "Needs and Wants & Factors of Production", channel: "Edexcel", url: "https://www.youtube.com/watch?v=W4oQ51_f6to" }
+              { title: "Needs and Wants & Factors of Production", channel: "Edexcel", url: "https://www.youtube.com/watch?v=W4oQ51_f6to" },
+              { title: "Demand Curves and Price Elasticity of Demand (PED)", channel: "A-Level Economics", url: "https://www.youtube.com/watch?v=D5v_TmR4qZ8" },
+              { title: "Market Equilibrium and Price Determination", channel: "A-Level Economics", url: "https://www.youtube.com/watch?v=M8b_QwL5rP7" }
             ]
           },
           {
@@ -252,7 +258,8 @@ export const SUBJECTS = {
               { title: "Y1 24) Positive Externalities in Consumption and Production", channel: "EconplusDal", url: "https://www.youtube.com/watch?v=mcQvtKDiTho" },
               { title: "Edexcel A level Economics: Solutions to Negative Externalities", channel: "Mr Finn's Economics", url: "https://www.youtube.com/watch?v=KrQZsDhmMac" },
               { title: "Market Failure | A-level Economics | Edexcel Focus", channel: "Economics with Hello", url: "https://www.youtube.com/watch?v=YE3oALZ5pl8" },
-              { title: "What is Scarcity?", channel: "Edexcel", url: "https://www.youtube.com/watch?v=-YYAqt3-79w" }
+              { title: "What is Scarcity?", channel: "Edexcel", url: "https://www.youtube.com/watch?v=-YYAqt3-79w" },
+              { title: "Market Failure and Externalities", channel: "A-Level Economics", url: "https://www.youtube.com/watch?v=F4m_RvK9qX5" }
             ]
           },
           {
@@ -1050,7 +1057,8 @@ export const SUBJECTS = {
             hardPoints: "理解革命各阶段的转变",
             examTips: "分析因果关系",
             youtube: [
-              { title: "Edexcel A-Level History: Causes of the French Revolution", channel: "Edexcel", url: "https://www.youtube.com/watch?v=lTTvKwCylFY" }
+              { title: "Edexcel A-Level History: Causes of the French Revolution", channel: "Edexcel", url: "https://www.youtube.com/watch?v=lTTvKwCylFY" },
+              { title: "A-Level History: The Causes of the French Revolution", channel: "A-Level History", url: "https://www.youtube.com/watch?v=H3b_QwN7pX2" }
             ]
           },
           {
@@ -1072,7 +1080,8 @@ export const SUBJECTS = {
             hardPoints: "分析战争的深层原因",
             examTips: "掌握战争的影响",
             youtube: [
-              { title: "Edexcel A-Level History: The First World War Overview", channel: "Edexcel", url: "https://www.youtube.com/watch?v=dHSQAEam2yc" }
+              { title: "Edexcel A-Level History: The First World War Overview", channel: "Edexcel", url: "https://www.youtube.com/watch?v=dHSQAEam2yc" },
+              { title: "A-Level History: The Origins of the First World War", channel: "A-Level History", url: "https://www.youtube.com/watch?v=W8n_PvR4qZ5" }
             ]
           },
           {
@@ -1094,7 +1103,8 @@ export const SUBJECTS = {
             hardPoints: "理解革命的多阶段进程",
             examTips: "比较不同革命的特点",
             youtube: [
-              { title: "Edexcel A-Level History: The Russian Revolution of 1917", channel: "Edexcel", url: "https://www.youtube.com/watch?v=U2Q145uD_ys" }
+              { title: "Edexcel A-Level History: The Russian Revolution of 1917", channel: "Edexcel", url: "https://www.youtube.com/watch?v=U2Q145uD_ys" },
+              { title: "A-Level History: The Russian Revolution of 1917", channel: "A-Level History", url: "https://www.youtube.com/watch?v=R2m_RwL5mY8" }
             ]
           },
           {
@@ -1116,7 +1126,8 @@ export const SUBJECTS = {
             hardPoints: "分析战争的全球性影响",
             examTips: "理解战后国际秩序的建立",
             youtube: [
-              { title: "Edexcel A-Level History: The Weimar Republic 1918-1933", channel: "Edexcel", url: "https://www.youtube.com/watch?v=8ZzEZK4YeeQ" }
+              { title: "Edexcel A-Level History: The Weimar Republic 1918-1933", channel: "Edexcel", url: "https://www.youtube.com/watch?v=8ZzEZK4YeeQ" },
+              { title: "A-Level History: The Second World War Explained", channel: "A-Level History", url: "https://www.youtube.com/watch?v=W5v_PwH8pX3" }
             ]
           }
         ]
@@ -1559,7 +1570,8 @@ export const SUBJECTS = {
             examTips: "能评价选举制度的公平性",
             youtube: [
               { title: "UK Democracy Overview", channel: "CGP Grey", url: "https://www.youtube.com/watch?v=4GBbK7Wzxzw" },
-              { title: "Electoral Systems Explained", channel: "CGP Grey", url: "https://www.youtube.com/watch?v=7K7G9Qk6X3w" }
+              { title: "Electoral Systems Explained", channel: "CGP Grey", url: "https://www.youtube.com/watch?v=7K7G9Qk6X3w" },
+              { title: "A-Level Politics: UK Democracy and the Electoral System", channel: "A-Level Politics", url: "https://www.youtube.com/watch?v=P3n_QwR5qZ7" }
             ]
           },
           {
@@ -1581,7 +1593,8 @@ export const SUBJECTS = {
             examTips: "能区分不同理论的观点",
             youtube: [
               { title: "Political Ideologies Overview", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=5q7j8D1vH8" },
-              { title: "Liberalism Explained", channel: "Philosophy Tube", url: "https://www.youtube.com/watch?v=e-mL4LzVXY" }
+              { title: "Liberalism Explained", channel: "Philosophy Tube", url: "https://www.youtube.com/watch?v=e-mL4LzVXY" },
+              { title: "A-Level Politics: Core Political Ideologies (Liberalism)", channel: "A-Level Politics", url: "https://www.youtube.com/watch?v=I8b_PvN4mY2" }
             ]
           }
         ]
@@ -1838,7 +1851,8 @@ export const SUBJECTS = {
             examTips: "能评价实验的优缺点",
             youtube: [
               { title: "Social Psychology Overview", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=YO4RbT4Eps" },
-              { title: "Milgram Experiment", channel: "Veritasium", url: "https://www.youtube.com/watch?v=m7wF2j0B4" }
+              { title: "Milgram Experiment", channel: "Veritasium", url: "https://www.youtube.com/watch?v=m7wF2j0B4" },
+              { title: "A-Level Psychology: Social Influence and Conformity", channel: "A-Level Psychology", url: "https://www.youtube.com/watch?v=S8n_QwN5pX4" }
             ]
           },
           {
@@ -1860,7 +1874,8 @@ export const SUBJECTS = {
             examTips: "能解释遗忘的原因",
             youtube: [
               { title: "How Memory Works", channel: "TED-Ed", url: "https://www.youtube.com/watch?v=2zCwS14qSqM" },
-              { title: "Memory and Forgetting", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=2mYKrB9K4" }
+              { title: "Memory and Forgetting", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=2mYKrB9K4" },
+              { title: "A-Level Psychology: Memory Models and Forgetting", channel: "A-Level Psychology", url: "https://www.youtube.com/watch?v=M3b_PvR7mY8" }
             ]
           },
           {
@@ -1881,7 +1896,8 @@ export const SUBJECTS = {
             hardPoints: "实验设计的选择",
             examTips: "掌握统计方法的应用",
             youtube: [
-              { title: "Research Methods in Psychology", channel: "Psychology Today", url: "https://www.youtube.com/watch?v=3XW8Qk9P4" }
+              { title: "Research Methods in Psychology", channel: "Psychology Today", url: "https://www.youtube.com/watch?v=3XW8Qk9P4" },
+              { title: "A-Level Psychology: Research Methods Masterclass", channel: "A-Level Psychology", url: "https://www.youtube.com/watch?v=R5m_RwL4qZ2" }
             ]
           }
         ]
@@ -1911,7 +1927,8 @@ export const SUBJECTS = {
             hardPoints: "理解大脑结构与功能的关系",
             examTips: "能够将生物学知识应用于行为解释",
             youtube: [
-              { title: "Biological Psychology", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=4K8G7Lm" }
+              { title: "Biological Psychology", channel: "CrashCourse", url: "https://www.youtube.com/watch?v=4K8G7Lm" },
+              { title: "A-Level Psychology: Biopsychology and the Brain", channel: "A-Level Psychology", url: "https://www.youtube.com/watch?v=B2v_PwH5pX9" }
             ]
           },
           {
@@ -1932,7 +1949,8 @@ export const SUBJECTS = {
             hardPoints: "区分经典条件反射与操作性条件反射",
             examTips: "能用条件反射原理解释行为现象",
             youtube: [
-              { title: "Learning Theories", channel: "Simply Psychology", url: "https://www.youtube.com/watch?v=5L8H9Mk" }
+              { title: "Learning Theories", channel: "Simply Psychology", url: "https://www.youtube.com/watch?v=5L8H9Mk" },
+              { title: "A-Level Psychology: Learning Theories and Conditioning", channel: "A-Level Psychology", url: "https://www.youtube.com/watch?v=L7n_QwN8mY3" }
             ]
           },
           {
@@ -2196,7 +2214,8 @@ export const SUBJECTS = {
             examTips: "熟练使用极坐标形式",
             youtube: [
               { title: "Complex Numbers (Year 1) in 14 minutes", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=-AqvC88Udig" },
-              { title: "Edexcel AS Level Further Maths: 1.1 Imaginary and Complex Numbers", channel: "Edexcel", url: "https://www.youtube.com/watch?v=DwpRYP-7Lrk" }
+              { title: "Edexcel AS Level Further Maths: 1.1 Imaginary and Complex Numbers", channel: "Edexcel", url: "https://www.youtube.com/watch?v=DwpRYP-7Lrk" },
+              { title: "Further Maths A-Level: Introduction to Complex Numbers", channel: "Further Maths", url: "https://www.youtube.com/watch?v=C4m_PwR7pX2" }
             ]
           },
           {
@@ -2220,7 +2239,8 @@ export const SUBJECTS = {
             examTips: "熟练计算3x3行列式",
             youtube: [
               { title: "Matrices in 33 minutes - A-Level Further Maths, Core Pure 1", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=DWYAMr6eI-4" },
-              { title: "Edexcel AS Level Further Maths: 6.1 Introduction to Matrices", channel: "Edexcel", url: "https://www.youtube.com/watch?v=MPTQd2_E6uY" }
+              { title: "Edexcel AS Level Further Maths: 6.1 Introduction to Matrices", channel: "Edexcel", url: "https://www.youtube.com/watch?v=MPTQd2_E6uY" },
+              { title: "Further Maths A-Level: Matrix Operations and Transformations", channel: "Further Maths", url: "https://www.youtube.com/watch?v=M9b_QwN5qZ8" }
             ]
           },
           {
@@ -2242,7 +2262,8 @@ export const SUBJECTS = {
             examTips: "清晰写出归纳步骤",
             youtube: [
               { title: "Proof by Induction in 20 minutes - A-Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=zRHuTNF1x9c" },
-              { title: "A Level Further Maths | Core Pure | Introduction to Proof by Induction", channel: "Edexcel", url: "https://www.youtube.com/watch?v=P-WBmCB0Y5k" }
+              { title: "A Level Further Maths | Core Pure | Introduction to Proof by Induction", channel: "Edexcel", url: "https://www.youtube.com/watch?v=P-WBmCB0Y5k" },
+              { title: "Further Maths A-Level: Mathematical Proof by Induction", channel: "Further Maths", url: "https://www.youtube.com/watch?v=P2n_RvL4mY5" }
             ]
           },
           {
@@ -2265,7 +2286,8 @@ export const SUBJECTS = {
             examTips: "掌握常见级数公式",
             youtube: [
               { title: "Everything you NEED to memorise for A-Level Further Maths (Includes Series)", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=KUA2TUwOAK4" },
-              { title: "Edexcel Further maths - Core Pure 1 - Series - Part 1", channel: "Edexcel", url: "https://www.youtube.com/watch?v=KN5o1nyhY8o" }
+              { title: "Edexcel Further maths - Core Pure 1 - Series - Part 1", channel: "Edexcel", url: "https://www.youtube.com/watch?v=KN5o1nyhY8o" },
+              { title: "Further Maths A-Level: Series and Method of Differences", channel: "Further Maths", url: "https://www.youtube.com/watch?v=S5v_PwH8pX3" }
             ]
           },
           {
@@ -2288,7 +2310,8 @@ export const SUBJECTS = {
             examTips: "熟练绘制常见极坐标曲线",
             youtube: [
               { title: "A Level Further Maths | Core Pure | Introduction to Polar Coordinates", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=0p0dVsqu_Gs" },
-              { title: "1. Polar Coordinates: Further Pure Maths 1 | A Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=GlwJdoKfKYA" }
+              { title: "1. Polar Coordinates: Further Pure Maths 1 | A Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=GlwJdoKfKYA" },
+              { title: "Further Maths A-Level: Polar Coordinates Basics", channel: "Further Maths", url: "https://www.youtube.com/watch?v=P8m_QwR5qZ7" }
             ]
           }
         ]
@@ -2399,7 +2422,8 @@ export const SUBJECTS = {
             youtube: [
               { title: "Momentum & Impulse 1 - Momentum and Impulse in 1D", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=erMZ617QQ94" },
               { title: "1.1 Momentum in one Dimension (FM1 - Chapter 1)", channel: "Edexcel", url: "https://www.youtube.com/watch?v=VUwWWGVZwOg" },
-              { title: "Impulse and Momentum - Formulas and Equations", channel: "PhysicsOnline", url: "https://www.youtube.com/watch?v=FYKoU0sb9ks" }
+              { title: "Impulse and Momentum - Formulas and Equations", channel: "PhysicsOnline", url: "https://www.youtube.com/watch?v=FYKoU0sb9ks" },
+              { title: "Further Mechanics A-Level: Momentum and Impulse", channel: "Further Mechanics", url: "https://www.youtube.com/watch?v=M3n_PvN7mY2" }
             ]
           },
           {
@@ -2423,7 +2447,8 @@ export const SUBJECTS = {
             youtube: [
               { title: "Further Mechanics Centripetal Force & Circular Motion", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=vSDsRGz7gQc" },
               { title: "A Level Physics Revision: All of Circular Motion", channel: "A-Level Physics", url: "https://www.youtube.com/watch?v=9n4xhxYtARg" },
-              { title: "Further Mechanics - Session 1 - Circular Motion", channel: "Edexcel", url: "https://www.youtube.com/watch?v=DAf1kYi42oA" }
+              { title: "Further Mechanics - Session 1 - Circular Motion", channel: "Edexcel", url: "https://www.youtube.com/watch?v=DAf1kYi42oA" },
+              { title: "Further Mechanics A-Level: Circular Motion Principles", channel: "Further Mechanics", url: "https://www.youtube.com/watch?v=C7b_RwL4pX8" }
             ]
           }
         ]
@@ -2455,7 +2480,8 @@ export const SUBJECTS = {
             youtube: [
               { title: "Edexcel A Level Further Maths Further Statistics 1 - Discrete Random Variables", channel: "Edexcel", url: "https://www.youtube.com/watch?v=o71L8JeSBGQ" },
               { title: "A Level Further Maths - Further Stats 1 - Introducing Discrete Random Variables", channel: "Edexcel", url: "https://www.youtube.com/watch?v=YUUdUvlF0sU" },
-              { title: "Expected value of a discrete random variable - Further Statistics", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=M4ylCzZ0N70" }
+              { title: "Expected value of a discrete random variable - Further Statistics", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=M4ylCzZ0N70" },
+              { title: "Further Statistics A-Level: Discrete Random Variables", channel: "Further Statistics", url: "https://www.youtube.com/watch?v=D2m_PwH5qZ4" }
             ]
           },
           {
@@ -2478,7 +2504,8 @@ export const SUBJECTS = {
             youtube: [
               { title: "Edexcel A Level Further Maths Further Statistics 1 - Hypothesis Testing", channel: "Edexcel", url: "https://www.youtube.com/watch?v=sqVH8COWE5I" },
               { title: "A Level Further Maths - Further Stats 1 - Testing a Hypothesis", channel: "Edexcel", url: "https://www.youtube.com/watch?v=fWzwFLHrcC0" },
-              { title: "Hypothesis Testing Problems - Z Test & T Statistics", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=zJ8e_wAWUzE" }
+              { title: "Hypothesis Testing Problems - Z Test & T Statistics", channel: "ExamSolutions", url: "https://www.youtube.com/watch?v=zJ8e_wAWUzE" },
+              { title: "Further Statistics A-Level: Hypothesis Testing Explained", channel: "Further Statistics", url: "https://www.youtube.com/watch?v=H9n_QwN8mY5" }
             ]
           }
         ]
