@@ -3078,7 +3078,7 @@ export default function ALevelMathApp() {
 // ============================================================
 // HOME VIEW
 // ============================================================
-function HomeView({ nav, t }) {
+const HomeView = React.memo(function HomeView({ nav, t, lang }) {
   return (
     <div style={styles.homeWrap}>
       <div style={styles.heroSection}>
@@ -3130,12 +3130,12 @@ function HomeView({ nav, t }) {
       </div>
     </div>
   );
-}
+});
 
 // ============================================================
 // SUBJECTS VIEW - Subject Selection
 // ============================================================
-function SubjectsView({ nav, lang, selectedSubject }) {
+const SubjectsView = React.memo(function SubjectsView({ nav, lang, selectedSubject }) {
   // Combine mathematics (from CURRICULUM) and other subjects (from SUBJECTS)
   const mathSubject = {
     id: "mathematics",
@@ -3232,12 +3232,12 @@ function SubjectsView({ nav, lang, selectedSubject }) {
       </div>
     </div>
   );
-}
+});
 
 // ============================================================
 // CURRICULUM VIEW
 // ============================================================
-function CurriculumView({ nav, t, lang, subject = "mathematics", book: initialBook }) {
+const CurriculumView = React.memo(function CurriculumView({ nav, t, lang, subject = "mathematics", book: initialBook }) {
   // Use CURRICULUM for mathematics, SUBJECTS for other subjects
   const isMath = subject === "mathematics";
   let dataSource = isMath ? CURRICULUM : null;
@@ -3334,7 +3334,7 @@ function CurriculumView({ nav, t, lang, subject = "mathematics", book: initialBo
       </div>
     </div>
   );
-}
+});
 
 // ============================================================
 // EXTERNAL RESOURCES BY SUBJECT
@@ -3372,7 +3372,7 @@ const SUBJECT_RESOURCES = {
 // ============================================================
 // CHAPTER VIEW
 // ============================================================
-function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
+const ChapterView = React.memo(function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
   const [tab, setTab] = useState("learn");
   // Use CURRICULUM for mathematics, SUBJECTS for other subjects
   const isMath = subject === "mathematics";
@@ -3526,12 +3526,12 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
       {tab === "exam" && <ExamView chapter={chapter} book={book} nav={nav} t={t} lang={lang} embedded />}
     </div>
   );
-}
+});
 
 // ============================================================
 // QUIZ VIEW (AI-generated)
 // ============================================================
-function QuizView({ chapter, book, nav, embedded, onAddError, t, lang, subject = "mathematics" }) {
+const QuizView = React.memo(function QuizView({ chapter, book, nav, embedded, onAddError, t, lang, subject = "mathematics" }) {
   const [difficulty, setDifficulty] = useState("medium");
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);
@@ -3869,12 +3869,12 @@ Return ONLY a JSON array, no markdown:
       )}
     </div>
   );
-}
+});
 
 // ============================================================
 // EXAM VIEW (AI-generated, timed)
 // ============================================================
-function ExamView({ chapter, book, nav, embedded, onAddError, t, lang, subject = "mathematics" }) {
+const ExamView = React.memo(function ExamView({ chapter, book, nav, embedded, onAddError, t, lang, subject = "mathematics" }) {
   const [phase, setPhase] = useState("setup");
   const [difficulty, setDifficulty] = useState("medium");
   const [questions, setQuestions] = useState([]);
@@ -4097,12 +4097,12 @@ Return ONLY this JSON:
   }
 
   return null;
-}
+});
 
 // ============================================================
 // MOCK EXAM VIEW (Past Papers)
 // ============================================================
-function MockExamView({ nav, onAddError, t, lang, subject = "mathematics" }) {
+const MockExamView = React.memo(function MockExamView({ nav, onAddError, t, lang, subject = "mathematics" }) {
   const [phase, setPhase] = useState("select");
   const [selectedPaper, setSelectedPaper] = useState(null);
   const [questions, setQuestions] = useState([]);
@@ -4333,12 +4333,12 @@ Return ONLY JSON array:
   }
 
   return null;
-}
+});
 
 // ============================================================
 // ERROR BOOK VIEW
 // ============================================================
-function ErrorBookView({ errors, onClear, nav, t, lang, subject = "mathematics" }) {
+const ErrorBookView = React.memo(function ErrorBookView({ errors, onClear, nav, t, lang, subject = "mathematics" }) {
   const [selectedError, setSelectedError] = useState(null);
   const [explanation, setExplanation] = useState("");
   const [loadingExp, setLoadingExp] = useState(false);
@@ -4411,7 +4411,7 @@ function ErrorBookView({ errors, onClear, nav, t, lang, subject = "mathematics" 
       </div>
     </div>
   );
-}
+});
 
 // ============================================================
 // LOADING SPINNER
