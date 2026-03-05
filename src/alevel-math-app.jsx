@@ -4785,6 +4785,18 @@ const styles = {
     cursor: "pointer", fontFamily: "Georgia, serif",
   },
 
+  // Common flex layouts - reuse these instead of creating new style objects
+  flexRow: { display: "flex", alignItems: "center" },
+  flexCol: { display: "flex", flexDirection: "column" },
+  flexRowCenter: { display: "flex", alignItems: "center", justifyContent: "center" },
+  flexRowBetween: { display: "flex", alignItems: "center", justifyContent: "space-between" },
+  flexWrap: { display: "flex", flexWrap: "wrap" },
+  flexGap8: { display: "flex", gap: 8 },
+  flexGap10: { display: "flex", gap: 10 },
+  flexGap12: { display: "flex", gap: 12 },
+  flexGap16: { display: "flex", gap: 16 },
+  flexGap20: { display: "flex", gap: 20 },
+
   // Loading
   loading: { display: "flex", flexDirection: "column", alignItems: "center", gap: 16, padding: 40 },
   spinner: {
