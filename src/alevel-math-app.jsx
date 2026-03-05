@@ -2048,6 +2048,17 @@ const MINIMAX_API_KEY_STORAGE = "alevel_math_minimax_key";
 const ZHIPU_API_KEY_STORAGE = "alevel_math_zhipu_key";
 const PROVIDER_STORAGE = "alevel_math_provider";
 
+// Validate and sanitize error book data from localStorage
+function validateErrorBook(data) {
+  if (!Array.isArray(data)) return [];
+  return data.filter(item =>
+    item && typeof item.id === 'string' &&
+    typeof item.question === 'string' &&
+    item.correct &&
+    typeof item.timestamp === 'number'
+  ).slice(0, 1000); // Limit to 1000 entries
+}
+
 function getApiKey() {
   return localStorage.getItem(API_KEY_STORAGE) || "";
 }
@@ -2342,9 +2353,9 @@ export default function ALevelMathApp() {
   const [errorBook, setErrorBook] = useState(() => {
     try {
       const saved = localStorage.getItem("alevel_math_errorbook");
-      return saved ? JSON.parse(saved) : [];
+      return saved ? validateErrorBook(JSON.parse(saved)) : [];
     } catch (e) {
-      console.error("读取错题本失败", e);
+      console.warn("Failed to load error book:", e);
       return [];
     }
   });
