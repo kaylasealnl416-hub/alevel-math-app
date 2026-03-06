@@ -4,6 +4,8 @@ import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import subjectsRoutes from './routes/subjects.js'
 import chaptersRoutes from './routes/chapters.js'
+import usersRoutes from './routes/users.js'
+import progressRoutes from './routes/progress.js'
 
 const app = new Hono()
 
@@ -26,6 +28,8 @@ app.get('/health', (c) => {
 // API路由
 app.route('/api/subjects', subjectsRoutes)
 app.route('/api/chapters', chaptersRoutes)
+app.route('/api/users', usersRoutes)
+app.route('/api/progress', progressRoutes)
 
 // 404处理
 app.notFound((c) => {

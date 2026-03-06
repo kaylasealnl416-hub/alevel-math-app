@@ -63,6 +63,19 @@ export const users = pgTable('users', {
   lastLoginAt: timestamp('last_login_at'),
 })
 
+// 用户画像表
+export const userProfiles = pgTable('user_profiles', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().unique().references(() => users.id, { onDelete: 'cascade' }),
+  selectedSubjects: jsonb('selected_subjects').default([]), // ['mathematics', 'economics']
+  studyGoals: text('study_goals'),
+  weeklyStudyHours: integer('weekly_study_hours'),
+  preferredStudyTime: varchar('preferred_study_time', { length: 20 }), // 'morning' | 'afternoon' | 'evening' | 'night'
+  notificationEnabled: boolean('notification_enabled').default(true),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
 // 学习进度表
 export const learningProgress = pgTable('learning_progress', {
   id: serial('id').primaryKey(),
@@ -72,6 +85,22 @@ export const learningProgress = pgTable('learning_progress', {
   masteryLevel: integer('mastery_level').default(0), // 0-100
   timeSpent: integer('time_spent').default(0), // 秒
   lastReviewedAt: timestamp('last_reviewed_at'),
+  completedAt: timestamp('completed_at'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+// 学习统计表
+export const userStats = pgTable('user_stats', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().unique().references(() => users.id, { onDelete: 'cascade' }),
+  totalStudyTime: integer('total_study_time').default(0), // 总学习时长（秒）
+  totalChaptersCompleted: integer('total_chapters_completed').default(0),
+  totalQuestionsAnswered: integer('total_questions_answered').default(0),
+  correctAnswersCount: integer('correct_answers_count').default(0),
+  currentStreak: integer('current_streak').default(0), // 连续学习天数
+  longestStreak: integer('longest_streak').default(0),
+  lastStudyDate: timestamp('last_study_date'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 })

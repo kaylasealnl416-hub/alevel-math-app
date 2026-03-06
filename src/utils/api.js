@@ -221,5 +221,91 @@ export const chaptersAPI = {
   },
 }
 
+// 用户相关API
+export const usersAPI = {
+  // 创建用户
+  create: async (userData) => {
+    const response = await backendRequest('/api/users', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    })
+    return response.data
+  },
+
+  // 获取用户信息
+  getById: async (userId) => {
+    const response = await backendRequest(`/api/users/${userId}`)
+    return response.data
+  },
+
+  // 更新用户信息
+  update: async (userId, userData) => {
+    const response = await backendRequest(`/api/users/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify(userData)
+    })
+    return response.data
+  },
+
+  // 获取用户画像
+  getProfile: async (userId) => {
+    const response = await backendRequest(`/api/users/${userId}/profile`)
+    return response.data
+  },
+
+  // 更新用户画像
+  updateProfile: async (userId, profileData) => {
+    const response = await backendRequest(`/api/users/${userId}/profile`, {
+      method: 'PUT',
+      body: JSON.stringify(profileData)
+    })
+    return response.data
+  },
+
+  // 获取用户统计
+  getStats: async (userId) => {
+    const response = await backendRequest(`/api/users/${userId}/stats`)
+    return response.data
+  }
+}
+
+// 学习进度相关API
+export const progressAPI = {
+  // 获取用户所有学习进度
+  getAll: async (userId) => {
+    const response = await backendRequest(`/api/progress/${userId}`)
+    return response.data
+  },
+
+  // 获取特定章节的学习进度
+  getByChapter: async (userId, chapterId) => {
+    const response = await backendRequest(`/api/progress/${userId}/chapter/${chapterId}`)
+    return response.data
+  },
+
+  // 记录/更新学习进度
+  update: async (progressData) => {
+    const response = await backendRequest('/api/progress', {
+      method: 'POST',
+      body: JSON.stringify(progressData)
+    })
+    return response.data
+  },
+
+  // 获取学习统计
+  getStats: async (userId) => {
+    const response = await backendRequest(`/api/progress/${userId}/stats`)
+    return response.data
+  },
+
+  // 删除学习进度（测试用）
+  delete: async (userId, chapterId) => {
+    const response = await backendRequest(`/api/progress/${userId}/chapter/${chapterId}`, {
+      method: 'DELETE'
+    })
+    return response
+  }
+}
+
 // 导出配置
 export { BACKEND_API_URL, USE_BACKEND_API }
