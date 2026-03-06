@@ -1,6 +1,30 @@
+# Dependencies
 node_modules
-dist
+
+# Environment
 .env
 .env.local
+.env.*.local
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Logs
 *.log
+
+# Git
+.git
+
+# Claude
+.claude
+
+# Build (Vercel will build)
+dist
+
+# Config files
+.github
+.42cog
+specs
+docs/research
+
