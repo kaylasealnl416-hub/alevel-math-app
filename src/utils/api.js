@@ -162,3 +162,64 @@ export async function callAIAPI(prompt, provider = 'anthropic', apiKey = null) {
 }
 
 export { STORAGE_KEYS, API_ENDPOINTS };
+
+// ============================================================
+// Backend API Client
+// ============================================================
+
+// API配置
+const BACKEND_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+const USE_BACKEND_API = import.meta.env.VITE_USE_API === 'true'
+
+// 统一请求函数
+async function backendRequest(endpoint, options = {}) {
+  const url = `${BACKEND_API_URL}${endpoint}`
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+    ...options,
+  }
+
+  try {
+    const response = await fetch(url, config)
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new Error(data.error?.message || `HTTP ${response.status}`)
+    }
+
+    return data
+  } catch (error) {
+    console.error('Backend API请求失败:', error)
+    throw error
+  }
+}
+
+// 科目相关API
+export const subjectsAPI = {
+  // 获取所有科目
+  getAll: async () => {
+    const response = await backendRequest('/api/subjects')
+    return response.data
+  },
+
+  // 获取单个科目详情
+  getById: async (id) => {
+    const response = await backendRequest(`/api/subjects/${id}`)
+    return response.data
+  },
+}
+
+// 章节相关API
+export const chaptersAPI = {
+  // 获取单个章节详情
+  getById: async (id) => {
+    const response = await backendRequest(`/api/chapters/${id}`)
+    return response.data
+  },
+}
+
+// 导出配置
+export { BACKEND_API_URL, USE_BACKEND_API }
