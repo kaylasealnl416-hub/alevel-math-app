@@ -24,9 +24,23 @@
 | 语言 | JavaScript/JSX |
 | 框架 | React 18 + Vite |
 | 包管理 | bun（非 npm/yarn） |
-| Git托管 | GitHub |
+| Git托管 | GitHub（私有仓库） |
 | 测试 | Vitest |
 | 部署 | Vercel |
+
+## 部署配置
+
+- **平台**：Vercel（支持私有仓库）
+- **自动部署**：推送到 main 分支自动触发
+- **构建命令**：`bun run build`
+- **输出目录**：`dist`
+- **配置文件**：`vercel.json`
+- **Base Path**：`/`（根路径，非子路径）
+
+**重要**：
+- GitHub Pages 已禁用（私有仓库限制）
+- 使用 Vercel 进行公开访问
+- `vite.config.js` 的 `base` 必须设置为 `/`
 
 ## 项目结构
 
@@ -45,6 +59,29 @@
 - **文件名**：默认英文命名
 - **Git**：不自动提交，除非用户明确要求
 - **敏感信息**：存 `.env.local`，绝不保存在 Git 仓库中
+- **部署**：推送到 main 分支会自动触发 Vercel 部署
+
+## 快速命令
+
+```bash
+# 安装依赖
+bun install
+
+# 本地开发（端口 3000）
+bun run dev
+
+# 构建生产版本
+bun run build
+
+# 预览构建结果
+bun run preview
+
+# 运行测试
+bun run test
+
+# 代码检查
+bun run lint
+```
 
 ## 代码质量
 
