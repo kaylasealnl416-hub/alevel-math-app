@@ -8,7 +8,7 @@ import { db } from '../db/index.js'
 import { users, userProfiles, userStats } from '../db/schema.js'
 import { eq } from 'drizzle-orm'
 import { generateToken, generateRefreshToken, verifyToken } from '../utils/jwt.js'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 
 const app = new Hono()
