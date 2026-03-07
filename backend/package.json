@@ -24,9 +24,13 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.19.11",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
     "hono": "^4.12.5",
-    "postgres": "^3.4.8"
+    "hono-rate-limiter": "^0.5.3",
+    "jsonwebtoken": "^9.0.3",
+    "postgres": "^3.4.8",
+    "zod": "^4.3.6"
   }
 }

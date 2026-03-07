@@ -309,3 +309,71 @@ export const progressAPI = {
 
 // 导出配置
 export { BACKEND_API_URL, USE_BACKEND_API }
+
+// ============================================================
+// Chat API
+// ============================================================
+
+export const chatAPI = {
+  // 创建新会话
+  createSession: async (sessionData) => {
+    const response = await backendRequest('/api/chat/sessions', {
+      method: 'POST',
+      body: JSON.stringify(sessionData)
+    })
+    return response.data
+  },
+
+  // 获取用户的会话列表
+  getSessions: async (userId, options = {}) => {
+    const params = new URLSearchParams({ userId })
+    if (options.status) params.append('status', options.status)
+    if (options.limit) params.append('limit', options.limit.toString())
+    if (options.offset) params.append('offset', options.offset.toString())
+
+    const response = await backendRequest(`/api/chat/sessions?${params}`)
+    return response.data
+  },
+
+  // 获取会话详情
+  getSession: async (sessionId) => {
+    const response = await backendRequest(`/api/chat/sessions/${sessionId}`)
+    return response.data
+  },
+
+  // 更新会话
+  updateSession: async (sessionId, updateData) => {
+    const response = await backendRequest(`/api/chat/sessions/${sessionId}`, {
+      method: 'PUT',
+      body: JSON.stringify(updateData)
+    })
+    return response.data
+  },
+
+  // 删除会话
+  deleteSession: async (sessionId) => {
+    const response = await backendRequest(`/api/chat/sessions/${sessionId}`, {
+      method: 'DELETE'
+    })
+    return response
+  },
+
+  // 获取会话消息历史
+  getMessages: async (sessionId, options = {}) => {
+    const params = new URLSearchParams()
+    if (options.limit) params.append('limit', options.limit.toString())
+    if (options.offset) params.append('offset', options.offset.toString())
+
+    const response = await backendRequest(`/api/chat/sessions/${sessionId}/messages?${params}`)
+    return response.data
+  },
+
+  // 发送消息并获取 AI 回复
+  sendMessage: async (messageData) => {
+    const response = await backendRequest('/api/chat/messages/send', {
+      method: 'POST',
+      body: JSON.stringify(messageData)
+    })
+    return response
+  }
+}

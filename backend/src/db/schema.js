@@ -1,4 +1,4 @@
-import { pgTable, serial, text, jsonb, timestamp, integer, boolean, varchar } from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, jsonb, timestamp, integer, boolean, varchar, real } from 'drizzle-orm/pg-core'
 
 // ============================================================
 // 科目相关表
@@ -54,7 +54,8 @@ export const users = pgTable('users', {
   wechatUnionid: varchar('wechat_unionid', { length: 100 }),
   nickname: varchar('nickname', { length: 100 }),
   avatar: text('avatar'),
-  email: varchar('email', { length: 255 }),
+  email: varchar('email', { length: 255 }).unique(),
+  password: varchar('password', { length: 255 }), // bcrypt 加密后的密码
   phone: varchar('phone', { length: 20 }),
   grade: varchar('grade', { length: 20 }), // 'AS' | 'A2'
   targetUniversity: varchar('target_university', { length: 100 }),
@@ -138,7 +139,56 @@ export const userAnswers = pgTable('user_answers', {
 // AI对话相关表（Phase 2需要）
 // ============================================================
 
-// AI对话历史表
+// 会话表
+export const chatSessions = pgTable('chat_sessions', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  chapterId: varchar('chapter_id', { length: 50 }).references(() => chapters.id, { onDelete: 'set null' }),
+  title: varchar('title', { length: 200 }),
+  sessionType: varchar('session_type', { length: 20 }).notNull().default('learning'), // 'learning' | 'practice' | 'review'
+  status: varchar('status', { length: 20 }).notNull().default('active'), // 'active' | 'archived'
+  messageCount: integer('message_count').default(0),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+  lastMessageAt: timestamp('last_message_at'),
+})
+
+// 消息表
+export const chatMessages = pgTable('chat_messages', {
+  id: serial('id').primaryKey(),
+  sessionId: integer('session_id').notNull().references(() => chatSessions.id, { onDelete: 'cascade' }),
+  role: varchar('role', { length: 20 }).notNull(), // 'user' | 'assistant' | 'system'
+  content: text('content').notNull(),
+  contentType: varchar('content_type', { length: 20 }).default('text'), // 'text' | 'latex' | 'code'
+  metadata: jsonb('metadata'), // { thinking_process, references, difficulty }
+  tokensUsed: integer('tokens_used'),
+  createdAt: timestamp('created_at').defaultNow(),
+})
+
+// 上下文表
+export const chatContexts = pgTable('chat_contexts', {
+  id: serial('id').primaryKey(),
+  sessionId: integer('session_id').notNull().references(() => chatSessions.id, { onDelete: 'cascade' }),
+  contextType: varchar('context_type', { length: 50 }).notNull(), // 'chapter' | 'knowledge_point' | 'problem'
+  contextData: jsonb('context_data').notNull(),
+  relevanceScore: real('relevance_score').default(1.0), // 0.0-1.0
+  createdAt: timestamp('created_at').defaultNow(),
+})
+
+// 用户知识图谱表
+export const userKnowledgeGraph = pgTable('user_knowledge_graph', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  knowledgePointId: varchar('knowledge_point_id', { length: 100 }).notNull(),
+  masteryLevel: integer('mastery_level').default(0), // 0-100
+  lastPracticedAt: timestamp('last_practiced_at'),
+  practiceCount: integer('practice_count').default(0),
+  correctCount: integer('correct_count').default(0),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+// 旧的 AI 对话表（保留用于兼容）
 export const aiConversations = pgTable('ai_conversations', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),

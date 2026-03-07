@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { SUBJECTS } from "./data/subjects.js";
 import katex from "katex";
 import "katex/dist/katex.min.css";
+import ChatPage from "./components/ChatPage.jsx";
 
 // ============================================================
 // AI 数据解析辅助函数 (V1.1 修复)
@@ -2420,6 +2421,7 @@ export default function ALevelMathApp() {
                 { id: "exam",       label: t.nav.exam },
                 { id: "mock",       label: t.nav.mock },
                 { id: "errorbook",  label: t.nav.errorbook },
+                { id: "chat",       label: "AI 对话" },
               ].map(item => (
                 <button
                   key={item.id}
@@ -2515,6 +2517,7 @@ export default function ALevelMathApp() {
             lang={lang}
           />
         )}
+        {activeView === "chat" && <ChatPage />}
       </main>
 
       {/* ── API Key Modal ── */}
@@ -3248,6 +3251,24 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
         </div>
         <h2 style={styles.chapterTitle}>{ch.title}</h2>
         <p style={styles.chapterOverview}>{ch.overview}</p>
+        <button
+          onClick={() => nav("chat")}
+          style={{
+            marginTop: '12px',
+            padding: '10px 20px',
+            backgroundColor: '#1976d2',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '14px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          🤖 向 AI 教师提问
+        </button>
       </div>
 
       <div style={styles.tabBar}>

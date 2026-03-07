@@ -15,6 +15,20 @@
       "when": 1772813797207,
       "tag": "0001_eager_grim_reaper",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772816696696,
+      "tag": "0002_outstanding_vector",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1772891398816,
+      "tag": "0003_fluffy_wildside",
+      "breakpoints": true
     }
   ]
 }
