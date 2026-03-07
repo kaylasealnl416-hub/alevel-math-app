@@ -3,8 +3,10 @@ import postgres from 'postgres'
 import dotenv from 'dotenv'
 import * as schema from './schema.js'
 
-// 加载环境变量
-dotenv.config({ path: '.env.local' })
+// 加载环境变量（仅在本地开发时需要）
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: '.env.local' })
+}
 
 // 检查数据库URL
 if (!process.env.DATABASE_URL) {

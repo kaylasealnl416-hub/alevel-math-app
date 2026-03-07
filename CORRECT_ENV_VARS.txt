@@ -1,0 +1,21 @@
+# 正确的环境变量配置
+
+请在 Railway 的 RAW Editor 中，**删除所有内容**，然后复制粘贴下面的内容：
+
+```
+DATABASE_URL=postgresql://postgres.mozzqjeusrjuxycwpyld:MySecure@Pass2026@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres
+NODE_ENV=production
+JWT_SECRET=db4e6e64e16dcd80bee82ec4bdc4f6c63ab246df79436f9015d1ac0cfdfe3711
+FRONTEND_URL=https://alevel-math-app.vercel.app
+PORT=4000
+```
+
+然后点击 **"Update Variables"** 按钮。
+
+---
+
+## 注意
+
+- `DATABASE_URL` 必须是你的真实 Supabase 连接字符串
+- 不要有多余的引号或空格
+- 每个变量一行
