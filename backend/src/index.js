@@ -80,7 +80,10 @@ const port = Number(process.env.PORT) || 4000
 
 console.log(`🚀 Server starting on http://localhost:${port}`)
 
-serve({
+const server = serve({
   fetch: app.fetch,
   port,
 })
+
+console.log(`✅ Server is running on port ${port}`)
+console.log(`📍 Health check: http://localhost:${port}/health`)
