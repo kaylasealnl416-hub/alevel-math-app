@@ -10,6 +10,7 @@ import progressRoutes from './routes/progress.js'
 import chatRoutes from './routes/chat.js'
 import chatMessagesRoutes from './routes/chatMessages.js'
 import authRoutes from './routes/auth.js'
+import questionsRoutes from './routes/questions.js'
 import { authMiddleware } from './middleware/auth.js'
 
 const app = new Hono()
@@ -47,11 +48,13 @@ app.route('/api/chapters', chaptersRoutes)
 app.use('/api/users/*', authMiddleware)
 app.use('/api/progress/*', authMiddleware)
 app.use('/api/chat/*', authMiddleware)
+app.use('/api/questions/*', authMiddleware)
 
 app.route('/api/users', usersRoutes)
 app.route('/api/progress', progressRoutes)
 app.route('/api/chat/sessions', chatRoutes)
 app.route('/api/chat/messages', chatMessagesRoutes)
+app.route('/api/questions', questionsRoutes)
 
 // 404处理
 app.notFound((c) => {

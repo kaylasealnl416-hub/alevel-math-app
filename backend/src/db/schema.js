@@ -110,29 +110,104 @@ export const userStats = pgTable('user_stats', {
 // 题库相关表（Phase 3需要）
 // ============================================================
 
-// 题库表
+// 题库表（Phase 3 扩展）
 export const questions = pgTable('questions', {
   id: serial('id').primaryKey(),
   chapterId: varchar('chapter_id', { length: 50 }).notNull().references(() => chapters.id, { onDelete: 'cascade' }),
+
+  // 题目基本信息
   type: varchar('type', { length: 20 }).notNull(), // 'multiple_choice' | 'fill_blank' | 'calculation' | 'proof'
   difficulty: integer('difficulty').notNull(), // 1-5
-  content: jsonb('content').notNull(),
-  answer: jsonb('answer').notNull(),
-  explanation: jsonb('explanation'),
-  tags: text('tags').array(),
+  content: jsonb('content').notNull(), // { zh: '', en: '', latex: '' }
+  options: jsonb('options'), // 选择题选项 ['A. ...', 'B. ...', 'C. ...', 'D. ...']
+  answer: jsonb('answer').notNull(), // { value: '', latex: '', explanation: '' }
+  explanation: jsonb('explanation'), // { zh: '', en: '' }
+
+  // Phase 3 新增字段
+  tags: jsonb('tags').default([]), // 知识点标签数组 ['供需理论', '市场均衡']
+  source: varchar('source', { length: 50 }).default('manual'), // 'manual' | 'ai_generated' | 'uploaded' | 'exam'
+  sourceDocumentId: integer('source_document_id'), // 来源文档 ID（关联 uploadedDocuments）
+  estimatedTime: integer('estimated_time').default(300), // 预计完成时间（秒）
+  usageCount: integer('usage_count').default(0), // 使用次数
+  correctRate: real('correct_rate'), // 正确率（0-1）
+
+  // 审核状态
+  status: varchar('status', { length: 20 }).default('draft'), // 'draft' | 'reviewed' | 'published'
+  reviewedBy: integer('reviewed_by'), // 审核人 ID（关联 users）
+  reviewedAt: timestamp('reviewed_at'),
+
+  createdBy: integer('created_by'), // 创建人 ID（关联 users）
   createdAt: timestamp('created_at').defaultNow(),
-  createdBy: varchar('created_by', { length: 20 }).default('manual'), // 'manual' | 'ai'
+  updatedAt: timestamp('updated_at').defaultNow(),
 })
 
-// 答题记录表
+// 答题记录表（Phase 3 扩展）
 export const userAnswers = pgTable('user_answers', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   questionId: integer('question_id').notNull().references(() => questions.id, { onDelete: 'cascade' }),
+  questionSetId: integer('question_set_id'), // 关联试卷（关联 questionSets）
+
+  // 答题信息
   userAnswer: jsonb('user_answer').notNull(),
-  isCorrect: boolean('is_correct').notNull(),
-  timeSpent: integer('time_spent'), // 秒
+  isCorrect: boolean('is_correct'),
+  score: real('score'), // 得分（主观题可能是小数）
+  timeSpent: integer('time_spent'), // 答题时长（秒）
+
+  // AI 批改结果
+  aiFeedback: jsonb('ai_feedback'), // AI 批改反馈
+  aiScore: real('ai_score'), // AI 评分
+
   createdAt: timestamp('created_at').defaultNow(),
+})
+
+// 文档上传表（Phase 3 新增）
+export const uploadedDocuments = pgTable('uploaded_documents', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  chapterId: varchar('chapter_id', { length: 50 }).references(() => chapters.id),
+
+  // 文件信息
+  fileName: varchar('file_name', { length: 255 }).notNull(),
+  fileType: varchar('file_type', { length: 50 }).notNull(), // 'pdf' | 'docx'
+  fileSize: integer('file_size').notNull(), // bytes
+  fileUrl: text('file_url'), // 云存储 URL（可选）
+
+  // 处理状态
+  status: varchar('status', { length: 20 }).default('pending'), // 'pending' | 'processing' | 'completed' | 'failed'
+  parseResult: jsonb('parse_result'), // AI 解析结果
+  extractedQuestionsCount: integer('extracted_questions_count').default(0),
+  errorMessage: text('error_message'),
+
+  createdAt: timestamp('created_at').defaultNow(),
+  processedAt: timestamp('processed_at'),
+})
+
+// 试卷/题集表（Phase 3 新增）
+export const questionSets = pgTable('question_sets', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id),
+
+  // 试卷信息
+  title: varchar('title', { length: 255 }).notNull(),
+  description: text('description'),
+  type: varchar('type', { length: 50 }).notNull(), // 'practice' | 'exam' | 'mock_exam'
+  chapterId: varchar('chapter_id', { length: 50 }).references(() => chapters.id),
+
+  // 题目配置
+  questionIds: jsonb('question_ids').notNull(), // [1, 2, 3, ...]
+  totalQuestions: integer('total_questions').notNull(),
+  totalPoints: integer('total_points').default(100),
+  timeLimit: integer('time_limit'), // 时间限制（分钟）
+
+  // 难度分布
+  difficultyDistribution: jsonb('difficulty_distribution'), // { "1": 2, "2": 3, "3": 4, "4": 1, "5": 0 }
+
+  // 生成方式
+  generatedBy: varchar('generated_by', { length: 50 }).default('manual'), // 'manual' | 'ai' | 'random'
+
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 })
 
 // ============================================================
