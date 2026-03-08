@@ -1,0 +1,77 @@
+/* ============================================================
+   计时器样式
+   ============================================================ */
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timer-icon {
+  font-size: 1.5rem;
+}
+
+.timer-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.timer-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.timer-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-progress {
+  width: 100px;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.timer-progress-bar {
+  height: 100%;
+  background: #667eea;
+  transition: width 1s linear;
+}
+
+/* 倒计时警告状态 */
+.timer.warning .timer-value {
+  color: #f59e0b;
+}
+
+.timer.warning .timer-progress-bar {
+  background: #f59e0b;
+}
+
+/* 倒计时危险状态 */
+.timer.danger .timer-value {
+  color: #ef4444;
+  animation: pulse 1s infinite;
+}
+
+.timer.danger .timer-progress-bar {
+  background: #ef4444;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

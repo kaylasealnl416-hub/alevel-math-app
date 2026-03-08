@@ -1,0 +1,144 @@
+/* ============================================================
+   题目卡片样式
+   ============================================================ */
+
+.question-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.question-number {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.question-meta {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.question-type,
+.question-difficulty {
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+}
+
+.question-type {
+  background: #3b82f6;
+}
+
+.question-difficulty {
+  background: #10b981;
+}
+
+.question-content {
+  margin-bottom: 1.5rem;
+}
+
+.question-text {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+/* LaTeX 公式样式 */
+.question-text .katex {
+  font-size: 1.1em;
+}
+
+.question-text .katex-display {
+  margin: 1rem 0;
+}
+
+/* 选择题选项 */
+.question-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.option-item {
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.6;
+  transition: all 0.2s;
+}
+
+.option-item:hover {
+  border-color: #667eea;
+  background: #f9fafb;
+}
+
+.option-item.correct-answer {
+  border-color: #10b981;
+  background: #d1fae5;
+}
+
+/* 知识点标签 */
+.question-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tag {
+  padding: 0.25rem 0.75rem;
+  background: #f3f4f6;
+  color: #6b7280;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+/* 答案显示 */
+.question-answer {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: #f0fdf4;
+  border-left: 4px solid #10b981;
+  border-radius: 8px;
+}
+
+.answer-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #10b981;
+  margin-bottom: 0.75rem;
+}
+
+.answer-content {
+  font-size: 1.125rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.answer-explanation {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #d1fae5;
+}
+
+.explanation-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #059669;
+  margin-bottom: 0.5rem;
+}
