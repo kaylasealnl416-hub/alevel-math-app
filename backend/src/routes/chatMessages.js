@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { db } from '../db/index.js'
 import { chatSessions, chatMessages } from '../db/schema.js'
 import { eq } from 'drizzle-orm'
-import { callClaudeAPI } from '../services/claudeClient.js'
+import { callAI, getAIProviderInfo } from '../services/aiClient.js'
 import { buildSystemPrompt, buildUserPrompt, buildConversationHistory } from '../services/promptBuilder.js'
 import { buildFullContext } from '../services/contextManager.js'
 
@@ -98,16 +98,18 @@ app.post('/send', async (c) => {
       content: userPrompt
     })
 
-    // 调用 Claude API
+    // 调用 AI API（自动根据配置选择提供商）
     let aiResponse
     try {
-      aiResponse = await callClaudeAPI(conversationHistory, {
+      const aiProvider = getAIProviderInfo()
+      console.log(`使用 AI 提供商: ${aiProvider.name} (${aiProvider.model})`)
+
+      aiResponse = await callAI(conversationHistory, {
         system: systemPrompt,
-        model: context.model || 'claude-sonnet-4-20250514',
         temperature: 0.7
       })
     } catch (apiError) {
-      console.error('Claude API 调用失败:', apiError)
+      console.error('AI API 调用失败:', apiError)
 
       // 返回友好的错误消息
       return c.json({

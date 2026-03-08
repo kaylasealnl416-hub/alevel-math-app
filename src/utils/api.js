@@ -171,12 +171,29 @@ export { STORAGE_KEYS, API_ENDPOINTS };
 const BACKEND_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 const USE_BACKEND_API = import.meta.env.VITE_USE_API === 'true'
 
+// 获取存储的 token
+function getAuthToken() {
+  return localStorage.getItem('auth_token')
+}
+
+// 设置 token
+export function setAuthToken(token) {
+  if (token) {
+    localStorage.setItem('auth_token', token)
+  } else {
+    localStorage.removeItem('auth_token')
+  }
+}
+
 // 统一请求函数
 async function backendRequest(endpoint, options = {}) {
   const url = `${BACKEND_API_URL}${endpoint}`
+  const token = getAuthToken()
+
   const config = {
     headers: {
       'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` }),
       ...options.headers,
     },
     ...options,
@@ -309,6 +326,43 @@ export const progressAPI = {
 
 // 导出配置
 export { BACKEND_API_URL, USE_BACKEND_API }
+
+// ============================================================
+// Auth API
+// ============================================================
+
+export const authAPI = {
+  // 用户注册
+  register: async (userData) => {
+    const response = await backendRequest('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    })
+    // 自动保存 token
+    if (response.data?.token) {
+      setAuthToken(response.data.token)
+    }
+    return response.data
+  },
+
+  // 用户登录
+  login: async (credentials) => {
+    const response = await backendRequest('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    })
+    // 自动保存 token
+    if (response.data?.token) {
+      setAuthToken(response.data.token)
+    }
+    return response.data
+  },
+
+  // 登出
+  logout: () => {
+    setAuthToken(null)
+  }
+}
 
 // ============================================================
 // Chat API

@@ -4,14 +4,44 @@
 // ============================================================
 
 import { useState, useEffect } from 'react'
-import { chatAPI } from '../utils/api.js'
+import { chatAPI, authAPI } from '../utils/api.js'
 import ChatPage from './ChatPage.jsx'
 
 export default function Phase2TestPage() {
   const [testResults, setTestResults] = useState([])
   const [isRunning, setIsRunning] = useState(false)
   const [showChat, setShowChat] = useState(false)
-  const [userId] = useState(1) // 测试用户ID
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
+
+  // 检查是否已登录
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token')
+    if (token) {
+      setIsLoggedIn(true)
+    }
+  }, [])
+
+  // 登录/注册测试用户
+  const loginTestUser = async () => {
+    try {
+      // 使用随机邮箱避免冲突
+      const testEmail = `test${Date.now()}@example.com`
+
+      // 尝试注册新用户
+      const result = await authAPI.register({
+        email: testEmail,
+        password: 'test123456',
+        nickname: '测试用户'
+      })
+      setCurrentUser(result.user)
+      setIsLoggedIn(true)
+      return result.user
+    } catch (error) {
+      console.error('注册失败:', error)
+      throw error
+    }
+  }
 
   // 测试函数
   const runTests = async () => {
@@ -20,18 +50,31 @@ export default function Phase2TestPage() {
     const results = []
 
     try {
+      // 测试 0: 登录/注册
+      results.push({ name: '登录/注册', status: 'running' })
+      setTestResults([...results])
+
+      const user = await loginTestUser()
+
+      results[0] = {
+        name: '登录/注册',
+        status: 'success',
+        data: `用户ID: ${user.id}, 昵称: ${user.nickname}`
+      }
+      setTestResults([...results])
+
       // 测试 1: 创建会话
       results.push({ name: '创建会话', status: 'running' })
       setTestResults([...results])
 
       const session = await chatAPI.createSession({
-        userId,
+        userId: user.id,
         chapterId: 'e1c1',
         title: '测试会话 - 供需理论',
         sessionType: 'learning'
       })
 
-      results[0] = {
+      results[1] = {
         name: '创建会话',
         status: 'success',
         data: `会话ID: ${session.id}`
@@ -42,9 +85,9 @@ export default function Phase2TestPage() {
       results.push({ name: '获取会话列表', status: 'running' })
       setTestResults([...results])
 
-      const sessions = await chatAPI.getSessions(userId, { status: 'active', limit: 10 })
+      const sessions = await chatAPI.getSessions(user.id, { status: 'active', limit: 10 })
 
-      results[1] = {
+      results[2] = {
         name: '获取会话列表',
         status: 'success',
         data: `找到 ${sessions.length} 个会话`
@@ -62,13 +105,13 @@ export default function Phase2TestPage() {
           context: { subject: '经济学' }
         })
 
-        results[2] = {
+        results[3] = {
           name: '发送消息',
           status: 'success',
           data: `AI 回复: ${messageResult.data.assistantMessage.content.substring(0, 50)}...`
         }
       } catch (err) {
-        results[2] = {
+        results[3] = {
           name: '发送消息',
           status: 'warning',
           data: `需要配置 ANTHROPIC_API_KEY: ${err.message}`
@@ -82,7 +125,7 @@ export default function Phase2TestPage() {
 
       const { messages } = await chatAPI.getMessages(session.id, { limit: 50 })
 
-      results[3] = {
+      results[4] = {
         name: '获取消息历史',
         status: 'success',
         data: `找到 ${messages.length} 条消息`
@@ -95,7 +138,7 @@ export default function Phase2TestPage() {
 
       await chatAPI.updateSession(session.id, { title: '测试会话（已更新）' })
 
-      results[4] = {
+      results[5] = {
         name: '更新会话标题',
         status: 'success',
         data: '标题更新成功'
@@ -108,7 +151,7 @@ export default function Phase2TestPage() {
 
       await chatAPI.updateSession(session.id, { status: 'archived' })
 
-      results[5] = {
+      results[6] = {
         name: '归档会话',
         status: 'success',
         data: '会话已归档'
@@ -203,12 +246,12 @@ export default function Phase2TestPage() {
             </div>
             <div style={styles.envItem}>
               <span style={styles.envLabel}>用户 ID:</span>
-              <span style={styles.envValue}>{userId}</span>
+              <span style={styles.envValue}>{currentUser?.id || '未登录'}</span>
             </div>
             <div style={styles.envItem}>
               <span style={styles.envLabel}>API Key 配置:</span>
-              <span style={styles.envVue}>
-                {process.env.ANTHROPIC_API_KEY ? '✓ 已配置' : '✗ 未配置'}
+              <span style={styles.envValue}>
+                {import.meta.env.VITE_ANTHROPIC_API_KEY ? '✓ 已配置' : '✗ 未配置（后端配置）'}
               </span>
             </div>
           </div>
