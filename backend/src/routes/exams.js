@@ -4,6 +4,7 @@ import { exams, examQuestionResults, questionSets, questions, users } from '../d
 import { eq, and, desc, sql } from 'drizzle-orm'
 import * as examService from '../services/examService.js'
 import * as examGrader from '../services/examGrader.js'
+import * as examAnalyzer from '../services/examAnalyzer.js'
 
 const app = new Hono()
 
@@ -444,6 +445,135 @@ app.get('/:id/report', async (c) => {
     return c.json({
       success: false,
       error: { message: '生成考试报告失败', details: error.message }
+    }, 500)
+  }
+})
+
+// ============================================================
+// 15. Generate AI Feedback for Exam
+// ============================================================
+app.post('/:id/analyze', async (c) => {
+  try {
+    const examId = parseInt(c.req.param('id'))
+
+    // Get exam with questions
+    const [exam] = await db
+      .select()
+      .from(exams)
+      .where(eq(exams.id, examId))
+
+    if (!exam) {
+      return c.json({
+        success: false,
+        error: { message: 'Exam not found' }
+      }, 404)
+    }
+
+    // Check if exam is graded
+    if (exam.status !== 'graded') {
+      return c.json({
+        success: false,
+        error: { message: 'Exam must be graded before analysis' }
+      }, 400)
+    }
+
+  stions
+    const [questionSet] = await db
+      .select()
+      .from(questionSets)
+      .where(eq(questionSets.id, exam.questionSetId))
+
+    const examQuestions = await db
+      .select()
+      .from(questions)
+      .where(sql`${questions.id} = ANY(${questionSet.questionIds})`)
+
+    // Generate AI feedback
+    const feedback = await examAnalyzer.generateExamAnalysis(exam, examQuestions)
+
+    // Save feedback to database
+    await db
+      .update(exams)
+      .set({
+        aiFeedback: feedback,
+        updatedAt: new Date()
+      })
+      .where(eq(exams.id, examId))
+
+    return c.json({
+      success: true,
+      data: feedback
+    })
+
+  } catch (error) {
+    console.error('Failed to generate AI feedback:', error)
+    return c.json({
+      success: false,
+      error: { message: 'Failed to generate AI feedback', details: error.message }
+    }, 500)
+  }
+})
+
+// ============================================================
+// 16. Get AI Feedback for Exam
+// ============================================================
+app.get('/:id/feedback', async (c) => {
+  try {
+    const examId = parseInt(c.req.param('id'))
+
+    const [exam] = await db
+      .select()
+      .from(exams)
+      .where(eq(exams.id, examId))
+
+    if (!exam) {
+      return c.json({
+        success: false,
+        error: { message: 'Exam not found' }
+      }, 404)
+    }
+
+    // If no feedback exists, generate it
+    if (!exam.aiFeedback) {
+      // Get questions
+      const [questionSet] = await db
+        .select()
+        .from(questionSets)
+        .where(eq(questionSets.id, exam.questionSetId))
+
+      const examQuestions = await db
+        .select()
+        .from(questions)
+        .where(sql`${questions.id} = ANY(${questionSet.questionIds})`)
+
+      // Generate feedback
+      const feedback = await examAnalyzer.generateExamAnalysis(exam, examQuestions)
+
+      // Save to database
+      await db
+        .update(exams)
+        .set({
+          aiFeedback: feedback,
+          updatedAt: new Date()
+        })
+        .where(eq(exams.id, examId))
+
+      return c.json({
+        success: true,
+        data: feedback
+      })
+    }
+
+    return c.json({
+      success: true,
+      data: exam.aiFeedback
+    })
+
+  } catch (error) {
+    console.error('Failed to get AI feedback:', error)
+    return c.json({
+      success: false,
+      error: { message: 'Failed to get AI feedback', details: error.message }
     }, 500)
   }
 })

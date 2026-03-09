@@ -10,6 +10,7 @@ import Phase1TestPage from './components/Phase1TestPage.jsx'
 import Phase2TestPage from './components/Phase2TestPage.jsx'
 import ExamListPage from './components/ExamListPage.jsx'
 import ExamTakingPage from './components/ExamTakingPage.jsx'
+import ExamResultPage from './components/ExamResultPage.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 export default function AppRouter() {
@@ -28,6 +29,7 @@ export default function AppRouter() {
           {/* Phase 4: 考试系统 */}
           <Route path="/exams" element={<ExamListPage />} />
           <Route path="/exams/:examId/take" element={<ExamTakingPage />} />
+          <Route path="/exams/:examId/result" element={<ExamResultPage />} />
 
           {/* 404 重定向 */}
           <Route path="*" element={<Navigate to="/" replace />} />
