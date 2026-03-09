@@ -2325,7 +2325,7 @@ export default function ALevelMathApp() {
   const [examSession, setExamSession] = useState(null);
   const [quizSession, setQuizSession] = useState(null);
   const [mockExamSession, setMockExamSession] = useState(null);
-  const [lang, setLang] = useState("en");
+  const [lang] = useState("en"); // Fixed to English only
   const [showApiModal, setShowApiModal] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
   const [miniMaxApiKeyInput, setMiniMaxApiKeyInput] = useState("");
@@ -2536,12 +2536,10 @@ export default function ALevelMathApp() {
               }}>🔑</div>
               <div>
                 <h2 style={{ fontSize: 20, fontWeight: 700, color: "#1A1A1A", margin: 0 }}>
-                  {lang === "en" ? "AI API Settings" : "AI API 设置"}
+                  {"AI API Settings"}
                 </h2>
                 <p style={{ fontSize: 13, color: "#888888", marginTop: 4, lineHeight: 1.5 }}>
-                  {lang === "en"
-                    ? "Required for AI quiz, exam, and explanation features."
-                    : "AI 练习题、考试和解析功能需要此密钥。"}
+                  {"Required for AI quiz, exam, and explanation features."}
                 </p>
               </div>
             </div>
@@ -2549,7 +2547,7 @@ export default function ALevelMathApp() {
             {/* Provider Selection */}
             <div style={{ marginBottom: 24 }}>
               <label style={{ fontSize: 13, color: "#555555", fontWeight: 600, marginBottom: 8, display: "block" }}>
-                {lang === "en" ? "Select AI Provider:" : "选择 AI 提供商："}
+                {"Select AI Provider:"}
               </label>
               <div style={{ display: "flex", gap: 8 }}>
                 <button
@@ -2606,13 +2604,13 @@ export default function ALevelMathApp() {
                   }}>
                     <span style={{ fontSize: 18 }}>✅</span>
                     <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
-                      {lang === "en" ? "Anthropic API key saved" : "Anthropic 密钥已保存"}
+                      {"Anthropic API key saved"}
                     </span>
                     <button onClick={handleClearApiKey} style={{
                       marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
                       border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
                       padding: "3px 10px", cursor: "pointer",
-                    }}>{lang === "en" ? "Remove" : "删除"}</button>
+                    }}>{"Remove"}</button>
                   </div>
                 )}
 
@@ -2622,30 +2620,28 @@ export default function ALevelMathApp() {
                   fontSize: 13, color: "#444444", lineHeight: 1.8,
                 }}>
                   <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
-                    {lang === "en" ? "How to get Anthropic API key:" : "如何获取 Anthropic API 密钥："}
+                    {"How to get Anthropic API key:"}
                   </div>
-                  <div>① {lang === "en" ? "Visit" : "访问"}{" "}
+                  <div>① {"Visit"}{" "}
                     <a href="https://console.anthropic.com" target="_blank" rel="noreferrer"
                        style={{ color: "#DA291C", fontWeight: 600 }}>
                       console.anthropic.com
                     </a>
                   </div>
-                  <div>② {lang === "en" ? "Sign up / Log in" : "注册或登录账号"}</div>
-                  <div>③ {lang === "en"
-                    ? 'Click "API Keys" → "Create Key"'
-                    : '点击「API Keys」→「Create Key」'}</div>
-                  <div>④ {lang === "en" ? "Copy the key (starts with" : "复制密钥（以"}{" "}
+                  <div>② {"Sign up / Log in"}</div>
+                  <div>③ {'Click "API Keys" → "Create Key"'}</div>
+                  <div>④ {"Copy the key (starts with"}{" "}
                     <code style={{ background: "#EDEDED", padding: "1px 5px", borderRadius: 4, fontSize: 12 }}>
                       sk-ant-
                     </code>
-                    {lang === "en" ? ")" : " 开头）"}
+                    {")"}
                   </div>
                 </div>
 
                 {/* Input */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
                   <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
-                    {lang === "en" ? "Paste Anthropic API key:" : "粘贴 Anthropic API 密钥："}
+                    {"Paste Anthropic API key:"}
                   </label>
                   <input
                     type="password"
@@ -2666,9 +2662,7 @@ export default function ALevelMathApp() {
                   />
                   {apiKeyInput && !apiKeyInput.startsWith("sk-ant-") && (
                     <div style={{ fontSize: 12, color: "#DA291C" }}>
-                      ⚠ {lang === "en"
-                        ? 'Key should start with "sk-ant-"'
-                        : '密钥应以 "sk-ant-" 开头'}
+                      ⚠ {'Key should start with "sk-ant-"'}
                     </div>
                   )}
                 </div>
@@ -2686,7 +2680,7 @@ export default function ALevelMathApp() {
                       fontFamily: "Georgia, serif",
                     }}
                   >
-                    {lang === "en" ? "Save Anthropic Key" : "保存 Anthropic 密钥"}
+                    {"Save Anthropic Key"}
                   </button>
                   <button
                     onClick={() => setShowApiModal(false)}
@@ -2697,7 +2691,7 @@ export default function ALevelMathApp() {
                       fontFamily: "Georgia, serif",
                     }}
                   >
-                    {lang === "en" ? "Cancel" : "取消"}
+                    {"Cancel"}
                   </button>
                 </div>
               </>
@@ -2715,13 +2709,13 @@ export default function ALevelMathApp() {
                   }}>
                     <span style={{ fontSize: 18 }}>✅</span>
                     <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
-                      {lang === "en" ? "MiniMax API key saved" : "MiniMax 密钥已保存"}
+                      {"MiniMax API key saved"}
                     </span>
                     <button onClick={handleClearMiniMaxApiKey} style={{
                       marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
                       border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
                       padding: "3px 10px", cursor: "pointer",
-                    }}>{lang === "en" ? "Remove" : "删除"}</button>
+                    }}>{"Remove"}</button>
                   </div>
                 )}
 
@@ -2731,30 +2725,26 @@ export default function ALevelMathApp() {
                   fontSize: 13, color: "#444444", lineHeight: 1.8,
                 }}>
                   <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
-                    {lang === "en" ? "How to get MiniMax API key:" : "如何获取 MiniMax API 密钥："}
+                    {"How to get MiniMax API key:"}
                   </div>
-                  <div>① {lang === "en" ? "Visit" : "访问"}{" "}
+                  <div>① {"Visit"}{" "}
                     <a href="https://platform.minimaxi.com" target="_blank" rel="noreferrer"
                        style={{ color: "#8B5CF6", fontWeight: 600 }}>
                       platform.minimaxi.com
                     </a>
                   </div>
-                  <div>② {lang === "en" ? "Sign up / Log in" : "注册或登录账号"}</div>
-                  <div>③ {lang === "en"
-                    ? 'Go to "API Keys" → "Create API Key"'
-                    : '进入「API Keys」→「创建 API 密钥」'}</div>
-                  <div>④ {lang === "en" ? "Copy the key" : "复制密钥"}</div>
+                  <div>② {"Sign up / Log in"}</div>
+                  <div>③ {'Go to "API Keys" → "Create API Key"'}</div>
+                  <div>④ {"Copy the key"}</div>
                   <div style={{ marginTop: 8, color: "#888888", fontSize: 12 }}>
-                    💡 {lang === "en"
-                      ? "MiniMax provides free tokens for new users."
-                      : "MiniMax 为新用户提供免费额度。"}
+                    💡 {"MiniMax provides free tokens for new users."}
                   </div>
                 </div>
 
                 {/* Input */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
                   <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
-                    {lang === "en" ? "Paste MiniMax API key:" : "粘贴 MiniMax API 密钥："}
+                    {"Paste MiniMax API key:"}
                   </label>
                   <input
                     type="password"
@@ -2788,7 +2778,7 @@ export default function ALevelMathApp() {
                       fontFamily: "Georgia, serif",
                     }}
                   >
-                    {lang === "en" ? "Save MiniMax Key" : "保存 MiniMax 密钥"}
+                    {"Save MiniMax Key"}
                   </button>
                   <button
                     onClick={() => setShowApiModal(false)}
@@ -2799,7 +2789,7 @@ export default function ALevelMathApp() {
                       fontFamily: "Georgia, serif",
                     }}
                   >
-                    {lang === "en" ? "Cancel" : "取消"}
+                    {"Cancel"}
                   </button>
                 </div>
               </>
@@ -2817,13 +2807,13 @@ export default function ALevelMathApp() {
                   }}>
                     <span style={{ fontSize: 18 }}>✅</span>
                     <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
-                      {lang === "en" ? "Zhipu API key saved" : "智谱AI 密钥已保存"}
+                      {"Zhipu API key saved"}
                     </span>
                     <button onClick={handleClearZhipuApiKey} style={{
                       marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
                       border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
                       padding: "3px 10px", cursor: "pointer",
-                    }}>{lang === "en" ? "Remove" : "删除"}</button>
+                    }}>{"Remove"}</button>
                   </div>
                 )}
 
@@ -2833,30 +2823,26 @@ export default function ALevelMathApp() {
                   fontSize: 13, color: "#444444", lineHeight: 1.8,
                 }}>
                   <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
-                    {lang === "en" ? "How to get Zhipu API key:" : "如何获取智谱AI API 密钥："}
+                    {"How to get Zhipu API key:"}
                   </div>
-                  <div>① {lang === "en" ? "Visit" : "访问"}{" "}
+                  <div>① {"Visit"}{" "}
                     <a href="https://open.bigmodel.cn" target="_blank" rel="noreferrer"
                        style={{ color: "#2563EB", fontWeight: 600 }}>
                       open.bigmodel.cn
                     </a>
                   </div>
-                  <div>② {lang === "en" ? "Sign up / Log in" : "注册或登录账号"}</div>
-                  <div>③ {lang === "en"
-                    ? 'Go to "API Keys" → "Create API Key"'
-                    : '进入「API Keys」→「创建 API 密钥」'}</div>
-                  <div>④ {lang === "en" ? "Copy the key" : "复制密钥"}</div>
+                  <div>② {"Sign up / Log in"}</div>
+                  <div>③ {'Go to "API Keys" → "Create API Key"'}</div>
+                  <div>④ {"Copy the key"}</div>
                   <div style={{ marginTop: 8, color: "#888888", fontSize: 12 }}>
-                    💡 {lang === "en"
-                      ? "Zhipu provides free tokens for new users."
-                      : "智谱AI 为新用户提供免费额度。"}
+                    💡 {"Zhipu provides free tokens for new users."}
                   </div>
                 </div>
 
                 {/* Input */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
                   <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
-                    {lang === "en" ? "Paste Zhipu API key:" : "粘贴智谱AI API 密钥："}
+                    {"Paste Zhipu API key:"}
                   </label>
                   <input
                     type="password"
@@ -2890,7 +2876,7 @@ export default function ALevelMathApp() {
                       fontFamily: "Georgia, serif",
                     }}
                   >
-                    {lang === "en" ? "Save Zhipu Key" : "保存智谱AI 密钥"}
+                    {"Save Zhipu Key"}
                   </button>
                   <button
                     onClick={() => setShowApiModal(false)}
@@ -2901,16 +2887,14 @@ export default function ALevelMathApp() {
                       fontFamily: "Georgia, serif",
                     }}
                   >
-                    {lang === "en" ? "Cancel" : "取消"}
+                    {"Cancel"}
                   </button>
                 </div>
               </>
             )}
 
             <p style={{ fontSize: 11, color: "#AAAAAA", textAlign: "center", marginTop: 14, lineHeight: 1.6 }}>
-              {lang === "en"
-                ? "Your key is stored only in this browser's localStorage."
-                : "密钥仅存储在浏览器本地（localStorage）中。"}
+              {"Your key is stored only in this browser's localStorage."}
             </p>
           </div>
         </div>
@@ -3004,11 +2988,11 @@ function SubjectsView({ nav, lang, selectedSubject }) {
         color: "#E65100",
         fontSize: 14
       }}>
-        {lang === "zh" ? "⚠️ 请先在上方选择学科，然后再进入课程、练习、考试等功能" : "⚠️ Please select a subject above before accessing Curriculum, Quiz, Exam, etc."}
+        "⚠️ Please select a subject above before accessing Curriculum, Quiz, Exam, etc."
       </div>
-      <h2 style={styles.pageTitle}>{lang === "zh" ? "选择学科" : "Select Subject"}</h2>
+      <h2 style={styles.pageTitle}>"Select Subject"</h2>
       <p style={{ color: "#666", marginBottom: 24 }}>
-        {lang === "zh" ? "选择您想要学习的学科" : "Choose the subject you want to study"}
+        "Choose the subject you want to study"
       </p>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
@@ -3059,7 +3043,7 @@ function SubjectsView({ nav, lang, selectedSubject }) {
                 cursor: "pointer"
               }}
             >
-              {lang === "zh" ? "进入学习" : "Enter"} →
+              "Enter" →
             </button>
           </div>
         ))}
@@ -3362,7 +3346,7 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
           {/* External Resources Section */}
           <div style={{ marginTop: 32, paddingTop: 24, borderTop: "1px solid #E0E0E0" }}>
             <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, color: "#1A1A1A" }}>
-              {lang === "zh" ? "📚 外部学习资源" : "📚 External Learning Resources"}
+              "📚 External Learning Resources"
             </h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 12 }}>
               {(SUBJECT_RESOURCES[subject] || SUBJECT_RESOURCES.mathematics).map((res, i) => (
@@ -3461,37 +3445,37 @@ function QuizView({ chapter, book, nav, embedded, onAddError, t, lang, subject =
       mathematics: {
         system: `You are an expert A-Level Mathematics teacher creating exam questions for Pearson Edexcel International A-Level (IAL). The course covers Pure Mathematics (P1–P4, papers WMA11–WMA14), Statistics 1 (S1, WST01), and Mechanics 1 (M1, WME01).
 Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+$"Write all content in English."`,
         desc: "This is a Mathematics question covering mathematical concepts, formulas, and problem-solving."
       },
       economics: {
         system: `You are an expert A-Level Economics teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Economics. The course covers Unit 1: Markets in action, Unit 2: Macroeconomic performance and policy, Unit 3: Business behaviour, and Unit 4: Developments in the global economy.
 Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+$"Write all content in English."`,
         desc: "This is an Economics question covering economic concepts, theories, and analysis."
       },
       history: {
         system: `You are an expert A-Level History teacher creating exam questions for Pearson Edexcel International A-Level (IAL) History. The course covers modern international history, the USA 1918-1968, and the British Empire.
 Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+$"Write all content in English."`,
         desc: "This is a History question covering historical events, analysis, and interpretation."
       },
       politics: {
         system: `You are an expert A-Level Politics teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Politics. The course covers UK Politics, UK Government, US Comparative Politics, and Global Politics.
 Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+$"Write all content in English."`,
         desc: "This is a Politics question covering political concepts, theories, and analysis."
       },
       psychology: {
         system: `You are an expert A-Level Psychology teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Psychology. The course covers social psychology, cognitive psychology, biological psychology, developmental psychology, and research methods.
 Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+$"Write all content in English."`,
         desc: "This is a Psychology question covering psychological theories, research, and analysis."
       },
       further_math: {
         system: `You are an expert A-Level Further Mathematics teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Further Mathematics. The course covers Further Pure (FP1-FP3), Further Mechanics (FM1-FM2), and Further Statistics (FS1-FS2).
 Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-${lang === "zh" ? "Write ALL question text, options, solutions, explanations, and all string values in Simplified Chinese (简体中文)." : "Write all content in English."}`,
+$"Write all content in English."`,
         desc: "This is a Further Mathematics question covering advanced mathematical concepts, formulas, and problem-solving."
       }
     };
@@ -3540,13 +3524,9 @@ Return ONLY a JSON array, no markdown:
       // Show error message instead of fallback math question
       const errorMsg = e.message || "Unknown error";
       if (errorMsg.includes("NO_API_KEY") || errorMsg.includes("API key")) {
-        alert(lang === "zh"
-          ? "请先设置API Key才能使用AIQuiz功能。点击右上角的🔑按钮设置。"
-          : "Please set up your API Key first. Click the 🔑 button in the top right to configure.");
+        alert("Please set up your API Key first. Click the 🔑 button in the top right to configure.");
       } else {
-        alert(lang === "zh"
-          ? `AI生成题目失败: ${errorMsg}`
-          : `AI quiz generation failed: ${errorMsg}`);
+        alert(`AI quiz generation failed: ${errorMsg}`);
       }
       setStarted(false);
     }
@@ -3783,7 +3763,7 @@ function ExamView({ chapter, book, nav, embedded, onAddError, t, lang, subject =
     const subjectName = getSubjectName();
     const examBoard = isMath ? "Cambridge" : "Pearson Edexcel";
 
-    const system = `You are a Pearson Edexcel International A-Level (IAL) ${subjectName} examiner. Generate exam questions exactly like a real ${examBoard} paper. JSON only, no markdown.${lang === "zh" ? " Write ALL content including questions, options, solutions in Simplified Chinese (简体中文)." : ""}`;
+    const system = `You are a Pearson Edexcel International A-Level (IAL) ${subjectName} examiner. Generate exam questions exactly like a real ${examBoard} paper. JSON only, no markdown.$""`;
     const prompt = `Create ${NUM_QUESTIONS} ${difficulty === "hard" ? "high difficulty exam-style" : "medium difficulty exam-style"} multiple-choice questions for "${chTitle}" IAL ${subjectName}.
 
 Topics: ${keyPoints}
@@ -4053,7 +4033,7 @@ Return ONLY JSON array:
     return (
       <div style={styles.pageWrap}>
         <h2 style={styles.pageTitle}>{t.mockTitle}</h2>
-        <p style={styles.pageDesc}>{isMath ? t.mockDesc : (lang === "zh" ? "基于历年真题的模拟考试" : "Realistic mock exams based on past papers")}</p>
+        <p style={styles.pageDesc}>{isMath ? t.mockDesc : "Realistic mock exams based on past papers"}</p>
         {loading && <LoadingSpinner message={t.loadingPaper} />}
         <div style={styles.papersGrid}>
           {papers.map((paper, i) => (
@@ -4196,7 +4176,7 @@ function ErrorBookView({ errors, onClear, nav, t, lang, subject = "mathematics" 
     setLoadingExp(true);
     setExplanation("");
     const text = await callAI(
-      `You are an A-Level ${subjectName} tutor. Explain the concept clearly and concisely for a student who got this wrong.${lang === "zh" ? " 请完全使用简体中文回复。" : ""}`,
+      `You are an A-Level ${subjectName} tutor. Explain the concept clearly and concisely for a student who got this wrong.$""`,
       `Student got this wrong:\nQuestion: ${err.question}\nTheir answer: ${err.userAnswer}\nCorrect answer: ${err.correct}\nSolution: ${err.solution}\n\nProvide: 1) Where they went wrong, 2) The key concept, 3) A tip to remember it`
     );
     setExplanation(text);
