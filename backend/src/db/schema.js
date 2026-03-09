@@ -273,3 +273,99 @@ export const aiConversations = pgTable('ai_conversations', {
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 })
+
+// ============================================================
+// 考试系统相关表（Phase 4 新增）
+// ============================================================
+
+// 考试记录表
+export const exams = pgTable('exams', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  questionSetId: integer('question_set_id').notNull().references(() => questionSets.id, { onDelete: 'cascade' }),
+
+  // 考试类型和模式
+  type: varchar('type', { length: 50 }).notNull(), // 'chapter_test' | 'unit_test' | 'mock_exam' | 'diagnostic' | 'real_exam'
+  mode: varchar('mode', { length: 20 }).notNull(), // 'practice' | 'exam' | 'challenge'
+  status: varchar('status', { length: 20 }).notNull().default('in_progress'), // 'in_progress' | 'submitted' | 'graded'
+
+  // 考试配置
+  timeLimit: integer('time_limit'), // 时间限制（秒）
+  allowReview: boolean('allow_review').default(true), // 是否允许返回修改答案
+
+  // 答题数据
+  answers: jsonb('answers').notNull().default('{}'), // { questionId: userAnswer }
+  markedQuestions: jsonb('marked_questions').default('[]'), // [questionId] 标记的题目
+
+  // 时间记录
+  startedAt: timestamp('started_at').notNull().defaultNow(),
+  submittedAt: timestamp('submitted_at'),
+  timeSpent: integer('time_spent'), // 实际用时（秒）
+
+  // 成绩数据
+  totalScore: real('total_score'),
+  maxScore: real('max_score'),
+  correctCount: integer('correct_count'),
+  totalCount: integer('total_count'),
+
+  // 统计分析
+  difficultyStats: jsonb('difficulty_stats'), // { easy: {correct: 5, total: 10}, medium: {...}, hard: {...} }
+  topicStats: jsonb('topic_stats'), // { topicId: {correct: 3, total: 5} }
+  typeStats: jsonb('type_stats'), // { multiple_choice: {correct: 8, total: 10}, ... }
+
+  // AI 评价
+  aiFeedback: jsonb('ai_feedback'), // { overall: "...", strengths: [...], weaknesses: [...], suggestions: [...] }
+
+  // 防作弊记录
+  tabSwitchCount: integer('tab_switch_count').default(0), // 切换标签页次数
+  focusLostCount: integer('focus_lost_count').default(0), // 失焦次数
+
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+// 考试逐题结果表
+export const examQuestionResults = pgTable('exam_question_results', {
+  id: serial('id').primaryKey(),
+  examId: integer('exam_id').notNull().references(() => exams.id, { onDelete: 'cascade' }),
+  questionId: integer('question_id').notNull().references(() => questions.id, { onDelete: 'cascade' }),
+
+  // 答题数据
+  userAnswer: jsonb('user_answer').notNull(),
+  isCorrect: boolean('is_correct').notNull(),
+  score: real('score').notNull(),
+  maxScore: real('max_score').notNull(),
+  timeSpent: integer('time_spent'), // 答题时长（秒）
+
+  // AI 点评
+  aiFeedback: jsonb('ai_feedback'), // { explanation: "...", mistakes: [...], suggestions: [...], relatedTopics: [...] }
+
+  createdAt: timestamp('created_at').defaultNow(),
+})
+
+// 学习建议表
+export const learningRecommendations = pgTable('learning_recommendations', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  examId: integer('exam_id').references(() => exams.id, { onDelete: 'set null' }),
+
+  // 推荐类型和优先级
+  type: varchar('type', { length: 50 }).notNull(), // 'chapter' | 'video' | 'practice' | 'review'
+  priority: integer('priority').notNull(), // 1-5，优先级
+
+  // 推荐内容
+  chapterId: varchar('chapter_id', { length: 50 }).references(() => chapters.id),
+  videoUrl: text('video_url'),
+  questionIds: jsonb('question_ids'), // [questionId]
+
+  // 推荐理由
+  reason: text('reason'),
+  weakTopics: jsonb('weak_topics'), // [topicName]
+
+  // 状态
+  status: varchar('status', { length: 20 }).default('pending'), // 'pending' | 'completed' | 'skipped'
+  completedAt: timestamp('completed_at'),
+
+  createdAt: timestamp('created_at').defaultNow(),
+  expiresAt: timestamp('expires_at'), // 推荐过期时间
+})

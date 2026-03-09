@@ -20,7 +20,7 @@ export async function generateQuestions(chapterId, config = {}) {
     difficulty = [2, 3, 4],              // 难度范围
     types = ['multiple_choice', 'calculation'], // 题目类型
     tags = [],                           // 知识点标签
-    language = 'zh',                     // 语言
+    language = 'en',                     // 语言
     userId = null                        // 创建人 ID
   } = config
 
@@ -141,7 +141,7 @@ ${tags.length > 0 ? `**必须覆盖的知识点**：${tags.join('、')}` : ''}
 1. **数量**：生成 ${count} 道题目
 2. **难度**：${difficultyText}
 3. **题目类型**：${typesText}
-4. **语言**：${language === 'zh' ? '中文' : '英文'}
+4. **语言**：${language === 'en' ? 'English' : 'Chinese'}
 
 ## 质量标准
 
@@ -312,7 +312,7 @@ export async function previewGenerateQuestions(chapterId, config = {}) {
     difficulty = [2, 3, 4],
     types = ['multiple_choice', 'calculation'],
     tags = [],
-    language = 'zh'
+    language = 'en'
   } = config
 
   console.log(`👀 预览生成题目: 章节=${chapterId}, 数量=${count}`)

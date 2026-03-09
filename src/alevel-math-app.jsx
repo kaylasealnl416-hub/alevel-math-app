@@ -2442,14 +2442,6 @@ export default function ALevelMathApp() {
                 </button>
               ))}
             </nav>
-            {/* Language toggle */}
-            <button
-              onClick={() => setLang(l => l === "en" ? "zh" : "en")}
-              style={styles.langToggleBtn}
-              title="Switch language / 切换语言"
-            >
-              {lang === "en" ? "🌐 中文" : "🌐 English"}
-            </button>
             {/* API Key settings */}
             <button
               onClick={() => { setApiKeyInput(""); setMiniMaxApiKeyInput(""); setShowApiModal(true); }}

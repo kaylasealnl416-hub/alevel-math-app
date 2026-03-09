@@ -9,7 +9,7 @@ export default function AssistantMessage({ content, timestamp, metadata }) {
   const formatTime = (ts) => {
     if (!ts) return ''
     const date = new Date(ts)
-    return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+    return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
   }
 
   return (

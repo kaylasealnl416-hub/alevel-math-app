@@ -1,70 +1,65 @@
 // ============================================================
-// 题目卡片组件
-// 显示题目内容，支持 LaTeX 渲染
+// Question Card Component
+// Display question content with LaTeX rendering support
 // ============================================================
 
 import React from 'react'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
+import { getEnglishContent } from '../utils/content'
 import '../styles/QuestionCard.css'
 
 const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = false }) => {
-  // 渲染 LaTeX 公式
+  // Render LaTeX formulas
   const renderLatex = (text) => {
     if (!text) return ''
 
     try {
-      // 匹配 $...$ 或 $$...$$ 格式的 LaTeX
+      // Match $...$ or $$...$$ format LaTeX
       return text.replace(/\$\$(.+?)\$\$/g, (match, latex) => {
         return katex.renderToString(latex, { displayMode: true, throwOnError: false })
       }).replace(/\$(.+?)\$/g, (match, latex) => {
         return katex.renderToString(latex, { displayMode: false, throwOnError: false })
       })
     } catch (error) {
-      console.error('LaTeX 渲染失败:', error)
+      console.error('LaTeX rendering failed:', error)
       return text
     }
   }
 
-  // 获取题目内容（支持多语言）
-  const getContent = (content) => {
-    if (typeof content === 'string') return content
-    return content?.zh || content?.en || ''
-  }
-
-  // 获取难度标签
+  // Get difficulty label
   const getDifficultyLabel = (difficulty) => {
     const labels = {
-      1: { text: '非常简单', color: '#10b981' },
-      2: { text: '简单', color: '#3b82f6' },
-      3: { text: '中等', color: '#f59e0b' },
-      4: { text: '困难', color: '#ef4444' },
-      5: { text: '非常困难', color: '#991b1b' }
+      1: { text: 'Very Easy', color: '#10b981' },
+      2: { text: 'Easy', color: '#3b82f6' },
+      3: { text: 'Medium', color: '#f59e0b' },
+      4: { text: 'Hard', color: '#ef4444' },
+      5: { text: 'Very Hard', color: '#991b1b' }
     }
     return labels[difficulty] || labels[3]
   }
 
-  // 获取题型标签
+  // Get question type label
   const getTypeLabel = (type) => {
     const labels = {
-      'multiple_choice': '选择题',
-      'fill_blank': '填空题',
-      'calculation': '计算题',
-      'proof': '证明题',
-      'short_answer': '简答题'
+      'multiple_choice': 'Multiple Choice',
+      'fill_blank': 'Fill in the Blank',
+      'calculation': 'Calculation',
+      'proof': 'Proof',
+      'short_answer': 'Short Answer'
     }
     return labels[type] || type
   }
 
   const difficultyInfo = getDifficultyLabel(question.difficulty)
-  const content = getContent(question.content)
+  const content = getEnglishContent(question.content)
 
   return (
     <div className="question-card">
-      {/* 题目头部 */}
+      {/* Question header */}
       <div className="question-header">
         <div className="question-number">
-          第 {questionNumber} / {totalQuestions} 题
+          Question {questionNumber} / {totalQuestions}
         </div>
         <div className="question-meta">
           <span className="question-type">{getTypeLabel(question.type)}</span>
@@ -77,14 +72,14 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = f
         </div>
       </div>
 
-      {/* 题目内容 */}
+      {/* Question content */}
       <div className="question-content">
         <div
           className="question-text"
           dangerouslySetInnerHTML={{ __html: renderLatex(content) }}
         />
 
-        {/* 选择题选项 */}
+        {/* Multiple choice options */}
         {question.type === 'multiple_choice' && question.options && (
           <div className="question-options">
             {question.options.map((option, index) => (
@@ -99,7 +94,7 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = f
         )}
       </div>
 
-      {/* 知识点标签 */}
+      {/* Topic tags */}
       {question.tags && question.tags.length > 0 && (
         <div className="question-tags">
           {question.tags.map((tag, index) => (
@@ -108,10 +103,10 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = f
         </div>
       )}
 
-      {/* 显示答案（仅在查看模式） */}
+      {/* Show answer (view mode only) */}
       {showAnswer && question.answer && (
         <div className="question-answer">
-          <div className="answer-label">✅ 正确答案</div>
+          <div className="answer-label">✅ Correct Answer</div>
           <div className="answer-content">
             {question.answer.latex ? (
               <div dangerouslySetInnerHTML={{ __html: renderLatex(question.answer.latex) }} />
@@ -121,8 +116,8 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = f
           </div>
           {question.answer.explanation && (
             <div className="answer-explanation">
-              <div className="explanation-label">💡 解析</div>
-              <div dangerouslySetInnerHTML={{ __html: renderLatex(getContent(question.answer.explanation)) }} />
+              <div className="explanation-label">💡 Explanation</div>
+              <div dangerouslySetInnerHTML={{ __html: renderLatex(getEnglishContent(question.answer.explanation)) }} />
             </div>
           )}
         </div>

@@ -422,7 +422,7 @@ app.post('/generate', async (c) => {
       difficulty = [2, 3, 4],
       types = ['multiple_choice', 'calculation'],
       tags = [],
-      language = 'zh'
+      language = 'en'
     } = body
 
     if (!chapterId) {
@@ -474,7 +474,7 @@ app.post('/generate/preview', async (c) => {
       difficulty = [2, 3, 4],
       types = ['multiple_choice', 'calculation'],
       tags = [],
-      language = 'zh'
+      language = 'en'
     } = body
 
     if (!chapterId) {

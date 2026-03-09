@@ -367,7 +367,7 @@ export async function saveGradingResults(userId, questionSetId, answers, grading
 function getContent(content) {
   if (!content) return ''
   if (typeof content === 'string') return content
-  return content.zh || content.en || ''
+  return content.en || content.zh || ''
 }
 
 export default {

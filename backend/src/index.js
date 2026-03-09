@@ -13,6 +13,7 @@ import authRoutes from './routes/auth.js'
 import questionsRoutes from './routes/questions.js'
 import questionSetsRoutes from './routes/questionSets.js'
 import userAnswersRoutes from './routes/userAnswers.js'
+import examsRoutes from './routes/exams.js'
 import { authMiddleware } from './middleware/auth.js'
 
 const app = new Hono()
@@ -53,6 +54,8 @@ app.use('/api/chat/*', authMiddleware)
 app.use('/api/questions/*', authMiddleware)
 app.use('/api/question-sets/*', authMiddleware)
 app.use('/api/user-answers/*', authMiddleware)
+// 注意：考试 API 暂时不需要认证（用于测试）
+// app.use('/api/exams/*', authMiddleware)
 
 app.route('/api/users', usersRoutes)
 app.route('/api/progress', progressRoutes)
@@ -61,6 +64,7 @@ app.route('/api/chat/messages', chatMessagesRoutes)
 app.route('/api/questions', questionsRoutes)
 app.route('/api/question-sets', questionSetsRoutes)
 app.route('/api/user-answers', userAnswersRoutes)
+app.route('/api/exams', examsRoutes)
 
 // 404处理
 app.notFound((c) => {
