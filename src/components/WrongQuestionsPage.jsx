@@ -39,36 +39,33 @@ function WrongQuestionsPage() {
       setLoading(true)
       setError(null)
 
-      // Get all graded exams for the user (userId is now from auth token)
-      const result = await get(`/api/exams?status=graded&limit=100`)
+      // Use dedicated wrong questions API
+      const result = await get(`/api/wrong-questions?userId=${userId}&limit=100`)
 
       if (result.success) {
-        // Extract wrong questions from all exams
-        const wrong = []
-
-        for (const exam of result.data.exams) {
-          const questions = exam.questionSet?.questions || []
-
-          questions.forEach(question => {
-            const userAnswer = exam.answers[question.id]
-            const isCorrect = userAnswer?.value === question.answer?.value
-
-            if (!isCorrect && userAnswer) {
-              wrong.push({
-                ...question,
-                examId: exam.id,
-                examType: exam.type,
-                examDate: exam.startedAt,
-                userAnswer: userAnswer,
-                attemptCount: 1 // Could track this in future
-              })
-            }
-          })
-        }
+        // Transform API response to component format
+        const wrong = result.data.wrongQuestions.map(wq => ({
+          id: wq.question.id,
+          type: wq.question.type,
+          difficulty: wq.question.difficulty,
+          content: wq.question.content,
+          options: wq.question.options,
+          answer: wq.question.answer,
+          explanation: wq.question.explanation,
+          tags: wq.question.tags,
+          chapterId: wq.question.chapterId,
+          examId: wq.examId,
+          examType: wq.exam.type,
+          examDate: wq.exam.createdAt,
+          userAnswer: wq.userAnswer,
+          aiFeedback: wq.aiFeedback,
+          chapter: wq.chapter,
+          attemptCount: 1
+        }))
 
         setWrongQuestions(wrong)
       } else {
-        setError(result.error.message)
+        setError(result.error?.message || 'Failed to load wrong questions')
       }
     } catch (err) {
       console.error('Failed to fetch wrong questions:', err)

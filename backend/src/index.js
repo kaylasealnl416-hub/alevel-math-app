@@ -16,6 +16,7 @@ import userAnswersRoutes from './routes/userAnswers.js'
 import examsRoutes from './routes/exams.js'
 import recommendationsRoutes from './routes/recommendations.js'
 import learningPlansRoutes from './routes/learningPlans.js'
+import wrongQuestionsRoutes from './routes/wrongQuestions.js'
 import { authMiddleware } from './middleware/auth.js'
 import { cacheMiddleware } from './middleware/cache.js'
 import { securityHeaders, requestSizeLimit } from './middleware/security.js'
@@ -98,6 +99,7 @@ app.route('/api/user-answers', userAnswersRoutes)
 app.route('/api/exams', examsRoutes)
 app.route('/api/recommendations', recommendationsRoutes)
 app.route('/api/learning-plans', learningPlansRoutes)
+app.route('/api/wrong-questions', wrongQuestionsRoutes)
 
 // 404处理
 app.notFound((c) => {
