@@ -427,7 +427,7 @@ function LearningPlanPage() {
                                 <div className="task-content">
                                   <div className="task-description">{task.description}</div>
                                   <div className="task-meta">
-                                 className="task-time">⏱️ {task.estimatedTime} min</span>
+                                    <span className="task-time">⏱️ {task.estimatedTime} min</span>
                                     <span className={`task-priority ${getPriorityClass(task.priority)}`}>
                                       {getPriorityLabel(task.priority)}
                                     </span>
