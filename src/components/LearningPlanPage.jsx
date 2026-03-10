@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { get, post, put } from '../utils/apiClient'
+import Loading from './common/Loading'
+import Toast from './common/Toast'
 import '../styles/LearningPlanPage.css'
 
 /**
@@ -12,7 +14,7 @@ import '../styles/LearningPlanPage.css'
  * - Track recommendation completion
  * - Show daily tasks and goals
  * - Progress visualization
- * - Toast notifications
+ * - Toast notifications (using global component)
  */
 
 function LearningPlanPage() {
@@ -200,21 +202,18 @@ function LearningPlanPage() {
   }
 
   if (loading) {
-    return (
-      <div className="learning-plan-loading">
-        <div className="spinner"></div>
-        <p>Loading your learning plan...</p>
-      </div>
-    )
+    return <Loading message="Loading your learning plan..." size="large" fullScreen />
   }
 
   return (
     <div className="learning-plan-page">
       {/* Toast Notification */}
       {toast && (
-        <div className={`toast toast-${toast.type}`}>
-          <span>{toast.message}</span>
-        </div>
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
       )}
 
       {/* Header */}

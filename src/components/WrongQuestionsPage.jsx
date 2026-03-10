@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import QuestionCard from './QuestionCard'
+import Loading from './common/Loading'
 import { get } from '../utils/apiClient'
 import '../styles/WrongQuestionsPage.css'
 
@@ -136,12 +137,7 @@ function WrongQuestionsPage() {
   }
 
   if (loading) {
-    return (
-      <div className="wrong-questions-loading">
-        <div className="spinner"></div>
-        <p>Loading wrong questions...</p>
-      </div>
-    )
+    return <Loading message="Loading wrong questions..." size="large" fullScreen />
   }
 
   if (error) {
