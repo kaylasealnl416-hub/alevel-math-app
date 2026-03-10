@@ -4,13 +4,15 @@ import { get, post, put } from '../utils/apiClient'
 import '../styles/LearningPlanPage.css'
 
 /**
- * Phase 4 Day 10: Learning Plan Page
+ * Phase 4 Day 10: Learning Plan Page (Optimized)
  *
  * Features:
  * - Display personalized learning recommendations
- * - Generate learning plans
+ * - Generate learning plans with progress tracking
  * - Track recommendation completion
  * - Show daily tasks and goals
+ * - Progress visualization
+ * - Toast notifications
  */
 
 function LearningPlanPage() {
@@ -22,10 +24,42 @@ function LearningPlanPage() {
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState(null)
   const [planDuration, setPlanDuration] = useState(7)
+  const [expandedRecs, setExpandedRecs] = useState({})
+  const [completedTasks, setCompletedTasks] = useState({})
+  const [toast, setToast] = useState(null)
 
   useEffect(() => {
     fetchRecommendations()
+    loadCompletedTasks()
   }, [])
+
+  // Toast notification
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 3000)
+  }
+
+  // Load completed tasks from localStorage
+  const loadCompletedTasks = () => {
+    try {
+      const saved = localStorage.getItem('completedTasks')
+      if (saved) {
+        setCompletedTasks(JSON.parse(saved))
+      }
+    } catch (err) {
+      console.error('Failed to load completed tasks:', err)
+    }
+  }
+
+  // Save completed tasks to localStorage
+  const saveCompletedTasks = (tasks) => {
+    try {
+      localStorage.setItem('completedTasks', JSON.stringify(tasks))
+      setCompletedTasks(tasks)
+    } catch (err) {
+      console.error('Failed to save completed tasks:', err)
+    }
+  }
 
   const fetchRecommendations = async () => {
     try {
@@ -74,13 +108,15 @@ function LearningPlanPage() {
       const result = await put(`/api/recommendations/${recId}/complete`)
 
       if (result.success) {
-        // Refresh recommendations
+        showToast('✓ Recommendation completed!', 'success')
         fetchRecommendations()
-        // Clear learning plan to regenerate
         setLearningPlan(null)
+      } else {
+        showToast('Failed to complete recommendation', 'error')
       }
     } catch (err) {
       console.error('Failed to complete recommendation:', err)
+      showToast('Failed to complete recommendation', 'error')
     }
   }
 
@@ -89,12 +125,46 @@ function LearningPlanPage() {
       const result = await put(`/api/recommendations/${recId}/skip`)
 
       if (result.success) {
+        showToast('Recommendation skipped', 'info')
         fetchRecommendations()
         setLearningPlan(null)
+      } else {
+        showToast('Failed to skip recommendation', 'error')
       }
     } catch (err) {
       console.error('Failed to skip recommendation:', err)
+      showToast('Failed to skip recommendation', 'error')
     }
+  }
+
+  const toggleRecExpanded = (recId) => {
+    setExpandedRecs(prev => ({
+      ...prev,
+      [recId]: !prev[recId]
+    }))
+  }
+
+  const toggleTaskComplete = (dayIndex, taskIndex) => {
+    const taskKey = `${dayIndex}-${taskIndex}`
+    const newCompleted = {
+      ...completedTasks,
+      [taskKey]: !completedTasks[taskKey]
+    }
+    saveCompletedTasks(newCompleted)
+
+    if (newCompleted[taskKey]) {
+      showToast('✓ Task completed!', 'success')
+    }
+  }
+
+  const getCompletionStats = () => {
+    if (!learningPlan) return { completed: 0, total: 0, percentage: 0 }
+
+    const total = learningPlan.totalTasks || 0
+    const completed = Object.values(completedTasks).filter(Boolean).length
+    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0
+
+    return { completed, total, percentage }
   }
 
   const getTypeIcon = (type) => {
@@ -140,6 +210,13 @@ function LearningPlanPage() {
 
   return (
     <div className="learning-plan-page">
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`toast toast-${toast.type}`}>
+          <span>{toast.message}</span>
+        </div>
+      )}
+
       {/* Header */}
       <div className="learning-plan-header">
         <button className="btn-back" onClick={() => navigate('/')}>
@@ -153,6 +230,27 @@ function LearningPlanPage() {
         <div className="error-message">
           <span>⚠️</span>
           <p>{error}</p>
+        </div>
+      )}
+
+      {/* Progress Overview */}
+      {learningPlan && (
+        <div className="progress-overview">
+          <div className="progress-card">
+            <div className="progress-header">
+              <h3>📊 Overall Progress</h3>
+              <span className="progress-percentage">{getCompletionStats().percentage}%</span>
+            </div>
+            <div className="progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${getCompletionStats().percentage}%` }}
+              ></div>
+            </div>
+            <div className="progress-stats">
+              <span>{getCompletionStats().completed} / {getCompletionStats().total} tasks completed</span>
+            </div>
+          </div>
         </div>
       )}
 
@@ -175,50 +273,63 @@ function LearningPlanPage() {
         ) : (
           <div className="recommendations-list">
             {recommendations.map((rec) => (
-              <div key={rec.id} className={`recommendation-card ${getPriorityClass(rec.priority)}`}>
-                <div className="rec-header">
+              <div key={rec.id} className={`recommendation-card ${getPriorityClass(rec.priority)} ${expandedRecs[rec.id] ? 'expanded' : ''}`}>
+                <div className="rec-header" onClick={() => toggleRecExpanded(rec.id)}>
                   <div className="rec-type">
                     <span className="type-icon">{getTypeIcon(rec.type)}</span>
                     <span className="type-label">{getTypeLabel(rec.type)}</span>
                   </div>
-                  <span className="priority-badge">{getPriorityLabel(rec.priority)}</span>
+                  <div className="rec-header-right">
+                    <span className="priority-badge">{getPriorityLabel(rec.priority)}</span>
+                    <span className="expand-icon">{expandedRecs[rec.id] ? '▼' : '▶'}</span>
+                  </div>
                 </div>
 
                 <div className="rec-content">
                   <p className="rec-reason">{rec.reason}</p>
 
-                  {rec.weakTopics && rec.weakTopics.length > 0 && (
-                    <div className="weak-topics">
-                      <span className="label">薄弱知识点：</span>
-                      <div className="topics-list">
-                        {rec.weakTopics.map((topic, i) => (
-                          <span key={i} className="topic-tag">{topic}</span>
-                        ))}
+                  {expandedRecs[rec.id] && (
+                    <>
+                      {rec.weakTopics && rec.weakTopics.length > 0 && (
+                        <div className="weak-topics">
+                          <span className="label">薄弱知识点：</span>
+                          <div className="topics-list">
+                            {rec.weakTopics.map((topic, i) => (
+                              <span key={i} className="topic-tag">{topic}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {rec.chapter && (
+                        <div className="chapter-info">
+                          <span className="label">推荐章节：</span>
+                          <span className="chapter-title">{rec.chapter.title?.zh || rec.chapter.title}</span>
+                        </div>
+                      )}
+
+                      <div className="rec-actions">
+                        <button
+                          className="btn-complete"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            completeRecommendation(rec.id)
+                          }}
+                        >
+                          ✓ Mark as Done
+                        </button>
+                        <button
+                          className="btn-skip"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            skipRecommendation(rec.id)
+                          }}
+                        >
+                          Skip
+                        </button>
                       </div>
-                    </div>
+                    </>
                   )}
-
-                  {rec.chapter && (
-                    <div className="chapter-info">
-                      <span className="label">推荐章节：</span>
-                      <span className="chapter-title">{rec.chapter.title?.zh || rec.chapter.title}</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="rec-actions">
-                  <button
-                    className="btn-complete"
-                    onClick={() => completeRecommendation(rec.id)}
-                  >
-                    ✓ Mark as Done
-                  </button>
-                  <button
-                    className="btn-skip"
-                    onClick={() => skipRecommendation(rec.id)}
-                  >
-                    Skip
-                  </button>
                 </div>
               </div>
             ))}
@@ -265,41 +376,71 @@ function LearningPlanPage() {
                 </div>
 
                 <div className="plan-timeline">
-                  {learningPlan.plan.map((day) => (
-                    <div key={day.day} className="day-card">
-                      <div className="day-header">
-                        <div className="day-number">Day {day.day}</div>
-                        <div className="day-date">
-                          {new Date(day.date).toLocaleDateString('zh-CN', {
-                            month: 'short',
-                            day: 'numeric'
+                  {learningPlan.plan.map((day, dayIndex) => {
+                    const dayTasks = day.tasks.length
+                    const dayCompleted = day.tasks.filter((_, taskIndex) =>
+                      completedTasks[`${dayIndex}-${taskIndex}`]
+                    ).length
+                    const dayProgress = dayTasks > 0 ? Math.round((dayCompleted / dayTasks) * 100) : 0
+
+                    return (
+                      <div key={day.day} className="day-card">
+                        <div className="day-header">
+                          <div className="day-info">
+                            <div className="day-number">Day {day.day}</div>
+                            <div className="day-date">
+                              {new Date(day.date).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric'
+                              })}
+                            </div>
+                          </div>
+                          <div className="day-progress-mini">
+                            <span className="day-progress-text">{dayCompleted}/{dayTasks}</span>
+                            <div className="day-progress-circle" style={{
+                              background: `conic-gradient(#4CAF50 ${dayProgress * 3.6}deg, #e0e0e0 0deg)`
+                            }}>
+                              <div className="day-progress-inner">{dayProgress}%</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="day-goal">
+                          <span className="goal-icon">🎯</span>
+                          <span className="goal-text">{day.goal}</span>
+                        </div>
+
+                        <div className="day-tasks">
+                          {day.tasks.map((task, taskIndex) => {
+                            const taskKey = `${dayIndex}-${taskIndex}`
+                            const isCompleted = completedTasks[taskKey]
+
+                            return (
+                              <div
+                                key={taskIndex}
+                                className={`task-item ${isCompleted ? 'completed' : ''}`}
+                                onClick={() => toggleTaskComplete(dayIndex, taskIndex)}
+                              >
+                                <div className="task-checkbox">
+                                  {isCompleted ? '✓' : '○'}
+                                </div>
+                                <span className="task-icon">{getTypeIcon(task.type)}</span>
+                                <div className="task-content">
+                                  <div className="task-description">{task.description}</div>
+                                  <div className="task-meta">
+                                 className="task-time">⏱️ {task.estimatedTime} min</span>
+                                    <span className={`task-priority ${getPriorityClass(task.priority)}`}>
+                                      {getPriorityLabel(task.priority)}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            )
                           })}
                         </div>
                       </div>
-
-                      <div className="day-goal">
-                        <span className="goal-icon">🎯</span>
-                        <span className="goal-text">{day.goal}</span>
-                      </div>
-
-                      <div className="day-tasks">
-                        {day.tasks.map((task, i) => (
-                          <div key={i} className="task-item">
-                            <span className="task-icon">{getTypeIcon(task.type)}</span>
-                            <div className="task-content">
-                              <div className="task-description">{task.description}</div>
-                              <div className="task-meta">
-                                <span className="task-time">⏱️ {task.estimatedTime} min</span>
-                                <span className={`task-priority ${getPriorityClass(task.priority)}`}>
-                                  {getPriorityLabel(task.priority)}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
             )}
