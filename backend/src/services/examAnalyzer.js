@@ -26,12 +26,18 @@ export async function generateExamAnalysis(exam, questions) {
       }
     ]
 
-    const response = await callAI(messages, {
-      temperature: 0.7,
-      max_tokens: 2000
-    })
+    // 添加 30 秒超时控制
+    const response = await Promise.race([
+      callAI(messages, {
+        temperature: 0.7,
+        max_tokens: 2000
+      }),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('AI 调用超时')), 30000)
+      )
+    ])
 
-    // Parse AI response
+    // Parse AI response with fallback
     const feedback = parseAIResponse(response)
 
     console.log(`✅ AI analysis generated successfully`)
@@ -39,7 +45,9 @@ export async function generateExamAnalysis(exam, questions) {
 
   } catch (error) {
     console.error('❌ Failed to generate AI analysis:', error)
-    throw error
+
+    // 返回降级的默认反馈
+    return getDefaultFeedback(exam)
   }
 }
 
@@ -204,16 +212,66 @@ function parseAIResponse(response) {
     // Try to extract JSON from markdown code blocks
     const jsonMatch = response.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/)
     if (jsonMatch) {
-      return JSON.parse(jsonMatch[1])
+      try {
+        return JSON.parse(jsonMatch[1])
+      } catch (e2) {
+        console.error('Failed to parse JSON from code block:', e2)
+      }
     }
 
     // Try to find JSON object in text
     const objectMatch = response.match(/\{[\s\S]*\}/)
     if (objectMatch) {
-      return JSON.parse(objectMatch[0])
+      try {
+        return JSON.parse(objectMatch[0])
+      } catch (e3) {
+        console.error('Failed to parse JSON from text:', e3)
+      }
     }
 
+    console.error('Could not parse AI response as JSON, using default feedback')
     throw new Error('Could not parse AI response as JSON')
+  }
+}
+
+/**
+ * Get default feedback when AI fails
+ */
+function getDefaultFeedback(exam) {
+  const percentage = exam.totalCount > 0
+    ? Math.round((exam.correctCount / exam.totalCount) * 100)
+    : 0
+
+  let overall = '考试已完成。'
+  let encouragement = '继续努力！'
+
+  if (percentage >= 90) {
+    overall = '表现优秀！你对大部分知识点掌握得很好。'
+    encouragement = '保持这个水平，你一定能取得好成绩！'
+  } else if (percentage >= 70) {
+    overall = '表现良好，但还有提升空间。'
+    encouragement = '继续加油，重点复习错题！'
+  } else if (percentage >= 60) {
+    overall = '基础掌握尚可，需要加强练习。'
+    encouragement = '多做练习，你会进步的！'
+  } else {
+    overall = '需要系统复习基础知识。'
+    encouragement = '不要气馁，从基础开始，一步一步来！'
+  }
+
+  return {
+    overall,
+    strengths: ['完成了考试', '展现了学习态度'],
+    weaknesses: [],
+    suggestions: [
+      {
+        type: 'review',
+        priority: 5,
+        description: '复习错题，理解错误原因',
+        reason: '从错误中学习是提高的最快方式'
+      }
+    ],
+    encouragement
   }
 }
 

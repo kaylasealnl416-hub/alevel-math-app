@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ScoreCard from './exam/ScoreCard'
+import { get } from '../utils/apiClient'
 import '../styles/ExamResultPage.css'
 
 /**
@@ -12,8 +13,6 @@ import '../styles/ExamResultPage.css'
  * - Display question-by-question results
  * - Provide detailed explanations
  */
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
 function ExamResultPage() {
   const { examId } = useParams()
@@ -41,8 +40,7 @@ function ExamResultPage() {
       setLoading(true)
       setError(null)
 
-      const response = await fetch(`${API_BASE}/api/exams/${examId}`)
-      const result = await response.json()
+      const result = await get(`/api/exams/${examId}`)
 
       if (result.success) {
         setExam(result.data)
@@ -62,8 +60,7 @@ function ExamResultPage() {
     try {
       setLoadingFeedback(true)
 
-      const response = await fetch(`${API_BASE}/api/exams/${examId}/feedback`)
-      const result = await response.json()
+      const result = await get(`/api/exams/${examId}/feedback`)
 
       if (result.success) {
         setAiFeedback(result.data)

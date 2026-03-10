@@ -1,12 +1,18 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
 import { exams, examQuestionResults, questionSets, questions, users } from '../db/schema.js'
-import { eq, and, desc, sql } from 'drizzle-orm'
+import { eq, and, desc, inArray } from 'drizzle-orm'
 import * as examService from '../services/examService.js'
 import * as examGrader from '../services/examGrader.js'
 import * as examAnalyzer from '../services/examAnalyzer.js'
+import { authMiddleware } from '../middleware/auth.js'
+import { rateLimit, rateLimitPresets } from '../middleware/rateLimit.js'
+import { validate, createExamSchema, saveAnswerSchema, markQuestionSchema, focusLostSchema } from '../utils/validation.js'
 
 const app = new Hono()
+
+// 应用认证中间件到所有路由
+app.use('/*', authMiddleware)
 
 /**
  * Phase 4: 考试管理 API
@@ -25,27 +31,17 @@ const app = new Hono()
 // ============================================================
 // 1. 创建考试
 // ============================================================
-app.post('/', async (c) => {
+app.post('/', validate(createExamSchema), async (c) => {
   try {
-    const body = await c.req.json()
-    const { userId, questionSetId, type, mode, timeLimit, allowReview } = body
+    // 从认证中间件获取用户 ID
+    const authenticatedUserId = c.get('userId')
+    // 从验证中间件获取验证后的数据
+    const validated = c.get('validated')
 
-    // 验证必填字段
-    if (!userId || !questionSetId || !type || !mode) {
-      return c.json({
-        success: false,
-        error: { message: '缺少必填字段：userId, questionSetId, type, mode' }
-      }, 400)
-    }
-
-    // 使用 examService 创建考试
+    // 使用认证的用户 ID 创建考试
     const result = await examService.createExam({
-      userId,
-      questionSetId,
-      type,
-      mode,
-      timeLimit,
-      allowReview
+      userId: authenticatedUserId,
+      ...validated
     })
 
     if (!result.success) {
@@ -93,15 +89,15 @@ app.get('/:id', async (c) => {
 // ============================================================
 app.get('/', async (c) => {
   try {
-    const userId = c.req.query('userId')
+    // 从认证中间件获取用户 ID，只允许查询自己的考试
+    const authenticatedUserId = c.get('userId')
     const status = c.req.query('status')
     const type = c.req.query('type')
     const limit = parseInt(c.req.query('limit') || '20')
     const offset = parseInt(c.req.query('offset') || '0')
 
-    // 构建查询条件
-    const conditions = []
-    if (userId) conditions.push(eq(exams.userId, parseInt(userId)))
+    // 构建查询条件，强制使用认证用户 ID
+    const conditions = [eq(exams.userId, authenticatedUserId)]
     if (status) conditions.push(eq(exams.status, status))
     if (type) conditions.push(eq(exams.type, type))
 
@@ -140,21 +136,13 @@ app.get('/', async (c) => {
 // ============================================================
 // 4. 保存答案（自动保存）
 // ============================================================
-app.put('/:id/answers', async (c) => {
+app.put('/:id/answers', validate(saveAnswerSchema), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
-    const body = await c.req.json()
-    const { questionId, answer } = body
-
-    if (!questionId || answer === undefined) {
-      return c.json({
-        success: false,
-        error: { message: '缺少必填字段：questionId, answer' }
-      }, 400)
-    }
+    const validated = c.get('validated')
 
     // 使用 examService 保存答案
-    const result = await examService.saveAnswer(examId, questionId, answer)
+    const result = await examService.saveAnswer(examId, validated.questionId, validated.answer)
 
     if (!result.success) {
       return c.json(result, 400)
@@ -174,7 +162,7 @@ app.put('/:id/answers', async (c) => {
 // ============================================================
 // 5. 提交考试
 // ============================================================
-app.post('/:id/submit', async (c) => {
+app.post('/:id/submit', rateLimit(rateLimitPresets.moderate), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
 
@@ -247,21 +235,13 @@ app.get('/:id/result', async (c) => {
 // ============================================================
 // 7. 标记题目
 // ============================================================
-app.put('/:id/mark', async (c) => {
+app.put('/:id/mark', validate(markQuestionSchema), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
-    const body = await c.req.json()
-    const { questionId, marked } = body
-
-    if (!questionId || marked === undefined) {
-      return c.json({
-        success: false,
-        error: { message: '缺少必填字段：questionId, marked' }
-      }, 400)
-    }
+    const validated = c.get('validated')
 
     // 使用 examService 标记题目
-    const result = await examService.markQuestion(examId, questionId, marked)
+    const result = await examService.markQuestion(examId, validated.questionId, validated.marked)
 
     if (!result.success) {
       return c.json(result, 400)
@@ -281,14 +261,13 @@ app.put('/:id/mark', async (c) => {
 // ============================================================
 // 8. 记录失焦事件（防作弊）
 // ============================================================
-app.post('/:id/focus-lost', async (c) => {
+app.post('/:id/focus-lost', validate(focusLostSchema), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
-    const body = await c.req.json()
-    const { type } = body // 'tab_switch' | 'focus_lost'
+    const validated = c.get('validated')
 
     // 使用 examService 记录作弊事件
-    const result = await examService.recordCheatingEvent(examId, type)
+    const result = await examService.recordCheatingEvent(examId, validated.type)
 
     if (!result.success) {
       return c.json(result, 400)
@@ -452,7 +431,7 @@ app.get('/:id/report', async (c) => {
 // ============================================================
 // 15. Generate AI Feedback for Exam
 // ============================================================
-app.post('/:id/analyze', async (c) => {
+app.post('/:id/analyze', rateLimit(rateLimitPresets.strict), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
 
@@ -486,7 +465,7 @@ app.post('/:id/analyze', async (c) => {
     const examQuestions = await db
       .select()
       .from(questions)
-      .where(sql`${questions.id} = ANY(${questionSet.questionIds})`)
+      .where(inArray(questions.id, questionSet.questionIds))
 
     // Generate AI feedback
     const feedback = await examAnalyzer.generateExamAnalysis(exam, examQuestions)
@@ -544,7 +523,7 @@ app.get('/:id/feedback', async (c) => {
       const examQuestions = await db
         .select()
         .from(questions)
-        .where(sql`${questions.id} = ANY(${questionSet.questionIds})`)
+        .where(inArray(questions.id, questionSet.questionIds))
 
       // Generate feedback
       const feedback = await examAnalyzer.generateExamAnalysis(exam, examQuestions)

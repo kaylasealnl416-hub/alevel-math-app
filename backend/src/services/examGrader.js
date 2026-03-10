@@ -14,147 +14,148 @@ import { gradeAnswer } from './answerGrader.js'
  */
 
 /**
- * 批改整个考试
+ * 批改整个考试（使用事务和并行处理优化）
  */
 export async function gradeExam(examId) {
   try {
     console.log(`开始批改考试 ${examId}...`)
 
-    // 1. 查询考试
-    const [exam] = await db.select()
-      .from(exams)
-      .where(eq(exams.id, examId))
-      .limit(1)
+    // 使用事务确保数据一致性
+    return await db.transaction(async (tx) => {
+      // 1. 查询考试
+      const [exam] = await tx.select()
+        .from(exams)
+        .where(eq(exams.id, examId))
+        .limit(1)
 
-    if (!exam) {
-      throw new Error('考试不存在')
-    }
-
-    if (exam.status !== 'submitted') {
-      throw new Error('考试尚未提交，无法批改')
-    }
-
-    // 2. 查询试卷和题目
-    const [questionSet] = await db.select()
-      .from(questionSets)
-      .where(eq(questionSets.id, exam.questionSetId))
-      .limit(1)
-
-    const questionIds = questionSet.questionIds
-    const questionList = await db.select()
-      .from(questions)
-      .where(inArray(questions.id, questionIds))
-
-    // 3. 批改每道题
-    const results = []
-    let totalScore = 0
-    let maxScore = 0
-    let correctCount = 0
-
-    for (const question of questionList) {
-      const userAnswer = exam.answers[question.id]
-
-      // 如果用户没有作答，记录为错误
-      if (userAnswer === undefined || userAnswer === null) {
-        const result = {
-          examId,
-          questionId: question.id,
-          userAnswer: null,
-          isCorrect: false,
-          score: 0,
-          maxScore: 10,
-          timeSpent: null,
-          aiFeedback: {
-            message: '未作答',
-            correctAnswer: question.answer?.value
-          }
-        }
-        results.push(result)
-        maxScore += 10
-        continue
+      if (!exam) {
+        throw new Error('考试不存在')
       }
 
-      // 批改答案
-      try {
-        const gradeResult = await gradeAnswer({
-          questionId: question.id,
-          userAnswer: userAnswer.value || userAnswer
-        })
+      if (exam.status !== 'submitted') {
+        throw new Error('考试尚未提交，无法批改')
+      }
 
-        const result = {
-          examId,
-          questionId: question.id,
-          userAnswer: userAnswer,
-          isCorrect: gradeResult.isCorrect,
-          score: gradeResult.score,
-          maxScore: 10,
-          timeSpent: userAnswer.timeSpent || null,
-          aiFeedback: gradeResult.feedback
-        }
+      // 2. 查询试卷和题目
+      const [questionSet] = await tx.select()
+        .from(questionSets)
+        .where(eq(questionSets.id, exam.questionSetId))
+        .limit(1)
 
-        results.push(result)
-        totalScore += gradeResult.score
-        maxScore += 10
-        if (gradeResult.isCorrect) correctCount++
+      const questionIds = questionSet.questionIds
+      const questionList = await tx.select()
+        .from(questions)
+        .where(inArray(questions.id, questionIds))
 
-      } catch (error) {
-        console.error(`批改题目 ${question.id} 失败:`, error)
-        // 批改失败，给予部分分数
-        const result = {
-          examId,
-          questionId: question.id,
-          userAnswer: userAnswer,
-          isCorrect: false,
-          score: 0,
-          maxScore: 10,
-          timeSpent: null,
-          aiFeedback: {
-            message: '批改失败',
-            error: error.message
+      // 3. 并行批改所有题目（性能优化）
+      const gradePromises = questionList.map(async (question) => {
+        const userAnswer = exam.answers[question.id]
+
+        // 如果用户没有作答，记录为错误
+        if (userAnswer === undefined || userAnswer === null) {
+          return {
+            examId,
+            questionId: question.id,
+            userAnswer: null,
+            isCorrect: false,
+            score: 0,
+            maxScore: 10,
+            timeSpent: null,
+            aiFeedback: {
+              message: '未作答',
+              correctAnswer: question.answer?.value
+            }
           }
         }
-        results.push(result)
-        maxScore += 10
-      }
-    }
 
-    // 4. 保存逐题结果
-    if (results.length > 0) {
-      await db.insert(examQuestionResults).values(results)
-    }
+        // 批改答案
+        try {
+          const gradeResult = await gradeAnswer({
+            questionId: question.id,
+            userAnswer: userAnswer.value || userAnswer
+          })
 
-    // 5. 计算统计数据
-    const stats = await calculateExamStats(examId, questionList, results)
-
-    // 6. 更新考试记录
-    await db.update(exams)
-      .set({
-        status: 'graded',
-        totalScore,
-        maxScore,
-        correctCount,
-        totalCount: questionList.length,
-        difficultyStats: stats.difficultyStats,
-        topicStats: stats.topicStats,
-        typeStats: stats.typeStats,
-        updatedAt: new Date()
+          return {
+            examId,
+            questionId: question.id,
+            userAnswer: userAnswer,
+            isCorrect: gradeResult.isCorrect,
+            score: gradeResult.score,
+            maxScore: 10,
+            timeSpent: userAnswer.timeSpent || null,
+            aiFeedback: gradeResult.feedback
+          }
+        } catch (error) {
+          console.error(`批改题目 ${question.id} 失败:`, error)
+          // 批改失败，给予0分
+          return {
+            examId,
+            questionId: question.id,
+            userAnswer: userAnswer,
+            isCorrect: false,
+            score: 0,
+            maxScore: 10,
+            timeSpent: null,
+            aiFeedback: {
+              message: '批改失败',
+              error: error.message
+            }
+          }
+        }
       })
-      .where(eq(exams.id, examId))
 
-    console.log(`考试 ${examId} 批改完成: ${totalScore}/${maxScore} (${correctCount}/${questionList.length})`)
+      // 等待所有批改完成
+      const results = await Promise.all(gradePromises)
 
-    return {
-      success: true,
-      data: {
-        examId,
-        totalScore,
-        maxScore,
-        correctCount,
-        totalCount: questionList.length,
-        correctRate: Math.round((correctCount / questionList.length) * 100),
-        stats
+      // 4. 计算总分和统计
+      let totalScore = 0
+      let maxScore = 0
+      let correctCount = 0
+
+      for (const result of results) {
+        totalScore += result.score
+        maxScore += result.maxScore
+        if (result.isCorrect) correctCount++
       }
-    }
+
+      // 5. 保存逐题结果
+      if (results.length > 0) {
+        await tx.insert(examQuestionResults).values(results)
+      }
+
+      // 6. 计算统计数据
+      const stats = await calculateExamStats(examId, questionList, results)
+
+      // 7. 更新考试记录
+      await tx.update(exams)
+        .set({
+          status: 'graded',
+          totalScore,
+          maxScore,
+          correctCount,
+          totalCount: questionList.length,
+          difficultyStats: stats.difficultyStats,
+          topicStats: stats.topicStats,
+          typeStats: stats.typeStats,
+          updatedAt: new Date()
+        })
+        .where(eq(exams.id, examId))
+
+      console.log(`考试 ${examId} 批改完成: ${totalScore}/${maxScore} (${correctCount}/${questionList.length})`)
+
+      return {
+        success: true,
+        data: {
+          examId,
+          totalScore,
+          maxScore,
+          correctCount,
+          totalCount: questionList.length,
+          correctRate: Math.round((correctCount / questionList.length) * 100),
+          stats
+        }
+      }
+    })
 
   } catch (error) {
     console.error('批改考试失败：', error)
@@ -325,7 +326,7 @@ export async function getWrongQuestions(examId) {
     const questionIds = wrongResults.map(r => r.questionId)
     const questionList = await db.select()
       .from(questions)
-      .where(sql`${questions.id} = ANY(${questionIds})`)
+      .where(inArray(questions.id, questionIds))
 
     // 合并题目和结果
     const wrongQuestions = wrongResults.map(result => {
