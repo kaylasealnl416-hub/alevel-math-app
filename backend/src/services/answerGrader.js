@@ -46,7 +46,13 @@ export async function gradeAnswer(answer) {
  */
 function gradeMultipleChoice(question, userAnswer) {
   const correctAnswer = question.answer?.value
-  const isCorrect = userAnswer?.toUpperCase() === correctAnswer?.toUpperCase()
+
+  // 处理答案格式：可能是字符串 "A" 或对象 { answer: "A" }
+  const userAnswerValue = typeof userAnswer === 'string'
+    ? userAnswer
+    : userAnswer?.answer || userAnswer?.value
+
+  const isCorrect = userAnswerValue?.toUpperCase() === correctAnswer?.toUpperCase()
 
   return {
     isCorrect,
@@ -65,8 +71,13 @@ function gradeMultipleChoice(question, userAnswer) {
 function gradeFillBlank(question, userAnswer) {
   const correctAnswer = question.answer?.value
 
+  // 处理答案格式：可能是字符串或对象
+  const userAnswerValue = typeof userAnswer === 'string'
+    ? userAnswer
+    : userAnswer?.answer || userAnswer?.value
+
   // 标准化答案（去除空格、统一大小写）
-  const normalizedUser = userAnswer?.trim().toLowerCase()
+  const normalizedUser = userAnswerValue?.trim().toLowerCase()
   const normalizedCorrect = correctAnswer?.trim().toLowerCase()
 
   const isCorrect = normalizedUser === normalizedCorrect
@@ -88,8 +99,13 @@ function gradeFillBlank(question, userAnswer) {
 function gradeCalculation(question, userAnswer) {
   const correctAnswer = question.answer?.value
 
+  // 处理答案格式：可能是字符串、数字或对象
+  const userAnswerValue = typeof userAnswer === 'object'
+    ? (userAnswer?.answer || userAnswer?.value)
+    : userAnswer
+
   // 尝试数值比较
-  const userNum = parseFloat(userAnswer)
+  const userNum = parseFloat(userAnswerValue)
   const correctNum = parseFloat(correctAnswer)
 
   let isCorrect = false

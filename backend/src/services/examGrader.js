@@ -56,7 +56,7 @@ export async function gradeExam(examId) {
           return {
             examId,
             questionId: question.id,
-            userAnswer: null,
+            userAnswer: {},  // 空对象而不是 null，避免数据库 NOT NULL 约束
             isCorrect: false,
             score: 0,
             maxScore: 10,
