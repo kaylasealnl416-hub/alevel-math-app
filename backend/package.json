@@ -15,8 +15,7 @@
     "db:seed": "bun src/db/seed.js",
     "check:env": "node check-env.js",
     "check:production": "node check-production.js",
-    "seed:test": "node seed-test-data.js",
-    "prestart": "node check-env.js"
+    "seed:test": "node seed-test-data.js"
   },
   "devDependencies": {
     "@types/bun": "latest",
