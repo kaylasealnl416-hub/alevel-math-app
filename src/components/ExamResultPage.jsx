@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ScoreCard from './exam/ScoreCard'
 import AIFeedback from './exam/AIFeedback'
+import Loading from './common/Loading'
+import Toast from './common/Toast'
 import { get } from '../utils/apiClient'
 import '../styles/ExamResultPage.css'
 
 /**
- * Phase 4 Week 2 Day 6: Exam Result Page
+ * Phase 4 Week 2 Day 6: Exam Result Page (Optimized)
  *
  * Features:
  * - Display overall score and statistics
  * - Show topic-wise performance
  * - Display question-by-question results
- * - Provide detailed explanations
+ * - AI feedback with enhanced UI
+ * - Share results functionality
  */
 
 function ExamResultPage() {
@@ -25,6 +28,7 @@ function ExamResultPage() {
   const [error, setError] = useState(null)
   const [aiFeedback, setAiFeedback] = useState(null)
   const [loadingFeedback, setLoadingFeedback] = useState(false)
+  const [toast, setToast] = useState(null)
 
   useEffect(() => {
     fetchExamResult()
@@ -74,6 +78,34 @@ function ExamResultPage() {
     }
   }
 
+  const shareResults = () => {
+    const percentage = exam.totalCount > 0
+      ? Math.round((exam.correctCount / exam.totalCount) * 100)
+      : 0
+
+    const text = `I scored ${exam.totalScore}/${exam.maxScore} (${percentage}%) on my A-Level exam! 🎉`
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'My Exam Results',
+        text: text,
+        url: window.location.href
+      }).catch(() => {
+        copyToClipboard(text)
+      })
+    } else {
+      copyToClipboard(text)
+    }
+  }
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setToast({ message: 'Results copied to clipboard!', type: 'success' })
+    }).catch(() => {
+      setToast({ message: 'Failed to copy', type: 'error' })
+    })
+  }
+
   const getQuestionResult = (questionId) => {
     const userAnswer = exam.answers[questionId]
     const question = questions.find(q => q.id === questionId)
@@ -99,12 +131,7 @@ function ExamResultPage() {
   }
 
   if (loading) {
-    return (
-      <div className="exam-result-loading">
-        <div className="spinner"></div>
-        <p>Loading results...</p>
-      </div>
-    )
+    return <Loading message="Loading exam results..." size="large" fullScreen />
   }
 
   if (error) {
@@ -131,12 +158,24 @@ function ExamResultPage() {
 
   return (
     <div className="exam-result-page">
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       {/* Header */}
       <div className="exam-result-header">
         <button className="btn-back" onClick={() => navigate('/exams')}>
           ← Back to Exams
         </button>
         <h1>Exam Results</h1>
+        <button className="btn-share" onClick={shareResults}>
+          📤 Share
+        </button>
       </div>
 
       {/* Score Card */}

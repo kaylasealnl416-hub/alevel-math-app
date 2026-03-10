@@ -569,3 +569,57 @@ ive */
   margin: 0;
 }
 
+
+/* Share Button */
+.btn-share {
+  padding: 8px 16px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-share:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.exam-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.exam-result-header h1 {
+  flex: 1;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .exam-result-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .exam-result-header h1 {
+    text-align: left;
+    order: -1;
+  }
+
+  .btn-share {
+    width: 100%;
+    justify-content: center;
+  }
+}
