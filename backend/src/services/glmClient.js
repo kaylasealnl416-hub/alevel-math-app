@@ -7,7 +7,7 @@
  * 智谱 AI API 配置
  */
 const GLM_API_CONFIG = {
-  apiKey: process.env.GLM_API_KEY || '',
+  apiKey: process.env.GLM_API_KEY || process.env.ZHIPU_API_KEY || '',
   apiUrl: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
   model: process.env.GLM_MODEL || 'glm-4-plus', // 默认使用 GLM-4-Plus
   maxTokens: parseInt(process.env.GLM_MAX_TOKENS || '4096'),

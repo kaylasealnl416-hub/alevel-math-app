@@ -97,7 +97,7 @@ export function getAIProviderInfo() {
     case AI_PROVIDERS.GLM:
       info.name = '智谱 AI (GLM)'
       info.model = process.env.GLM_MODEL || 'glm-4-plus'
-      info.available = !!process.env.GLM_API_KEY
+      info.available = !!(process.env.GLM_API_KEY || process.env.ZHIPU_API_KEY)
       break
   }
 
