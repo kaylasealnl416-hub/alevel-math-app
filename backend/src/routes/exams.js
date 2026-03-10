@@ -456,7 +456,7 @@ app.post('/:id/analyze', rateLimit(rateLimitPresets.strict), async (c) => {
       }, 400)
     }
 
-  stions
+    // Get questions
     const [questionSet] = await db
       .select()
       .from(questionSets)

@@ -268,7 +268,7 @@ export async function submitExam(examId) {
     // 计算用时
     const timeSpent = Math.floor((new Date() - new Date(exam.startedAt)) / 1000)
 
-    // 更新考试状态
+    // 更新考试状态为 submitted
     await db.update(exams)
       .set({
         status: ExamStatus.SUBMITTED,
@@ -278,9 +278,27 @@ export async function submitExam(examId) {
       })
       .where(eq(exams.id, examId))
 
+    console.log(`考试 ${examId} 已提交，开始批改...`)
+
+    // 立即执行批改（等待完成）
+    const { gradeExam } = await import('./examGrader.js')
+    const gradeResult = await gradeExam(examId)
+
+    // 验证批改结果
+    if (!gradeResult.success) {
+      console.error(`考试 ${examId} 批改失败:`, gradeResult.error)
+      throw new Error('批改失败: ' + gradeResult.error.message)
+    }
+
+    console.log(`考试 ${examId} 批改完成`)
+
     return {
       success: true,
-      data: { examId, timeSpent }
+      data: {
+        examId,
+        timeSpent,
+        ...gradeResult.data
+      }
     }
 
   } catch (error) {

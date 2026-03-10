@@ -14,15 +14,32 @@ import questionsRoutes from './routes/questions.js'
 import questionSetsRoutes from './routes/questionSets.js'
 import userAnswersRoutes from './routes/userAnswers.js'
 import examsRoutes from './routes/exams.js'
+import recommendationsRoutes from './routes/recommendations.js'
+import learningPlansRoutes from './routes/learningPlans.js'
 import { authMiddleware } from './middleware/auth.js'
+import { cacheMiddleware } from './middleware/cache.js'
+import { securityHeaders, requestSizeLimit } from './middleware/security.js'
+import { performanceMonitor } from './middleware/performance.js'
 
 const app = new Hono()
 
-// 中间件
+// 性能监控（最先执行）
+app.use('*', performanceMonitor())
+
+// 安全中间件
+app.use('*', securityHeaders())
+app.use('*', requestSizeLimit(5 * 1024 * 1024)) // 5MB 限制
+
+// 日志中间件
 app.use('*', logger())
+
+// CORS 配置
 app.use('*', cors({
-  origin: ['http://localhost:3000', 'https://*.vercel.app'],
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'https://*.vercel.app'],
   credentials: true,
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+  maxAge: 86400, // 24 小时
 }))
 
 // 速率限制 - 防止 API 滥用
@@ -38,13 +55,27 @@ app.get('/health', (c) => {
   return c.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    uptime: process.uptime()
   })
 })
 
-// 公开路由（无需认证）
+// 性能统计端点（仅开发环境）
+if (process.env.NODE_ENV === 'development') {
+  app.get('/api/stats', (c) => {
+    const { queryMonitor } = require('./middleware/performance.js')
+    return c.json({
+      success: true,
+      data: queryMonitor.getStats()
+    })
+  })
+}
+
+// 公开路由（无需认证，带缓存）
 app.route('/api/auth', authRoutes)
+app.use('/api/subjects/*', cacheMiddleware({ ttl: 10 * 60 * 1000 })) // 10分钟缓存
 app.route('/api/subjects', subjectsRoutes)
+app.use('/api/chapters/*', cacheMiddleware({ ttl: 10 * 60 * 1000 })) // 10分钟缓存
 app.route('/api/chapters', chaptersRoutes)
 
 // 受保护路由（需要认证）
@@ -65,6 +96,8 @@ app.route('/api/questions', questionsRoutes)
 app.route('/api/question-sets', questionSetsRoutes)
 app.route('/api/user-answers', userAnswersRoutes)
 app.route('/api/exams', examsRoutes)
+app.route('/api/recommendations', recommendationsRoutes)
+app.route('/api/learning-plans', learningPlansRoutes)
 
 // 404处理
 app.notFound((c) => {

@@ -1,31 +1,40 @@
-import postgres from 'postgres'
-import dotenv from 'dotenv'
-
-dotenv.config({ path: '.env.local' })
-
-const sql = postgres(process.env.DATABASE_URL)
+import { db } from './src/db/index.js'
+import { sql } from 'drizzle-orm'
 
 async function checkTables() {
   try {
-    console.log('🔍 检查数据库表...\n')
-    
-    const tables = await sql`
-      SELECT table_name 
-      FROM information_schema.tables 
+    const result = await db.execute(sql`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables
+        WHERE table_schema = 'public'
+        AND table_name = 'learning_recommendations'
+      );
+    `)
+
+    console.log('learning_recommendations 表存在:', result[0]?.exists || false)
+
+    const tables = await db.execute(sql`
+      SELECT table_name
+      FROM information_schema.tables
       WHERE table_schema = 'public'
-      ORDER BY table_name
-    `
-    
-    if (tables.length === 0) {
-      console.log('❌ 数据库中没有表，需要执行迁移')
-    } else {
-      console.log(`✅ 找到 ${tables.length} 个表：\n`)
-      tables.forEach(t => console.log(`   - ${t.table_name}`))
-    }
-    
-    await sql.end()
+      ORDER BY table_name;
+    `)
+
+    console.log('\n所有表:')
+    tables.forEach(row => console.log('  -', row.table_name))
+
+    const migrations = await db.execute(sql`
+      SELECT * FROM drizzle.__drizzle_migrations
+      ORDER BY created_at DESC
+      LIMIT 5;
+    `)
+
+    console.log('\n最近的迁移记录:')
+    migrations.forEach(m => console.log('  -', m.hash, m.created_at))
+
+    process.exit(0)
   } catch (error) {
-    console.error('❌ 错误:', error.message)
+    console.error('错误:', error.message)
     process.exit(1)
   }
 }

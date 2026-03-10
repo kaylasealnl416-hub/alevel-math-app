@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { SUBJECTS } from "./data/subjects.js";
 import katex from "katex";
 import "katex/dist/katex.min.css";
@@ -2442,6 +2443,18 @@ export default function ALevelMathApp() {
                 </button>
               ))}
             </nav>
+            {/* Phase 4: Navigation to new pages */}
+            <nav style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <Link to="/exams" style={styles.navLinkBtn}>
+                📝 Exams
+              </Link>
+              <Link to="/learning-plan" style={styles.navLinkBtn}>
+                📚 Learning Plan
+              </Link>
+              <Link to="/wrong-questions" style={styles.navLinkBtn}>
+                ❌ Wrong Questions
+              </Link>
+            </nav>
             {/* API Key settings */}
             <button
               onClick={() => { setApiKeyInput(""); setMiniMaxApiKeyInput(""); setShowApiModal(true); }}
@@ -4318,6 +4331,12 @@ const styles = {
   navBtnActive: {
     background: "rgba(218,41,28,0.1)", borderColor: "rgba(218,41,28,0.3)",
     color: "#DA291C",
+  },
+  navLinkBtn: {
+    background: "rgba(0,48,135,0.08)", border: "1px solid rgba(0,48,135,0.2)",
+    borderRadius: 6, color: "#003087", fontSize: 13, padding: "7px 14px",
+    cursor: "pointer", fontFamily: "Georgia, serif", transition: "all 0.2s",
+    textDecoration: "none", display: "inline-block", whiteSpace: "nowrap",
   },
   langToggleBtn: {
     background: "rgba(0,0,0,0.04)", border: "1px solid #D0D0D0",

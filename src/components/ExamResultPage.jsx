@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ScoreCard from './exam/ScoreCard'
+import AIFeedback from './exam/AIFeedback'
 import { get } from '../utils/apiClient'
 import '../styles/ExamResultPage.css'
 
@@ -217,81 +218,8 @@ function ExamResultPage() {
         </div>
       </div>
 
-      {/* AI Feedback Section */}
-      {aiFeedback && (
-        <div className="ai-feedback-section">
-          <h2>🤖 AI Analysis & Recommendations</h2>
-
-          {/* Overall Evaluation */}
-          <div className="feedback-card overall">
-            <h3>Overall Performance</h3>
-            <p>{aiFeedback.overall}</p>
-          </div>
-
-          {/* Strengths */}
-          {aiFeedback.strengths && aiFeedback.strengths.length > 0 && (
-            <div className="feedback-card strengths">
-              <h3>✨ Strengths</h3>
-              <ul>
-                {aiFeedback.strengths.map((strength, i) => (
-                  <li key={i}>{strength}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Weaknesses */}
-          {aiFeedback.weaknesses && aiFeedback.weaknesses.length > 0 && (
-            <div className="feedback-card weaknesses">
-              <h3>📚 Areas for Improvement</h3>
-              {aiFeedback.weaknesses.map((weakness, i) => (
-                <div key={i} className="weakness-item">
-                  <h4>{weakness.topic}</h4>
-                  <p className="reason">{weakness.reason}</p>
-                  <p className="suggestion">💡 {weakness.suggestion}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Suggestions */}
-          {aiFeedback.suggestions && aiFeedback.suggestions.length > 0 && (
-            <div className="feedback-card suggestions">
-              <h3>🎯 Learning Recommendations</h3>
-              {aiFeedback.suggestions
-                .sort((a, b) => b.priority - a.priority)
-                .map((suggestion, i) => (
-                  <div key={i} className="suggestion-item">
-                    <div className="suggestion-header">
-                      <span className={`suggestion-type ${suggestion.type}`}>
-                        {suggestion.type}
-                      </span>
-                      <span className="suggestion-priority">
-                        Priority: {suggestion.priority}/5
-                      </span>
-                    </div>
-                    <p className="suggestion-description">{suggestion.description}</p>
-                    <p className="suggestion-reason">{suggestion.reason}</p>
-                  </div>
-                ))}
-            </div>
-          )}
-
-          {/* Encouragement */}
-          {aiFeedback.encouragement && (
-            <div className="feedback-card encouragement">
-              <p>💪 {aiFeedback.encouragement}</p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {loadingFeedback && (
-        <div className="ai-feedback-loading">
-          <div className="spinner"></div>
-          <p>Generating AI analysis...</p>
-        </div>
-      )}
+      {/* AI Feedback Section - Using new AIFeedback component */}
+      <AIFeedback feedback={aiFeedback} loading={loadingFeedback} />
 
       {/* Question Results */}
       <div className="question-results-section">
