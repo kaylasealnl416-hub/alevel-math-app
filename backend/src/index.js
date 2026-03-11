@@ -36,7 +36,37 @@ app.use('*', logger())
 
 // CORS 配置
 app.use('*', cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'https://*.vercel.app'],
+  origin: (origin) => {
+    // 从环境变量获取允许的域名（逗号分隔）
+    const envOrigins = process.env.CORS_ORIGIN
+      ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+      : []
+
+    // 默认允许的域名列表
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'https://alevel-math-app.vercel.app',
+      ...envOrigins
+    ]
+
+    // 允许所有 vercel.app 子域名
+    if (origin && origin.endsWith('.vercel.app')) {
+      return origin
+    }
+
+    // 检查是否在允许列表中
+    if (allowedOrigins.includes(origin)) {
+      return origin
+    }
+
+    // 开发环境允许所有来源
+    if (process.env.NODE_ENV === 'development') {
+      return origin || '*'
+    }
+
+    return allowedOrigins[0] // 默认返回第一个允许的域名
+  },
   credentials: true,
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
