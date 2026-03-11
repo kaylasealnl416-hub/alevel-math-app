@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext.jsx";
 import { SUBJECTS } from "./data/subjects.js";
 import katex from "katex";
 import "katex/dist/katex.min.css";
@@ -2310,6 +2311,8 @@ const T = {
 // MAIN APP
 // ============================================================
 export default function ALevelMathApp() {
+  const navigate = useNavigate();
+  const { user, logout, isAuthenticated } = useAuth();
   const [activeView, setActiveView] = useState("subjects"); // Start with subject selection
   const [selectedSubject, setSelectedSubject] = useState("mathematics");
   const [selectedBook, setSelectedBook] = useState(null);
@@ -2469,6 +2472,48 @@ export default function ALevelMathApp() {
             >
               {provider === "minimax" ? "🟣 MiniMax" : provider === "zhipu" ? "🔵 Zhipu" : "🔴 Claude"}
             </button>
+
+            {/* Auth buttons */}
+            {isAuthenticated ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 13, color: "#5C5C5C" }}>
+                  👤 {user?.nickname || user?.email}
+                </span>
+                <button
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                  }}
+                  style={{
+                    ...styles.langToggleBtn,
+                    borderColor: "rgba(218,41,28,0.4)",
+                    color: "#DA291C",
+                    background: "rgba(218,41,28,0.06)",
+                  }}
+                >
+                  登出
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: "flex", gap: 8 }}>
+                <Link to="/login" style={{
+                  ...styles.langToggleBtn,
+                  borderColor: "rgba(102,126,234,0.4)",
+                  color: "#667eea",
+                  background: "rgba(102,126,234,0.06)",
+                }}>
+                  登录
+                </Link>
+                <Link to="/register" style={{
+                  ...styles.langToggleBtn,
+                  borderColor: "rgba(102,126,234,0.4)",
+                  color: "#667eea",
+                  background: "rgba(102,126,234,0.06)",
+                }}>
+                  注册
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>

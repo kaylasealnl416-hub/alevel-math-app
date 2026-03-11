@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 import '../styles/ExamListPage.css'
 
 /**
@@ -39,6 +40,7 @@ const EXAM_MODE_MAP = {
 
 function ExamListPage() {
   const navigate = useNavigate()
+  const { user, token } = useAuth()
   const [exams, setExams] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -46,9 +48,6 @@ function ExamListPage() {
     type: 'all',
     status: 'all'
   })
-
-  // Mock user ID (should be obtained from authentication system)
-  const userId = 1
 
   useEffect(() => {
     fetchExams()
@@ -61,7 +60,7 @@ function ExamListPage() {
 
       // Build query parameters
       const params = new URLSearchParams({
-        userId: userId.toString(),
+        userId: user.id.toString(),
         limit: '50'
       })
 
@@ -72,7 +71,11 @@ function ExamListPage() {
         params.append('status', filter.status)
       }
 
-      const response = await fetch(`${API_BASE}/api/exams?${params}`)
+      const response = await fetch(`${API_BASE}/api/exams?${params}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const result = await response.json()
 
       if (result.success) {
