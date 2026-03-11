@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
 import { exams, examQuestionResults, questionSets, questions, users } from '../db/schema.js'
-import { eq, and, desc, inArray } from 'drizzle-orm'
+import { eq, and, desc, inArray, sql } from 'drizzle-orm'
 import * as examService from '../services/examService.js'
 import * as examGrader from '../services/examGrader.js'
 import * as examAnalyzer from '../services/examAnalyzer.js'
