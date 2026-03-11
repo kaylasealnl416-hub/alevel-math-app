@@ -11,9 +11,8 @@ import { validate, createExamSchema, saveAnswerSchema, markQuestionSchema, focus
 
 const app = new Hono()
 
-// 临时禁用认证中间件用于测试
-// TODO: 恢复认证后删除此注释
-// app.use('/*', authMiddleware)
+// 应用认证中间件到所有路由
+app.use('/*', authMiddleware)
 
 /**
  * Phase 4: 考试管理 API
@@ -34,8 +33,8 @@ const app = new Hono()
 // ============================================================
 app.post('/', validate(createExamSchema), async (c) => {
   try {
-    // 从认证中间件获取用户 ID，如果没有则使用 Mock ID（临时测试）
-    const authenticatedUserId = c.get('userId') || 1
+    // 从认证中间件获取用户 ID
+    const authenticatedUserId = c.get('userId')
     // 从验证中间件获取验证后的数据
     const validated = c.get('validated')
 
@@ -90,8 +89,8 @@ app.get('/:id', async (c) => {
 // ============================================================
 app.get('/', async (c) => {
   try {
-    // 从认证中间件获取用户 ID，如果没有则使用查询参数或 Mock ID（临时测试）
-    const authenticatedUserId = c.get('userId') || parseInt(c.req.query('userId')) || 1
+    // 从认证中间件获取用户 ID
+    const authenticatedUserId = c.get('userId')
     const status = c.req.query('status')
     const type = c.req.query('type')
     const limit = parseInt(c.req.query('limit') || '20')
