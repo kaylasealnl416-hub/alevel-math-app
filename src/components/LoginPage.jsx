@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import Toast from './common/Toast'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
@@ -8,12 +9,45 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const { login } = useAuth()
   const [formData, setFormData] = useState({ email: '', password: '' })
-  const [error, setError] = useState('')
+  const [rememberMe, setRememberMe] = useState(false)
+  const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
+
+  // 初始化：从 localStorage 恢复记住的邮箱
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('remembered_email')
+    if (savedEmail) {
+      setFormData({ ...formData, email: savedEmail })
+      setRememberMe(true)
+    }
+  }, [])
+
+  // 表单验证
+  const validateForm = () => {
+    const newErrors = {}
+
+    if (!formData.email.trim()) {
+      newErrors.email = '邮箱不能为空'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = '邮箱格式不正确'
+    }
+
+    if (!formData.password) {
+      newErrors.password = '密码不能为空'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
+
+    // 前端验证
+    if (!validateForm()) {
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -26,16 +60,29 @@ export default function LoginPage() {
       const data = await res.json()
 
       if (!data.success) {
-        setError(data.error?.message || '登录失败')
+        const errorMessage = data.error?.message || '登录失败'
+        Toast.error(errorMessage)
         setLoading(false)
         return
       }
 
+      // 记住邮箱
+      if (rememberMe) {
+        localStorage.setItem('remembered_email', formData.email)
+      } else {
+        localStorage.removeItem('remembered_email')
+      }
+
       // 登录成功
+      Toast.success('登录成功！')
       login(data.data.user, data.data.token)
-      navigate('/exams')
+
+      // 延迟跳转
+      setTimeout(() => {
+        navigate('/exams')
+      }, 800)
     } catch (err) {
-      setError('网络错误，请稍后重试')
+      Toast.error('网络错误，请稍后重试')
       setLoading(false)
     }
   }
@@ -52,11 +99,17 @@ export default function LoginPage() {
             <input
               type="email"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              style={styles.input}
+              onChange={(e) => {
+                setFormData({ ...formData, email: e.target.value })
+                if (errors.email) setErrors({ ...errors, email: '' })
+              }}
+              style={{
+                ...styles.input,
+                ...(errors.email ? styles.inputError : {})
+              }}
               placeholder="your@email.com"
-              required
             />
+            {errors.email && <span style={styles.errorText}>{errors.email}</span>}
           </div>
 
           <div style={styles.field}>
@@ -64,14 +117,30 @@ export default function LoginPage() {
             <input
               type="password"
               value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              style={styles.input}
+              onChange={(e) => {
+                setFormData({ ...formData, password: e.target.value })
+                if (errors.password) setErrors({ ...errors, password: '' })
+              }}
+              style={{
+                ...styles.input,
+                ...(errors.password ? styles.inputError : {})
+              }}
               placeholder="••••••••"
-              required
             />
+            {errors.password && <span style={styles.errorText}>{errors.password}</span>}
           </div>
 
-          {error && <div style={styles.error}>{error}</div>}
+          <div style={styles.checkboxField}>
+            <label style={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                style={styles.checkbox}
+              />
+              <span>记住我</span>
+            </label>
+          </div>
 
           <button type="submit" style={styles.button} disabled={loading}>
             {loading ? '登录中...' : '登录'}
@@ -143,6 +212,9 @@ const styles = {
     outline: 'none',
     transition: 'border-color 0.2s'
   },
+  inputError: {
+    borderColor: '#fc8181'
+  },
   button: {
     padding: '12px',
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -154,12 +226,28 @@ const styles = {
     cursor: 'pointer',
     transition: 'opacity 0.2s'
   },
-  error: {
-    padding: '12px',
-    background: '#fed7d7',
-    color: '#c53030',
-    borderRadius: '8px',
-    fontSize: '14px'
+  errorText: {
+    color: '#e53e3e',
+    fontSize: '12px',
+    marginTop: '-4px'
+  },
+  checkboxField: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: '-8px'
+  },
+  checkboxLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: '14px',
+    color: '#4a5568',
+    cursor: 'pointer'
+  },
+  checkbox: {
+    width: '16px',
+    height: '16px',
+    cursor: 'pointer'
   },
   footer: {
     marginTop: '24px',

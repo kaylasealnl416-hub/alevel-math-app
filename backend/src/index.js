@@ -17,19 +17,26 @@ import examsRoutes from './routes/exams.js'
 import recommendationsRoutes from './routes/recommendations.js'
 import learningPlansRoutes from './routes/learningPlans.js'
 import wrongQuestionsRoutes from './routes/wrongQuestions.js'
+import questionUploadRoutes from './routes/questionUpload.js'
 import { authMiddleware } from './middleware/auth.js'
 import { cacheMiddleware } from './middleware/cache.js'
 import { securityHeaders, requestSizeLimit } from './middleware/security.js'
 import { performanceMonitor } from './middleware/performance.js'
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js'
 
 const app = new Hono()
 
-// 性能监控（最先执行）
+// 全局错误处理（最先注册）
+app.use('*', errorHandler())
+
+// 性能监控
 app.use('*', performanceMonitor())
 
 // 安全中间件
 app.use('*', securityHeaders())
-app.use('*', requestSizeLimit(5 * 1024 * 1024)) // 5MB 限制
+// 文件上传路由不限制大小（由 multer 控制）
+app.use('/api/questions/upload', async (c, next) => await next())
+app.use('*', requestSizeLimit(5 * 1024 * 1024)) // 5MB 限制（其他路由）
 
 // 日志中间件
 app.use('*', logger())
@@ -130,26 +137,21 @@ app.route('/api/exams', examsRoutes)
 app.route('/api/recommendations', recommendationsRoutes)
 app.route('/api/learning-plans', learningPlansRoutes)
 app.route('/api/wrong-questions', wrongQuestionsRoutes)
+app.route('/api/questions', questionUploadRoutes)
 
 // 404处理
-app.notFound((c) => {
-  return c.json({
-    success: false,
-    error: {
-      code: 'NOT_FOUND',
-      message: 'Route not found'
-    }
-  }, 404)
-})
+app.notFound(notFoundHandler())
 
-// 错误处理
+// 全局错误处理（Hono 内置）
 app.onError((err, c) => {
-  console.error('Error:', err)
+  // 这里的错误会被 errorHandler 中间件捕获
+  // 但为了兼容性，保留这个处理器
+  console.error('Uncaught Error:', err)
   return c.json({
     success: false,
     error: {
       code: 'INTERNAL_ERROR',
-      message: err.message
+      message: process.env.NODE_ENV === 'development' ? err.message : '服务器内部错误'
     }
   }, 500)
 })

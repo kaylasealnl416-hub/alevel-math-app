@@ -11,12 +11,14 @@ import Phase1TestPage from './components/Phase1TestPage.jsx'
 import Phase2TestPage from './components/Phase2TestPage.jsx'
 import LoginPage from './components/LoginPage.jsx'
 import RegisterPage from './components/RegisterPage.jsx'
+import UserProfilePage from './components/UserProfilePage.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import ExamListPage from './components/ExamListPage.jsx'
 import ExamTakingPage from './components/ExamTakingPage.jsx'
 import ExamResultPage from './components/ExamResultPage.jsx'
 import LearningPlanPage from './components/LearningPlanPage.jsx'
 import WrongQuestionsPage from './components/WrongQuestionsPage.jsx'
+import QuestionUploadPage from './components/QuestionUploadPage.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 export default function AppRouter() {
@@ -31,6 +33,11 @@ export default function AppRouter() {
             {/* 认证页面 */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <UserProfilePage />
+              </ProtectedRoute>
+            } />
 
             {/* 测试页面 */}
             <Route path="/test/api" element={<ApiTestPage />} />
@@ -63,6 +70,13 @@ export default function AppRouter() {
             <Route path="/wrong-questions" element={
               <ProtectedRoute>
                 <WrongQuestionsPage />
+              </ProtectedRoute>
+            } />
+
+            {/* 题库上传（需要认证） */}
+            <Route path="/questions/upload" element={
+              <ProtectedRoute>
+                <QuestionUploadPage />
               </ProtectedRoute>
             } />
 

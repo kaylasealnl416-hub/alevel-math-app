@@ -2,12 +2,70 @@ import { Hono } from 'hono'
 import { db } from '../db/index.js'
 import { users, userProfiles, userStats } from '../db/schema.js'
 import { eq } from 'drizzle-orm'
+import { authMiddleware } from '../middleware/auth.js'
 
 const app = new Hono()
 
 // ============================================================
 // 用户管理 API
 // ============================================================
+
+/**
+ * PUT /api/users/profile
+ * 更新当前登录用户的信息（需要认证）
+ */
+app.put('/profile', authMiddleware, async (c) => {
+  try {
+    const userId = c.get('userId') // 从 authMiddleware 获取
+    const body = await c.req.json()
+
+    // 允许更新的字段
+    const allowedFields = ['nickname', 'avatar', 'phone', 'grade', 'targetUniversity']
+    const updateData = {}
+
+    for (const field of allowedFields) {
+      if (body[field] !== undefined) {
+        updateData[field] = body[field]
+      }
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return c.json({
+        success: false,
+        error: { code: 'NO_UPDATE_DATA', message: '没有需要更新的数据' }
+      }, 400)
+    }
+
+    updateData.updatedAt = new Date()
+
+    const result = await db
+      .update(users)
+      .set(updateData)
+      .where(eq(users.id, userId))
+      .returning()
+
+    if (result.length === 0) {
+      return c.json({
+        success: false,
+        error: { code: 'USER_NOT_FOUND', message: '用户不存在' }
+      }, 404)
+    }
+
+    // 移除敏感信息
+    const { password, ...userWithoutPassword } = result[0]
+
+    return c.json({
+      success: true,
+      data: userWithoutPassword
+    })
+  } catch (error) {
+    console.error('更新用户信息失败:', error)
+    return c.json({
+      success: false,
+      error: { code: 'DATABASE_ERROR', message: '数据库更新失败' }
+    }, 500)
+  }
+})
 
 /**
  * GET /api/users/:id

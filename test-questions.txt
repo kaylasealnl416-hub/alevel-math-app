@@ -1,0 +1,34 @@
+# A-Level Mathematics Test Questions
+
+## Question 1
+Solve for x: 2x + 5 = 13
+
+A. x = 3
+B. x = 4
+C. x = 5
+D. x = 6
+
+Answer: B
+Explanation: 2x = 13 - 5 = 8, so x = 4
+
+## Question 2
+What is the derivative of f(x) = x^2 + 3x?
+
+A. 2x + 3
+B. x + 3
+C. 2x
+D. x^2
+
+Answer: A
+Explanation: Using the power rule, d/dx(x^2) = 2x and d/dx(3x) = 3, so f'(x) = 2x + 3
+
+## Question 3
+Calculate the area of a circle with radius 5 cm.
+
+A. 25π cm²
+B. 10π cm²
+C. 50π cm²
+D. 5π cm²
+
+Answer: A
+Explanation: Area = πr² = π(5)² = 25π cm²

@@ -2476,9 +2476,39 @@ export default function ALevelMathApp() {
             {/* Auth buttons */}
             {isAuthenticated ? (
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 13, color: "#5C5C5C" }}>
-                  👤 {user?.nickname || user?.email}
-                </span>
+                <Link
+                  to="/profile"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    textDecoration: "none",
+                    padding: "6px 12px",
+                    borderRadius: "8px",
+                    transition: "background 0.2s",
+                    cursor: "pointer"
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = "rgba(102,126,234,0.1)"}
+                  onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                >
+                  <div style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    color: "white"
+                  }}>
+                    {user?.nickname?.charAt(0)?.toUpperCase() || 'U'}
+                  </div>
+                  <span style={{ fontSize: 13, color: "#5C5C5C" }}>
+                    {user?.nickname || user?.email}
+                  </span>
+                </Link>
                 <button
                   onClick={() => {
                     logout();
