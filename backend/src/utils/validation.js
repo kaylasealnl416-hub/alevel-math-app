@@ -103,7 +103,7 @@ export function validate(schema, source = 'body') {
           error: {
             code: 'VALIDATION_ERROR',
             message: '输入参数验证失败',
-            details: error.errors.map(e => ({
+            details: error.issues.map(e => ({
               field: e.path.join('.'),
               message: e.message
             }))
@@ -111,12 +111,13 @@ export function validate(schema, source = 'body') {
         }, 400)
       }
 
-      // 其他错误
+      // 其他错误（如 JSON 解析失败）
+      console.error('验证中间件错误：', error)
       return c.json({
         success: false,
         error: {
           code: 'INTERNAL_ERROR',
-          message: '验证过程出错'
+          message: error.message || '验证过程出错'
         }
       }, 500)
     }

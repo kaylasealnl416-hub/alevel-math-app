@@ -49,7 +49,7 @@ app.post('/register', async (c) => {
         error: {
           code: 'VALIDATION_ERROR',
           message: '输入验证失败',
-          details: validation.error.errors
+          details: validation.error.issues
         }
       }, 400)
     }
@@ -148,7 +148,7 @@ app.post('/login', async (c) => {
         error: {
           code: 'VALIDATION_ERROR',
           message: '输入验证失败',
-          details: validation.error.errors
+          details: validation.error.issues
         }
       }, 400)
     }
