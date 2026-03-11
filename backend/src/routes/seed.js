@@ -47,32 +47,36 @@ app.get('/init', async (c) => {
     const chapterId = existingChapters[0].id
     console.log(`✅ 使用章节: ${chapterId}`)
 
-    // 1. 创建测试用户
-    console.log('👤 创建测试用户...')
+    // 1. 创建测试用户（如果不存在）
+    console.log('👤 检查/创建测试用户...')
     const hashedPassword = await bcrypt.hash('test123', 10)
 
-    const testUsers = await db.insert(users).values([
-      {
-        email: 'student1@test.com',
-        password: hashedPassword,
-        nickname: 'Test Student 1',
-        grade: 'AS'
-      },
-      {
-        email: 'student2@test.com',
-        password: hashedPassword,
-        nickname: 'Test Student 2',
-        grade: 'A2'
-      },
-      {
-        email: 'demo@alevel.com',
-        password: hashedPassword,
-        nickname: 'Demo User',
-        grade: 'AS'
-      }
-    ]).returning()
+    const testUserEmails = ['student1@test.com', 'student2@test.com', 'demo@alevel.com']
+    const testUsers = []
 
-    console.log(`✅ 创建了 ${testUsers.length} 个测试用户`)
+    for (const email of testUserEmails) {
+      const existing = await db.select().from(users).where(eq(users.email, email)).limit(1)
+      if (existing.length > 0) {
+        console.log(`  ℹ️  用户已存在: ${email}`)
+        testUsers.push(existing[0])
+      } else {
+        const nickname = email === 'student1@test.com' ? 'Test Student 1' :
+                        email === 'student2@test.com' ? 'Test Student 2' : 'Demo User'
+        const grade = email === 'student2@test.com' ? 'A2' : 'AS'
+
+        const [newUser] = await db.insert(users).values({
+          email,
+          password: hashedPassword,
+          nickname,
+          grade
+        }).returning()
+
+        console.log(`  ✅ 创建新用户: ${email}`)
+        testUsers.push(newUser)
+      }
+    }
+
+    console.log(`✅ 准备好 ${testUsers.length} 个测试用户`)
 
     // 2. 创建测试题目
     console.log('📝 创建测试题目...')
