@@ -146,24 +146,24 @@ app.get('/init', async (c) => {
       {
         title: 'Mathematics Quick Test',
         description: 'Basic algebra and calculus questions',
-        subject: 'mathematics',
-        difficulty: 'medium',
+        type: 'practice',
+        chapterId,
         questionIds: questionIds.slice(0, 2),
         totalQuestions: 2,
         totalPoints: 5,
-        timeLimit: 600,
-        tags: ['algebra', 'calculus']
+        timeLimit: 10,
+        generatedBy: 'manual'
       },
       {
         title: 'Economics Basics',
         description: 'Supply and demand fundamentals',
-        subject: 'economics',
-        difficulty: 'easy',
+        type: 'practice',
+        chapterId,
         questionIds: [questionIds[2]],
         totalQuestions: 1,
         totalPoints: 2,
-        timeLimit: 300,
-        tags: ['supply_demand']
+        timeLimit: 5,
+        generatedBy: 'manual'
       }
     ]).returning()
 
