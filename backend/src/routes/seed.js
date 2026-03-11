@@ -228,18 +228,18 @@ app.get('/init', async (c) => {
  */
 app.get('/status', async (c) => {
   try {
-    const [usersCount] = await db.select({ count: db.fn.count() }).from(users)
-    const [questionsCount] = await db.select({ count: db.fn.count() }).from(questions)
-    const [questionSetsCount] = await db.select({ count: db.fn.count() }).from(questionSets)
-    const [examsCount] = await db.select({ count: db.fn.count() }).from(exams)
+    const usersData = await db.select().from(users)
+    const questionsData = await db.select().from(questions)
+    const questionSetsData = await db.select().from(questionSets)
+    const examsData = await db.select().from(exams)
 
     return c.json({
       success: true,
       data: {
-        users: usersCount.count,
-        questions: questionsCount.count,
-        questionSets: questionSetsCount.count,
-        exams: examsCount.count
+        users: usersData.length,
+        questions: questionsData.length,
+        questionSets: questionSetsData.length,
+        exams: examsData.length
       }
     })
   } catch (error) {
