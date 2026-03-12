@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Toast from './common/Toast'
+import { Button, Input } from './ui'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
@@ -134,226 +135,129 @@ export default function RegisterPage() {
   }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>注册</h1>
-        <p style={styles.subtitle}>创建你的学习账号</p>
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex items-center justify-center p-6">
+      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md border border-gray-100">
+        {/* 标题 */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            注册
+          </h1>
+          <p className="text-gray-600">
+            创建你的学习账号
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.field}>
-            <label style={styles.label}>昵称</label>
-            <input
-              type="text"
-              value={formData.nickname}
-              onChange={(e) => {
-                setFormData({ ...formData, nickname: e.target.value })
-                if (errors.nickname) setErrors({ ...errors, nickname: '' })
-              }}
-              style={{
-                ...styles.input,
-                ...(errors.nickname ? styles.inputError : {})
-              }}
-              placeholder="你的昵称"
-              maxLength={50}
-            />
-            {errors.nickname && <span style={styles.errorText}>{errors.nickname}</span>}
-          </div>
+        {/* 表单 */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* 昵称输入 */}
+          <Input
+            type="text"
+            label="昵称"
+            value={formData.nickname}
+            onChange={(e) => {
+              setFormData({ ...formData, nickname: e.target.value })
+              if (errors.nickname) setErrors({ ...errors, nickname: '' })
+            }}
+            error={errors.nickname}
+            placeholder="你的昵称"
+            maxLength={50}
+          />
 
-          <div style={styles.field}>
-            <label style={styles.label}>邮箱</label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value })
-                if (errors.email) setErrors({ ...errors, email: '' })
-              }}
-              style={{
-                ...styles.input,
-                ...(errors.email ? styles.inputError : {})
-              }}
-              placeholder="your@email.com"
-            />
-            {errors.email && <span style={styles.errorText}>{errors.email}</span>}
-          </div>
+          {/* 邮箱输入 */}
+          <Input
+            type="email"
+            label="邮箱"
+            value={formData.email}
+            onChange={(e) => {
+              setFormData({ ...formData, email: e.target.value })
+              if (errors.email) setErrors({ ...errors, email: '' })
+            }}
+            error={errors.email}
+            placeholder="your@email.com"
+          />
 
-          <div style={styles.field}>
-            <label style={styles.label}>密码</label>
-            <input
+          {/* 密码输入 */}
+          <div className="space-y-2">
+            <Input
               type="password"
+              label="密码"
               value={formData.password}
               onChange={handlePasswordChange}
-              style={{
-                ...styles.input,
-                ...(errors.password ? styles.inputError : {})
-              }}
+              error={errors.password}
               placeholder="至少 6 个字符"
             />
+            {/* 密码强度条 */}
             {formData.password && (
-              <div style={styles.strengthBar}>
-                <div style={{
-                  ...styles.strengthFill,
-                  width: `${(passwordStrength.score / 5) * 100}%`,
-                  backgroundColor: passwordStrength.color
-                }} />
+              <div className="space-y-1">
+                <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full transition-all duration-300"
+                    style={{
+                      width: `${(passwordStrength.score / 5) * 100}%`,
+                      backgroundColor: passwordStrength.color
+                    }}
+                  />
+                </div>
+                {passwordStrength.text && (
+                  <p className="text-xs font-medium" style={{ color: passwordStrength.color }}>
+                    密码强度：{passwordStrength.text}
+                  </p>
+                )}
               </div>
             )}
-            {formData.password && passwordStrength.text && (
-              <span style={{ ...styles.strengthText, color: passwordStrength.color }}>
-                密码强度：{passwordStrength.text}
-              </span>
-            )}
-            {errors.password && <span style={styles.errorText}>{errors.password}</span>}
           </div>
 
-          <div style={styles.field}>
-            <label style={styles.label}>确认密码</label>
-            <input
-              type="password"
-              value={formData.confirmPassword}
-              onChange={(e) => {
-                setFormData({ ...formData, confirmPassword: e.target.value })
-                if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: '' })
-              }}
-              style={{
-                ...styles.input,
-                ...(errors.confirmPassword ? styles.inputError : {})
-              }}
-              placeholder="再次输入密码"
-            />
-            {errors.confirmPassword && <span style={styles.errorText}>{errors.confirmPassword}</span>}
-          </div>
+          {/* 确认密码输入 */}
+          <Input
+            type="password"
+            label="确认密码"
+            value={formData.confirmPassword}
+            onChange={(e) => {
+              setFormData({ ...formData, confirmPassword: e.target.value })
+              if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: '' })
+            }}
+            error={errors.confirmPassword}
+            placeholder="再次输入密码"
+          />
 
-          <div style={styles.field}>
-            <label style={styles.label}>年级</label>
+          {/* 年级选择 */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              年级
+            </label>
             <select
               value={formData.grade}
               onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
-              style={styles.select}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white cursor-pointer transition-all duration-200"
             >
               <option value="AS">AS Level</option>
               <option value="A2">A2 Level</option>
             </select>
           </div>
 
-          <button type="submit" style={styles.button} disabled={loading}>
+          {/* 注册按钮 */}
+          <Button
+            type="submit"
+            variant="primary"
+            size="md"
+            disabled={loading}
+            className="w-full"
+          >
             {loading ? '注册中...' : '注册'}
-          </button>
+          </Button>
         </form>
 
-        <p style={styles.footer}>
-          已有账号？ <Link to="/login" style={styles.link}>立即登录</Link>
+        {/* 登录链接 */}
+        <p className="mt-6 text-center text-sm text-gray-600">
+          已有账号？{' '}
+          <Link
+            to="/login"
+            className="text-primary-600 hover:text-primary-700 font-semibold transition-colors"
+          >
+            立即登录
+          </Link>
         </p>
       </div>
     </div>
   )
-}
-
-const styles = {
-  container: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    padding: '20px'
-  },
-  card: {
-    background: 'white',
-    borderRadius: '12px',
-    padding: '40px',
-    width: '100%',
-    maxWidth: '400px',
-    boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
-  },
-  title: {
-    fontSize: '28px',
-    fontWeight: 'bold',
-    color: '#1a202c',
-    marginBottom: '8px',
-    textAlign: 'center'
-  },
-  subtitle: {
-    fontSize: '14px',
-    color: '#718096',
-    marginBottom: '32px',
-    textAlign: 'center'
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px'
-  },
-  field: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px'
-  },
-  label: {
-    fontSize: '14px',
-    fontWeight: '500',
-    color: '#2d3748'
-  },
-  input: {
-    padding: '12px',
-    border: '1px solid #e2e8f0',
-    borderRadius: '8px',
-    fontSize: '14px',
-    outline: 'none',
-    transition: 'border-color 0.2s'
-  },
-  inputError: {
-    borderColor: '#fc8181'
-  },
-  select: {
-    padding: '12px',
-    border: '1px solid #e2e8f0',
-    borderRadius: '8px',
-    fontSize: '14px',
-    outline: 'none',
-    backgroundColor: 'white',
-    cursor: 'pointer'
-  },
-  button: {
-    padding: '12px',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'opacity 0.2s'
-  },
-  errorText: {
-    color: '#e53e3e',
-    fontSize: '12px',
-    marginTop: '-4px'
-  },
-  strengthBar: {
-    height: '4px',
-    backgroundColor: '#e2e8f0',
-    borderRadius: '2px',
-    overflow: 'hidden',
-    marginTop: '4px'
-  },
-  strengthFill: {
-    height: '100%',
-    transition: 'width 0.3s, background-color 0.3s'
-  },
-  strengthText: {
-    fontSize: '12px',
-    fontWeight: '500'
-  },
-  footer: {
-    marginTop: '24px',
-    textAlign: 'center',
-    fontSize: '14px',
-    color: '#718096'
-  },
-  link: {
-    color: '#667eea',
-    textDecoration: 'none',
-    fontWeight: '600'
-  }
 }

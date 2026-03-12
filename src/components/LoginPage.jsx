@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Toast from './common/Toast'
+import { Button, Input } from './ui'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
@@ -88,185 +89,89 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>登录</h1>
-        <p style={styles.subtitle}>A-Level Math Learning Hub</p>
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex items-center justify-center p-6">
+      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md border border-gray-100">
+        {/* 标题 */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            登录
+          </h1>
+          <p className="text-gray-600">
+            A-Level Math Learning Hub
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.field}>
-            <label style={styles.label}>邮箱</label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value })
-                if (errors.email) setErrors({ ...errors, email: '' })
-              }}
-              style={{
-                ...styles.input,
-                ...(errors.email ? styles.inputError : {})
-              }}
-              placeholder="your@email.com"
-            />
-            {errors.email && <span style={styles.errorText}>{errors.email}</span>}
-          </div>
+        {/* 表单 */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* 邮箱输入 */}
+          <Input
+            type="email"
+            label="邮箱"
+            value={formData.email}
+            onChange={(e) => {
+              setFormData({ ...formData, email: e.target.value })
+              if (errors.email) setErrors({ ...errors, email: '' })
+            }}
+            error={errors.email}
+            placeholder="your@email.com"
+          />
 
-          <div style={styles.field}>
-            <label style={styles.label}>密码</label>
-            <input
-              type="password"
-              value={formData.password}
-              onChange={(e) => {
-                setFormData({ ...formData, password: e.target.value })
-                if (errors.password) setErrors({ ...errors, password: '' })
-              }}
-              style={{
-                ...styles.input,
-                ...(errors.password ? styles.inputError : {})
-              }}
-              placeholder="••••••••"
-            />
-            {errors.password && <span style={styles.errorText}>{errors.password}</span>}
-          </div>
+          {/* 密码输入 */}
+          <Input
+            type="password"
+            label="密码"
+            value={formData.password}
+            onChange={(e) => {
+              setFormData({ ...formData, password: e.target.value })
+              if (errors.password) setErrors({ ...errors, password: '' })
+            }}
+            error={errors.password}
+            placeholder="••••••••"
+          />
 
-          <div style={styles.checkboxField}>
-            <label style={styles.checkboxLabel}>
+          {/* 记住我 */}
+          <div className="flex items-center">
+            <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                style={styles.checkbox}
+                className="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-2 focus:ring-primary-500 cursor-pointer"
               />
-              <span>记住我</span>
+              <span className="text-sm text-gray-700">记住我</span>
             </label>
           </div>
 
-          <button type="submit" style={styles.button} disabled={loading}>
+          {/* 登录按钮 */}
+          <Button
+            type="submit"
+            variant="primary"
+            size="md"
+            disabled={loading}
+            className="w-full"
+          >
             {loading ? '登录中...' : '登录'}
-          </button>
+          </Button>
         </form>
 
-        <p style={styles.footer}>
-          还没有账号？ <Link to="/register" style={styles.link}>立即注册</Link>
+        {/* 注册链接 */}
+        <p className="mt-6 text-center text-sm text-gray-600">
+          还没有账号？{' '}
+          <Link
+            to="/register"
+            className="text-primary-600 hover:text-primary-700 font-semibold transition-colors"
+          >
+            立即注册
+          </Link>
         </p>
 
-        <p style={styles.testAccount}>
-          测试账号: student1@test.com / test123
-        </p>
+        {/* 测试账号 */}
+        <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+          <p className="text-xs text-gray-600 text-center">
+            测试账号: student1@test.com / test123
+          </p>
+        </div>
       </div>
     </div>
   )
-}
-
-const styles = {
-  container: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    padding: '20px'
-  },
-  card: {
-    background: 'white',
-    borderRadius: '12px',
-    padding: '40px',
-    width: '100%',
-    maxWidth: '400px',
-    boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
-  },
-  title: {
-    fontSize: '28px',
-    fontWeight: 'bold',
-    color: '#1a202c',
-    marginBottom: '8px',
-    textAlign: 'center'
-  },
-  subtitle: {
-    fontSize: '14px',
-    color: '#718096',
-    marginBottom: '32px',
-    textAlign: 'center'
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px'
-  },
-  field: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px'
-  },
-  label: {
-    fontSize: '14px',
-    fontWeight: '500',
-    color: '#2d3748'
-  },
-  input: {
-    padding: '12px',
-    border: '1px solid #e2e8f0',
-    borderRadius: '8px',
-    fontSize: '14px',
-    outline: 'none',
-    transition: 'border-color 0.2s'
-  },
-  inputError: {
-    borderColor: '#fc8181'
-  },
-  button: {
-    padding: '12px',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'opacity 0.2s'
-  },
-  errorText: {
-    color: '#e53e3e',
-    fontSize: '12px',
-    marginTop: '-4px'
-  },
-  checkboxField: {
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: '-8px'
-  },
-  checkboxLabel: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    fontSize: '14px',
-    color: '#4a5568',
-    cursor: 'pointer'
-  },
-  checkbox: {
-    width: '16px',
-    height: '16px',
-    cursor: 'pointer'
-  },
-  footer: {
-    marginTop: '24px',
-    textAlign: 'center',
-    fontSize: '14px',
-    color: '#718096'
-  },
-  link: {
-    color: '#667eea',
-    textDecoration: 'none',
-    fontWeight: '600'
-  },
-  testAccount: {
-    marginTop: '16px',
-    padding: '12px',
-    background: '#f7fafc',
-    borderRadius: '8px',
-    fontSize: '12px',
-    color: '#718096',
-    textAlign: 'center'
-  }
 }
