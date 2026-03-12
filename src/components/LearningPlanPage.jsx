@@ -227,14 +227,14 @@ function LearningPlanPage() {
           )}
 
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-8 animate-fade-in-down">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">📅 My Learning Plan</h1>
             <p className="text-lg text-gray-600">Personalized recommendations based on your exam performance</p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="bg-error-50 border border-error-200 rounded-xl p-4 mb-8 flex items-center gap-3">
+            <div className="bg-error-50 border border-error-200 rounded-xl p-4 mb-8 flex items-center gap-3 animate-fade-in-down">
               <span className="text-2xl">⚠️</span>
               <p className="text-error-700">{error}</p>
             </div>
@@ -242,7 +242,7 @@ function LearningPlanPage() {
 
           {/* Progress Overview */}
           {learningPlan && (
-            <div className="mb-8">
+            <div className="mb-8 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
               <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-xl font-semibold text-gray-900">📊 Overall Progress</h3>
@@ -262,7 +262,7 @@ function LearningPlanPage() {
           )}
 
           {/* Recommendations Section */}
-          <div className="mb-12">
+          <div className="mb-12 animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-semibold text-gray-900">🎯 Learning Recommendations</h2>
               <span className="px-4 py-1 bg-primary-500 text-white rounded-full text-sm font-medium">
@@ -271,7 +271,7 @@ function LearningPlanPage() {
             </div>
 
             {recommendations.length === 0 ? (
-              <div className="bg-white rounded-xl shadow-md p-12 text-center">
+              <div className="bg-white rounded-xl shadow-md p-12 text-center animate-scale-in">
                 <div className="text-6xl mb-4">🎉</div>
                 <h3 className="text-2xl font-semibold text-gray-900 mb-2">All caught up!</h3>
                 <p className="text-gray-600 mb-6">Complete an exam to get personalized recommendations</p>
@@ -281,10 +281,11 @@ function LearningPlanPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                {recommendations.map((rec) => (
+                {recommendations.map((rec, index) => (
                   <div
                     key={rec.id}
-                    className={`bg-white rounded-xl shadow-md p-6 border-2 border-gray-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300 ${getPriorityClass(rec.priority)}`}
+                    className={`bg-white rounded-xl shadow-md p-6 border-2 border-gray-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300 ${getPriorityClass(rec.priority)} animate-fade-in-up`}
+                    style={{ animationDelay: `${0.3 + index * 0.1}s`, animationFillMode: 'both' }}
                   >
                     <div
                       className="flex justify-between items-center cursor-pointer"
@@ -364,7 +365,7 @@ function LearningPlanPage() {
 
           {/* Learning Plan Generator */}
           {recommendations.length > 0 && (
-            <div className="bg-gray-50 rounded-xl p-6">
+            <div className="bg-gray-50 rounded-xl p-6 animate-fade-in" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">📆 Generate Study Plan</h2>
 
               <div className="flex flex-col sm:flex-row gap-4 items-end mb-6">
@@ -396,7 +397,7 @@ function LearningPlanPage() {
               </div>
 
               {learningPlan && (
-                <div className="bg-white rounded-xl shadow-md p-6">
+                <div className="bg-white rounded-xl shadow-md p-6 animate-fade-in-up">
                   <div className="mb-6">
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                       Your {learningPlan.duration}-Day Study Plan
@@ -413,7 +414,7 @@ function LearningPlanPage() {
                       const dayProgress = dayTasks > 0 ? Math.round((dayCompleted / dayTasks) * 100) : 0
 
                       return (
-                        <div key={day.day} className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <div key={day.day} className="bg-gray-50 rounded-xl p-6 border border-gray-200 animate-fade-in-up" style={{ animationDelay: `${dayIndex * 0.1}s`, animationFillMode: 'both' }}>
                           <div className="flex justify-between items-start mb-4">
                             <div>
                               <div className="text-2xl font-bold text-primary-600">Day {day.day}</div>
