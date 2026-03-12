@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import QuestionCard from './QuestionCard'
 import Navbar from './Navbar'
 import Loading from './common/Loading'
+import { Button } from './ui'
 import { get } from '../utils/apiClient'
-import '../styles/WrongQuestionsPage.css'
 
 /**
  * Phase 4 Week 4 Day 11: Wrong Questions Page
@@ -127,6 +127,12 @@ function WrongQuestionsPage() {
     return labels[difficulty] || 'Medium'
   }
 
+  const getDifficultyBadgeClass = (difficulty) => {
+    if (difficulty <= 2) return 'bg-success-100 text-success-700'
+    if (difficulty === 3) return 'bg-warning-100 text-warning-700'
+    return 'bg-error-100 text-error-700'
+  }
+
   const getExamTypeLabel = (type) => {
     const labels = {
       chapter_test: 'Chapter Test',
@@ -143,154 +149,169 @@ function WrongQuestionsPage() {
 
   if (error) {
     return (
-      <div className="wrong-questions-error">
-        <p>{error}</p>
-        <button onClick={fetchWrongQuestions}>Retry</button>
-      </div>
+      <>
+        <Navbar />
+        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex items-center justify-center p-4">
+          <div className="bg-error-50 border border-error-200 rounded-xl p-8 text-center max-w-md">
+            <p className="text-error-700 mb-4">{error}</p>
+            <Button variant="primary" size="md" onClick={fetchWrongQuestions}>
+              Retry
+            </Button>
+          </div>
+        </div>
+      </>
     )
   }
 
   return (
     <>
       <Navbar />
-      <div className="wrong-questions-page">
-        {/* Header */}
-        <div className="wrong-questions-header">
-          <h1>📚 Wrong Questions Collection</h1>
-          <p className="subtitle">Review and master your mistakes</p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">📚 Wrong Questions Collection</h1>
+            <p className="text-lg text-gray-600">Review and master your mistakes</p>
+          </div>
 
-        {/* Statistics */}
-      <div className="wrong-questions-stats">
-        <div className="stat-card">
-          <div className="stat-value">{wrongQuestions.length}</div>
-          <div className="stat-label">Total Wrong</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{Object.keys(groupedByTopic).length}</div>
-          <div className="stat-label">Topics</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{filteredQuestions.length}</div>
-          <div className="stat-label">Filtered</div>
-        </div>
-      </div>
+          {/* Statistics */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="text-4xl font-bold text-error-600 mb-2">{wrongQuestions.length}</div>
+              <div className="text-sm text-gray-600 uppercase tracking-wide">Total Wrong</div>
+            </div>
+            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="text-4xl font-bold text-error-600 mb-2">{Object.keys(groupedByTopic).length}</div>
+              <div className="text-sm text-gray-600 uppercase tracking-wide">Topics</div>
+            </div>
+            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="text-4xl font-bold text-error-600 mb-2">{filteredQuestions.length}</div>
+              <div className="text-sm text-gray-600 uppercase tracking-wide">Filtered</div>
+            </div>
+          </div>
 
-      {/* Filters */}
-      <div className="wrong-questions-filters">
-        <div className="filter-group">
-          <label>Topic:</label>
-          <select
-            value={filter.topic}
-            onChange={(e) => setFilter({ ...filter, topic: e.target.value })}
-          >
-            {topics.map(topic => (
-              <option key={topic} value={topic}>
-                {topic === 'all' ? 'All Topics' : topic}
-              </option>
-            ))}
-          </select>
-        </div>
+          {/* Filters */}
+          <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Topic:</label>
+                <select
+                  value={filter.topic}
+                  onChange={(e) => setFilter({ ...filter, topic: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                >
+                  {topics.map(topic => (
+                    <option key={topic} value={topic}>
+                      {topic === 'all' ? 'All Topics' : topic}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-        <div className="filter-group">
-          <label>Difficulty:</label>
-          <select
-            value={filter.difficulty}
-            onChange={(e) => setFilter({ ...filter, difficulty: e.target.value })}
-          >
-            <option value="all">All Levels</option>
-            <option value="1">Very Easy</option>
-            <option value="2">Easy</option>
-            <option value="3">Medium</option>
-            <option value="4">Hard</option>
-            <option value="5">Very Hard</option>
-          </select>
-        </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Difficulty:</label>
+                <select
+                  value={filter.difficulty}
+                  onChange={(e) => setFilter({ ...filter, difficulty: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                >
+                  <option value="all">All Levels</option>
+                  <option value="1">Very Easy</option>
+                  <option value="2">Easy</option>
+                  <option value="3">Medium</option>
+                  <option value="4">Hard</option>
+                  <option value="5">Very Hard</option>
+                </select>
+              </div>
 
-        <div className="filter-group">
-          <label>Exam Type:</label>
-          <select
-            value={filter.examType}
-            onChange={(e) => setFilter({ ...filter, examType: e.target.value })}
-          >
-            {examTypes.map(type => (
-              <option key={type} value={type}>
-                {type === 'all' ? 'All Types' : getExamTypeLabel(type)}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Questions List */}
-      {filteredQuestions.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">🎉</div>
-          <h2>No wrong questions found!</h2>
-          <p>
-            {wrongQuestions.length === 0
-              ? "You haven't taken any exams yet, or you got everything right!"
-              : "Try adjusting your filters to see more questions."}
-          </p>
-          <button className="btn-primary" onClick={() => navigate('/exams')}>
-            Take an Exam
-          </button>
-        </div>
-      ) : (
-        <div className="questions-by-topic">
-          {Object.entries(groupedByTopic).map(([topic, questions]) => (
-            <div key={topic} className="topic-section">
-              <h2 className="topic-title">
-                {topic}
-                <span className="topic-count">({questions.length} questions)</span>
-              </h2>
-
-              <div className="questions-list">
-                {questions.map((question, index) => (
-                  <div key={`${question.id}-${question.examId}`} className="question-item">
-                    <div className="question-meta">
-                      <span className="question-number">#{index + 1}</span>
-                      <span className="question-difficulty" data-difficulty={question.difficulty}>
-                        {getDifficultyLabel(question.difficulty)}
-                      </span>
-                      <span className="question-exam-type">
-                        {getExamTypeLabel(question.examType)}
-                      </span>
-                      <span className="question-date">
-                        {formatDate(question.examDate)}
-                      </span>
-                    </div>
-
-                    <QuestionCard
-                      question={question}
-                      questionNumber={index + 1}
-                      totalQuestions={questions.length}
-                      showAnswer={showAnswer[question.id]}
-                    />
-
-                    <div className="question-actions">
-                      <button
-                        className="btn-toggle-answer"
-                        onClick={() => toggleAnswer(question.id)}
-                      >
-                        {showAnswer[question.id] ? '🙈 Hide Answer' : '👁️ Show Answer'}
-                      </button>
-
-                      {!showAnswer[question.id] && (
-                        <div className="user-answer-display">
-                          <span className="label">Your answer:</span>
-                          <span className="value incorrect">{question.userAnswer?.value || 'No answer'}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Exam Type:</label>
+                <select
+                  value={filter.examType}
+                  onChange={(e) => setFilter({ ...filter, examType: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                >
+                  {examTypes.map(type => (
+                    <option key={type} value={type}>
+                      {type === 'all' ? 'All Types' : getExamTypeLabel(type)}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* Questions List */}
+          {filteredQuestions.length === 0 ? (
+            <div className="bg-white rounded-xl shadow-md p-12 text-center">
+              <div className="text-6xl mb-4">🎉</div>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-2">No wrong questions found!</h2>
+              <p className="text-gray-600 mb-6">
+                {wrongQuestions.length === 0
+                  ? "You haven't taken any exams yet, or you got everything right!"
+                  : "Try adjusting your filters to see more questions."}
+              </p>
+              <Button variant="primary" size="md" onClick={() => navigate('/exams')}>
+                Take an Exam
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {Object.entries(groupedByTopic).map(([topic, questions]) => (
+                <div key={topic} className="bg-white rounded-xl shadow-md p-6">
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-4 pb-3 border-b-2 border-error-500 flex items-center gap-3">
+                    {topic}
+                    <span className="text-base text-gray-600 font-normal">({questions.length} questions)</span>
+                  </h2>
+
+                  <div className="space-y-6">
+                    {questions.map((question, index) => (
+                      <div key={`${question.id}-${question.examId}`} className="border border-gray-200 rounded-lg p-6 bg-gray-50 hover:shadow-lg hover:border-error-500 transition-all duration-300">
+                        <div className="flex flex-wrap gap-3 mb-4 items-center">
+                          <span className="text-lg font-bold text-error-600">#{index + 1}</span>
+                          <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase ${getDifficultyBadgeClass(question.difficulty)}`}>
+                            {getDifficultyLabel(question.difficulty)}
+                          </span>
+                          <span className="px-3 py-1 bg-info-100 text-info-700 rounded-full text-xs font-medium">
+                            {getExamTypeLabel(question.examType)}
+                          </span>
+                          <span className="text-sm text-gray-600 ml-auto">
+                            {formatDate(question.examDate)}
+                          </span>
+                        </div>
+
+                        <QuestionCard
+                          question={question}
+                          questionNumber={index + 1}
+                          totalQuestions={questions.length}
+                          showAnswer={showAnswer[question.id]}
+                        />
+
+                        <div className="flex flex-wrap gap-4 mt-4 items-center">
+                          <Button
+                            variant={showAnswer[question.id] ? 'secondary' : 'primary'}
+                            size="sm"
+                            onClick={() => toggleAnswer(question.id)}
+                          >
+                            {showAnswer[question.id] ? '🙈 Hide Answer' : '👁️ Show Answer'}
+                          </Button>
+
+                          {!showAnswer[question.id] && (
+                            <div className="flex gap-2 items-center px-4 py-2 bg-white rounded-lg border border-gray-200">
+                              <span className="text-sm text-gray-600">Your answer:</span>
+                              <span className="text-base font-bold text-error-600">{question.userAnswer?.value || 'No answer'}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
     </>
   )
 }
