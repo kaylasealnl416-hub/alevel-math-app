@@ -238,6 +238,7 @@ export default function QuestionUploadPage() {
         </ul>
       </div>
     </div>
+    </>
   )
 }
 
@@ -423,7 +424,6 @@ function QuestionReview({ questions, onBack }) {
         </button>
       </div>
     </div>
-    </>
   )
 }
 
