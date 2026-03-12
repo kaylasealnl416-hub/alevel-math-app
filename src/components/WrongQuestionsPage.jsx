@@ -169,29 +169,29 @@ function WrongQuestionsPage() {
       <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-8 animate-fade-in-down">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">📚 Wrong Questions Collection</h1>
             <p className="text-lg text-gray-600">Review and master your mistakes</p>
           </div>
 
           {/* Statistics */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
               <div className="text-4xl font-bold text-error-600 mb-2">{wrongQuestions.length}</div>
               <div className="text-sm text-gray-600 uppercase tracking-wide">Total Wrong</div>
             </div>
-            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
               <div className="text-4xl font-bold text-error-600 mb-2">{Object.keys(groupedByTopic).length}</div>
               <div className="text-sm text-gray-600 uppercase tracking-wide">Topics</div>
             </div>
-            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
               <div className="text-4xl font-bold text-error-600 mb-2">{filteredQuestions.length}</div>
               <div className="text-sm text-gray-600 uppercase tracking-wide">Filtered</div>
             </div>
           </div>
 
           {/* Filters */}
-          <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+          <div className="bg-white rounded-xl shadow-md p-6 mb-8 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Topic:</label>
@@ -243,7 +243,7 @@ function WrongQuestionsPage() {
 
           {/* Questions List */}
           {filteredQuestions.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-md p-12 text-center">
+            <div className="bg-white rounded-xl shadow-md p-12 text-center animate-scale-in">
               <div className="text-6xl mb-4">🎉</div>
               <h2 className="text-2xl font-semibold text-gray-900 mb-2">No wrong questions found!</h2>
               <p className="text-gray-600 mb-6">
@@ -257,8 +257,8 @@ function WrongQuestionsPage() {
             </div>
           ) : (
             <div className="space-y-8">
-              {Object.entries(groupedByTopic).map(([topic, questions]) => (
-                <div key={topic} className="bg-white rounded-xl shadow-md p-6">
+              {Object.entries(groupedByTopic).map(([topic, questions], topicIndex) => (
+                <div key={topic} className="bg-white rounded-xl shadow-md p-6 animate-fade-in-up" style={{ animationDelay: `${0.5 + topicIndex * 0.1}s`, animationFillMode: 'both' }}>
                   <h2 className="text-2xl font-semibold text-gray-900 mb-4 pb-3 border-b-2 border-error-500 flex items-center gap-3">
                     {topic}
                     <span className="text-base text-gray-600 font-normal">({questions.length} questions)</span>
