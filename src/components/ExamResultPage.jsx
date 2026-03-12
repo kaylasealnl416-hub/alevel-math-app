@@ -5,7 +5,6 @@ import AIFeedback from './exam/AIFeedback'
 import Loading from './common/Loading'
 import Toast from './common/Toast'
 import { get } from '../utils/apiClient'
-import '../styles/ExamResultPage.css'
 
 /**
  * Phase 4 Week 2 Day 6: Exam Result Page (Optimized)

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import QuestionCard from './QuestionCard'
 import AnswerInput from './AnswerInput'
-import '../styles/ExamTakingPage.css'
 
 /**
  * Phase 4 Week 2 Day 5: Exam Taking Page
