@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { get, post, put } from '../utils/apiClient'
+import Navbar from './Navbar'
 import Loading from './common/Loading'
 import Toast from './common/Toast'
 import '../styles/LearningPlanPage.css'
@@ -206,24 +207,23 @@ function LearningPlanPage() {
   }
 
   return (
-    <div className="learning-plan-page">
-      {/* Toast Notification */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
+    <>
+      <Navbar />
+      <div className="learning-plan-page">
+        {/* Toast Notification */}
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
 
-      {/* Header */}
-      <div className="learning-plan-header">
-        <button className="btn-back" onClick={() => navigate('/')}>
-          ← Back to Home
-        </button>
-        <h1>📅 My Learning Plan</h1>
-        <p className="subtitle">Personalized recommendations based on your exam performance</p>
-      </div>
+        {/* Header */}
+        <div className="learning-plan-header">
+          <h1>📅 My Learning Plan</h1>
+          <p className="subtitle">Personalized recommendations based on your exam performance</p>
+        </div>
 
       {error && (
         <div className="error-message">
@@ -447,6 +447,7 @@ function LearningPlanPage() {
         </div>
       )}
     </div>
+    </>
   )
 }
 

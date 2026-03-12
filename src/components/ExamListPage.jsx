@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import Navbar from './Navbar'
 import '../styles/ExamListPage.css'
 
 /**
@@ -146,7 +147,9 @@ function ExamListPage() {
     return 'grade-f'
   }
   return (
-    <div className="exam-list-page">
+    <>
+      <Navbar />
+      <div className="exam-list-page">
       <div className="exam-list-header">
         <h1>My Exams</h1>
         <button className="btn-create-exam" onClick={handleCreateExam}>
@@ -280,6 +283,7 @@ function ExamListPage() {
         </div>
       )}
     </div>
+    </>
   )
 }
 

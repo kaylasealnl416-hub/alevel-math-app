@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { post, get } from '../utils/apiClient'
+import Navbar from './Navbar'
 import Toast from './common/Toast'
 import Loading from './common/Loading'
 
@@ -155,9 +156,11 @@ export default function QuestionUploadPage() {
   }
 
   return (
-    <div style={styles.container}>
-      <h2>📄 上传题库文档</h2>
-      <p style={styles.subtitle}>支持 PDF 和 Word 文档，AI 自动提取题目</p>
+    <>
+      <Navbar />
+      <div style={styles.container}>
+        <h2>📄 上传题库文档</h2>
+        <p style={styles.subtitle}>支持 PDF 和 Word 文档，AI 自动提取题目</p>
 
       <div
         style={{
@@ -420,6 +423,7 @@ function QuestionReview({ questions, onBack }) {
         </button>
       </div>
     </div>
+    </>
   )
 }
 

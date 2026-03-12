@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import QuestionCard from './QuestionCard'
+import Navbar from './Navbar'
 import Loading from './common/Loading'
 import { get } from '../utils/apiClient'
 import '../styles/WrongQuestionsPage.css'
@@ -150,17 +151,16 @@ function WrongQuestionsPage() {
   }
 
   return (
-    <div className="wrong-questions-page">
-      {/* Header */}
-      <div className="wrong-questions-header">
-        <button className="btn-back" onClick={() => navigate('/exams')}>
-          ← Back to Exams
-        </button>
-        <h1>📚 Wrong Questions Collection</h1>
-        <p className="subtitle">Review and master your mistakes</p>
-      </div>
+    <>
+      <Navbar />
+      <div className="wrong-questions-page">
+        {/* Header */}
+        <div className="wrong-questions-header">
+          <h1>📚 Wrong Questions Collection</h1>
+          <p className="subtitle">Review and master your mistakes</p>
+        </div>
 
-      {/* Statistics */}
+        {/* Statistics */}
       <div className="wrong-questions-stats">
         <div className="stat-card">
           <div className="stat-value">{wrongQuestions.length}</div>
@@ -291,6 +291,7 @@ function WrongQuestionsPage() {
         </div>
       )}
     </div>
+    </>
   )
 }
 
