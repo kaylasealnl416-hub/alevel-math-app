@@ -18,11 +18,13 @@ import recommendationsRoutes from './routes/recommendations.js'
 import learningPlansRoutes from './routes/learningPlans.js'
 import wrongQuestionsRoutes from './routes/wrongQuestions.js'
 import questionUploadRoutes from './routes/questionUpload.js'
+import quizRoutes from './routes/quiz.js'
 import { authMiddleware } from './middleware/auth.js'
 import { cacheMiddleware } from './middleware/cache.js'
 import { securityHeaders, requestSizeLimit } from './middleware/security.js'
 import { performanceMonitor } from './middleware/performance.js'
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js'
+import { csrfProtection, getCsrfToken } from './middleware/csrf.js'
 
 const app = new Hono()
 
@@ -109,22 +111,70 @@ if (process.env.NODE_ENV === 'development') {
   })
 }
 
+// 严格的速率限制 - 登录端点（防止暴力破解）
+app.use('/api/auth/login', rateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 分钟
+  limit: 5, // 最多 5 次尝试
+  standardHeaders: 'draft-6',
+  keyGenerator: (c) => {
+    // 使用 IP + 邮箱作为 key（如果有的话）
+    const ip = c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || 'anonymous'
+    return ip
+  },
+  handler: (c) => {
+    return c.json({
+      success: false,
+      error: {
+        code: 'RATE_LIMIT_EXCEEDED',
+        message: '登录尝试次数过多，请 15 分钟后再试'
+      }
+    }, 429)
+  }
+}))
+
+// 严格的速率限制 - 注册端点（防止批量注册）
+app.use('/api/auth/register', rateLimiter({
+  windowMs: 60 * 60 * 1000, // 1 小时
+  limit: 3, // 最多 3 次注册
+  standardHeaders: 'draft-6',
+  keyGenerator: (c) => {
+    const ip = c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || 'anonymous'
+    return ip
+  },
+  handler: (c) => {
+    return c.json({
+      success: false,
+      error: {
+        code: 'RATE_LIMIT_EXCEEDED',
+        message: '注册次数过多，请 1 小时后再试'
+      }
+    }, 429)
+  }
+}))
+
 // 公开路由（无需认证，带缓存）
 app.route('/api/auth', authRoutes)
+
+// CSRF Token 获取端点（需要认证）
+app.get('/api/csrf-token', authMiddleware, getCsrfToken())
+
 app.use('/api/subjects/*', cacheMiddleware({ ttl: 10 * 60 * 1000 })) // 10分钟缓存
 app.route('/api/subjects', subjectsRoutes)
 app.use('/api/chapters/*', cacheMiddleware({ ttl: 10 * 60 * 1000 })) // 10分钟缓存
 app.route('/api/chapters', chaptersRoutes)
 
-// 受保护路由（需要认证）
-app.use('/api/users/*', authMiddleware)
-app.use('/api/progress/*', authMiddleware)
-app.use('/api/chat/*', authMiddleware)
-app.use('/api/questions/*', authMiddleware)
-app.use('/api/question-sets/*', authMiddleware)
-app.use('/api/user-answers/*', authMiddleware)
-// 注意：考试 API 暂时不需要认证（用于测试）
-// app.use('/api/exams/*', authMiddleware)
+// 受保护路由（需要认证 + CSRF 保护）
+app.use('/api/users/*', authMiddleware, csrfProtection())
+app.use('/api/progress/*', authMiddleware, csrfProtection())
+app.use('/api/chat/*', authMiddleware, csrfProtection())
+app.use('/api/questions/*', authMiddleware, csrfProtection())
+app.use('/api/question-sets/*', authMiddleware, csrfProtection())
+app.use('/api/user-answers/*', authMiddleware, csrfProtection())
+app.use('/api/exams/*', authMiddleware, csrfProtection())
+app.use('/api/recommendations/*', authMiddleware, csrfProtection())
+app.use('/api/learning-plans/*', authMiddleware, csrfProtection())
+app.use('/api/wrong-questions/*', authMiddleware, csrfProtection())
+app.use('/api/quiz/*', authMiddleware, csrfProtection())
 
 app.route('/api/users', usersRoutes)
 app.route('/api/progress', progressRoutes)
@@ -138,6 +188,7 @@ app.route('/api/recommendations', recommendationsRoutes)
 app.route('/api/learning-plans', learningPlansRoutes)
 app.route('/api/wrong-questions', wrongQuestionsRoutes)
 app.route('/api/questions', questionUploadRoutes)
+app.route('/api/quiz', quizRoutes)
 
 // 404处理
 app.notFound(notFoundHandler())

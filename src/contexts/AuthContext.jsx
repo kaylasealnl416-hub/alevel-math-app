@@ -4,48 +4,50 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // 初始化：从 localStorage 恢复登录状态
+  // 初始化：从 sessionStorage 恢复用户信息（不存储 Token）
   useEffect(() => {
-    const savedToken = localStorage.getItem('auth_token')
-    const savedUser = localStorage.getItem('auth_user')
+    const savedUser = sessionStorage.getItem('auth_user')
 
-    if (savedToken && savedUser) {
-      setToken(savedToken)
+    if (savedUser) {
       setUser(JSON.parse(savedUser))
     }
     setLoading(false)
   }, [])
 
-  // 登录
-  const login = (userData, authToken) => {
+  // 登录（Token 存储在 httpOnly Cookie 中，前端不可访问）
+  const login = (userData) => {
     setUser(userData)
-    setToken(authToken)
-    localStorage.setItem('auth_token', authToken)
-    localStorage.setItem('auth_user', JSON.stringify(userData))
+    sessionStorage.setItem('auth_user', JSON.stringify(userData))
   }
 
   // 登出
-  const logout = () => {
+  const logout = async () => {
+    // 调用后端登出 API 清除 Cookie
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/auth/logout`, {
+        method: 'POST',
+        credentials: 'include' // 发送 Cookie
+      })
+    } catch (error) {
+      console.error('登出请求失败:', error)
+    }
+
     setUser(null)
-    setToken(null)
-    localStorage.removeItem('auth_token')
-    localStorage.removeItem('auth_user')
+    sessionStorage.removeItem('auth_user')
   }
 
   // 更新用户信息
   const updateUser = (userData) => {
     setUser(userData)
-    localStorage.setItem('auth_user', JSON.stringify(userData))
+    sessionStorage.setItem('auth_user', JSON.stringify(userData))
   }
 
   const value = {
     user,
-    token,
     loading,
-    isAuthenticated: !!token,
+    isAuthenticated: !!user,
     login,
     logout,
     updateUser

@@ -7,31 +7,34 @@ import { verifyToken } from '../utils/jwt.js'
 
 /**
  * JWT 认证中间件
- * 验证请求头中的 Authorization Token
+ * 验证请求头中的 Authorization Token 或 Cookie 中的 Token
  */
 export async function authMiddleware(c, next) {
-  // 获取 Authorization 头
+  // 方式 1: 从 Authorization 头获取（向后兼容）
   const authHeader = c.req.header('Authorization')
+  let token = null
 
-  if (!authHeader) {
-    return c.json({
-      success: false,
-      error: {
-        code: 'UNAUTHORIZED',
-        message: '缺少认证令牌'
-      }
-    }, 401)
+  if (authHeader) {
+    token = authHeader.replace('Bearer ', '')
   }
 
-  // 提取 Bearer Token
-  const token = authHeader.replace('Bearer ', '')
+  // 方式 2: 从 Cookie 获取（推荐方式）
+  if (!token) {
+    const cookies = c.req.header('Cookie')
+    if (cookies) {
+      const cookieMatch = cookies.match(/auth_token=([^;]+)/)
+      if (cookieMatch) {
+        token = cookieMatch[1]
+      }
+    }
+  }
 
   if (!token) {
     return c.json({
       success: false,
       error: {
         code: 'UNAUTHORIZED',
-        message: '无效的认证令牌格式'
+        message: '缺少认证令牌'
       }
     }, 401)
   }

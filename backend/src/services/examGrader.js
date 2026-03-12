@@ -1,7 +1,7 @@
 import { db } from '../db/index.js'
 import { exams, examQuestionResults, questionSets, questions } from '../db/schema.js'
 import { eq, sql, inArray } from 'drizzle-orm'
-import { gradeAnswer } from './answerGrader.js'
+import { gradeAnswer, gradeAnswerWithQuestion } from './answerGrader.js'
 
 /**
  * Phase 4 Day 3: 考试批改服务
@@ -36,7 +36,7 @@ export async function gradeExam(examId) {
         throw new Error('考试尚未提交，无法批改')
       }
 
-      // 2. 查询试卷和题目
+      // 2. 查询试卷和题目（一次性加载所有数据，避免 N+1 查询）
       const [questionSet] = await tx.select()
         .from(questionSets)
         .where(eq(questionSets.id, exam.questionSetId))
@@ -47,7 +47,13 @@ export async function gradeExam(examId) {
         .from(questions)
         .where(inArray(questions.id, questionIds))
 
-      // 3. 并行批改所有题目（性能优化）
+      // 创建题目 ID 到题目对象的映射，方便快速查找
+      const questionMap = new Map()
+      for (const question of questionList) {
+        questionMap.set(question.id, question)
+      }
+
+      // 3. 并行批改所有题目（性能优化 + 避免 N+1 查询）
       const gradePromises = questionList.map(async (question) => {
         const userAnswer = exam.answers[question.id]
 
@@ -68,12 +74,9 @@ export async function gradeExam(examId) {
           }
         }
 
-        // 批改答案
+        // 批改答案（使用内存中的题目数据，不再查询数据库）
         try {
-          const gradeResult = await gradeAnswer({
-            questionId: question.id,
-            userAnswer: userAnswer.value || userAnswer
-          })
+          const gradeResult = await gradeAnswerWithQuestion(question, userAnswer.value || userAnswer)
 
           return {
             examId,

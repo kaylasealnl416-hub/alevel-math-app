@@ -27,7 +27,17 @@ export async function gradeAnswer(answer) {
     throw new Error('题目不存在')
   }
 
-  // 2. 根据题型选择批改方式
+  return await gradeAnswerWithQuestion(question, userAnswer)
+}
+
+/**
+ * 批改单个答案（使用已有的题目对象，避免数据库查询）
+ * @param {Object} question - 题目对象
+ * @param {any} userAnswer - 用户答案
+ * @returns {Promise<Object>} 批改结果
+ */
+export async function gradeAnswerWithQuestion(question, userAnswer) {
+  // 根据题型选择批改方式
   if (question.type === 'multiple_choice') {
     return gradeMultipleChoice(question, userAnswer)
   } else if (question.type === 'fill_blank') {
@@ -388,6 +398,7 @@ function getContent(content) {
 
 export default {
   gradeAnswer,
+  gradeAnswerWithQuestion,
   gradeAnswersBatch,
   saveGradingResults
 }

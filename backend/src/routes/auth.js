@@ -105,15 +105,28 @@ app.post('/register', async (c) => {
     const token = generateToken({ userId, email })
     const refreshToken = generateRefreshToken({ userId })
 
-    // 返回用户信息（不包含密码）
+    // 设置 httpOnly Cookie（安全存储 Token）
+    const isProduction = process.env.NODE_ENV === 'production'
+    const cookieOptions = {
+      httpOnly: true, // 防止 JavaScript 访问
+      secure: isProduction, // 生产环境使用 HTTPS
+      sameSite: isProduction ? 'strict' : 'lax', // CSRF 保护
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 天
+      path: '/'
+    }
+
+    // 设置 Cookie
+    c.header('Set-Cookie', `auth_token=${token}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`)
+    c.header('Set-Cookie', `refresh_token=${refreshToken}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`, { append: true })
+
+    // 返回用户信息（不包含密码和 Token）
     const { password: _, ...userWithoutPassword } = newUser[0]
 
     return c.json({
       success: true,
       data: {
-        user: userWithoutPassword,
-        token,
-        refreshToken
+        user: userWithoutPassword
+        // 不再返回 token 和 refreshToken，它们已存储在 httpOnly Cookie 中
       }
     }, 201)
   } catch (error) {
@@ -195,15 +208,27 @@ app.post('/login', async (c) => {
     const token = generateToken({ userId: user[0].id, email: user[0].email })
     const refreshToken = generateRefreshToken({ userId: user[0].id })
 
+    // 设置 httpOnly Cookie（安全存储 Token）
+    const isProduction = process.env.NODE_ENV === 'production'
+    const cookieOptions = {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'strict' : 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 天
+      path: '/'
+    }
+
+    // 设置 Cookie
+    c.header('Set-Cookie', `auth_token=${token}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`)
+    c.header('Set-Cookie', `refresh_token=${refreshToken}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`, { append: true })
+
     // 返回用户信息（不包含密码）
     const { password: _, ...userWithoutPassword } = user[0]
 
     return c.json({
       success: true,
       data: {
-        user: userWithoutPassword,
-        token,
-        refreshToken
+        user: userWithoutPassword
       }
     })
   } catch (error) {
@@ -341,6 +366,46 @@ app.get('/me', async (c) => {
       error: {
         code: 'SERVER_ERROR',
         message: '获取用户信息失败'
+      }
+    }, 500)
+  }
+})
+
+// ============================================================
+// 登出
+// ============================================================
+
+/**
+ * POST /api/auth/logout
+ * 用户登出（清除 Cookie）
+ */
+app.post('/logout', async (c) => {
+  try {
+    // 清除 Cookie
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+      maxAge: 0, // 立即过期
+      path: '/'
+    }
+
+    c.header('Set-Cookie', `auth_token=; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`)
+    c.header('Set-Cookie', `refresh_token=; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`, { append: true })
+
+    return c.json({
+      success: true,
+      data: {
+        message: '登出成功'
+      }
+    })
+  } catch (error) {
+    console.error('登出失败:', error)
+    return c.json({
+      success: false,
+      error: {
+        code: 'SERVER_ERROR',
+        message: '登出失败'
       }
     }, 500)
   }

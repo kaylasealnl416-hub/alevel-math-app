@@ -2,10 +2,18 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import dotenv from 'dotenv'
 import * as schema from './schema.js'
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
+
+// 获取当前文件的目录
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 // 加载环境变量（仅在本地开发时需要）
 if (process.env.NODE_ENV !== 'production') {
-  dotenv.config({ path: '.env.local' })
+  // 使用绝对路径加载 .env.local
+  const envPath = resolve(__dirname, '../../.env.local')
+  dotenv.config({ path: envPath })
 }
 
 // 检查数据库URL

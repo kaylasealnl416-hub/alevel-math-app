@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Toast from './common/Toast'
-import { Button, Input } from './ui'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
@@ -20,7 +19,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState({ score: 0, text: '', color: '' })
 
-  // 密码强度检查
+  // Password strength check
   const checkPasswordStrength = (password) => {
     if (!password) return { score: 0, text: '', color: '' }
 
@@ -33,40 +32,40 @@ export default function RegisterPage() {
 
     const levels = [
       { score: 0, text: '', color: '' },
-      { score: 1, text: '弱', color: '#f56565' },
-      { score: 2, text: '一般', color: '#ed8936' },
-      { score: 3, text: '中等', color: '#ecc94b' },
-      { score: 4, text: '强', color: '#48bb78' },
-      { score: 5, text: '非常强', color: '#38a169' }
+      { score: 1, text: 'Weak', color: '#f56565' },
+      { score: 2, text: 'Fair', color: '#ed8936' },
+      { score: 3, text: 'Good', color: '#ecc94b' },
+      { score: 4, text: 'Strong', color: '#48bb78' },
+      { score: 5, text: 'Very Strong', color: '#38a169' }
     ]
 
     return levels[Math.min(score, 5)]
   }
 
-  // 表单验证
+  // Form validation
   const validateForm = () => {
     const newErrors = {}
 
     if (!formData.nickname.trim()) {
-      newErrors.nickname = '昵称不能为空'
+      newErrors.nickname = 'Nickname is required'
     } else if (formData.nickname.length > 50) {
-      newErrors.nickname = '昵称不能超过 50 个字符'
+      newErrors.nickname = 'Nickname cannot exceed 50 characters'
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = '邮箱不能为空'
+      newErrors.email = 'Email is required'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = '邮箱格式不正确'
+      newErrors.email = 'Invalid email format'
     }
 
     if (!formData.password) {
-      newErrors.password = '密码不能为空'
+      newErrors.password = 'Password is required'
     } else if (formData.password.length < 6) {
-      newErrors.password = '密码至少 6 个字符'
+      newErrors.password = 'Password must be at least 6 characters'
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = '两次密码输入不一致'
+      newErrors.confirmPassword = 'Passwords do not match'
     }
 
     setErrors(newErrors)
@@ -76,7 +75,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // 前端验证
+    // Frontend validation
     if (!validateForm()) {
       return
     }
@@ -87,6 +86,7 @@ export default function RegisterPage() {
       const res = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Send and receive cookies
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
@@ -98,27 +98,27 @@ export default function RegisterPage() {
       const data = await res.json()
 
       if (!data.success) {
-        // 显示验证错误
+        // Display validation errors
         if (data.error?.details) {
           const errorMessages = data.error.details.map(d => d.message).join('\n')
           Toast.error(errorMessages)
         } else {
-          Toast.error(data.error?.message || '注册失败')
+          Toast.error(data.error?.message || 'Registration failed')
         }
         setLoading(false)
         return
       }
 
-      // 注册成功
-      Toast.success('注册成功！欢迎加入 A-Level Math Hub')
-      login(data.data.user, data.data.token)
+      // Registration successful (Token stored in httpOnly Cookie)
+      Toast.success('Registration successful! Welcome to A-Level Math Hub')
+      login(data.data.user) // Only pass user info, not token
 
-      // 延迟跳转，让用户看到成功提示
+      // Delayed navigation to let user see success message
       setTimeout(() => {
         navigate('/exams')
       }, 1000)
     } catch (err) {
-      Toast.error('网络错误，请稍后重试')
+      Toast.error('Network error, please try again later')
       setLoading(false)
     }
   }
@@ -128,73 +128,110 @@ export default function RegisterPage() {
     setFormData({ ...formData, password: newPassword })
     setPasswordStrength(checkPasswordStrength(newPassword))
 
-    // 清除密码错误
+    // Clear password error
     if (errors.password) {
       setErrors({ ...errors, password: '' })
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md border border-gray-100 animate-scale-in">
-        {/* 标题 */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full mb-3">
-            <span className="text-3xl">🎓</span>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-10 w-full max-w-md border border-white/20 animate-scale-in">
+        {/* Title */}
+        <div className="text-center mb-10 animate-fade-in-down">
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-full mb-5 shadow-2xl transform hover:scale-110 transition-transform duration-300">
+            <span className="text-5xl">🎓</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">
-            注册
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
+            Join Us
           </h1>
-          <p className="text-gray-600 text-sm">
-            创建你的学习账号
+          <p className="text-gray-500 text-base">
+            Create your learning account
           </p>
         </div>
 
-        {/* 表单 */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* 昵称输入 */}
-          <Input
-            type="text"
-            label="昵称"
-            value={formData.nickname}
-            onChange={(e) => {
-              setFormData({ ...formData, nickname: e.target.value })
-              if (errors.nickname) setErrors({ ...errors, nickname: '' })
-            }}
-            error={errors.nickname}
-            placeholder="你的昵称"
-            maxLength={50}
-          />
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Nickname input */}
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Nickname
+            </label>
+            <input
+              type="text"
+              value={formData.nickname}
+              onChange={(e) => {
+                setFormData({ ...formData, nickname: e.target.value })
+                if (errors.nickname) setErrors({ ...errors, nickname: '' })
+              }}
+              placeholder="Your nickname"
+              maxLength={50}
+              className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all text-base ${
+                errors.nickname
+                  ? 'border-red-400 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white'
+              }`}
+            />
+            {errors.nickname && (
+              <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <span>⚠️</span> {errors.nickname}
+              </p>
+            )}
+          </div>
 
-          {/* 邮箱输入 */}
-          <Input
-            type="email"
-            label="邮箱"
-            value={formData.email}
-            onChange={(e) => {
-              setFormData({ ...formData, email: e.target.value })
-              if (errors.email) setErrors({ ...errors, email: '' })
-            }}
-            error={errors.email}
-            placeholder="your@email.com"
-          />
+          {/* Email input */}
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => {
+                setFormData({ ...formData, email: e.target.value })
+                if (errors.email) setErrors({ ...errors, email: '' })
+              }}
+              placeholder="your@email.com"
+              className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all text-base ${
+                errors.email
+                  ? 'border-red-400 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white'
+              }`}
+            />
+            {errors.email && (
+              <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <span>⚠️</span> {errors.email}
+              </p>
+            )}
+          </div>
 
-          {/* 密码输入 */}
-          <div className="space-y-2">
-            <Input
+          {/* Password input */}
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Password
+            </label>
+            <input
               type="password"
-              label="密码"
               value={formData.password}
               onChange={handlePasswordChange}
-              error={errors.password}
-              placeholder="至少 6 个字符"
+              placeholder="At least 6 characters"
+              className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all text-base ${
+                errors.password
+                  ? 'border-red-400 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white'
+              }`}
             />
-            {/* 密码强度条 */}
+            {errors.password && (
+              <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <span>⚠️</span> {errors.password}
+              </p>
+            )}
+            {/* Password strength bar */}
             {formData.password && (
-              <div className="space-y-1">
-                <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+              <div className="mt-3 space-y-2">
+                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full transition-all duration-300"
+                    className="h-full transition-all duration-300 rounded-full"
                     style={{
                       width: `${(passwordStrength.score / 5) * 100}%`,
                       backgroundColor: passwordStrength.color
@@ -202,72 +239,84 @@ export default function RegisterPage() {
                   />
                 </div>
                 {passwordStrength.text && (
-                  <p className="text-xs font-medium" style={{ color: passwordStrength.color }}>
-                    密码强度：{passwordStrength.text}
+                  <p className="text-xs font-semibold" style={{ color: passwordStrength.color }}>
+                    Password strength: {passwordStrength.text}
                   </p>
                 )}
               </div>
             )}
           </div>
 
-          {/* 确认密码输入 */}
-          <Input
-            type="password"
-            label="确认密码"
-            value={formData.confirmPassword}
-            onChange={(e) => {
-              setFormData({ ...formData, confirmPassword: e.target.value })
-              if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: '' })
-            }}
-            error={errors.confirmPassword}
-            placeholder="再次输入密码"
-          />
+          {/* Confirm password input */}
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              value={formData.confirmPassword}
+              onChange={(e) => {
+                setFormData({ ...formData, confirmPassword: e.target.value })
+                if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: '' })
+              }}
+              placeholder="Enter password again"
+              className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all text-base ${
+                errors.confirmPassword
+                  ? 'border-red-400 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white'
+              }`}
+            />
+            {errors.confirmPassword && (
+              <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <span>⚠️</span> {errors.confirmPassword}
+              </p>
+            )}
+          </div>
 
-          {/* 年级选择 */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              年级
+          {/* Grade selection */}
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Grade
             </label>
             <select
               value={formData.grade}
               onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white cursor-pointer transition-all duration-200"
+              className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white cursor-pointer transition-all text-base font-medium"
             >
               <option value="AS">AS Level</option>
               <option value="A2">A2 Level</option>
             </select>
           </div>
 
-          {/* 注册按钮 */}
-          <Button
+          {/* Register button */}
+          <button
             type="submit"
-            variant="primary"
-            size="lg"
             disabled={loading}
-            className="w-full mt-6"
+            className="w-full px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-lg font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 focus:outline-none focus:ring-4 focus:ring-purple-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] animate-fade-in-up"
+            style={{ animationDelay: '0.6s' }}
           >
             {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+              <span className="flex items-center justify-center gap-3">
+                <svg className="animate-spin h-6 w-6" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                注册中...
+                Registering...
               </span>
             ) : (
-              '立即注册'
+              'Sign Up →'
             )}
-          </Button>
+          </button>
         </form>
 
-        {/* 登录链接 */}
-        <p className="mt-6 text-center text-sm text-gray-600">
-          已有账号？{' '}
+        {/* Login link */}
+        <p className="mt-8 text-center text-sm text-gray-600 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
+          Already have an account?{' '}
           <Link
             to="/login"
-            className="text-primary-600 hover:text-primary-700 font-semibold transition-colors hover:underline"
+            className="text-indigo-600 hover:text-indigo-700 font-bold transition-colors hover:underline"
           >
-            立即登录
+            Login
           </Link>
         </p>
       </div>

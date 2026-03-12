@@ -2059,135 +2059,6 @@ function localiseChapter(chapter, lang) {
 }
 
 // ============================================================
-// AI SERVICE
-// ============================================================
-const API_KEY_STORAGE = "alevel_math_anthropic_key";
-const MINIMAX_API_KEY_STORAGE = "alevel_math_minimax_key";
-const ZHIPU_API_KEY_STORAGE = "alevel_math_zhipu_key";
-const PROVIDER_STORAGE = "alevel_math_provider";
-
-function getApiKey() {
-  return localStorage.getItem(API_KEY_STORAGE) || "";
-}
-function saveApiKey(key) {
-  localStorage.setItem(API_KEY_STORAGE, key.trim());
-}
-function getMiniMaxApiKey() {
-  return localStorage.getItem(MINIMAX_API_KEY_STORAGE) || "";
-}
-function saveMiniMaxApiKey(key) {
-  localStorage.setItem(MINIMAX_API_KEY_STORAGE, key.trim());
-}
-function getZhipuApiKey() {
-  return localStorage.getItem(ZHIPU_API_KEY_STORAGE) || "";
-}
-function saveZhipuApiKey(key) {
-  localStorage.setItem(ZHIPU_API_KEY_STORAGE, key.trim());
-}
-function getProvider() {
-  return localStorage.getItem(PROVIDER_STORAGE) || "anthropic";
-}
-function saveProvider(provider) {
-  localStorage.setItem(PROVIDER_STORAGE, provider);
-}
-
-async function callClaude(systemPrompt, userMessage, maxTokens = 1500) {
-  const apiKey = getApiKey();
-  if (!apiKey) throw new Error("NO_API_KEY");
-
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: maxTokens,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userMessage }]
-    })
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    if (response.status === 401) throw new Error("INVALID_API_KEY");
-    throw new Error(err?.error?.message || `HTTP ${response.status}`);
-  }
-  const data = await response.json();
-  return data.content?.[0]?.text || "";
-}
-
-async function callMiniMax(systemPrompt, userMessage, maxTokens = 1500) {
-  const apiKey = getMiniMaxApiKey();
-  if (!apiKey) throw new Error("NO_MINIMAX_API_KEY");
-
-  const response = await fetch("https://api.minimax.chat/v1/text/chatcompletion_pro", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "abab6.5s-chat",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userMessage }
-      ],
-      max_tokens: maxTokens,
-    })
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    if (response.status === 401) throw new Error("INVALID_MINIMAX_API_KEY");
-    throw new Error(err?.base_resp?.status_msg || `HTTP ${response.status}`);
-  }
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
-}
-
-async function callZhipu(systemPrompt, userMessage, maxTokens = 1500) {
-  const apiKey = getZhipuApiKey();
-  if (!apiKey) throw new Error("NO_ZHIPU_API_KEY");
-
-  const response = await fetch("https://open.bigmodel.cn/api/paas/v4/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "glm-4",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userMessage }
-      ],
-      max_tokens: maxTokens,
-    })
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    if (response.status === 401) throw new Error("INVALID_ZHIPU_API_KEY");
-    throw new Error(err?.error?.message || `HTTP ${response.status}`);
-  }
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
-}
-
-// Unified AI call function
-async function callAI(systemPrompt, userMessage, maxTokens = 1500) {
-  const provider = getProvider();
-  if (provider === "minimax") {
-    return await callMiniMax(systemPrompt, userMessage, maxTokens);
-  }
-  if (provider === "zhipu") {
-    return await callZhipu(systemPrompt, userMessage, maxTokens);
-  }
-  return await callClaude(systemPrompt, userMessage, maxTokens);
-}
-
-// ============================================================
 // TRANSLATIONS
 // ============================================================
 const T = {
@@ -2330,58 +2201,13 @@ export default function ALevelMathApp() {
   const [quizSession, setQuizSession] = useState(null);
   const [mockExamSession, setMockExamSession] = useState(null);
   const [lang] = useState("en"); // Fixed to English only
-  const [showApiModal, setShowApiModal] = useState(false);
-  const [apiKeyInput, setApiKeyInput] = useState("");
-  const [miniMaxApiKeyInput, setMiniMaxApiKeyInput] = useState("");
-  const [zhipuApiKeyInput, setZhipuApiKeyInput] = useState("");
-  const [apiKeySaved, setApiKeySaved] = useState(!!getApiKey());
-  const [miniMaxApiKeySaved, setMiniMaxApiKeySaved] = useState(!!getMiniMaxApiKey());
-  const [zhipuApiKeySaved, setZhipuApiKeySaved] = useState(!!getZhipuApiKey());
-  const [provider, setProvider] = useState(getProvider());
-  // 自动保存错题本到本地存储
+
+  // Auto-save error book to localStorage
   useEffect(() => {
     localStorage.setItem("alevel_math_errorbook", JSON.stringify(errorBook));
   }, [errorBook]);
 
   const t = T[lang];
-
-  function handleSaveApiKey() {
-    if (!apiKeyInput.trim()) return;
-    saveApiKey(apiKeyInput);
-    setApiKeySaved(true);
-    setShowApiModal(false);
-    setApiKeyInput("");
-  }
-  function handleSaveMiniMaxApiKey() {
-    if (!miniMaxApiKeyInput.trim()) return;
-    saveMiniMaxApiKey(miniMaxApiKeyInput);
-    setMiniMaxApiKeySaved(true);
-    setShowApiModal(false);
-    setMiniMaxApiKeyInput("");
-  }
-  function handleSaveZhipuApiKey() {
-    if (!zhipuApiKeyInput.trim()) return;
-    saveZhipuApiKey(zhipuApiKeyInput);
-    setZhipuApiKeySaved(true);
-    setShowApiModal(false);
-    setZhipuApiKeyInput("");
-  }
-  function handleClearApiKey() {
-    localStorage.removeItem(API_KEY_STORAGE);
-    setApiKeySaved(false);
-  }
-  function handleClearMiniMaxApiKey() {
-    localStorage.removeItem(MINIMAX_API_KEY_STORAGE);
-    setMiniMaxApiKeySaved(false);
-  }
-  function handleClearZhipuApiKey() {
-    localStorage.removeItem(ZHIPU_API_KEY_STORAGE);
-    setZhipuApiKeySaved(false);
-  }
-  function handleProviderChange(newProvider) {
-    setProvider(newProvider);
-    saveProvider(newProvider);
-  }
 
   const nav = (view, book = undefined, chapter = undefined, subject = undefined) => {
     setActiveView(view);
@@ -2458,20 +2284,6 @@ export default function ALevelMathApp() {
                 ❌ Wrong Questions
               </Link>
             </nav>
-            {/* API Key settings */}
-            <button
-              onClick={() => { setApiKeyInput(""); setMiniMaxApiKeyInput(""); setShowApiModal(true); }}
-              title="API Key Settings"
-              style={{
-                ...styles.langToggleBtn,
-                borderColor: (provider === "anthropic" && apiKeySaved) || (provider === "minimax" && miniMaxApiKeySaved) || (provider === "zhipu" && zhipuApiKeySaved) ? "rgba(26,122,60,0.4)" : "rgba(218,41,28,0.4)",
-                color: (provider === "anthropic" && apiKeySaved) || (provider === "minimax" && miniMaxApiKeySaved) || (provider === "zhipu" && zhipuApiKeySaved) ? "#1A7A3C" : "#DA291C",
-                background: (provider === "anthropic" && apiKeySaved) || (provider === "minimax" && miniMaxApiKeySaved) || (provider === "zhipu" && zhipuApiKeySaved) ? "rgba(26,122,60,0.06)" : "rgba(218,41,28,0.06)",
-                fontFamily: "sans-serif", fontSize: 15,
-              }}
-            >
-              {provider === "minimax" ? "🟣 MiniMax" : provider === "zhipu" ? "🔵 Zhipu" : "🔴 Claude"}
-            </button>
 
             {/* Auth buttons */}
             {isAuthenticated ? (
@@ -2601,406 +2413,6 @@ export default function ALevelMathApp() {
       </main>
 
       {/* ── API Key Modal ── */}
-      {showApiModal && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 1000,
-          background: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          padding: 24,
-        }} onClick={(e) => e.target === e.currentTarget && setShowApiModal(false)}>
-          <div style={{
-            background: "#FFFFFF", borderRadius: 16, padding: 36,
-            width: "100%", maxWidth: 520,
-            boxShadow: "0 24px 60px rgba(0,0,0,0.18)",
-            border: "1px solid #E0E0E0",
-            fontFamily: "Georgia, serif",
-          }}>
-            {/* Header */}
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 24 }}>
-              <div style={{
-                width: 48, height: 48, background: "#DA291C", borderRadius: 10,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 22, flexShrink: 0,
-              }}>🔑</div>
-              <div>
-                <h2 style={{ fontSize: 20, fontWeight: 700, color: "#1A1A1A", margin: 0 }}>
-                  {"AI API Settings"}
-                </h2>
-                <p style={{ fontSize: 13, color: "#888888", marginTop: 4, lineHeight: 1.5 }}>
-                  {"Required for AI quiz, exam, and explanation features."}
-                </p>
-              </div>
-            </div>
-
-            {/* Provider Selection */}
-            <div style={{ marginBottom: 24 }}>
-              <label style={{ fontSize: 13, color: "#555555", fontWeight: 600, marginBottom: 8, display: "block" }}>
-                {"Select AI Provider:"}
-              </label>
-              <div style={{ display: "flex", gap: 8 }}>
-                <button
-                  onClick={() => handleProviderChange("anthropic")}
-                  style={{
-                    flex: 1, padding: "12px 0",
-                    background: provider === "anthropic" ? "linear-gradient(135deg, #DA291C, #B81E14)" : "#F5F5F5",
-                    color: provider === "anthropic" ? "#FFFFFF" : "#555555",
-                    border: "none", borderRadius: 8,
-                    fontSize: 13, fontWeight: 600, cursor: "pointer",
-                    fontFamily: "Georgia, serif",
-                  }}
-                >
-                  🔴 Claude
-                </button>
-                <button
-                  onClick={() => handleProviderChange("minimax")}
-                  style={{
-                    flex: 1, padding: "12px 0",
-                    background: provider === "minimax" ? "linear-gradient(135deg, #8B5CF6, #6D28D9)" : "#F5F5F5",
-                    color: provider === "minimax" ? "#FFFFFF" : "#555555",
-                    border: "none", borderRadius: 8,
-                    fontSize: 13, fontWeight: 600, cursor: "pointer",
-                    fontFamily: "Georgia, serif",
-                  }}
-                >
-                  🟣 MiniMax
-                </button>
-                <button
-                  onClick={() => handleProviderChange("zhipu")}
-                  style={{
-                    flex: 1, padding: "12px 0",
-                    background: provider === "zhipu" ? "linear-gradient(135deg, #2563EB, #1D4ED8)" : "#F5F5F5",
-                    color: provider === "zhipu" ? "#FFFFFF" : "#555555",
-                    border: "none", borderRadius: 8,
-                    fontSize: 13, fontWeight: 600, cursor: "pointer",
-                    fontFamily: "Georgia, serif",
-                  }}
-                >
-                  🔵 Zhipu
-                </button>
-              </div>
-            </div>
-
-            {/* Anthropic API Key Section */}
-            {provider === "anthropic" && (
-              <>
-                {/* Current status */}
-                {apiKeySaved && (
-                  <div style={{
-                    background: "rgba(26,122,60,0.08)", border: "1px solid rgba(26,122,60,0.25)",
-                    borderRadius: 8, padding: "10px 14px", marginBottom: 16,
-                    display: "flex", alignItems: "center", gap: 10, fontSize: 14,
-                  }}>
-                    <span style={{ fontSize: 18 }}>✅</span>
-                    <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
-                      {"Anthropic API key saved"}
-                    </span>
-                    <button onClick={handleClearApiKey} style={{
-                      marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
-                      border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
-                      padding: "3px 10px", cursor: "pointer",
-                    }}>{"Remove"}</button>
-                  </div>
-                )}
-
-                {/* Steps */}
-                <div style={{
-                  background: "#F8F8F8", borderRadius: 10, padding: 16, marginBottom: 20,
-                  fontSize: 13, color: "#444444", lineHeight: 1.8,
-                }}>
-                  <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
-                    {"How to get Anthropic API key:"}
-                  </div>
-                  <div>① {"Visit"}{" "}
-                    <a href="https://console.anthropic.com" target="_blank" rel="noreferrer"
-                       style={{ color: "#DA291C", fontWeight: 600 }}>
-                      console.anthropic.com
-                    </a>
-                  </div>
-                  <div>② {"Sign up / Log in"}</div>
-                  <div>③ {'Click "API Keys" → "Create Key"'}</div>
-                  <div>④ {"Copy the key (starts with"}{" "}
-                    <code style={{ background: "#EDEDED", padding: "1px 5px", borderRadius: 4, fontSize: 12 }}>
-                      sk-ant-
-                    </code>
-                    {")"}
-                  </div>
-                </div>
-
-                {/* Input */}
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
-                  <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
-                    {"Paste Anthropic API key:"}
-                  </label>
-                  <input
-                    type="password"
-                    value={apiKeyInput}
-                    onChange={e => setApiKeyInput(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && handleSaveApiKey()}
-                    placeholder="sk-ant-api03-..."
-                    autoFocus
-                    style={{
-                      width: "100%", padding: "12px 14px",
-                      border: "1.5px solid #D0D0D0", borderRadius: 8,
-                      fontSize: 14, fontFamily: "monospace",
-                      outline: "none", color: "#1A1A1A", background: "#FAFAFA",
-                      transition: "border-color 0.2s",
-                    }}
-                    onFocus={e => e.target.style.borderColor = "#DA291C"}
-                    onBlur={e => e.target.style.borderColor = "#D0D0D0"}
-                  />
-                  {apiKeyInput && !apiKeyInput.startsWith("sk-ant-") && (
-                    <div style={{ fontSize: 12, color: "#DA291C" }}>
-                      ⚠ {'Key should start with "sk-ant-"'}
-                    </div>
-                  )}
-                </div>
-
-                {/* Buttons */}
-                <div style={{ display: "flex", gap: 10 }}>
-                  <button
-                    onClick={handleSaveApiKey}
-                    disabled={!apiKeyInput.trim()}
-                    style={{
-                      flex: 1, padding: "12px 0",
-                      background: apiKeyInput.trim() ? "linear-gradient(135deg, #DA291C, #B81E14)" : "#CCCCCC",
-                      color: "#FFFFFF", border: "none", borderRadius: 8,
-                      fontSize: 15, fontWeight: 700, cursor: apiKeyInput.trim() ? "pointer" : "not-allowed",
-                      fontFamily: "Georgia, serif",
-                    }}
-                  >
-                    {"Save Anthropic Key"}
-                  </button>
-                  <button
-                    onClick={() => setShowApiModal(false)}
-                    style={{
-                      padding: "12px 20px", background: "#FFFFFF",
-                      border: "1px solid #D0D0D0", borderRadius: 8,
-                      fontSize: 14, color: "#555555", cursor: "pointer",
-                      fontFamily: "Georgia, serif",
-                    }}
-                  >
-                    {"Cancel"}
-                  </button>
-                </div>
-              </>
-            )}
-
-            {/* MiniMax API Key Section */}
-            {provider === "minimax" && (
-              <>
-                {/* Current status */}
-                {miniMaxApiKeySaved && (
-                  <div style={{
-                    background: "rgba(26,122,60,0.08)", border: "1px solid rgba(26,122,60,0.25)",
-                    borderRadius: 8, padding: "10px 14px", marginBottom: 16,
-                    display: "flex", alignItems: "center", gap: 10, fontSize: 14,
-                  }}>
-                    <span style={{ fontSize: 18 }}>✅</span>
-                    <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
-                      {"MiniMax API key saved"}
-                    </span>
-                    <button onClick={handleClearMiniMaxApiKey} style={{
-                      marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
-                      border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
-                      padding: "3px 10px", cursor: "pointer",
-                    }}>{"Remove"}</button>
-                  </div>
-                )}
-
-                {/* Steps */}
-                <div style={{
-                  background: "#F8F8F8", borderRadius: 10, padding: 16, marginBottom: 20,
-                  fontSize: 13, color: "#444444", lineHeight: 1.8,
-                }}>
-                  <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
-                    {"How to get MiniMax API key:"}
-                  </div>
-                  <div>① {"Visit"}{" "}
-                    <a href="https://platform.minimaxi.com" target="_blank" rel="noreferrer"
-                       style={{ color: "#8B5CF6", fontWeight: 600 }}>
-                      platform.minimaxi.com
-                    </a>
-                  </div>
-                  <div>② {"Sign up / Log in"}</div>
-                  <div>③ {'Go to "API Keys" → "Create API Key"'}</div>
-                  <div>④ {"Copy the key"}</div>
-                  <div style={{ marginTop: 8, color: "#888888", fontSize: 12 }}>
-                    💡 {"MiniMax provides free tokens for new users."}
-                  </div>
-                </div>
-
-                {/* Input */}
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
-                  <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
-                    {"Paste MiniMax API key:"}
-                  </label>
-                  <input
-                    type="password"
-                    value={miniMaxApiKeyInput}
-                    onChange={e => setMiniMaxApiKeyInput(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && handleSaveMiniMaxApiKey()}
-                    placeholder="mmt-xxxxx-..."
-                    autoFocus
-                    style={{
-                      width: "100%", padding: "12px 14px",
-                      border: "1.5px solid #D0D0D0", borderRadius: 8,
-                      fontSize: 14, fontFamily: "monospace",
-                      outline: "none", color: "#1A1A1A", background: "#FAFAFA",
-                      transition: "border-color 0.2s",
-                    }}
-                    onFocus={e => e.target.style.borderColor = "#8B5CF6"}
-                    onBlur={e => e.target.style.borderColor = "#D0D0D0"}
-                  />
-                </div>
-
-                {/* Buttons */}
-                <div style={{ display: "flex", gap: 10 }}>
-                  <button
-                    onClick={handleSaveMiniMaxApiKey}
-                    disabled={!miniMaxApiKeyInput.trim()}
-                    style={{
-                      flex: 1, padding: "12px 0",
-                      background: miniMaxApiKeyInput.trim() ? "linear-gradient(135deg, #8B5CF6, #6D28D9)" : "#CCCCCC",
-                      color: "#FFFFFF", border: "none", borderRadius: 8,
-                      fontSize: 15, fontWeight: 700, cursor: miniMaxApiKeyInput.trim() ? "pointer" : "not-allowed",
-                      fontFamily: "Georgia, serif",
-                    }}
-                  >
-                    {"Save MiniMax Key"}
-                  </button>
-                  <button
-                    onClick={() => setShowApiModal(false)}
-                    style={{
-                      padding: "12px 20px", background: "#FFFFFF",
-                      border: "1px solid #D0D0D0", borderRadius: 8,
-                      fontSize: 14, color: "#555555", cursor: "pointer",
-                      fontFamily: "Georgia, serif",
-                    }}
-                  >
-                    {"Cancel"}
-                  </button>
-                </div>
-              </>
-            )}
-
-            {/* Zhipu API Key Section */}
-            {provider === "zhipu" && (
-              <>
-                {/* Current status */}
-                {zhipuApiKeySaved && (
-                  <div style={{
-                    background: "rgba(26,122,60,0.08)", border: "1px solid rgba(26,122,60,0.25)",
-                    borderRadius: 8, padding: "10px 14px", marginBottom: 16,
-                    display: "flex", alignItems: "center", gap: 10, fontSize: 14,
-                  }}>
-                    <span style={{ fontSize: 18 }}>✅</span>
-                    <span style={{ color: "#1A7A3C", fontWeight: 600 }}>
-                      {"Zhipu API key saved"}
-                    </span>
-                    <button onClick={handleClearZhipuApiKey} style={{
-                      marginLeft: "auto", fontSize: 12, color: "#DA291C", background: "none",
-                      border: "1px solid rgba(218,41,28,0.3)", borderRadius: 6,
-                      padding: "3px 10px", cursor: "pointer",
-                    }}>{"Remove"}</button>
-                  </div>
-                )}
-
-                {/* Steps */}
-                <div style={{
-                  background: "#F8F8F8", borderRadius: 10, padding: 16, marginBottom: 20,
-                  fontSize: 13, color: "#444444", lineHeight: 1.8,
-                }}>
-                  <div style={{ fontWeight: 700, color: "#1A1A1A", marginBottom: 8, fontSize: 14 }}>
-                    {"How to get Zhipu API key:"}
-                  </div>
-                  <div>① {"Visit"}{" "}
-                    <a href="https://open.bigmodel.cn" target="_blank" rel="noreferrer"
-                       style={{ color: "#2563EB", fontWeight: 600 }}>
-                      open.bigmodel.cn
-                    </a>
-                  </div>
-                  <div>② {"Sign up / Log in"}</div>
-                  <div>③ {'Go to "API Keys" → "Create API Key"'}</div>
-                  <div>④ {"Copy the key"}</div>
-                  <div style={{ marginTop: 8, color: "#888888", fontSize: 12 }}>
-                    💡 {"Zhipu provides free tokens for new users."}
-                  </div>
-                </div>
-
-                {/* Input */}
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
-                  <label style={{ fontSize: 13, color: "#555555", fontWeight: 600 }}>
-                    {"Paste Zhipu API key:"}
-                  </label>
-                  <input
-                    type="password"
-                    value={zhipuApiKeyInput}
-                    onChange={e => setZhipuApiKeyInput(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && handleSaveZhipuApiKey()}
-                    placeholder="glm-xxxxx-..."
-                    autoFocus
-                    style={{
-                      width: "100%", padding: "12px 14px",
-                      border: "1.5px solid #D0D0D0", borderRadius: 8,
-                      fontSize: 14, fontFamily: "monospace",
-                      outline: "none", color: "#1A1A1A", background: "#FAFAFA",
-                      transition: "border-color 0.2s",
-                    }}
-                    onFocus={e => e.target.style.borderColor = "#2563EB"}
-                    onBlur={e => e.target.style.borderColor = "#D0D0D0"}
-                  />
-                </div>
-
-                {/* Buttons */}
-                <div style={{ display: "flex", gap: 10 }}>
-                  <button
-                    onClick={handleSaveZhipuApiKey}
-                    disabled={!zhipuApiKeyInput.trim()}
-                    style={{
-                      flex: 1, padding: "12px 0",
-                      background: zhipuApiKeyInput.trim() ? "linear-gradient(135deg, #2563EB, #1D4ED8)" : "#CCCCCC",
-                      color: "#FFFFFF", border: "none", borderRadius: 8,
-                      fontSize: 15, fontWeight: 700, cursor: zhipuApiKeyInput.trim() ? "pointer" : "not-allowed",
-                      fontFamily: "Georgia, serif",
-                    }}
-                  >
-                    {"Save Zhipu Key"}
-                  </button>
-                  <button
-                    onClick={() => setShowApiModal(false)}
-                    style={{
-                      padding: "12px 20px", background: "#FFFFFF",
-                      border: "1px solid #D0D0D0", borderRadius: 8,
-                      fontSize: 14, color: "#555555", cursor: "pointer",
-                      fontFamily: "Georgia, serif",
-                    }}
-                  >
-                    {"Cancel"}
-                  </button>
-                </div>
-              </>
-            )}
-
-            <p style={{ fontSize: 11, color: "#AAAAAA", textAlign: "center", marginTop: 14, lineHeight: 1.6 }}>
-              {"Your key is stored only in this browser's localStorage."}
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ============================================================
-// HOME VIEW
-// ============================================================
-function HomeView({ nav, t }) {
-  return (
-    <div style={styles.homeWrap}>
-      <div style={styles.heroSection}>
-        <div style={styles.heroTag}>{t.heroTag}</div>
-        <h1 style={styles.heroTitle}>
-          {t.heroTitle1}<br />
           <span style={styles.heroAccent}>{t.heroTitle2}</span>
         </h1>
         <p style={styles.heroDesc}>{t.heroDesc}</p>
@@ -3511,114 +2923,65 @@ function QuizView({ chapter, book, nav, embedded, onAddError, t, lang, subject =
       return chapterInfo?.title || (subjectNames[subject] || "General A-Level");
     };
 
-    const getSubjectType = () => {
-      const types = {
-        mathematics: { name: "Mathematics", adj: "mathematical" },
-        economics: { name: "Economics", adj: "economic" },
-        history: { name: "History", adj: "historical" },
-        politics: { name: "Politics", adj: "political" },
-        psychology: { name: "Psychology", adj: "psychological" },
-        further_math: { name: "Further Mathematics", adj: "mathematical" }
-      };
-      return types[subject] || { name: "the subject", adj: "academic" };
-    };
-
     const chTitle = getTitle();
-    const subjectType = getSubjectType();
     const keyPoints = chapterInfo?.keyPoints?.join("; ") || "";
     const formulas = chapterInfo?.formulas?.map(f => `${f.name}: ${f.expr}`).join("; ") || "";
 
-    // Different system prompts for all subjects
-    const prompts = {
-      mathematics: {
-        system: `You are an expert A-Level Mathematics teacher creating exam questions for Pearson Edexcel International A-Level (IAL). The course covers Pure Mathematics (P1–P4, papers WMA11–WMA14), Statistics 1 (S1, WST01), and Mechanics 1 (M1, WME01).
-Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-$"Write all content in English."`,
-        desc: "This is a Mathematics question covering mathematical concepts, formulas, and problem-solving."
-      },
-      economics: {
-        system: `You are an expert A-Level Economics teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Economics. The course covers Unit 1: Markets in action, Unit 2: Macroeconomic performance and policy, Unit 3: Business behaviour, and Unit 4: Developments in the global economy.
-Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-$"Write all content in English."`,
-        desc: "This is an Economics question covering economic concepts, theories, and analysis."
-      },
-      history: {
-        system: `You are an expert A-Level History teacher creating exam questions for Pearson Edexcel International A-Level (IAL) History. The course covers modern international history, the USA 1918-1968, and the British Empire.
-Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-$"Write all content in English."`,
-        desc: "This is a History question covering historical events, analysis, and interpretation."
-      },
-      politics: {
-        system: `You are an expert A-Level Politics teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Politics. The course covers UK Politics, UK Government, US Comparative Politics, and Global Politics.
-Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-$"Write all content in English."`,
-        desc: "This is a Politics question covering political concepts, theories, and analysis."
-      },
-      psychology: {
-        system: `You are an expert A-Level Psychology teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Psychology. The course covers social psychology, cognitive psychology, biological psychology, developmental psychology, and research methods.
-Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-$"Write all content in English."`,
-        desc: "This is a Psychology question covering psychological theories, research, and analysis."
-      },
-      further_math: {
-        system: `You are an expert A-Level Further Mathematics teacher creating exam questions for Pearson Edexcel International A-Level (IAL) Further Mathematics. The course covers Further Pure (FP1-FP3), Further Mechanics (FM1-FM2), and Further Statistics (FS1-FS2).
-Generate questions exactly as a real Pearson Edexcel exam would. Always respond in valid JSON only — no markdown, no prose.
-$"Write all content in English."`,
-        desc: "This is a Further Mathematics question covering advanced mathematical concepts, formulas, and problem-solving."
-      }
-    };
-
-    const subjectPrompt = prompts[subject] || prompts.mathematics;
-    const system = subjectPrompt.system;
-
-    const prompt = `Generate 5 ${difficulty === "hard" ? "challenging A-level exam-style" : "medium difficulty A-level"} questions for the topic: "${chTitle}" (${selectedBook}).
-${subjectPrompt.desc}
-
-Key concepts to cover: ${keyPoints}
-${formulas ? `Key formulas: ${formulas}` : ""}
-
-For each question provide ALL of the following fields:
-- question: A clear, specific ${subjectType.adj} question
-- options: 4 multiple choice options (A, B, C, D), only one correct
-- correct: the correct answer letter
-- solution: A concise worked solution (1-2 lines)
-- concept: The specific exam skill or concept being tested
-- deepExplanation: A thorough 3-5 sentence explanation of WHY the correct answer is right, walking through the ${subjectType.adj} reasoning step by step as a tutor would explain to a student
-- keyFormula: The most important formula or concept needed to solve this question (write it clearly)
-- commonMistake: The most common mistake students make on this type of question and how to avoid it
-- whyOthersWrong: Briefly explain why each wrong option is a common trap or misconception
-
-Return ONLY a JSON array, no markdown:
-[
-  {
-    "id": "q1",
-    "question": "...",
-    "options": {"A": "...", "B": "...", "C": "...", "D": "..."},
-    "correct": "A",
-    "solution": "...",
-    "concept": "...",
-    "deepExplanation": "...",
-    "keyFormula": "...",
-    "commonMistake": "...",
-    "whyOthersWrong": {"B": "...", "C": "...", "D": "..."}
-  }
-]`;
-
     try {
-      const raw = await callAI(system, prompt, 2000);
-      const parsed = parseAIResponse(raw);
-      setQuestions(parsed);
+      // Call backend API instead of frontend AI
+      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
+      const response = await fetch(`${API_BASE}/api/quiz/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Include auth cookies
+        body: JSON.stringify({
+          subject,
+          book: selectedBook,
+          chapterTitle: chTitle,
+          keyPoints,
+          formulas,
+          difficulty,
+          count: 5
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error?.message || 'Failed to generate questions');
+      }
+
+      setQuestions(data.data.questions);
     } catch (e) {
-      // Show error message instead of fallback math question
+      // Show error message
       const errorMsg = e.message || "Unknown error";
-      if (errorMsg.includes("NO_API_KEY") || errorMsg.includes("API key")) {
-        alert("Please set up your API Key first. Click the 🔑 button in the top right to configure.");
+      if (errorMsg.includes("API_KEY") || errorMsg.includes("not configured")) {
+        alert("AI service is not configured. Please contact the administrator.");
+      } else if (errorMsg.includes("401") || errorMsg.includes("authentication")) {
+        alert("Please login first to use the Quiz feature.");
       } else {
-        alert(`AI quiz generation failed: ${errorMsg}`);
+        alert(`Failed to generate questions: ${errorMsg}`);
       }
       setStarted(false);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+  };
+      } else {
+        alert(`Failed to generate questions: ${errorMsg}`);
+      }
+      setStarted(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const submitAnswer = () => {
