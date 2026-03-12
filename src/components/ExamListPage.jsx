@@ -158,7 +158,7 @@ function ExamListPage() {
       <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8 animate-fade-in-down">
             <h1 className="text-3xl font-bold text-gray-900">📝 My Exams</h1>
             <Button
               variant="primary"
@@ -172,7 +172,7 @@ function ExamListPage() {
           </div>
 
           {/* Filters */}
-          <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm p-6 mb-8 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -212,7 +212,7 @@ function ExamListPage() {
 
           {/* Error State */}
           {error && (
-            <div className="bg-error-50 border border-error-200 rounded-xl p-6 mb-8">
+            <div className="bg-error-50 border border-error-200 rounded-xl p-6 mb-8 animate-fade-in-down">
               <div className="flex items-center justify-center flex-col gap-4">
                 <p className="text-error-700 text-center">{error}</p>
                 <Button variant="primary" size="sm" onClick={fetchExams}>
@@ -224,7 +224,7 @@ function ExamListPage() {
 
           {/* Empty State */}
           {!loading && !error && exams.length === 0 && (
-            <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+            <div className="bg-white rounded-xl shadow-sm p-12 text-center animate-scale-in">
               <div className="text-6xl mb-4">📝</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 No exam records yet
@@ -241,11 +241,12 @@ function ExamListPage() {
           {/* Exam Cards Grid */}
           {!loading && !error && exams.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {exams.map((exam) => (
+              {exams.map((exam, index) => (
                 <div
                   key={exam.id}
                   onClick={() => handleExamClick(exam)}
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl border border-gray-200 hover:border-primary-300 p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                  className="bg-white rounded-xl shadow-md hover:shadow-xl border border-gray-200 hover:border-primary-300 p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 flex flex-col animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.1}s`, animationFillMode: 'both' }}
                 >
                   {/* Card Header */}
                   <div className="flex justify-between items-start mb-4">
