@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { STORAGE_KEYS } from '../utils/constants'
 import '../styles/PracticePage.css'
 
 const PracticePage = () => {
@@ -68,7 +69,7 @@ const PracticePage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN)}`
         },
         body: JSON.stringify({
           chapterId: selectedChapter,

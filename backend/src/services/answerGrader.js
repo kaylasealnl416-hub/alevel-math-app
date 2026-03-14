@@ -5,7 +5,7 @@
 
 import { db } from '../db/index.js'
 import { questions, userAnswers } from '../db/schema.js'
-import { eq } from 'drizzle-orm'
+import { eq, inArray } from 'drizzle-orm'
 import { callAI } from './aiClient.js'
 
 /**
@@ -316,18 +316,64 @@ function parseGradingResponse(content) {
 }
 
 /**
- * 批量批改答案
+ * 批量批改答案（优化：客观题并行处理，主观题串行以避免 AI API 限流）
  * @param {Array} answers - 答案数组
  * @returns {Promise<Array>} 批改结果数组
  */
 export async function gradeAnswersBatch(answers) {
   console.log(`📝 开始批量批改 ${answers.length} 个答案`)
 
-  const results = []
+  // 先获取所有题目信息，以便区分客观题和主观题
+  const questionIds = answers.map(a => a.questionId)
+  const questionsData = await db
+    .select()
+    .from(questions)
+    .where(inArray(questions.id, questionIds))
+
+  const questionMap = new Map(questionsData.map(q => [q.id, q]))
+
+  // 分离客观题和主观题
+  const objectiveAnswers = []
+  const subjectiveAnswers = []
 
   for (const answer of answers) {
+    const question = questionMap.get(answer.questionId)
+    if (question && (question.type === 'short_answer' || question.type === 'proof')) {
+      subjectiveAnswers.push(answer)
+    } else {
+      objectiveAnswers.push(answer)
+    }
+  }
+
+  const results = []
+
+  // 并行批改客观题
+  if (objectiveAnswers.length > 0) {
+    const objectiveResults = await Promise.all(
+      objectiveAnswers.map(async (answer) => {
+        try {
+          const question = questionMap.get(answer.questionId)
+          const result = await gradeAnswerWithQuestion(question, answer.userAnswer)
+          return { questionId: answer.questionId, ...result }
+        } catch (error) {
+          console.error(`批改失败 (questionId: ${answer.questionId}):`, error)
+          return {
+            questionId: answer.questionId,
+            isCorrect: false,
+            score: 0,
+            feedback: { message: '批改失败', error: error.message }
+          }
+        }
+      })
+    )
+    results.push(...objectiveResults)
+  }
+
+  // 串行批改主观题（避免 AI API 限流）
+  for (const answer of subjectiveAnswers) {
     try {
-      const result = await gradeAnswer(answer)
+      const question = questionMap.get(answer.questionId)
+      const result = await gradeAnswerWithQuestion(question, answer.userAnswer)
       results.push({
         questionId: answer.questionId,
         ...result
@@ -338,10 +384,7 @@ export async function gradeAnswersBatch(answers) {
         questionId: answer.questionId,
         isCorrect: false,
         score: 0,
-        feedback: {
-          message: '批改失败',
-          error: error.message
-        }
+        feedback: { message: '批改失败', error: error.message }
       })
     }
   }

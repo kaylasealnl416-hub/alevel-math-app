@@ -3,9 +3,46 @@
 // Input validation and sanitization helpers
 // ============================================================
 
+// Email validation regex
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 // ============================================================
 // String Validation
 // ============================================================
+
+/**
+ * Validate email format
+ */
+export function validateEmail(email) {
+  if (!email || typeof email !== 'string') {
+    return 'Email is required'
+  }
+  const trimmed = email.trim()
+  if (!trimmed) {
+    return 'Email is required'
+  }
+  if (!EMAIL_REGEX.test(trimmed)) {
+    return 'Invalid email format'
+  }
+  return null
+}
+
+/**
+ * Validate password strength
+ */
+export function validatePassword(password, minLength = 6) {
+  if (!password || typeof password !== 'string') {
+    return 'Password is required'
+  }
+  const trimmed = password.trim()
+  if (!trimmed) {
+    return 'Password is required'
+  }
+  if (trimmed.length < minLength) {
+    return `Password must be at least ${minLength} characters`
+  }
+  return null
+}
 
 /**
  * Validate and sanitize string input

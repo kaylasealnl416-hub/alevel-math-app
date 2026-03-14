@@ -524,35 +524,33 @@ app.post('/batch', async (c) => {
       }, 400)
     }
 
-    const savedQuestions = []
+    // 批量插入（修复性能问题）
+    try {
+      const savedQuestions = await db
+        .insert(questions)
+        .values(questionsData.map(q => ({
+          ...q,
+          createdBy: userId,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })))
+        .returning()
 
-    for (const q of questionsData) {
-      try {
-        const [saved] = await db
-          .insert(questions)
-          .values({
-            ...q,
-            createdBy: userId,
-            createdAt: new Date(),
-            updatedAt: new Date()
-          })
-          .returning()
-
-        savedQuestions.push(saved)
-      } catch (error) {
-        console.error('保存题目失败:', error)
-        // 继续保存其他题目
-      }
+      return c.json({
+        success: true,
+        data: {
+          questions: savedQuestions,
+          total: savedQuestions.length,
+          failed: 0
+        }
+      })
+    } catch (error) {
+      console.error('批量导入失败:', error)
+      return c.json({
+        success: false,
+        error: { code: 'SERVER_ERROR', message: error.message }
+      }, 500)
     }
-
-    return c.json({
-      success: true,
-      data: {
-        questions: savedQuestions,
-        total: savedQuestions.length,
-        failed: questionsData.length - savedQuestions.length
-      }
-    })
 
   } catch (error) {
     console.error('批量导入失败:', error)

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Toast from './common/Toast'
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+import { API_BASE } from '../utils/constants'
+import { validateEmail, validatePassword } from '../utils/validation'
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -26,14 +26,14 @@ export default function LoginPage() {
   const validateForm = () => {
     const newErrors = {}
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format'
+    const emailError = validateEmail(formData.email)
+    if (emailError) {
+      newErrors.email = emailError
     }
 
-    if (!formData.password) {
-      newErrors.password = 'Password is required'
+    const passwordError = validatePassword(formData.password)
+    if (passwordError) {
+      newErrors.password = passwordError
     }
 
     setErrors(newErrors)

@@ -4,11 +4,32 @@
  */
 
 import Toast from '../components/common/Toast'
+import { API_BASE } from './constants'
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
-
-// CSRF Token 缓存
+// CSRF Token 内存缓存
 let csrfToken = null
+
+// CSRF Token 缓存（优先使用 sessionStorage，刷新页面后仍可用）
+function getCsrfToken() {
+  if (csrfToken) return csrfToken
+
+  // 从 sessionStorage 恢复
+  const stored = sessionStorage.getItem('csrf_token')
+  if (stored) {
+    csrfToken = stored
+    return csrfToken
+  }
+  return null
+}
+
+function setCsrfToken(token) {
+  csrfToken = token
+  if (token) {
+    sessionStorage.setItem('csrf_token', token)
+  } else {
+    sessionStorage.removeItem('csrf_token')
+  }
+}
 
 /**
  * 获取 CSRF Token
@@ -21,8 +42,9 @@ async function fetchCsrfToken() {
 
     if (response.ok) {
       const data = await response.json()
-      csrfToken = data.data.csrfToken
-      return csrfToken
+      const token = data.data.csrfToken
+      setCsrfToken(token)
+      return token
     }
   } catch (error) {
     console.warn('Failed to fetch CSRF token:', error)
@@ -57,6 +79,32 @@ class NetworkError extends Error {
  * 延迟函数
  */
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+/**
+ * 处理 CSRF Token 错误并重试请求
+ * @param {Function} retryFn - 重试时执行的函数
+ * @param {Object} config - 配置对象
+ * @param {Object} options - 请求选项
+ * @returns {Promise<any>}
+ */
+async function handleCsrfErrorAndRetry(retryFn, config, options) {
+  // 清除缓存的 CSRF Token 并重新获取
+  setCsrfToken(null)
+  await fetchCsrfToken()
+
+  // 重建请求头
+  options.headers = await buildHeaders(config.headers)
+
+  // 重试一次
+  try {
+    return await retryFn()
+  } catch (retryError) {
+    if (config.showErrorToast !== false) {
+      Toast.error(retryError.message)
+    }
+    throw retryError
+  }
+}
 
 /**
  * 默认配置
@@ -182,12 +230,13 @@ async function buildHeaders(customHeaders = {}) {
   // Token 现在存储在 httpOnly Cookie 中，浏览器会自动发送
   // 不再需要从 localStorage 读取
 
-  // 添加 CSRF Token（如果有）
-  if (!csrfToken) {
-    await fetchCsrfToken()
+  // 添加 CSRF Token（优先使用缓存）
+  let token = getCsrfToken()
+  if (!token) {
+    token = await fetchCsrfToken()
   }
-  if (csrfToken) {
-    headers['X-CSRF-Token'] = csrfToken
+  if (token) {
+    headers['X-CSRF-Token'] = token
   }
 
   return headers
@@ -237,23 +286,11 @@ export async function post(endpoint, body = {}, config = {}) {
   } catch (error) {
     // 如果是 CSRF Token 错误，清除缓存并重试一次
     if (error.code === 'CSRF_TOKEN_INVALID' || error.code === 'CSRF_TOKEN_MISSING') {
-      csrfToken = null
-      await fetchCsrfToken()
-
-      // 重试一次
-      try {
-        options.headers = await buildHeaders(config.headers)
-        const data = await executeRequest(url, options, { ...config, retry: 0 })
-        if (config.showSuccessToast) {
-          Toast.success(config.successMessage || '操作成功')
-        }
-        return data
-      } catch (retryError) {
-        if (config.showErrorToast !== false) {
-          Toast.error(retryError.message)
-        }
-        throw retryError
-      }
+      return handleCsrfErrorAndRetry(
+        () => executeRequest(url, options, { ...config, retry: 0 }),
+        config,
+        options
+      )
     }
 
     if (config.showErrorToast !== false) {
@@ -283,22 +320,11 @@ export async function put(endpoint, body = {}, config = {}) {
   } catch (error) {
     // CSRF Token 错误处理
     if (error.code === 'CSRF_TOKEN_INVALID' || error.code === 'CSRF_TOKEN_MISSING') {
-      csrfToken = null
-      await fetchCsrfToken()
-
-      try {
-        options.headers = await buildHeaders(config.headers)
-        const data = await executeRequest(url, options, { ...config, retry: 0 })
-        if (config.showSuccessToast) {
-          Toast.success(config.successMessage || '更新成功')
-        }
-        return data
-      } catch (retryError) {
-        if (config.showErrorToast !== false) {
-          Toast.error(retryError.message)
-        }
-        throw retryError
-      }
+      return handleCsrfErrorAndRetry(
+        () => executeRequest(url, options, { ...config, retry: 0 }),
+        config,
+        options
+      )
     }
 
     if (config.showErrorToast !== false) {
@@ -327,22 +353,11 @@ export async function del(endpoint, config = {}) {
   } catch (error) {
     // CSRF Token 错误处理
     if (error.code === 'CSRF_TOKEN_INVALID' || error.code === 'CSRF_TOKEN_MISSING') {
-      csrfToken = null
-      await fetchCsrfToken()
-
-      try {
-        options.headers = await buildHeaders(config.headers)
-        const data = await executeRequest(url, options, { ...config, retry: 0 })
-        if (config.showSuccessToast) {
-          Toast.success(config.successMessage || '删除成功')
-        }
-        return data
-      } catch (retryError) {
-        if (config.showErrorToast !== false) {
-          Toast.error(retryError.message)
-        }
-        throw retryError
-      }
+      return handleCsrfErrorAndRetry(
+        () => executeRequest(url, options, { ...config, retry: 0 }),
+        config,
+        options
+      )
     }
 
     if (config.showErrorToast !== false) {

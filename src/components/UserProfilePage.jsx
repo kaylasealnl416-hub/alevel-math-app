@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Toast from './common/Toast'
 import Loading from './common/Loading'
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+import { API_BASE } from '../utils/constants'
 
 export default function UserProfilePage() {
   const navigate = useNavigate()

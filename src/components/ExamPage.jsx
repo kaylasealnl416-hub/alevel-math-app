@@ -9,6 +9,7 @@ import QuestionCard from './QuestionCard'
 import AnswerInput from './AnswerInput'
 import Timer from './Timer'
 import ProgressBar from './ProgressBar'
+import { STORAGE_KEYS } from '../utils/constants'
 import '../styles/ExamPage.css'
 
 const ExamPage = () => {
@@ -34,7 +35,7 @@ const ExamPage = () => {
       setLoading(true)
       const response = await fetch(`/api/question-sets/${examId}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN)}`
         }
       })
 
@@ -101,7 +102,7 @@ const ExamPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN)}`
         },
         body: JSON.stringify({
           questionSetId: parseInt(examId),

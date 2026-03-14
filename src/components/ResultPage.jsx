@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import QuestionCard from './QuestionCard'
+import { STORAGE_KEYS } from '../utils/constants'
 import '../styles/ResultPage.css'
 
 const ResultPage = () => {
@@ -31,7 +32,7 @@ const ResultPage = () => {
       // 加载试卷和题目
       const examResponse = await fetch(`/api/question-sets/${examId}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN)}`
         }
       })
 
@@ -47,7 +48,7 @@ const ResultPage = () => {
       // 加载用户答案
       const answersResponse = await fetch(`/api/user-answers?questionSetId=${examId}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN)}`
         }
       })
 

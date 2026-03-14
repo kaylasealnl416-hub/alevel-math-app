@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 import Navbar from './Navbar'
 import Loading from './common/Loading'
 import { Button } from './ui'
+import { API_BASE } from '../utils/constants'
 
 /**
  * Phase 4 Week 2 Day 4: Exam List Page
@@ -14,8 +15,6 @@ import { Button } from './ui'
  * - Create new exam
  * - Navigate to exam taking or result page
  */
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
 // Exam type mapping
 const EXAM_TYPE_MAP = {

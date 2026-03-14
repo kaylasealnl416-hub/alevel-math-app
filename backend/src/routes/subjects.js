@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
 import * as schema from '../db/schema.js'
-import { eq } from 'drizzle-orm'
+import { eq, inArray } from 'drizzle-orm'
 
 const app = new Hono()
 
@@ -58,16 +58,15 @@ app.get('/:id', async (c) => {
       .where(eq(schema.units.subjectId, subjectId))
       .orderBy(schema.units.order)
 
-    // 查询所有章节
-    const allChapters = []
-    for (const unit of units) {
-      const unitChapters = await db
-        .select()
-        .from(schema.chapters)
-        .where(eq(schema.chapters.unitId, unit.id))
-        .orderBy(schema.chapters.order)
-      allChapters.push(...unitChapters)
-    }
+    // 单次查询所有章节（修复 N+1 问题）
+    const unitIds = units.map(u => u.id)
+    const allChapters = unitIds.length > 0
+      ? await db
+          .select()
+          .from(schema.chapters)
+          .where(inArray(schema.chapters.unitId, unitIds))
+          .orderBy(schema.chapters.order)
+      : []
 
     // 组装数据结构（与前端期望的格式一致）
     const books = {}

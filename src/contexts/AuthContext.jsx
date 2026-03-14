@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { API_BASE } from '../utils/constants'
 
 const AuthContext = createContext(null)
 
@@ -26,7 +27,7 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     // 调用后端登出 API 清除 Cookie
     try {
-      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/auth/logout`, {
+      await fetch(`${API_BASE}/api/auth/logout`, {
         method: 'POST',
         credentials: 'include' // 发送 Cookie
       })

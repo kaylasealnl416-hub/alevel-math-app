@@ -3,6 +3,8 @@
 // Handles AI API calls and key management
 // ============================================================
 
+import { get, post, put, del } from './apiClient'
+
 // Storage keys
 const STORAGE_KEYS = {
   ANTHROPIC: 'alevel_math_anthropic_key',
@@ -167,16 +169,18 @@ export { STORAGE_KEYS, API_ENDPOINTS };
 // Backend API Client
 // ============================================================
 
-// API配置
-const BACKEND_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+// API配置 - 使用 constants.js 中的统一配置
+import { API_BASE } from './constants'
+
+const BACKEND_API_URL = API_BASE
 const USE_BACKEND_API = import.meta.env.VITE_USE_API === 'true'
 
-// 获取存储的 token
+// 获取存储的 token (向后兼容)
 function getAuthToken() {
   return localStorage.getItem('auth_token')
 }
 
-// 设置 token
+// 设置 token (向后兼容)
 export function setAuthToken(token) {
   if (token) {
     localStorage.setItem('auth_token', token)
@@ -185,29 +189,29 @@ export function setAuthToken(token) {
   }
 }
 
-// 统一请求函数
+// 统一请求函数 - 使用 apiClient.js 的方法
 async function backendRequest(endpoint, options = {}) {
-  const url = `${BACKEND_API_URL}${endpoint}`
-  const token = getAuthToken()
-
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` }),
-      ...options.headers,
-    },
-    ...options,
-  }
+  const { method = 'GET', body, ...config } = options
 
   try {
-    const response = await fetch(url, config)
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.error?.message || `HTTP ${response.status}`)
+    let data
+    switch (method.toUpperCase()) {
+      case 'GET':
+        data = await get(endpoint, { ...config, showErrorToast: false })
+        break
+      case 'POST':
+        data = await post(endpoint, body, { ...config, showErrorToast: false })
+        break
+      case 'PUT':
+        data = await put(endpoint, body, { ...config, showErrorToast: false })
+        break
+      case 'DELETE':
+        data = await del(endpoint, { ...config, showErrorToast: false })
+        break
+      default:
+        throw new Error(`Unsupported method: ${method}`)
     }
-
-    return data
+    return { data }
   } catch (error) {
     console.error('Backend API请求失败:', error)
     throw error

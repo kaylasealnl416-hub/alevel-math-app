@@ -2,6 +2,16 @@
 // App Constants Configuration
 // ============================================================
 
+// Storage Keys
+export const STORAGE_KEYS = {
+  AUTH_TOKEN: 'auth_token',
+  USER: 'auth_user',
+  ERRORBOOK: 'alevel_math_errorbook'
+};
+
+// API Base URL
+export const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
 // Theme Colors
 export const COLORS = {
   primary: '#DA291C',      // Math red
