@@ -1,5 +1,5 @@
 /* ============================================================
-   计时器样式
+   Timer styles
    ============================================================ */
 
 .timer {
@@ -48,7 +48,7 @@
   transition: width 1s linear;
 }
 
-/* 倒计时警告状态 */
+/* Countdown warning state */
 .timer.warning .timer-value {
   color: #f59e0b;
 }
@@ -57,7 +57,7 @@
   background: #f59e0b;
 }
 
-/* 倒计时危险状态 */
+/* Countdown danger state */
 .timer.danger .timer-value {
   color: #ef4444;
   animation: pulse 1s infinite;

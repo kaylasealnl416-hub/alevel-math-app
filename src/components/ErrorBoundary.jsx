@@ -57,10 +57,10 @@ class ErrorBoundary extends React.Component {
           border: '1px solid #ffcccc'
         }}>
           <h2 style={{ color: '#d32f2f', marginBottom: '16px' }}>
-            ⚠️ 页面渲染出错
+            ⚠️ Something went wrong
           </h2>
           <p style={{ color: '#666', marginBottom: '20px' }}>
-            {this.state.error?.message || '发生了未知错误'}
+            {this.state.error?.message || 'An unknown error occurred'}
           </p>
           {retryEnabled && (
             <button
@@ -75,7 +75,7 @@ class ErrorBoundary extends React.Component {
                 fontSize: '14px'
               }}
             >
-              重试 / Retry
+              Retry
             </button>
           )}
         </div>

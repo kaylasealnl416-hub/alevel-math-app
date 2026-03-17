@@ -1,5 +1,5 @@
 /* ============================================================
-   答题页面样式
+   Exam page styles
    ============================================================ */
 
 .exam-page {
@@ -22,7 +22,7 @@
   color: #667eea;
 }
 
-/* 顶部工具栏 */
+/* Top toolbar */
 .exam-toolbar {
   background: white;
   padding: 1rem 2rem;
@@ -59,14 +59,14 @@
   margin: 0;
 }
 
-/* 进度条区域 */
+/* Progress bar area */
 .exam-progress {
   padding: 1rem 2rem;
   background: white;
   border-bottom: 1px solid #e5e7eb;
 }
 
-/* 主内容区 */
+/* Main content area */
 .exam-content {
   flex: 1;
   padding: 2rem;
@@ -83,7 +83,7 @@
   width: 100%;
 }
 
-/* 底部导航 */
+/* Bottom navigation */
 .exam-navigation {
   background: white;
   padding: 1.5rem 2rem;
@@ -132,7 +132,7 @@
   cursor: not-allowed;
 }
 
-/* 题目导航 */
+/* Question navigator */
 .question-navigator {
   border-top: 1px solid #e5e7eb;
   padding-top: 1rem;
@@ -187,7 +187,7 @@
   color: white;
 }
 
-/* 确认对话框 */
+/* Confirm dialog */
 .confirm-dialog-overlay {
   position: fixed;
   top: 0;

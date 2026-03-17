@@ -1,6 +1,5 @@
 // ============================================================
-// useChat Hook
-// AI 对话功能 Hook
+// useChat Hook — AI tutor chat state management
 // ============================================================
 
 import { useState, useCallback, useRef } from 'react'
@@ -16,7 +15,7 @@ export function useChat(userId) {
 
   const loadingRef = useRef(false)
 
-  // 加载用户的会话列表
+  // Load the user's session list
   const loadSessions = useCallback(async (options = {}) => {
     if (!userId || loadingRef.current) return
 
@@ -34,7 +33,7 @@ export function useChat(userId) {
       setSessions(sessionList)
       return sessionList
     } catch (err) {
-      console.error('加载会话列表失败:', err)
+      console.error('Failed to load sessions:', err)
       setError(err.message)
       return []
     } finally {
@@ -43,10 +42,10 @@ export function useChat(userId) {
     }
   }, [userId])
 
-  // 创建新会话
-  const createSession = useCallback(async (chapterId = null, title = '新对话', sessionType = 'learning') => {
+  // Create a new session
+  const createSession = useCallback(async (chapterId = null, title = 'New conversation', sessionType = 'learning') => {
     if (!userId) {
-      setError('请先登录')
+      setError('Please log in first')
       return null
     }
 
@@ -66,7 +65,7 @@ export function useChat(userId) {
       setMessages([])
       return newSession
     } catch (err) {
-      console.error('创建会话失败:', err)
+      console.error('Failed to create session:', err)
       setError(err.message)
       return null
     } finally {
@@ -74,7 +73,7 @@ export function useChat(userId) {
     }
   }, [userId])
 
-  // 选择会话
+  // Select a session and load its messages
   const selectSession = useCallback(async (sessionId) => {
     if (!sessionId || loadingRef.current) return
 
@@ -83,17 +82,15 @@ export function useChat(userId) {
     setError(null)
 
     try {
-      // 获取会话详情
       const session = await chatAPI.getSession(sessionId)
       setCurrentSession(session)
 
-      // 获取消息历史
       const { messages: messageList } = await chatAPI.getMessages(sessionId, { limit: 50 })
       setMessages(messageList || [])
 
       return session
     } catch (err) {
-      console.error('加载会话失败:', err)
+      console.error('Failed to load session:', err)
       setError(err.message)
       return null
     } finally {
@@ -102,17 +99,17 @@ export function useChat(userId) {
     }
   }, [])
 
-  // 发送消息
+  // Send a message
   const sendMessage = useCallback(async (content, context = {}) => {
     if (!currentSession || !content.trim()) {
-      setError('请先选择一个会话')
+      setError('Please select a session first')
       return null
     }
 
     setIsSending(true)
     setError(null)
 
-    // 先添加用户消息到本地
+    // Optimistically add the user message
     const tempUserMessage = {
       id: Date.now(),
       role: 'user',
@@ -131,17 +128,14 @@ export function useChat(userId) {
       })
 
       if (result.success) {
-        // 添加 AI 回复到消息列表
         setMessages(prev => [...prev, result.data.assistantMessage])
 
-        // 更新会话信息
         setCurrentSession(prev => ({
           ...prev,
           messageCount: prev.messageCount + 2,
           lastMessageAt: new Date().toISOString()
         }))
 
-        // 更新会话列表中的会话
         setSessions(prev => prev.map(s =>
           s.id === currentSession.id
             ? { ...s, messageCount: s.messageCount + 2, lastMessageAt: new Date().toISOString() }
@@ -150,13 +144,13 @@ export function useChat(userId) {
 
         return result.data
       } else {
-        throw new Error(result.error?.message || '发送消息失败')
+        throw new Error(result.error?.message || 'Failed to send message')
       }
     } catch (err) {
-      console.error('发送消息失败:', err)
+      console.error('Failed to send message:', err)
       setError(err.message)
 
-      // 移除临时用户消息
+      // Roll back the optimistic message
       setMessages(prev => prev.filter(m => m.id !== tempUserMessage.id))
 
       return null
@@ -165,7 +159,7 @@ export function useChat(userId) {
     }
   }, [currentSession])
 
-  // 更新会话标题
+  // Update a session title
   const updateSessionTitle = useCallback(async (sessionId, title) => {
     try {
       const updated = await chatAPI.updateSession(sessionId, { title })
@@ -175,13 +169,13 @@ export function useChat(userId) {
       }
       return updated
     } catch (err) {
-      console.error('更新会话标题失败:', err)
+      console.error('Failed to update session title:', err)
       setError(err.message)
       return null
     }
   }, [currentSession])
 
-  // 归档会话
+  // Archive a session
   const archiveSession = useCallback(async (sessionId) => {
     try {
       await chatAPI.updateSession(sessionId, { status: 'archived' })
@@ -193,13 +187,13 @@ export function useChat(userId) {
       }
       return true
     } catch (err) {
-      console.error('归档会话失败:', err)
+      console.error('Failed to archive session:', err)
       setError(err.message)
       return false
     }
   }, [currentSession])
 
-  // 删除会话
+  // Delete a session
   const deleteSession = useCallback(async (sessionId) => {
     try {
       await chatAPI.deleteSession(sessionId)
@@ -211,19 +205,18 @@ export function useChat(userId) {
       }
       return true
     } catch (err) {
-      console.error('删除会话失败:', err)
+      console.error('Failed to delete session:', err)
       setError(err.message)
       return false
     }
   }, [currentSession])
 
-  // 清除错误
   const clearError = useCallback(() => {
     setError(null)
   }, [])
 
   return {
-    // 状态
+    // State
     sessions,
     currentSession,
     messages,
@@ -231,7 +224,7 @@ export function useChat(userId) {
     isSending,
     error,
 
-    // 方法
+    // Actions
     loadSessions,
     createSession,
     selectSession,

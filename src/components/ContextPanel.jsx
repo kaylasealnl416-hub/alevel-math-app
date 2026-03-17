@@ -1,10 +1,9 @@
 // ============================================================
 // ContextPanel Component
-// 上下文面板组件
+// Displays session context, stats, tips, and quick actions
 // ============================================================
 
 export default function ContextPanel({ session, messages }) {
-  // 计算对话统计
   const stats = {
     totalMessages: messages.length,
     userMessages: messages.filter(m => m.role === 'user').length,
@@ -15,46 +14,46 @@ export default function ContextPanel({ session, messages }) {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h3 style={styles.title}>📊 学习上下文</h3>
+        <h3 style={styles.title}>📊 Learning Context</h3>
       </div>
 
       <div style={styles.content}>
-        {/* 会话信息 */}
+        {/* Session info */}
         <div style={styles.section}>
-          <h4 style={styles.sectionTitle}>会话信息</h4>
+          <h4 style={styles.sectionTitle}>Session Info</h4>
           <div style={styles.info}>
             <div style={styles.infoRow}>
-              <span style={styles.label}>类型：</span>
+              <span style={styles.label}>Type:</span>
               <span style={styles.value}>{getSessionTypeLabel(session.sessionType)}</span>
             </div>
             <div style={styles.infoRow}>
-              <span style={styles.label}>状态：</span>
-              <span style={styles.value}>{session.status === 'active' ? '活跃' : '已归档'}</span>
+              <span style={styles.label}>Status:</span>
+              <span style={styles.value}>{session.status === 'active' ? 'Active' : 'Archived'}</span>
             </div>
             {session.chapterId && (
               <div style={styles.infoRow}>
-                <span style={styles.label}>章节：</span>
+                <span style={styles.label}>Chapter:</span>
                 <span style={styles.value}>{session.chapterId}</span>
               </div>
             )}
           </div>
         </div>
 
-        {/* 对话统计 */}
+        {/* Conversation stats */}
         <div style={styles.section}>
-          <h4 style={styles.sectionTitle}>对话统计</h4>
+          <h4 style={styles.sectionTitle}>Stats</h4>
           <div style={styles.stats}>
             <div style={styles.statItem}>
               <span style={styles.statValue}>{stats.totalMessages}</span>
-              <span style={styles.statLabel}>总消息</span>
+              <span style={styles.statLabel}>Messages</span>
             </div>
             <div style={styles.statItem}>
               <span style={styles.statValue}>{stats.userMessages}</span>
-              <span style={styles.statLabel}>你的问题</span>
+              <span style={styles.statLabel}>Your questions</span>
             </div>
             <div style={styles.statItem}>
               <span style={styles.statValue}>{stats.aiMessages}</span>
-              <span style={styles.statLabel}>AI 回复</span>
+              <span style={styles.statLabel}>AI replies</span>
             </div>
             <div style={styles.statItem}>
               <span style={styles.statValue}>{stats.totalTokens}</span>
@@ -63,36 +62,34 @@ export default function ContextPanel({ session, messages }) {
           </div>
         </div>
 
-        {/* 学习建议 */}
+        {/* Study tips */}
         <div style={styles.section}>
-          <h4 style={styles.sectionTitle}>💡 学习建议</h4>
+          <h4 style={styles.sectionTitle}>💡 Study Tips</h4>
           <ul style={styles.tips}>
-            <li>尝试用自己的话解释概念</li>
-            <li>遇到问题先思考，再看答案</li>
-            <li>记录不懂的地方，多次复习</li>
-            <li>定期回顾已学内容</li>
+            <li>Try explaining concepts in your own words</li>
+            <li>Think before checking the answer</li>
+            <li>Note anything unclear and revisit it</li>
+            <li>Review previous topics regularly</li>
           </ul>
         </div>
 
-        {/* 快捷操作 */}
+        {/* Quick actions */}
         <div style={styles.section}>
-          <h4 style={styles.sectionTitle}>⚡ 快捷操作</h4>
+          <h4 style={styles.sectionTitle}>⚡ Quick Actions</h4>
           <div style={styles.actions}>
             <button style={styles.actionBtn} onClick={() => {
-              // 清空上下文提示
-              window.prompt('输入提示词开始新话题')
+              window.prompt('Enter a prompt to start a new topic')
             }}>
-              🔄 新话题
+              🔄 New Topic
             </button>
             <button style={styles.actionBtn} onClick={() => {
-              // 导出对话
               const text = messages.map(m =>
-                `${m.role === 'user' ? '你' : 'AI'}：${m.content}`
+                `${m.role === 'user' ? 'You' : 'AI'}: ${m.content}`
               ).join('\n\n')
               navigator.clipboard.writeText(text)
-              alert('对话已复制到剪贴板')
+              alert('Conversation copied to clipboard')
             }}>
-              📋 导出
+              📋 Export
             </button>
           </div>
         </div>
@@ -101,14 +98,13 @@ export default function ContextPanel({ session, messages }) {
   )
 }
 
-// 获取会话类型标签
 function getSessionTypeLabel(type) {
   const labels = {
-    learning: '学习',
-    practice: '练习',
-    review: '复习'
+    learning: 'Learning',
+    practice: 'Practice',
+    review: 'Review'
   }
-  return labels[type] || '学习'
+  return labels[type] || 'Learning'
 }
 
 const styles = {

@@ -1,6 +1,6 @@
 // ============================================================
-// 答题页面
-// 显示题目，收集答案，提交试卷
+// Exam / Practice Page
+// Displays questions, collects answers, submits paper
 // ============================================================
 
 import React, { useState, useEffect } from 'react'
@@ -25,7 +25,6 @@ const ExamPage = () => {
   const [startTime, setStartTime] = useState(Date.now())
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
 
-  // 加载试卷和题目
   useEffect(() => {
     loadExam()
   }, [examId])
@@ -46,16 +45,15 @@ const ExamPage = () => {
         setQuestions(data.data.questions)
         setStartTime(Date.now())
       } else {
-        setError(data.error?.message || '加载试卷失败')
+        setError(data.error?.message || 'Failed to load exam')
       }
     } catch (err) {
-      setError('网络错误，请稍后重试')
+      setError('Network error. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
-  // 保存答案
   const handleAnswerChange = (questionId, answer) => {
     setAnswers(prev => ({
       ...prev,
@@ -63,26 +61,22 @@ const ExamPage = () => {
     }))
   }
 
-  // 上一题
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1)
     }
   }
 
-  // 下一题
   const handleNext = () => {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1)
     }
   }
 
-  // 跳转到指定题目
   const handleJumpTo = (index) => {
     setCurrentIndex(index)
   }
 
-  // 提交试卷
   const handleSubmit = async () => {
     setShowConfirmDialog(false)
 
@@ -90,14 +84,12 @@ const ExamPage = () => {
       const endTime = Date.now()
       const timeSpent = Math.floor((endTime - startTime) / 1000)
 
-      // 构建答案数据
       const userAnswers = questions.map(q => ({
         questionId: q.id,
         userAnswer: answers[q.id] || '',
-        timeSpent: Math.floor(timeSpent / questions.length) // 平均时间
+        timeSpent: Math.floor(timeSpent / questions.length)
       }))
 
-      // 提交答案
       const response = await fetch('/api/user-answers/batch', {
         method: 'POST',
         headers: {
@@ -113,26 +105,24 @@ const ExamPage = () => {
       const data = await response.json()
 
       if (data.success) {
-        // 跳转到结果页面
         navigate(`/practice/result/${examId}`)
       } else {
-        setError(data.error?.message || '提交失败')
+        setError(data.error?.message || 'Submission failed')
       }
     } catch (err) {
-      setError('网络错误，请稍后重试')
+      setError('Network error. Please try again.')
     }
   }
 
-  // 时间到自动提交
   const handleTimeUp = () => {
-    alert('时间到！试卷将自动提交。')
+    alert('Time is up! Your paper will be submitted automatically.')
     handleSubmit()
   }
 
   if (loading) {
     return (
       <div className="exam-page loading">
-        <div className="loading-spinner">加载中...</div>
+        <div className="loading-spinner">Loading...</div>
       </div>
     )
   }
@@ -141,7 +131,7 @@ const ExamPage = () => {
     return (
       <div className="exam-page error">
         <div className="error-message">⚠️ {error}</div>
-        <button onClick={() => navigate('/practice')}>返回</button>
+        <button onClick={() => navigate('/practice')}>Back</button>
       </div>
     )
   }
@@ -149,8 +139,8 @@ const ExamPage = () => {
   if (!questions || questions.length === 0) {
     return (
       <div className="exam-page empty">
-        <div className="empty-message">没有找到题目</div>
-        <button onClick={() => navigate('/practice')}>返回</button>
+        <div className="empty-message">No questions found</div>
+        <button onClick={() => navigate('/practice')}>Back</button>
       </div>
     )
   }
@@ -160,13 +150,13 @@ const ExamPage = () => {
 
   return (
     <div className="exam-page">
-      {/* 顶部工具栏 */}
+      {/* Top toolbar */}
       <div className="exam-toolbar">
         <div className="toolbar-left">
           <button className="back-btn" onClick={() => navigate('/practice')}>
-            ← 返回
+            ← Back
           </button>
-          <h2 className="exam-title">{questionSet?.title || '练习'}</h2>
+          <h2 className="exam-title">{questionSet?.title || 'Practice'}</h2>
         </div>
         <div className="toolbar-right">
           <Timer
@@ -176,7 +166,7 @@ const ExamPage = () => {
         </div>
       </div>
 
-      {/* 进度条 */}
+      {/* Progress bar */}
       <div className="exam-progress">
         <ProgressBar
           current={currentIndex + 1}
@@ -185,9 +175,8 @@ const ExamPage = () => {
         />
       </div>
 
-      {/* 主内容区 */}
+      {/* Main content */}
       <div className="exam-content">
-        {/* 题目卡片 */}
         <div className="exam-question">
           <QuestionCard
             question={currentQuestion}
@@ -196,7 +185,6 @@ const ExamPage = () => {
           />
         </div>
 
-        {/* 答题输入 */}
         <div className="exam-answer">
           <AnswerInput
             question={currentQuestion}
@@ -206,7 +194,7 @@ const ExamPage = () => {
         </div>
       </div>
 
-      {/* 底部导航 */}
+      {/* Bottom navigation */}
       <div className="exam-navigation">
         <div className="nav-buttons">
           <button
@@ -214,7 +202,7 @@ const ExamPage = () => {
             onClick={handlePrevious}
             disabled={currentIndex === 0}
           >
-            ← 上一题
+            ← Previous
           </button>
 
           {currentIndex < questions.length - 1 ? (
@@ -222,21 +210,21 @@ const ExamPage = () => {
               className="nav-btn next"
               onClick={handleNext}
             >
-              下一题 →
+              Next →
             </button>
           ) : (
             <button
               className="nav-btn submit"
               onClick={() => setShowConfirmDialog(true)}
             >
-              提交试卷 ✓
+              Submit ✓
             </button>
           )}
         </div>
 
-        {/* 题目导航 */}
+        {/* Question navigator */}
         <div className="question-navigator">
-          <div className="navigator-label">题目导航</div>
+          <div className="navigator-label">Question Navigator</div>
           <div className="navigator-grid">
             {questions.map((q, index) => (
               <button
@@ -251,23 +239,23 @@ const ExamPage = () => {
         </div>
       </div>
 
-      {/* 确认提交对话框 */}
+      {/* Submit confirmation dialog */}
       {showConfirmDialog && (
         <div className="confirm-dialog-overlay" onClick={() => setShowConfirmDialog(false)}>
           <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
-            <h3>确认提交？</h3>
+            <h3>Confirm Submission</h3>
             <p>
-              你已完成 <strong>{answeredCount}</strong> / {questions.length} 题
+              You have answered <strong>{answeredCount}</strong> / {questions.length} questions
             </p>
             {answeredCount < questions.length && (
-              <p className="warning">还有 {questions.length - answeredCount} 题未作答</p>
+              <p className="warning">{questions.length - answeredCount} questions remain unanswered</p>
             )}
             <div className="dialog-actions">
               <button className="btn-cancel" onClick={() => setShowConfirmDialog(false)}>
-                继续答题
+                Keep Going
               </button>
               <button className="btn-confirm" onClick={handleSubmit}>
-                确认提交
+                Submit
               </button>
             </div>
           </div>

@@ -1,5 +1,5 @@
 /* ============================================================
-   答题输入样式
+   Answer input styles
    ============================================================ */
 
 .answer-input {
@@ -16,7 +16,7 @@
   margin-bottom: 1rem;
 }
 
-/* 选择题按钮 */
+/* Multiple choice buttons */
 .choice-buttons {
   display: flex;
   gap: 1rem;
@@ -51,7 +51,7 @@
   cursor: not-allowed;
 }
 
-/* 文本输入 */
+/* Text input */
 .answer-text-input {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -72,7 +72,7 @@
   cursor: not-allowed;
 }
 
-/* 文本域 */
+/* Textarea */
 .answer-textarea {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -96,7 +96,7 @@
   cursor: not-allowed;
 }
 
-/* 提示信息 */
+/* Hint text */
 .input-hint {
   margin-top: 0.5rem;
   font-size: 0.875rem;

@@ -8,33 +8,31 @@ export default function ApiTestPage() {
   const [error, setError] = useState(null)
   const [mode, setMode] = useState(dataSource.getMode())
 
-  // 加载所有科目
   const loadSubjects = async () => {
     setLoading(true)
     setError(null)
     try {
       const data = await dataSource.getSubjects()
       setSubjects(data)
-      console.log('✅ 科目数据加载成功:', Object.keys(data))
+      console.log('✅ Subjects loaded:', Object.keys(data))
     } catch (err) {
       setError(err.message)
-      console.error('❌ 加载失败:', err)
+      console.error('❌ Load failed:', err)
     } finally {
       setLoading(false)
     }
   }
 
-  // 加载科目详情
   const loadSubjectDetail = async (subjectId) => {
     setLoading(true)
     setError(null)
     try {
       const data = await dataSource.getSubject(subjectId)
       setSelectedSubject(data)
-      console.log('✅ 科目详情加载成功:', data.name.zh)
+      console.log('✅ Subject detail loaded:', data.name.en)
     } catch (err) {
       setError(err.message)
-      console.error('❌ 加载失败:', err)
+      console.error('❌ Load failed:', err)
     } finally {
       setLoading(false)
     }
@@ -47,19 +45,19 @@ export default function ApiTestPage() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>🧪 API 测试页面</h1>
+        <h1 style={styles.title}>🧪 API Test Page</h1>
         <div style={styles.badge}>
-          数据源模式: <strong>{mode}</strong>
+          Data source mode: <strong>{mode}</strong>
         </div>
       </div>
 
-      {loading && <div style={styles.loading}>⏳ 加载中...</div>}
-      {error && <div style={styles.error}>❌ 错误: {error}</div>}
+      {loading && <div style={styles.loading}>⏳ Loading...</div>}
+      {error && <div style={styles.error}>❌ Error: {error}</div>}
 
-      {/* 科目列表 */}
+      {/* Subject list */}
       {subjects && !selectedSubject && (
         <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>📚 科目列表</h2>
+          <h2 style={styles.sectionTitle}>📚 Subjects</h2>
           <div style={styles.grid}>
             {Object.entries(subjects).map(([id, subject]) => (
               <button
@@ -72,48 +70,48 @@ export default function ApiTestPage() {
                 }}
               >
                 <div style={styles.cardIcon}>{subject.icon}</div>
-                <div style={styles.cardTitle}>{subject.name.zh}</div>
-                <div style={styles.cardSubtitle}>{subject.name.en}</div>
+                <div style={styles.cardTitle}>{subject.name.en}</div>
+                <div style={styles.cardSubtitle}>{subject.level}</div>
               </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* 科目详情 */}
+      {/* Subject detail */}
       {selectedSubject && (
         <div style={styles.section}>
           <button
             onClick={() => setSelectedSubject(null)}
             style={styles.backButton}
           >
-            ← 返回科目列表
+            ← Back to subjects
           </button>
 
           <h2 style={styles.sectionTitle}>
-            {selectedSubject.icon} {selectedSubject.name.zh}
+            {selectedSubject.icon} {selectedSubject.name.en}
           </h2>
           <p style={styles.description}>{selectedSubject.level}</p>
 
-          <h3 style={styles.subtitle}>📖 单元列表</h3>
+          <h3 style={styles.subtitle}>📖 Units</h3>
           {selectedSubject.books && (
             <div style={styles.unitList}>
               {Object.entries(selectedSubject.books).map(([unitId, unit]) => (
                 <div key={unitId} style={styles.unit}>
                   <div style={styles.unitHeader}>
-                    <strong>{unit.title.zh}</strong>
+                    <strong>{unit.title.en || unit.title.zh}</strong>
                     <span style={styles.unitBadge}>
-                      {unit.chapters?.length || 0} 个章节
+                      {unit.chapters?.length || 0} chapters
                     </span>
                   </div>
                   {unit.subtitle && (
-                    <div style={styles.unitSubtitle}>{unit.subtitle.zh}</div>
+                    <div style={styles.unitSubtitle}>{unit.subtitle.en || unit.subtitle.zh}</div>
                   )}
                   {unit.chapters && unit.chapters.length > 0 && (
                     <ul style={styles.chapterList}>
                       {unit.chapters.map((chapter) => (
                         <li key={chapter.id} style={styles.chapterItem}>
-                          {chapter.num}. {chapter.title.zh}
+                          {chapter.num}. {chapter.title.en || chapter.title.zh}
                         </li>
                       ))}
                     </ul>
@@ -125,9 +123,9 @@ export default function ApiTestPage() {
         </div>
       )}
 
-      {/* 控制台日志提示 */}
+      {/* Footer hint */}
       <div style={styles.footer}>
-        💡 提示：打开浏览器控制台查看详细日志
+        💡 Open the browser console for detailed logs
       </div>
     </div>
   )

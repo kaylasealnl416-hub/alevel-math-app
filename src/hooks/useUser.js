@@ -3,8 +3,8 @@ import useUserStore from '../stores/userStore'
 import { usersAPI, progressAPI } from '../utils/api'
 
 /**
- * 用户数据管理 Hook
- * 提供用户信息、画像、统计、进度的获取和更新功能
+ * User data management hook.
+ * Provides fetch and update actions for user info, profile, stats, and progress.
  */
 export function useUser() {
   const {
@@ -29,7 +29,7 @@ export function useUser() {
   } = useUserStore()
 
   /**
-   * 加载用户完整信息
+   * Load full user data in parallel
    */
   const loadUserData = useCallback(async (userId) => {
     if (!userId) return
@@ -38,7 +38,6 @@ export function useUser() {
     clearError()
 
     try {
-      // 并行加载用户信息、画像、统计、进度
       const [userData, profileData, statsData, progressData] = await Promise.all([
         usersAPI.getById(userId),
         usersAPI.getProfile(userId),
@@ -51,15 +50,15 @@ export function useUser() {
       setStats(statsData)
       setProgress(progressData)
     } catch (err) {
-      console.error('加载用户数据失败:', err)
-      setError(err.message || '加载用户数据失败')
+      console.error('Failed to load user data:', err)
+      setError(err.message || 'Failed to load user data')
     } finally {
       setLoading(false)
     }
   }, [setUser, setProfile, setStats, setProgress, setLoading, setError, clearError])
 
   /**
-   * 更新用户信息
+   * Update user info
    */
   const updateUser = useCallback(async (userId, userData) => {
     setLoading(true)
@@ -70,8 +69,8 @@ export function useUser() {
       setUser(updated)
       return updated
     } catch (err) {
-      console.error('更新用户信息失败:', err)
-      setError(err.message || '更新用户信息失败')
+      console.error('Failed to update user:', err)
+      setError(err.message || 'Failed to update user')
       throw err
     } finally {
       setLoading(false)
@@ -79,7 +78,7 @@ export function useUser() {
   }, [setUser, setLoading, setError, clearError])
 
   /**
-   * 更新用户画像
+   * Update user profile
    */
   const updateUserProfile = useCallback(async (userId, profileData) => {
     setLoading(true)
@@ -90,8 +89,8 @@ export function useUser() {
       setProfile(updated)
       return updated
     } catch (err) {
-      console.error('更新用户画像失败:', err)
-      setError(err.message || '更新用户画像失败')
+      console.error('Failed to update profile:', err)
+      setError(err.message || 'Failed to update profile')
       throw err
     } finally {
       setLoading(false)
@@ -99,12 +98,12 @@ export function useUser() {
   }, [setProfile, setLoading, setError, clearError])
 
   /**
-   * 记录学习进度
+   * Record study progress for a chapter
    */
   const recordProgress = useCallback(async (chapterId, progressData) => {
     const userId = getUserId()
     if (!userId) {
-      setError('用户未登录')
+      setError('Not logged in')
       return
     }
 
@@ -115,10 +114,9 @@ export function useUser() {
         ...progressData
       })
 
-      // 更新本地缓存
       updateProgress(chapterId, updated)
 
-      // 如果章节完成，刷新统计数据
+      // Refresh stats when a chapter is completed
       if (progressData.status === 'completed') {
         const newStats = await usersAPI.getStats(userId)
         setStats(newStats)
@@ -126,24 +124,22 @@ export function useUser() {
 
       return updated
     } catch (err) {
-      console.error('记录学习进度失败:', err)
-      setError(err.message || '记录学习进度失败')
+      console.error('Failed to record progress:', err)
+      setError(err.message || 'Failed to record progress')
       throw err
     }
   }, [getUserId, updateProgress, setStats, setError])
 
   /**
-   * 获取章节进度
+   * Get progress for a chapter (cache-first)
    */
   const getProgress = useCallback(async (chapterId) => {
     const userId = getUserId()
     if (!userId) return null
 
-    // 先从缓存获取
     const cached = getChapterProgress(chapterId)
     if (cached) return cached
 
-    // 缓存未命中，从服务器获取
     try {
       const data = await progressAPI.getByChapter(userId, chapterId)
       if (data) {
@@ -151,13 +147,13 @@ export function useUser() {
       }
       return data
     } catch (err) {
-      console.error('获取章节进度失败:', err)
+      console.error('Failed to get chapter progress:', err)
       return null
     }
   }, [getUserId, getChapterProgress, updateProgress])
 
   /**
-   * 刷新统计数据
+   * Refresh stats from the server
    */
   const refreshStats = useCallback(async () => {
     const userId = getUserId()
@@ -168,14 +164,14 @@ export function useUser() {
       setStats(statsData)
       return statsData
     } catch (err) {
-      console.error('刷新统计数据失败:', err)
-      setError(err.message || '刷新统计数据失败')
+      console.error('Failed to refresh stats:', err)
+      setError(err.message || 'Failed to refresh stats')
       throw err
     }
   }, [getUserId, setStats, setError])
 
   /**
-   * 创建新用户（用于测试）
+   * Create a new user (used in tests)
    */
   const createUser = useCallback(async (userData) => {
     setLoading(true)
@@ -184,14 +180,11 @@ export function useUser() {
     try {
       const newUser = await usersAPI.create(userData)
       setUser(newUser)
-
-      // 加载完整数据
       await loadUserData(newUser.id)
-
       return newUser
     } catch (err) {
-      console.error('创建用户失败:', err)
-      setError(err.message || '创建用户失败')
+      console.error('Failed to create user:', err)
+      setError(err.message || 'Failed to create user')
       throw err
     } finally {
       setLoading(false)
@@ -199,7 +192,7 @@ export function useUser() {
   }, [setUser, loadUserData, setLoading, setError, clearError])
 
   return {
-    // 状态
+    // State
     user,
     profile,
     stats,
@@ -207,7 +200,7 @@ export function useUser() {
     loading,
     error,
 
-    // 方法
+    // Actions
     loadUserData,
     updateUser,
     updateUserProfile,
@@ -218,7 +211,7 @@ export function useUser() {
     logout,
     clearError,
 
-    // 辅助方法
+    // Helpers
     isLoggedIn: isLoggedIn(),
     userId: getUserId()
   }

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* 全局样式 */
+/* Global styles */
 body {
   background-color: #F9FAFB;
   color: #111827;
@@ -45,7 +45,7 @@ a:hover {
   color: #1D4ED8;
 }
 
-/* 自定义组件样式 */
+/* Custom component styles */
 .btn-primary {
   padding: 0.75rem 1.5rem;
   background-color: #3B82F6;

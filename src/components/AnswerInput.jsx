@@ -1,6 +1,6 @@
 // ============================================================
-// 答题输入组件
-// 支持多种题型的答案输入
+// AnswerInput Component
+// Supports multiple question types for answer entry
 // ============================================================
 
 import React, { useState, useEffect } from 'react'
@@ -18,11 +18,11 @@ const AnswerInput = ({ question, value, onChange, disabled = false }) => {
     onChange(newValue)
   }
 
-  // 选择题输入
+  // Multiple choice
   if (question.type === 'multiple_choice') {
     return (
       <div className="answer-input multiple-choice">
-        <div className="answer-label">请选择答案：</div>
+        <div className="answer-label">Select your answer:</div>
         <div className="choice-buttons">
           {['A', 'B', 'C', 'D'].map(option => (
             <button
@@ -39,58 +39,58 @@ const AnswerInput = ({ question, value, onChange, disabled = false }) => {
     )
   }
 
-  // 填空题输入
+  // Fill in the blank
   if (question.type === 'fill_blank') {
     return (
       <div className="answer-input fill-blank">
-        <div className="answer-label">请填写答案：</div>
+        <div className="answer-label">Fill in your answer:</div>
         <input
           type="text"
           className="answer-text-input"
           value={localValue}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="输入答案..."
+          placeholder="Type your answer..."
           disabled={disabled}
         />
       </div>
     )
   }
 
-  // 计算题输入
+  // Calculation
   if (question.type === 'calculation') {
     return (
       <div className="answer-input calculation">
-        <div className="answer-label">请输入计算结果：</div>
+        <div className="answer-label">Enter your result:</div>
         <input
           type="text"
           className="answer-text-input"
           value={localValue}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="输入数值或表达式..."
+          placeholder="Enter a number or expression..."
           disabled={disabled}
         />
         <div className="input-hint">
-          💡 提示：可以输入数字、分数或数学表达式
+          💡 You can enter a number, fraction, or mathematical expression
         </div>
       </div>
     )
   }
 
-  // 简答题/证明题输入
+  // Short answer / proof
   if (question.type === 'short_answer' || question.type === 'proof') {
     return (
       <div className="answer-input short-answer">
-        <div className="answer-label">请输入答案：</div>
+        <div className="answer-label">Write your answer:</div>
         <textarea
           className="answer-textarea"
           value={localValue}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="输入你的答案..."
+          placeholder="Type your answer here..."
           rows={6}
           disabled={disabled}
         />
         <div className="textarea-counter">
-          {localValue.length} 字
+          {localValue.length} characters
         </div>
       </div>
     )

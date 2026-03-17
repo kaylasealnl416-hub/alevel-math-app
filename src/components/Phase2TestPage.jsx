@@ -1,6 +1,6 @@
 // ============================================================
-// Phase 2 测试页面
-// 用于测试 AI 教师对话功能
+// Phase 2 test page
+// Tests the AI tutor chat functionality
 // ============================================================
 
 import { useState, useEffect } from 'react'
@@ -14,7 +14,6 @@ export default function Phase2TestPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
 
-  // 检查是否已登录
   useEffect(() => {
     const token = localStorage.getItem('auth_token')
     if (token) {
@@ -22,146 +21,143 @@ export default function Phase2TestPage() {
     }
   }, [])
 
-  // 登录/注册测试用户
+  // Register/login a test user
   const loginTestUser = async () => {
     try {
-      // 使用随机邮箱避免冲突
       const testEmail = `test${Date.now()}@example.com`
 
-      // 尝试注册新用户
       const result = await authAPI.register({
         email: testEmail,
         password: 'test123456',
-        nickname: '测试用户'
+        nickname: 'test_user'
       })
       setCurrentUser(result.user)
       setIsLoggedIn(true)
       return result.user
     } catch (error) {
-      console.error('注册失败:', error)
+      console.error('Registration failed:', error)
       throw error
     }
   }
 
-  // 测试函数
   const runTests = async () => {
     setIsRunning(true)
     setTestResults([])
     const results = []
 
     try {
-      // 测试 0: 登录/注册
-      results.push({ name: '登录/注册', status: 'running' })
+      // Test 0: Login/register
+      results.push({ name: 'Login/Register', status: 'running' })
       setTestResults([...results])
 
       const user = await loginTestUser()
 
       results[0] = {
-        name: '登录/注册',
+        name: 'Login/Register',
         status: 'success',
-        data: `用户ID: ${user.id}, 昵称: ${user.nickname}`
+        data: `User ID: ${user.id}, Nickname: ${user.nickname}`
       }
       setTestResults([...results])
 
-      // 测试 1: 创建会话
-      results.push({ name: '创建会话', status: 'running' })
+      // Test 1: Create session
+      results.push({ name: 'Create session', status: 'running' })
       setTestResults([...results])
 
       const session = await chatAPI.createSession({
         userId: user.id,
         chapterId: 'e1c1',
-        title: '测试会话 - 供需理论',
+        title: 'Test session — Supply & Demand',
         sessionType: 'learning'
       })
 
       results[1] = {
-        name: '创建会话',
+        name: 'Create session',
         status: 'success',
-        data: `会话ID: ${session.id}`
+        data: `Session ID: ${session.id}`
       }
       setTestResults([...results])
 
-      // 测试 2: 获取会话列表
-      results.push({ name: '获取会话列表', status: 'running' })
+      // Test 2: Get session list
+      results.push({ name: 'Get sessions', status: 'running' })
       setTestResults([...results])
 
       const sessions = await chatAPI.getSessions(user.id, { status: 'active', limit: 10 })
 
       results[2] = {
-        name: '获取会话列表',
+        name: 'Get sessions',
         status: 'success',
-        data: `找到 ${sessions.length} 个会话`
+        data: `Found ${sessions.length} sessions`
       }
       setTestResults([...results])
 
-      // 测试 3: 发送消息（需要配置 API Key）
-      results.push({ name: '发送消息', status: 'running' })
+      // Test 3: Send message (requires API key)
+      results.push({ name: 'Send message', status: 'running' })
       setTestResults([...results])
 
       try {
         const messageResult = await chatAPI.sendMessage({
           sessionId: session.id,
-          message: '什么是供需平衡？',
-          context: { subject: '经济学' }
+          message: 'What is supply-demand equilibrium?',
+          context: { subject: 'Economics' }
         })
 
         results[3] = {
-          name: '发送消息',
+          name: 'Send message',
           status: 'success',
-          data: `AI 回复: ${messageResult.data.assistantMessage.content.substring(0, 50)}...`
+          data: `AI reply: ${messageResult.data.assistantMessage.content.substring(0, 50)}...`
         }
       } catch (err) {
         results[3] = {
-          name: '发送消息',
+          name: 'Send message',
           status: 'warning',
-          data: `需要配置 ANTHROPIC_API_KEY: ${err.message}`
+          data: `Requires ANTHROPIC_API_KEY: ${err.message}`
         }
       }
       setTestResults([...results])
 
-      // 测试 4: 获取消息历史
-      results.push({ name: '获取消息历史', status: 'running' })
+      // Test 4: Get message history
+      results.push({ name: 'Get messages', status: 'running' })
       setTestResults([...results])
 
       const { messages } = await chatAPI.getMessages(session.id, { limit: 50 })
 
       results[4] = {
-        name: '获取消息历史',
+        name: 'Get messages',
         status: 'success',
-        data: `找到 ${messages.length} 条消息`
+        data: `Found ${messages.length} messages`
       }
       setTestResults([...results])
 
-      // 测试 5: 更新会话标题
-      results.push({ name: '更新会话标题', status: 'running' })
+      // Test 5: Update session title
+      results.push({ name: 'Update session', status: 'running' })
       setTestResults([...results])
 
-      await chatAPI.updateSession(session.id, { title: '测试会话（已更新）' })
+      await chatAPI.updateSession(session.id, { title: 'Test session (updated)' })
 
       results[5] = {
-        name: '更新会话标题',
+        name: 'Update session',
         status: 'success',
-        data: '标题更新成功'
+        data: 'Title updated successfully'
       }
       setTestResults([...results])
 
-      // 测试 6: 归档会话
-      results.push({ name: '归档会话', status: 'running' })
+      // Test 6: Archive session
+      results.push({ name: 'Archive session', status: 'running' })
       setTestResults([...results])
 
       await chatAPI.updateSession(session.id, { status: 'archived' })
 
       results[6] = {
-        name: '归档会话',
+        name: 'Archive session',
         status: 'success',
-        data: '会话已归档'
+        data: 'Session archived'
       }
       setTestResults([...results])
 
     } catch (error) {
-      console.error('测试失败:', error)
+      console.error('Test failed:', error)
       results.push({
-        name: '测试失败',
+        name: 'Test failed',
         status: 'error',
         data: error.message
       })
@@ -174,14 +170,14 @@ export default function Phase2TestPage() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>Phase 2 测试页面</h1>
-        <p style={styles.subtitle}>AI 教师对话功能测试</p>
+        <h1 style={styles.title}>Phase 2 Test Page</h1>
+        <p style={styles.subtitle}>AI tutor chat functionality tests</p>
       </div>
 
       <div style={styles.content}>
-        {/* 测试控制面板 */}
+        {/* Test control panel */}
         <div style={styles.panel}>
-          <h2 style={styles.panelTitle}>功能测试</h2>
+          <h2 style={styles.panelTitle}>Feature Tests</h2>
           <div style={styles.actions}>
             <button
               style={{
@@ -191,7 +187,7 @@ export default function Phase2TestPage() {
               onClick={runTests}
               disabled={isRunning}
             >
-              {isRunning ? '测试运行中...' : '运行所有测试'}
+              {isRunning ? 'Running tests...' : 'Run all tests'}
             </button>
             <button
               style={{
@@ -200,14 +196,14 @@ export default function Phase2TestPage() {
               }}
               onClick={() => setShowChat(!showChat)}
             >
-              {showChat ? '隐藏聊天界面' : '显示聊天界面'}
+              {showChat ? 'Hide chat UI' : 'Show chat UI'}
             </button>
           </div>
 
-          {/* 测试结果 */}
+          {/* Test results */}
           {testResults.length > 0 && (
             <div style={styles.results}>
-              <h3 style={styles.resultsTitle}>测试结果</h3>
+              <h3 style={styles.resultsTitle}>Test Results</h3>
               {testResults.map((result, index) => (
                 <div key={index} style={styles.resultItem}>
                   <div style={styles.resultHeader}>
@@ -219,10 +215,10 @@ export default function Phase2TestPage() {
                           result.status === 'warning' ? styles.statusWarning :
                           styles.statusRunning)
                     }}>
-                      {result.status === 'success' ? '✓ 成功' :
-                       result.status === 'error' ? '✗ 失败' :
-                       result.status === 'warning' ? '⚠ 警告' :
-                       '⏳ 运行中'}
+                      {result.status === 'success' ? '✓ Passed' :
+                       result.status === 'error' ? '✗ Failed' :
+                       result.status === 'warning' ? '⚠ Warning' :
+                       '⏳ Running'}
                     </span>
                   </div>
                   {result.data && (
@@ -234,47 +230,47 @@ export default function Phase2TestPage() {
           )}
         </div>
 
-        {/* 环境检查 */}
+        {/* Environment check */}
         <div style={styles.panel}>
-          <h2 style={styles.panelTitle}>环境检查</h2>
+          <h2 style={styles.panelTitle}>Environment</h2>
           <div style={styles.envCheck}>
             <div style={styles.envItem}>
-              <span style={styles.envLabel}>后端 API:</span>
+              <span style={styles.envLabel}>Backend API:</span>
               <span style={styles.envValue}>
                 {import.meta.env.VITE_API_URL || 'http://localhost:4000'}
               </span>
             </div>
             <div style={styles.envItem}>
-              <span style={styles.envLabel}>用户 ID:</span>
-              <span style={styles.envValue}>{currentUser?.id || '未登录'}</span>
+              <span style={styles.envLabel}>User ID:</span>
+              <span style={styles.envValue}>{currentUser?.id || 'Not logged in'}</span>
             </div>
             <div style={styles.envItem}>
-              <span style={styles.envLabel}>API Key 配置:</span>
+              <span style={styles.envLabel}>API Key:</span>
               <span style={styles.envValue}>
-                {import.meta.env.VITE_ANTHROPIC_API_KEY ? '✓ 已配置' : '✗ 未配置（后端配置）'}
+                {import.meta.env.VITE_ANTHROPIC_API_KEY ? '✓ Configured' : '✗ Not configured (set in backend)'}
               </span>
             </div>
           </div>
         </div>
 
-        {/* 使用说明 */}
+        {/* Instructions */}
         <div style={styles.panel}>
-          <h2 style={styles.panelTitle}>使用说明</h2>
+          <h2 style={styles.panelTitle}>Instructions</h2>
           <ol style={styles.instructions}>
-            <li>确保后端服务已启动（<code>cd backend && bun run dev</code>）</li>
-            <li>确保数据库迁移已执行（<code>bun run db:push</code>）</li>
-            <li>配置后端 <code>.env</code> 文件中的 <code>ANTHROPIC_API_KEY</code></li>
-            <li>点击"运行所有测试"按钮测试 API 功能</li>
-            <li>点击"显示聊天界面"查看完整的聊天 UI</li>
+            <li>Ensure the backend is running (<code>cd backend && bun run dev</code>)</li>
+            <li>Ensure database migrations are applied (<code>bun run db:push</code>)</li>
+            <li>Set <code>ANTHROPIC_API_KEY</code> in the backend <code>.env</code> file</li>
+            <li>Click "Run all tests" to test the API</li>
+            <li>Click "Show chat UI" to see the full chat interface</li>
           </ol>
         </div>
       </div>
 
-      {/* 聊天界面 */}
+      {/* Chat overlay */}
       {showChat && (
         <div style={styles.chatContainer}>
           <div style={styles.chatHeader}>
-            <h2>AI 教师聊天界面</h2>
+            <h2>AI Tutor Chat</h2>
             <button
               style={styles.closeBtn}
               onClick={() => setShowChat(false)}

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import useUser from '../hooks/useUser'
 
 /**
- * 学习进度可视化组件
- * 显示学习进度仪表盘、章节完成状态、学习时长统计
+ * Learning progress visualisation component
+ * Shows progress dashboard, chapter completion status, and study time stats
  */
 export default function ProgressDashboard() {
   const {
@@ -22,7 +22,6 @@ export default function ProgressDashboard() {
     completed: 0
   })
 
-  // 计算进度统计
   useEffect(() => {
     if (progress) {
       const progressArray = Object.values(progress)
@@ -42,28 +41,25 @@ export default function ProgressDashboard() {
     }
   }, [progress])
 
-  // 计算总进度百分比
   const totalChapters = progressByStatus.not_started + progressByStatus.in_progress + progressByStatus.completed
   const completionRate = totalChapters > 0 ? Math.round((progressByStatus.completed / totalChapters) * 100) : 0
 
-  // 如果未登录
   if (!isLoggedIn) {
     return (
       <div style={styles.container}>
         <div style={styles.card}>
-          <h2 style={styles.title}>学习进度</h2>
-          <p style={styles.notLoggedIn}>请先登录查看学习进度</p>
+          <h2 style={styles.title}>Learning Progress</h2>
+          <p style={styles.notLoggedIn}>Please log in to view your progress</p>
         </div>
       </div>
     )
   }
 
-  // 加载中
   if (loading && !stats) {
     return (
       <div style={styles.container}>
         <div style={styles.card}>
-          <p style={styles.loading}>加载中...</p>
+          <p style={styles.loading}>Loading...</p>
         </div>
       </div>
     )
@@ -71,21 +67,20 @@ export default function ProgressDashboard() {
 
   return (
     <div style={styles.container}>
-      {/* 错误提示 */}
       {error && (
         <div style={styles.error}>
           {error}
         </div>
       )}
 
-      {/* 总体进度卡片 */}
+      {/* Overall progress card */}
       <div style={styles.card}>
-        <h2 style={styles.title}>学习进度总览</h2>
+        <h2 style={styles.title}>Progress Overview</h2>
 
-        {/* 进度环 */}
+        {/* Progress ring */}
         <div style={styles.progressRing}>
           <svg width="200" height="200" viewBox="0 0 200 200">
-            {/* 背景圆 */}
+            {/* Background circle */}
             <circle
               cx="100"
               cy="100"
@@ -94,7 +89,7 @@ export default function ProgressDashboard() {
               stroke="#f0f0f0"
               strokeWidth="20"
             />
-            {/* 进度圆 */}
+            {/* Progress arc */}
             <circle
               cx="100"
               cy="100"
@@ -106,7 +101,7 @@ export default function ProgressDashboard() {
               strokeLinecap="round"
               transform="rotate(-90 100 100)"
             />
-            {/* 百分比文字 */}
+            {/* Percentage text */}
             <text
               x="100"
               y="100"
@@ -125,70 +120,70 @@ export default function ProgressDashboard() {
               fontSize="14"
               fill="#999"
             >
-              完成率
+              Complete
             </text>
           </svg>
         </div>
 
-        {/* 进度统计 */}
+        {/* Progress stats */}
         <div style={styles.statsRow}>
           <div style={styles.statItem}>
             <div style={{...styles.statDot, backgroundColor: '#4CAF50'}}></div>
             <div>
               <div style={styles.statValue}>{progressByStatus.completed}</div>
-              <div style={styles.statLabel}>已完成</div>
+              <div style={styles.statLabel}>Completed</div>
             </div>
           </div>
           <div style={styles.statItem}>
             <div style={{...styles.statDot, backgroundColor: '#FF9800'}}></div>
             <div>
               <div style={styles.statValue}>{progressByStatus.in_progress}</div>
-              <div style={styles.statLabel}>学习中</div>
+              <div style={styles.statLabel}>In Progress</div>
             </div>
           </div>
           <div style={styles.statItem}>
             <div style={{...styles.statDot, backgroundColor: '#E0E0E0'}}></div>
             <div>
               <div style={styles.statValue}>{progressByStatus.not_started}</div>
-              <div style={styles.statLabel}>未开始</div>
+              <div style={styles.statLabel}>Not Started</div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 学习统计卡片 */}
+      {/* Study stats card */}
       {stats && (
         <div style={styles.card}>
-          <h3 style={styles.subtitle}>学习统计</h3>
+          <h3 style={styles.subtitle}>Study Statistics</h3>
           <div style={styles.statsGrid}>
             <div style={styles.statCard}>
               <div style={styles.statIcon}>⏱️</div>
               <div style={styles.statCardValue}>{formatTime(stats.totalStudyTime)}</div>
-              <div style={styles.statCardLabel}>总学习时长</div>
+              <div style={styles.statCardLabel}>Total Study Time</div>
             </div>
             <div style={styles.statCard}>
               <div style={styles.statIcon}>📚</div>
               <div style={styles.statCardValue}>{stats.totalChaptersCompleted}</div>
-              <div style={styles.statCardLabel}>完成章节</div>
+              <div style={styles.statCardLabel}>Chapters Done</div>
             </div>
             <div style={styles.statCard}>
               <div style={styles.statIcon}>🔥</div>
               <div style={styles.statCardValue}>{stats.currentStreak}</div>
-              <div style={styles.statCardLabel}>连续学习（天）</div>
+              <div style={styles.statCardLabel}>Current Streak (days)</div>
             </div>
             <div style={styles.statCard}>
               <div style={styles.statIcon}>🏆</div>
               <div style={styles.statCardValue}>{stats.longestStreak}</div>
-              <div style={styles.statCardLabel}>最长连续（天）</div>
+              <div style={styles.statCardLabel}>Best Streak (days)</div>
             </div>
           </div>
         </div>
       )}
 
-      {/* 最近学习章节 */}
+      {/* Recent chapters */}
       {progress && Object.keys(progress).length > 0 && (
         <div style={styles.card}>
-          <h3 style={styles.subtitle}>最近学习</h3>
+          <h3 style={styles.subtitle}>Recent Activity</h3>
           <div style={styles.chapterList}>
             {Object.values(progress)
               .sort((a, b) => new Date(b.lastReviewedAt) - new Date(a.lastReviewedAt))
@@ -215,45 +210,44 @@ export default function ProgressDashboard() {
                       }}
                     ></div>
                   </div>
-                  <div style={styles.masteryText}>{p.masteryLevel}% 掌握度</div>
+                  <div style={styles.masteryText}>{p.masteryLevel}% mastery</div>
                 </div>
               ))}
           </div>
         </div>
       )}
 
-      {/* 刷新按钮 */}
+      {/* Refresh button */}
       <div style={styles.actions}>
         <button
           onClick={refreshStats}
           disabled={loading}
           style={styles.refreshButton}
         >
-          {loading ? '刷新中...' : '🔄 刷新数据'}
+          {loading ? 'Refreshing...' : '🔄 Refresh'}
         </button>
       </div>
     </div>
   )
 }
 
-// 辅助函数
 function formatTime(seconds) {
-  if (!seconds) return '0分钟'
+  if (!seconds) return '0 min'
 
   const hours = Math.floor(seconds / 3600)
   const minutes = Math.floor((seconds % 3600) / 60)
 
   if (hours > 0) {
-    return `${hours}小时${minutes > 0 ? minutes + '分钟' : ''}`
+    return `${hours}h${minutes > 0 ? ' ' + minutes + 'm' : ''}`
   }
-  return `${minutes}分钟`
+  return `${minutes} min`
 }
 
 function getStatusText(status) {
   const statusMap = {
-    not_started: '未开始',
-    in_progress: '学习中',
-    completed: '已完成'
+    not_started: 'Not Started',
+    in_progress: 'In Progress',
+    completed: 'Completed'
   }
   return statusMap[status] || status
 }
@@ -265,7 +259,6 @@ function getMasteryColor(level) {
   return '#F44336'
 }
 
-// 样式
 const styles = {
   container: {
     maxWidth: '1000px',

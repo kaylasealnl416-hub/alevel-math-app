@@ -8,6 +8,7 @@ import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import { getEnglishContent } from '../utils/content'
 import '../styles/QuestionCard.css'
+import { getDifficultyInfo } from '../utils/helpers.js'
 
 const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = false }) => {
   // Render LaTeX formulas
@@ -27,18 +28,6 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = f
     }
   }
 
-  // Get difficulty label
-  const getDifficultyLabel = (difficulty) => {
-    const labels = {
-      1: { text: 'Very Easy', color: '#10b981' },
-      2: { text: 'Easy', color: '#3b82f6' },
-      3: { text: 'Medium', color: '#f59e0b' },
-      4: { text: 'Hard', color: '#ef4444' },
-      5: { text: 'Very Hard', color: '#991b1b' }
-    }
-    return labels[difficulty] || labels[3]
-  }
-
   // Get question type label
   const getTypeLabel = (type) => {
     const labels = {
@@ -51,7 +40,7 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = f
     return labels[type] || type
   }
 
-  const difficultyInfo = getDifficultyLabel(question.difficulty)
+  const difficultyInfo = getDifficultyInfo(question.difficulty)
   const content = getEnglishContent(question.content)
 
   return (
@@ -82,9 +71,9 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = f
         {/* Multiple choice options */}
         {question.type === 'multiple_choice' && question.options && (
           <div className="question-options">
-            {question.options.map((option, index) => (
+            {question.options.map((option) => (
               <div
-                key={index}
+                key={option}
                 className={`option-item ${showAnswer && option.startsWith(question.answer?.value) ? 'correct-answer' : ''}`}
               >
                 <div dangerouslySetInnerHTML={{ __html: renderLatex(option) }} />
@@ -97,8 +86,8 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = f
       {/* Topic tags */}
       {question.tags && question.tags.length > 0 && (
         <div className="question-tags">
-          {question.tags.map((tag, index) => (
-            <span key={index} className="tag">{tag}</span>
+          {question.tags.map((tag) => (
+            <span key={tag} className="tag">{tag}</span>
           ))}
         </div>
       )}

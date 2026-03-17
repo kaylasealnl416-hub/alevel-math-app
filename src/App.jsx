@@ -1,6 +1,6 @@
 // ============================================================
-// App.jsx - 主应用入口
-// V3.0 - 使用 React Router
+// App.jsx - application entry point
+// V3.0 - React Router
 // ============================================================
 
 import AppRouter from './AppRouter.jsx'

@@ -1,17 +1,11 @@
 // ============================================================
 // AssistantMessage Component
-// AI 教师消息组件
 // ============================================================
 
 import MessageContent from './MessageContent.jsx'
+import { formatClockTime } from '../utils/helpers.js'
 
 export default function AssistantMessage({ content, timestamp, metadata }) {
-  const formatTime = (ts) => {
-    if (!ts) return ''
-    const date = new Date(ts)
-    return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
-  }
-
   return (
     <div style={styles.container}>
       <div style={styles.avatar}>
@@ -22,10 +16,10 @@ export default function AssistantMessage({ content, timestamp, metadata }) {
           <MessageContent content={content} />
         </div>
         <div style={styles.meta}>
-          <span style={styles.time}>{formatTime(timestamp)}</span>
+          <span style={styles.time}>{formatClockTime(timestamp)}</span>
           {metadata?.tokensUsed && (
             <span style={styles.tokens}>
-              消耗 {metadata.tokensUsed} tokens
+              {metadata.tokensUsed} tokens
             </span>
           )}
         </div>

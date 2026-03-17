@@ -1,8 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { post, get } from '../utils/apiClient'
+import { API_BASE } from '../utils/constants'
 import Navbar from './Navbar'
-import Toast from './common/Toast'
 import Loading from './common/Loading'
+
+// Toast helper — Toast component lacks static methods
+const Toast = {
+  success: (msg) => console.log('SUCCESS:', msg),
+  error: (msg) => { console.error('ERROR:', msg); alert(msg) },
+  warning: (msg) => { console.warn('WARNING:', msg); alert(msg) },
+}
 
 export default function QuestionUploadPage() {
   const [file, setFile] = useState(null)
@@ -14,13 +21,11 @@ export default function QuestionUploadPage() {
   const [showReview, setShowReview] = useState(false)
   const [dragActive, setDragActive] = useState(false)
 
-  // 文件选择
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0]
     validateAndSetFile(selectedFile)
   }
 
-  // 拖拽处理
   const handleDrag = (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -41,11 +46,9 @@ export default function QuestionUploadPage() {
     }
   }
 
-  // 验证并设置文件
   const validateAndSetFile = (selectedFile) => {
     if (!selectedFile) return
 
-    // 验证文件类型
     const allowedTypes = [
       'application/pdf',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -53,55 +56,58 @@ export default function QuestionUploadPage() {
     ]
 
     if (!allowedTypes.includes(selectedFile.type)) {
-      Toast.error('只支持 PDF 和 Word 文档')
+      Toast.error('Only PDF and Word documents are supported')
       return
     }
 
-    // 验证文件大小（50MB）
     if (selectedFile.size > 50 * 1024 * 1024) {
-      Toast.error('文件大小不能超过 50MB')
+      Toast.error('File size must not exceed 50 MB')
       return
     }
 
     setFile(selectedFile)
   }
 
-  // 上传文件
   const handleUpload = async () => {
     if (!file) {
-      Toast.error('请选择文件')
+      Toast.error('Please select a file')
       return
     }
 
     setUploading(true)
 
     try {
-      // 创建 FormData
+      // Get CSRF token first
+      const csrfRes = await fetch(`${API_BASE}/api/csrf-token`, { credentials: 'include' })
+      const csrfData = await csrfRes.json()
+      if (!csrfData.success) {
+        throw new Error('Failed to get CSRF token. Please log in again.')
+      }
+
       const formData = new FormData()
       formData.append('file', file)
 
-      // 上传文件
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/questions/upload`, {
+      const response = await fetch(`${API_BASE}/api/questions/upload`, {
         method: 'POST',
         body: formData,
+        credentials: 'include',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+          'X-CSRF-Token': csrfData.data.csrfToken
         }
       })
 
       const data = await response.json()
 
       if (!data.success) {
-        throw new Error(data.error?.message || '上传失败')
+        throw new Error(data.error?.message || 'Upload failed')
       }
 
       setUploadId(data.data.uploadId)
       setUploading(false)
       setProcessing(true)
 
-      Toast.success('文件上传成功，正在解析...')
+      Toast.success('File uploaded. Parsing in progress...')
 
-      // 轮询解析状态
       pollStatus(data.data.uploadId)
 
     } catch (error) {
@@ -110,21 +116,21 @@ export default function QuestionUploadPage() {
     }
   }
 
-  // 轮询解析状态
   const pollStatus = async (id) => {
+    let failCount = 0
     const interval = setInterval(async () => {
       try {
-        const status = await get(`/questions/upload/${id}/status`)
+        const status = await get(`/api/questions/upload/${id}/status`, { showErrorToast: false })
+        failCount = 0 // reset on success
 
         setProgress(status.progress)
 
         if (status.status === 'completed') {
           clearInterval(interval)
           setProcessing(false)
-          Toast.success(`成功提取 ${status.extractedQuestions} 个题目`)
+          Toast.success(`Successfully extracted ${status.extractedQuestions} questions`)
 
-          // 获取解析结果
-          const result = await get(`/questions/upload/${id}/result`)
+          const result = await get(`/api/questions/upload/${id}/result`, { showErrorToast: false })
           setQuestions(result.questions)
           setShowReview(true)
         }
@@ -132,17 +138,20 @@ export default function QuestionUploadPage() {
         if (status.status === 'failed') {
           clearInterval(interval)
           setProcessing(false)
-          Toast.error('解析失败：' + status.errors.join(', '))
+          Toast.error('Parsing failed: ' + (status.errors || []).join(', '))
         }
       } catch (error) {
-        clearInterval(interval)
-        setProcessing(false)
-        Toast.error('查询状态失败')
+        failCount++
+        console.warn(`Poll failed (${failCount}/5):`, error.message)
+        if (failCount >= 5) {
+          clearInterval(interval)
+          setProcessing(false)
+          Toast.error('Connection lost. Please try again.')
+        }
       }
-    }, 2000) // 每 2 秒查询一次
+    }, 3000)
   }
 
-  // 重置
   const handleReset = () => {
     setFile(null)
     setUploadId(null)
@@ -159,8 +168,8 @@ export default function QuestionUploadPage() {
     <>
       <Navbar />
       <div style={styles.container}>
-        <h2>📄 上传题库文档</h2>
-        <p style={styles.subtitle}>支持 PDF 和 Word 文档，AI 自动提取题目</p>
+        <h2>📄 Upload Question Bank</h2>
+        <p style={styles.subtitle}>Supports PDF and Word documents — AI extracts questions automatically</p>
 
       <div
         style={{
@@ -175,7 +184,7 @@ export default function QuestionUploadPage() {
         {!file ? (
           <>
             <div style={styles.uploadIcon}>📁</div>
-            <p style={styles.uploadText}>拖拽文件到这里，或点击选择文件</p>
+            <p style={styles.uploadText}>Drag a file here, or click to select</p>
             <input
               type="file"
               accept=".pdf,.doc,.docx"
@@ -184,7 +193,7 @@ export default function QuestionUploadPage() {
               id="file-input"
             />
             <label htmlFor="file-input" style={styles.fileLabel}>
-              选择文件
+              Choose File
             </label>
           </>
         ) : (
@@ -211,7 +220,7 @@ export default function QuestionUploadPage() {
           disabled={uploading}
           style={styles.uploadButton}
         >
-          {uploading ? '上传中...' : '开始上传并解析'}
+          {uploading ? 'Uploading...' : 'Upload and Parse'}
         </button>
       )}
 
@@ -219,7 +228,7 @@ export default function QuestionUploadPage() {
         <div style={styles.processingContainer}>
           <Loading size="large" />
           <div style={styles.progressText}>
-            正在解析文档... {progress}%
+            Parsing document... {progress}%
           </div>
           <div style={styles.progressBar}>
             <div style={{ ...styles.progressFill, width: `${progress}%` }} />
@@ -228,13 +237,13 @@ export default function QuestionUploadPage() {
       )}
 
       <div style={styles.tips}>
-        <h4>💡 使用提示</h4>
+        <h4>Tips</h4>
         <ul style={styles.tipsList}>
-          <li>支持格式：PDF、Word（.doc, .docx）</li>
-          <li>文件大小：最大 50MB</li>
-          <li>建议：题目格式清晰，包含题号、选项、答案</li>
-          <li>AI 会自动识别题目类型、选项、答案和解释</li>
-          <li>识别完成后可以人工审核和编辑</li>
+          <li>Supported formats: PDF, Word (.doc, .docx)</li>
+          <li>Max file size: 50 MB</li>
+          <li>Tip: clear question numbering, options, and answers improve accuracy</li>
+          <li>AI will detect question type, options, answers, and explanations</li>
+          <li>You can review and edit extracted questions before saving</li>
         </ul>
       </div>
     </div>
@@ -242,11 +251,37 @@ export default function QuestionUploadPage() {
   )
 }
 
-// 题目审核组件
+// Question review component
 function QuestionReview({ questions, onBack }) {
   const [reviewedQuestions, setReviewedQuestions] = useState(questions)
   const [saving, setSaving] = useState(false)
   const [selectedChapter, setSelectedChapter] = useState('')
+  const [subjects, setSubjects] = useState([])
+  const [selectedSubject, setSelectedSubject] = useState('')
+  const [subjectDetail, setSubjectDetail] = useState(null)
+  const [loadingChapters, setLoadingChapters] = useState(false)
+
+  // Fetch all subjects on mount
+  useEffect(() => {
+    get('/api/subjects')
+      .then(data => setSubjects(data))
+      .catch(err => console.error('Failed to load subjects:', err))
+  }, [])
+
+  // Fetch subject details (units + chapters) when subject changes
+  useEffect(() => {
+    if (!selectedSubject) {
+      setSubjectDetail(null)
+      setSelectedChapter('')
+      return
+    }
+    setLoadingChapters(true)
+    setSelectedChapter('')
+    get(`/api/subjects/${selectedSubject}`)
+      .then(data => setSubjectDetail(data))
+      .catch(err => console.error('Failed to load chapters:', err))
+      .finally(() => setLoadingChapters(false))
+  }, [selectedSubject])
 
   const handleEdit = (index, field, value) => {
     const updated = [...reviewedQuestions]
@@ -272,7 +307,7 @@ function QuestionReview({ questions, onBack }) {
 
   const handleSave = async () => {
     if (!selectedChapter) {
-      Toast.error('请选择章节')
+      Toast.error('Please select a chapter')
       return
     }
 
@@ -284,68 +319,100 @@ function QuestionReview({ questions, onBack }) {
         chapterId: selectedChapter
       }, {
         showSuccessToast: true,
-        successMessage: `成功保存 ${reviewedQuestions.length} 个题目`
+        successMessage: `Saved ${reviewedQuestions.length} questions successfully`
       })
 
       if (result.failed > 0) {
-        Toast.warning(`${result.created} 个成功，${result.failed} 个失败`)
+        Toast.warning(`${result.created} succeeded, ${result.failed} failed`)
       }
 
       onBack()
     } catch (error) {
-      Toast.error('保存失败: ' + error.message)
+      Toast.error('Save failed: ' + error.message)
     } finally {
       setSaving(false)
     }
+  }
+
+  const getQuestionTypeLabel = (type) => {
+    if (type === 'multiple_choice') return 'Multiple Choice'
+    if (type === 'fill_in_blank') return 'Fill in the Blank'
+    return 'Short Answer'
   }
 
   return (
     <div style={styles.container}>
       <div style={styles.reviewHeader}>
         <button onClick={onBack} style={styles.backButton}>
-          ← 返回
+          ← Back
         </button>
-        <h2>审核题目（{reviewedQuestions.length} 个）</h2>
+        <h2>Review Questions ({reviewedQuestions.length})</h2>
       </div>
 
       <div style={styles.chapterSelect}>
-        <label>选择章节：</label>
-        <select
-          value={selectedChapter}
-          onChange={(e) => setSelectedChapter(e.target.value)}
-          style={styles.select}
-        >
-          <option value="">请选择章节</option>
-          <option value="chapter-1">Pure Mathematics 1</option>
-          <option value="chapter-2">Pure Mathematics 2</option>
-          <option value="chapter-3">Statistics</option>
-          <option value="chapter-4">Mechanics</option>
-        </select>
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <label>Subject: </label>
+            <select
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              style={styles.select}
+            >
+              <option value="">Choose a subject</option>
+              {subjects.map(s => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label>Chapter: </label>
+            <select
+              value={selectedChapter}
+              onChange={(e) => setSelectedChapter(e.target.value)}
+              style={styles.select}
+              disabled={!selectedSubject || loadingChapters}
+            >
+              <option value="">
+                {loadingChapters ? 'Loading...' : 'Choose a chapter'}
+              </option>
+              {subjectDetail?.books && Object.values(subjectDetail.books).map(unit => (
+                <optgroup key={unit.id} label={unit.title}>
+                  {unit.chapters.map(ch => (
+                    <option key={ch.id} value={ch.id}>
+                      {ch.num}. {ch.title}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
       <div style={styles.questionsList}>
         {reviewedQuestions.map((q, index) => (
           <div key={index} style={styles.questionCard}>
             <div style={styles.questionHeader}>
-              <span style={styles.questionNumber}>题目 {index + 1}</span>
+              <span style={styles.questionNumber}>Question {index + 1}</span>
               <div style={styles.questionMeta}>
                 <span style={{
                   ...styles.confidence,
                   color: q.confidence > 0.9 ? '#10b981' : q.confidence > 0.7 ? '#f59e0b' : '#ef4444'
                 }}>
-                  置信度: {(q.confidence * 100).toFixed(0)}%
+                  Confidence: {(q.confidence * 100).toFixed(0)}%
                 </span>
                 <span style={styles.questionType}>
-                  {q.type === 'multiple_choice' ? '选择题' : q.type === 'fill_in_blank' ? '填空题' : '简答题'}
+                  {getQuestionTypeLabel(q.type)}
                 </span>
                 <button onClick={() => handleRemove(index)} style={styles.removeBtn}>
-                  删除
+                  Remove
                 </button>
               </div>
             </div>
 
             <div style={styles.field}>
-              <label>题目内容：</label>
+              <label>Question text:</label>
               <textarea
                 value={q.content.text}
                 onChange={(e) => handleEdit(index, 'content.text', e.target.value)}
@@ -356,7 +423,7 @@ function QuestionReview({ questions, onBack }) {
 
             {q.options && q.options.length > 0 && (
               <div style={styles.field}>
-                <label>选项：</label>
+                <label>Options:</label>
                 {q.options.map((opt, i) => (
                   <input
                     key={i}
@@ -370,7 +437,7 @@ function QuestionReview({ questions, onBack }) {
 
             <div style={styles.answerSection}>
               <div style={styles.field}>
-                <label>答案：</label>
+                <label>Answer:</label>
                 <input
                   value={q.answer.value}
                   onChange={(e) => handleEdit(index, 'answer.value', e.target.value)}
@@ -378,7 +445,7 @@ function QuestionReview({ questions, onBack }) {
                 />
               </div>
               <div style={styles.field}>
-                <label>解释：</label>
+                <label>Explanation:</label>
                 <textarea
                   value={q.answer.explanation || ''}
                   onChange={(e) => handleEdit(index, 'answer.explanation', e.target.value)}
@@ -390,7 +457,7 @@ function QuestionReview({ questions, onBack }) {
 
             <div style={styles.metaSection}>
               <div style={styles.field}>
-                <label>难度（1-5）：</label>
+                <label>Difficulty (1–5):</label>
                 <input
                   type="number"
                   min="1"
@@ -401,12 +468,12 @@ function QuestionReview({ questions, onBack }) {
                 />
               </div>
               <div style={styles.field}>
-                <label>标签：</label>
+                <label>Tags:</label>
                 <input
                   value={q.tags?.join(', ') || ''}
                   onChange={(e) => handleEdit(index, 'tags', e.target.value.split(',').map(t => t.trim()))}
                   style={styles.input}
-                  placeholder="用逗号分隔"
+                  placeholder="Comma separated"
                 />
               </div>
             </div>
@@ -420,7 +487,7 @@ function QuestionReview({ questions, onBack }) {
           disabled={saving || !selectedChapter}
           style={styles.saveButton}
         >
-          {saving ? '保存中...' : `批量保存 ${reviewedQuestions.length} 个题目`}
+          {saving ? 'Saving...' : `Save ${reviewedQuestions.length} Questions`}
         </button>
       </div>
     </div>

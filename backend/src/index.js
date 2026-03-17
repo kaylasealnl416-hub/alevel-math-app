@@ -85,7 +85,7 @@ app.use('*', cors({
 // 速率限制 - 防止 API 滥用
 app.use('*', rateLimiter({
   windowMs: 15 * 60 * 1000, // 15 分钟
-  limit: 100, // 最多 100 次请求
+  limit: process.env.NODE_ENV === 'production' ? 100 : 1000, // 开发环境放宽限制
   standardHeaders: 'draft-6',
   keyGenerator: (c) => c.req.header('x-forwarded-for') || 'anonymous'
 }))

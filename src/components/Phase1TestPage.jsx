@@ -4,8 +4,8 @@ import UserProfile from './UserProfile'
 import ProgressDashboard from './ProgressDashboard'
 
 /**
- * Phase 1 功能测试页面
- * 用于测试用户系统和学习进度追踪功能
+ * Phase 1 feature test page
+ * Tests user system and learning progress tracking
  */
 export default function Phase1TestPage() {
   const {
@@ -25,7 +25,6 @@ export default function Phase1TestPage() {
   const [testUserId, setTestUserId] = useState('')
   const [testResults, setTestResults] = useState([])
 
-  // 添加测试结果
   const addTestResult = (test, success, message) => {
     setTestResults(prev => [...prev, {
       test,
@@ -35,40 +34,40 @@ export default function Phase1TestPage() {
     }])
   }
 
-  // 测试1：创建测试用户
+  // Test 1: Create test user
   const testCreateUser = async () => {
     try {
       const newUser = await createUser({
-        nickname: `测试用户_${Date.now()}`,
+        nickname: `test_user_${Date.now()}`,
         grade: 'AS',
         targetUniversity: 'Cambridge'
       })
       setTestUserId(newUser.id)
-      addTestResult('创建用户', true, `用户ID: ${newUser.id}`)
+      addTestResult('Create user', true, `User ID: ${newUser.id}`)
     } catch (err) {
-      addTestResult('创建用户', false, err.message)
+      addTestResult('Create user', false, err.message)
     }
   }
 
-  // 测试2：加载用户数据
+  // Test 2: Load user data
   const testLoadUser = async () => {
     if (!testUserId) {
-      addTestResult('加载用户', false, '请先创建用户')
+      addTestResult('Load user', false, 'Please create a user first')
       return
     }
 
     try {
       await loadUserData(testUserId)
-      addTestResult('加载用户', true, '用户数据加载成功')
+      addTestResult('Load user', true, 'User data loaded successfully')
     } catch (err) {
-      addTestResult('加载用户', false, err.message)
+      addTestResult('Load user', false, err.message)
     }
   }
 
-  // 测试3：记录学习进度
+  // Test 3: Record progress
   const testRecordProgress = async () => {
     if (!user) {
-      addTestResult('记录进度', false, '请先登录')
+      addTestResult('Record progress', false, 'Please log in first')
       return
     }
 
@@ -78,16 +77,16 @@ export default function Phase1TestPage() {
         masteryLevel: 50,
         timeSpent: 600
       })
-      addTestResult('记录进度', true, '章节 e1c1 进度已记录')
+      addTestResult('Record progress', true, 'Progress recorded for chapter e1c1')
     } catch (err) {
-      addTestResult('记录进度', false, err.message)
+      addTestResult('Record progress', false, err.message)
     }
   }
 
-  // 测试4：完成章节
+  // Test 4: Complete chapter
   const testCompleteChapter = async () => {
     if (!user) {
-      addTestResult('完成章节', false, '请先登录')
+      addTestResult('Complete chapter', false, 'Please log in first')
       return
     }
 
@@ -97,13 +96,13 @@ export default function Phase1TestPage() {
         masteryLevel: 85,
         timeSpent: 300
       })
-      addTestResult('完成章节', true, '章节 e1c1 已完成')
+      addTestResult('Complete chapter', true, 'Chapter e1c1 marked as completed')
     } catch (err) {
-      addTestResult('完成章节', false, err.message)
+      addTestResult('Complete chapter', false, err.message)
     }
   }
 
-  // 运行所有测试
+  // Run all tests sequentially
   const runAllTests = async () => {
     setTestResults([])
     await testCreateUser()
@@ -118,11 +117,11 @@ export default function Phase1TestPage() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>Phase 1 功能测试</h1>
-        <p style={styles.subtitle}>用户系统 + 学习进度追踪</p>
+        <h1 style={styles.title}>Phase 1 Feature Tests</h1>
+        <p style={styles.subtitle}>User system + learning progress tracking</p>
       </div>
 
-      {/* 标签页 */}
+      {/* Tabs */}
       <div style={styles.tabs}>
         <button
           onClick={() => setActiveTab('test')}
@@ -131,7 +130,7 @@ export default function Phase1TestPage() {
             ...(activeTab === 'test' ? styles.tabActive : {})
           }}
         >
-          功能测试
+          Tests
         </button>
         <button
           onClick={() => setActiveTab('profile')}
@@ -140,7 +139,7 @@ export default function Phase1TestPage() {
             ...(activeTab === 'profile' ? styles.tabActive : {})
           }}
         >
-          个人中心
+          My Profile
         </button>
         <button
           onClick={() => setActiveTab('progress')}
@@ -149,36 +148,36 @@ export default function Phase1TestPage() {
             ...(activeTab === 'progress' ? styles.tabActive : {})
           }}
         >
-          学习进度
+          Progress
         </button>
       </div>
 
-      {/* 内容区域 */}
+      {/* Content */}
       <div style={styles.content}>
         {activeTab === 'test' && (
           <div style={styles.testPanel}>
-            {/* 用户状态 */}
+            {/* Current status */}
             <div style={styles.card}>
-              <h3 style={styles.cardTitle}>当前状态</h3>
+              <h3 style={styles.cardTitle}>Current Status</h3>
               <div style={styles.statusGrid}>
                 <div style={styles.statusItem}>
-                  <span style={styles.statusLabel}>登录状态:</span>
+                  <span style={styles.statusLabel}>Login:</span>
                   <span style={styles.statusValue}>
-                    {isLoggedIn ? '✅ 已登录' : '❌ 未登录'}
+                    {isLoggedIn ? '✅ Logged in' : '❌ Not logged in'}
                   </span>
                 </div>
                 {user && (
                   <>
                     <div style={styles.statusItem}>
-                      <span style={styles.statusLabel}>用户ID:</span>
+                      <span style={styles.statusLabel}>User ID:</span>
                       <span style={styles.statusValue}>{user.id}</span>
                     </div>
                     <div style={styles.statusItem}>
-                      <span style={styles.statusLabel}>昵称:</span>
+                      <span style={styles.statusLabel}>Nickname:</span>
                       <span style={styles.statusValue}>{user.nickname}</span>
                     </div>
                     <div style={styles.statusItem}>
-                      <span style={styles.statusLabel}>年级:</span>
+                      <span style={styles.statusLabel}>Year:</span>
                       <span style={styles.statusValue}>{user.grade}</span>
                     </div>
                   </>
@@ -186,37 +185,37 @@ export default function Phase1TestPage() {
               </div>
               {isLoggedIn && (
                 <button onClick={logout} style={styles.logoutButton}>
-                  登出
+                  Log Out
                 </button>
               )}
             </div>
 
-            {/* 测试按钮 */}
+            {/* Test buttons */}
             <div style={styles.card}>
-              <h3 style={styles.cardTitle}>测试操作</h3>
+              <h3 style={styles.cardTitle}>Test Actions</h3>
               <div style={styles.buttonGrid}>
                 <button onClick={testCreateUser} style={styles.testButton} disabled={loading}>
-                  1. 创建测试用户
+                  1. Create test user
                 </button>
                 <button onClick={testLoadUser} style={styles.testButton} disabled={loading}>
-                  2. 加载用户数据
+                  2. Load user data
                 </button>
                 <button onClick={testRecordProgress} style={styles.testButton} disabled={loading}>
-                  3. 记录学习进度
+                  3. Record progress
                 </button>
                 <button onClick={testCompleteChapter} style={styles.testButton} disabled={loading}>
-                  4. 完成章节
+                  4. Complete chapter
                 </button>
                 <button onClick={runAllTests} style={styles.runAllButton} disabled={loading}>
-                  🚀 运行所有测试
+                  🚀 Run all tests
                 </button>
               </div>
             </div>
 
-            {/* 测试结果 */}
+            {/* Test results */}
             {testResults.length > 0 && (
               <div style={styles.card}>
-                <h3 style={styles.cardTitle}>测试结果</h3>
+                <h3 style={styles.cardTitle}>Test Results</h3>
                 <div style={styles.resultList}>
                   {testResults.map((result, index) => (
                     <div
@@ -241,34 +240,34 @@ export default function Phase1TestPage() {
                   onClick={() => setTestResults([])}
                   style={styles.clearButton}
                 >
-                  清除结果
+                  Clear results
                 </button>
               </div>
             )}
 
-            {/* 错误提示 */}
+            {/* Error */}
             {error && (
               <div style={styles.error}>
-                <strong>错误:</strong> {error}
+                <strong>Error:</strong> {error}
               </div>
             )}
 
-            {/* 统计数据 */}
+            {/* Stats */}
             {stats && (
               <div style={styles.card}>
-                <h3 style={styles.cardTitle}>学习统计</h3>
+                <h3 style={styles.cardTitle}>Study Stats</h3>
                 <div style={styles.statsGrid}>
                   <div style={styles.statItem}>
                     <div style={styles.statValue}>{Math.floor(stats.totalStudyTime / 60)}</div>
-                    <div style={styles.statLabel}>学习时长（分钟）</div>
+                    <div style={styles.statLabel}>Study time (min)</div>
                   </div>
                   <div style={styles.statItem}>
                     <div style={styles.statValue}>{stats.totalChaptersCompleted}</div>
-                    <div style={styles.statLabel}>完成章节</div>
+                    <div style={styles.statLabel}>Chapters done</div>
                   </div>
                   <div style={styles.statItem}>
                     <div style={styles.statValue}>{stats.currentStreak}</div>
-                    <div style={styles.statLabel}>连续学习（天）</div>
+                    <div style={styles.statLabel}>Streak (days)</div>
                   </div>
                 </div>
               </div>
@@ -283,7 +282,6 @@ export default function Phase1TestPage() {
   )
 }
 
-// 样式
 const styles = {
   container: {
     maxWidth: '1200px',

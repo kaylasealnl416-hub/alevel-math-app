@@ -310,9 +310,22 @@ app.post('/refresh', async (c) => {
  */
 app.get('/me', async (c) => {
   try {
+    // Try Authorization header first, then fall back to httpOnly cookie
     const authHeader = c.req.header('Authorization')
+    let token = null
 
-    if (!authHeader) {
+    if (authHeader) {
+      token = authHeader.replace('Bearer ', '')
+    } else {
+      // Parse auth_token from cookie
+      const cookieHeader = c.req.header('Cookie')
+      if (cookieHeader) {
+        const match = cookieHeader.match(/auth_token=([^;]+)/)
+        if (match) token = match[1]
+      }
+    }
+
+    if (!token) {
       return c.json({
         success: false,
         error: {
@@ -322,7 +335,6 @@ app.get('/me', async (c) => {
       }, 401)
     }
 
-    const token = authHeader.replace('Bearer ', '')
     const payload = verifyToken(token)
 
     if (!payload) {
@@ -367,6 +379,113 @@ app.get('/me', async (c) => {
         code: 'SERVER_ERROR',
         message: '获取用户信息失败'
       }
+    }, 500)
+  }
+})
+
+// ============================================================
+// Google OAuth 登录/注册
+// ============================================================
+
+/**
+ * POST /api/auth/google
+ * 用 Google access_token 登录或注册
+ */
+app.post('/google', async (c) => {
+  try {
+    const { accessToken, grade } = await c.req.json()
+
+    if (!accessToken) {
+      return c.json({
+        success: false,
+        error: { code: 'MISSING_TOKEN', message: '缺少 Google access token' }
+      }, 400)
+    }
+
+    // 用 Google userinfo API 验证 token 并获取用户信息
+    const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    })
+
+    if (!googleRes.ok) {
+      return c.json({
+        success: false,
+        error: { code: 'INVALID_GOOGLE_TOKEN', message: 'Google 授权验证失败' }
+      }, 401)
+    }
+
+    const googleUser = await googleRes.json()
+    const { email, name, picture, sub: googleId } = googleUser
+
+    if (!email) {
+      return c.json({
+        success: false,
+        error: { code: 'NO_EMAIL', message: 'Google 账号未返回邮箱' }
+      }, 400)
+    }
+
+    // 查找是否已有账号（先按 google_id，再按 email）
+    let existingUser = await db.select().from(users).where(eq(users.googleId, googleId)).limit(1)
+
+    if (existingUser.length === 0) {
+      existingUser = await db.select().from(users).where(eq(users.email, email)).limit(1)
+    }
+
+    let user
+
+    if (existingUser.length > 0) {
+      // 已有账号：更新 google_id 和头像（如果之前没绑定）
+      const updates = { lastLoginAt: new Date() }
+      if (!existingUser[0].googleId) updates.googleId = googleId
+      if (!existingUser[0].avatar && picture) updates.avatar = picture
+
+      await db.update(users).set(updates).where(eq(users.id, existingUser[0].id))
+      user = { ...existingUser[0], ...updates }
+    } else {
+      // 新用户：创建账号
+      const newUser = await db.insert(users).values({
+        email,
+        nickname: name || email.split('@')[0],
+        avatar: picture || null,
+        googleId,
+        password: null,
+        grade: grade || 'AS',
+      }).returning()
+
+      user = newUser[0]
+
+      // 创建用户画像和统计
+      await db.insert(userProfiles).values({ userId: user.id, selectedSubjects: [], notificationEnabled: true })
+      await db.insert(userStats).values({ userId: user.id })
+    }
+
+    // 生成 JWT
+    const token = generateToken({ userId: user.id, email: user.email })
+    const refreshToken = generateRefreshToken({ userId: user.id })
+
+    const isProduction = process.env.NODE_ENV === 'production'
+    const cookieOptions = {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'strict' : 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/'
+    }
+
+    c.header('Set-Cookie', `auth_token=${token}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`)
+    c.header('Set-Cookie', `refresh_token=${refreshToken}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`, { append: true })
+
+    const { password: _, ...userWithoutPassword } = user
+
+    return c.json({
+      success: true,
+      data: { user: userWithoutPassword }
+    })
+  } catch (error) {
+    console.error('Google 登录失败:', error)
+    return c.json({
+      success: false,
+      error: { code: 'SERVER_ERROR', message: 'Google 登录失败，请稍后重试' }
     }, 500)
   }
 })

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { SUBJECTS } from './subjects.js'
 
-// 数据结构验证测试
+// Data structure validation tests
 describe('Subject Data Validation', () => {
   it('SUBJECTS should be defined', () => {
     expect(SUBJECTS).toBeDefined()
@@ -35,7 +35,7 @@ describe('Subject Data Validation', () => {
           expect(chapter.num).toBe(index + 1)
           expect(chapter.title).toBeDefined()
 
-          // 可选但重要的字段检查
+          // Optional but important fields
           if (chapter.keyPoints) {
             expect(Array.isArray(chapter.keyPoints)).toBe(true)
           }
@@ -53,9 +53,9 @@ describe('Subject Data Validation', () => {
   })
 })
 
-// 扩展数据验证测试
+// Extended data validation tests
 describe('Extended Data Validation', () => {
-  // 检查 Chapter ID 唯一性
+  // Chapter ID uniqueness
   it('should have unique chapter IDs across all subjects', () => {
     const allIds = []
     Object.values(SUBJECTS).forEach(subject => {
@@ -70,7 +70,7 @@ describe('Extended Data Validation', () => {
     expect(allIds.length).toBe(uniqueIds.size)
   })
 
-  // 检查 YouTube URL 格式
+  // YouTube URL format check
   it('should have valid YouTube URL format', () => {
     Object.values(SUBJECTS).forEach(subject => {
       Object.values(subject.books).forEach(book => {
@@ -90,7 +90,7 @@ describe('Extended Data Validation', () => {
     })
   })
 
-  // 检查 examples 字段（可为空数组或 undefined，UI 应防御性处理）
+  // examples field: may be undefined or empty array — UI should handle both defensively
   it('should have examples field as array or undefined', () => {
     Object.values(SUBJECTS).forEach(subject => {
       Object.values(subject.books).forEach(book => {
@@ -105,7 +105,7 @@ describe('Extended Data Validation', () => {
     })
   })
 
-  // 检查 difficulty 字段值
+  // difficulty field values
   it('should have valid difficulty values', () => {
     const validDifficulties = ['Foundation', 'Intermediate', 'Advanced']
 

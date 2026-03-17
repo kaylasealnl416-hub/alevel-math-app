@@ -17,11 +17,11 @@ export default function Navbar() {
   }
 
   const navLinks = [
-    { path: '/', label: '首页', icon: '🏠' },
-    { path: '/exams', label: '考试', icon: '📝' },
-    { path: '/learning-plan', label: '学习计划', icon: '📅' },
-    { path: '/wrong-questions', label: '错题本', icon: '📖' },
-    { path: '/questions/upload', label: '题库上传', icon: '📤' },
+    { path: '/', label: 'Home', icon: '🏠' },
+    { path: '/exams', label: 'Exams', icon: '📝' },
+    { path: '/learning-plan', label: 'Study Plan', icon: '📅' },
+    { path: '/wrong-questions', label: 'Wrong Answers', icon: '📖' },
+    { path: '/questions/upload', label: 'Upload Questions', icon: '📤' },
   ]
 
   return (
@@ -75,19 +75,19 @@ export default function Navbar() {
                   size="sm"
                   onClick={handleLogout}
                 >
-                  退出
+                  Sign Out
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/login">
                   <Button variant="text" size="sm">
-                    登录
+                    Login
                   </Button>
                 </Link>
                 <Link to="/register">
                   <Button variant="primary" size="sm">
-                    注册
+                    Sign Up
                   </Button>
                 </Link>
               </>

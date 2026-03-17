@@ -8,7 +8,7 @@ export default function ProtectedRoute({ children }) {
     return (
       <div style={styles.container}>
         <div style={styles.spinner}></div>
-        <p style={styles.text}>加载中...</p>
+        <p style={styles.text}>Loading...</p>
       </div>
     )
   }

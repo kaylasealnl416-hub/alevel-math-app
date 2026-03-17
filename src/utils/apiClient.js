@@ -1,19 +1,18 @@
 /**
- * 统一的 API 客户端工具
- * 自动添加认证 Token、CSRF Token、错误处理、重试逻辑、Toast 通知
+ * Unified API client
+ * Handles auth tokens, CSRF tokens, error handling, retry logic, and toast notifications
  */
 
 import Toast from '../components/common/Toast'
 import { API_BASE } from './constants'
 
-// CSRF Token 内存缓存
+// In-memory CSRF token cache
 let csrfToken = null
 
-// CSRF Token 缓存（优先使用 sessionStorage，刷新页面后仍可用）
+// Restore from sessionStorage so the token survives page refreshes
 function getCsrfToken() {
   if (csrfToken) return csrfToken
 
-  // 从 sessionStorage 恢复
   const stored = sessionStorage.getItem('csrf_token')
   if (stored) {
     csrfToken = stored
@@ -32,12 +31,12 @@ function setCsrfToken(token) {
 }
 
 /**
- * 获取 CSRF Token
+ * Fetch a fresh CSRF token from the server
  */
 async function fetchCsrfToken() {
   try {
     const response = await fetch(`${API_BASE}/api/csrf-token`, {
-      credentials: 'include' // 发送 Cookie
+      credentials: 'include'
     })
 
     if (response.ok) {
@@ -53,7 +52,7 @@ async function fetchCsrfToken() {
 }
 
 /**
- * API 错误类
+ * API error (non-2xx response from the server)
  */
 class ApiError extends Error {
   constructor(message, code, statusCode, details = null) {
@@ -66,36 +65,33 @@ class ApiError extends Error {
 }
 
 /**
- * 网络错误类
+ * Network-level error (no response received)
  */
 class NetworkError extends Error {
-  constructor(message = '网络连接失败') {
+  constructor(message = 'Network connection failed') {
     super(message)
     this.name = 'NetworkError'
   }
 }
 
 /**
- * 延迟函数
+ * Promise-based delay
  */
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 /**
- * 处理 CSRF Token 错误并重试请求
- * @param {Function} retryFn - 重试时执行的函数
- * @param {Object} config - 配置对象
- * @param {Object} options - 请求选项
+ * Clear the cached CSRF token, fetch a fresh one, then retry the request once.
+ * @param {Function} retryFn - function to call on retry
+ * @param {Object} config - request config
+ * @param {Object} options - fetch options
  * @returns {Promise<any>}
  */
 async function handleCsrfErrorAndRetry(retryFn, config, options) {
-  // 清除缓存的 CSRF Token 并重新获取
   setCsrfToken(null)
   await fetchCsrfToken()
-
-  // 重建请求头
   options.headers = await buildHeaders(config.headers)
 
-  // 重试一次
+  // Retry once
   try {
     return await retryFn()
   } catch (retryError) {
@@ -107,18 +103,18 @@ async function handleCsrfErrorAndRetry(retryFn, config, options) {
 }
 
 /**
- * 默认配置
+ * Default request configuration
  */
 const defaultConfig = {
-  retry: 2, // 重试次数
-  retryDelay: 1000, // 重试延迟（毫秒）
-  timeout: 30000, // 超时时间（毫秒）
-  showErrorToast: true, // 是否显示错误 Toast
-  showSuccessToast: false // 是否显示成功 Toast
+  retry: 2,
+  retryDelay: 1000,
+  timeout: 30000,
+  showErrorToast: true,
+  showSuccessToast: false
 }
 
 /**
- * 处理 API 响应
+ * Parse and validate an API response
  */
 async function handleResponse(response) {
   const contentType = response.headers.get('content-type')
@@ -126,7 +122,7 @@ async function handleResponse(response) {
 
   if (!isJson) {
     throw new ApiError(
-      '服务器返回了非 JSON 格式的响应',
+      'Server returned a non-JSON response',
       'INVALID_RESPONSE',
       response.status
     )
@@ -134,21 +130,20 @@ async function handleResponse(response) {
 
   const data = await response.json()
 
-  // 处理 401 未授权错误
+  // Handle 401 — token in httpOnly cookie expires server-side
   if (response.status === 401) {
-    // 清除用户信息（Token 在 httpOnly Cookie 中，会自动失效）
     sessionStorage.removeItem('auth_user')
     const currentPath = window.location.pathname
     if (currentPath !== '/login' && currentPath !== '/register') {
       localStorage.setItem('redirect_after_login', currentPath)
       window.location.href = '/login'
     }
-    throw new ApiError('认证已过期，请重新登录', 'UNAUTHORIZED', 401)
+    throw new ApiError('Session expired, please log in again', 'UNAUTHORIZED', 401)
   }
 
   if (!response.ok) {
     throw new ApiError(
-      data.error?.message || '请求失败',
+      data.error?.message || 'Request failed',
       data.error?.code || 'UNKNOWN_ERROR',
       response.status,
       data.error?.details
@@ -157,7 +152,7 @@ async function handleResponse(response) {
 
   if (data.success === false) {
     throw new ApiError(
-      data.error?.message || '操作失败',
+      data.error?.message || 'Operation failed',
       data.error?.code || 'OPERATION_FAILED',
       response.status,
       data.error?.details
@@ -168,7 +163,7 @@ async function handleResponse(response) {
 }
 
 /**
- * 执行请求（带重试和超时）
+ * Execute a fetch request with retry and timeout support
  */
 async function executeRequest(url, options, config) {
   const { retry, retryDelay, timeout } = { ...defaultConfig, ...config }
@@ -176,41 +171,35 @@ async function executeRequest(url, options, config) {
 
   for (let attempt = 0; attempt <= retry; attempt++) {
     try {
-      // 创建超时控制器
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), timeout)
 
-      // 发送请求（包含 Cookie）
       const response = await fetch(url, {
         ...options,
-        credentials: 'include', // 发送和接收 Cookie
+        credentials: 'include',
         signal: controller.signal
       })
 
       clearTimeout(timeoutId)
 
-      // 处理响应
       return await handleResponse(response)
 
     } catch (error) {
       lastError = error
 
-      // 如果是中止错误，转换为超时错误
       if (error.name === 'AbortError') {
-        lastError = new NetworkError('请求超时，请检查网络连接')
+        lastError = new NetworkError('Request timed out. Please check your connection.')
       }
 
-      // 如果是网络错误且还有重试次数，则重试
       if (
         (error instanceof NetworkError || error.name === 'TypeError' || error.message.includes('fetch')) &&
         attempt < retry
       ) {
-        console.warn(`请求失败，${retryDelay * (attempt + 1)}ms 后重试 (${attempt + 1}/${retry})...`)
-        await delay(retryDelay * (attempt + 1)) // 指数退避
+        console.warn(`Request failed, retrying in ${retryDelay * (attempt + 1)}ms (${attempt + 1}/${retry})...`)
+        await delay(retryDelay * (attempt + 1))
         continue
       }
 
-      // 如果是 API 错误或重试次数用尽，则抛出错误
       break
     }
   }
@@ -219,7 +208,7 @@ async function executeRequest(url, options, config) {
 }
 
 /**
- * 构建请求头
+ * Build request headers, including the CSRF token
  */
 async function buildHeaders(customHeaders = {}) {
   const headers = {
@@ -227,10 +216,9 @@ async function buildHeaders(customHeaders = {}) {
     ...customHeaders
   }
 
-  // Token 现在存储在 httpOnly Cookie 中，浏览器会自动发送
-  // 不再需要从 localStorage 读取
+  // Auth token is in an httpOnly cookie — the browser sends it automatically.
 
-  // 添加 CSRF Token（优先使用缓存）
+  // Attach CSRF token (use cache if available)
   let token = getCsrfToken()
   if (!token) {
     token = await fetchCsrfToken()
@@ -243,7 +231,7 @@ async function buildHeaders(customHeaders = {}) {
 }
 
 /**
- * GET 请求
+ * GET request
  */
 export async function get(endpoint, config = {}) {
   const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`
@@ -255,7 +243,7 @@ export async function get(endpoint, config = {}) {
   try {
     const data = await executeRequest(url, options, config)
     if (config.showSuccessToast) {
-      Toast.success(config.successMessage || '获取成功')
+      Toast.success(config.successMessage || 'Loaded successfully')
     }
     return data
   } catch (error) {
@@ -267,7 +255,7 @@ export async function get(endpoint, config = {}) {
 }
 
 /**
- * POST 请求
+ * POST request
  */
 export async function post(endpoint, body = {}, config = {}) {
   const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`
@@ -280,11 +268,11 @@ export async function post(endpoint, body = {}, config = {}) {
   try {
     const data = await executeRequest(url, options, config)
     if (config.showSuccessToast) {
-      Toast.success(config.successMessage || '操作成功')
+      Toast.success(config.successMessage || 'Done')
     }
     return data
   } catch (error) {
-    // 如果是 CSRF Token 错误，清除缓存并重试一次
+    // On CSRF token error, clear cache and retry once
     if (error.code === 'CSRF_TOKEN_INVALID' || error.code === 'CSRF_TOKEN_MISSING') {
       return handleCsrfErrorAndRetry(
         () => executeRequest(url, options, { ...config, retry: 0 }),
@@ -301,7 +289,7 @@ export async function post(endpoint, body = {}, config = {}) {
 }
 
 /**
- * PUT 请求
+ * PUT request
  */
 export async function put(endpoint, body = {}, config = {}) {
   const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`
@@ -314,11 +302,11 @@ export async function put(endpoint, body = {}, config = {}) {
   try {
     const data = await executeRequest(url, options, config)
     if (config.showSuccessToast) {
-      Toast.success(config.successMessage || '更新成功')
+      Toast.success(config.successMessage || 'Updated successfully')
     }
     return data
   } catch (error) {
-    // CSRF Token 错误处理
+    // On CSRF token error, clear cache and retry once
     if (error.code === 'CSRF_TOKEN_INVALID' || error.code === 'CSRF_TOKEN_MISSING') {
       return handleCsrfErrorAndRetry(
         () => executeRequest(url, options, { ...config, retry: 0 }),
@@ -335,7 +323,7 @@ export async function put(endpoint, body = {}, config = {}) {
 }
 
 /**
- * DELETE 请求
+ * DELETE request
  */
 export async function del(endpoint, config = {}) {
   const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`
@@ -347,11 +335,11 @@ export async function del(endpoint, config = {}) {
   try {
     const data = await executeRequest(url, options, config)
     if (config.showSuccessToast) {
-      Toast.success(config.successMessage || '删除成功')
+      Toast.success(config.successMessage || 'Deleted successfully')
     }
     return data
   } catch (error) {
-    // CSRF Token 错误处理
+    // On CSRF token error, clear cache and retry once
     if (error.code === 'CSRF_TOKEN_INVALID' || error.code === 'CSRF_TOKEN_MISSING') {
       return handleCsrfErrorAndRetry(
         () => executeRequest(url, options, { ...config, retry: 0 }),
@@ -368,29 +356,28 @@ export async function del(endpoint, config = {}) {
 }
 
 /**
- * 带认证的 fetch 请求（向后兼容）
+ * Authenticated fetch wrapper (backwards-compatible)
  */
 export async function fetchWithAuth(url, options = {}) {
   const headers = await buildHeaders(options.headers)
   const response = await fetch(url, {
     ...options,
-    credentials: 'include', // 发送 Cookie
+    credentials: 'include',
     headers
   })
   return response
 }
 
 /**
- * 检查用户是否已登录
+ * Check whether a user session exists in sessionStorage
  */
 export function isAuthenticated() {
-  // Token 存储在 httpOnly Cookie 中，前端无法直接检查
-  // 通过检查 sessionStorage 中的用户信息来判断
+  // Token is in an httpOnly cookie — check sessionStorage user record instead
   return !!sessionStorage.getItem('auth_user')
 }
 
 /**
- * 获取当前用户信息
+ * Return the current user object from sessionStorage
  */
 export function getCurrentUser() {
   const userStr = sessionStorage.getItem('auth_user')
@@ -398,17 +385,16 @@ export function getCurrentUser() {
 }
 
 /**
- * 登出
+ * Log out: clear the server-side cookie, then redirect to /login
  */
 export async function logout() {
-  // 调用后端登出 API 清除 Cookie
   try {
     await fetch(`${API_BASE}/api/auth/logout`, {
       method: 'POST',
       credentials: 'include'
     })
   } catch (error) {
-    console.error('登出请求失败:', error)
+    console.error('Logout request failed:', error)
   }
 
   sessionStorage.removeItem('auth_user')

@@ -114,13 +114,6 @@ function ExamResultPage() {
     return { userAnswer, question, isCorrect }
   }
 
-  const formatTime = (seconds) => {
-    if (!seconds) return '-'
-    const minutes = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${minutes}:${secs.toString().padStart(2, '0')}`
-  }
-
   const getGradeClass = (percentage) => {
     if (percentage >= 90) return 'grade-a'
     if (percentage >= 80) return 'grade-b'
@@ -281,8 +274,8 @@ function ExamResultPage() {
                     </span>
                   </div>
                   <div className="question-tags">
-                    {question.tags?.map((tag, i) => (
-                      <span key={i} className="tag">{tag}</span>
+                    {question.tags?.map((tag) => (
+                      <span key={tag} className="tag">{tag}</span>
                     ))}
                   </div>
                 </div>
@@ -294,13 +287,13 @@ function ExamResultPage() {
 
                   {question.type === 'multiple_choice' && question.options && (
                     <div className="question-options">
-                      {question.options.map((option, i) => {
+                      {question.options.map((option) => {
                         const isUserAnswer = option.startsWith(result.userAnswer?.value)
                         const isCorrectAnswer = option.startsWith(question.answer?.value)
 
                         return (
                           <div
-                            key={i}
+                            key={option}
                             className={`option-item ${isUserAnswer ? 'user-answer' : ''} ${isCorrectAnswer ? 'correct-answer' : ''}`}
                           >
                             {option}

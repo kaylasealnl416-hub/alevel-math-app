@@ -1,15 +1,11 @@
 // ============================================================
 // UserMessage Component
-// 用户消息组件
+// User message bubble component
 // ============================================================
 
-export default function UserMessage({ content, timestamp }) {
-  const formatTime = (ts) => {
-    if (!ts) return ''
-    const date = new Date(ts)
-    return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
-  }
+import { formatClockTime } from '../utils/helpers.js'
 
+export default function UserMessage({ content, timestamp }) {
   return (
     <div style={styles.container}>
       <div style={styles.avatar}>
@@ -19,7 +15,7 @@ export default function UserMessage({ content, timestamp }) {
         <div style={styles.bubble}>
           <p style={styles.text}>{content}</p>
         </div>
-        <span style={styles.time}>{formatTime(timestamp)}</span>
+        <span style={styles.time}>{formatClockTime(timestamp)}</span>
       </div>
     </div>
   )

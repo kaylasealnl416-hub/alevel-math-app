@@ -1,5 +1,5 @@
 /* ============================================================
-   练习主页样式
+   Practice page styles
    ============================================================ */
 
 .practice-page {
@@ -45,7 +45,7 @@
   margin-bottom: 1rem;
 }
 
-/* 章节选择 */
+/* Chapter selection */
 .chapter-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -83,7 +83,7 @@
   color: #6b7280;
 }
 
-/* 策略选择 */
+/* Strategy selection */
 .strategy-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -127,7 +127,7 @@
   color: #6b7280;
 }
 
-/* 题目配置 */
+/* Question config */
 .config-group {
   margin-bottom: 1.5rem;
 }
@@ -172,7 +172,7 @@
   color: white;
 }
 
-/* 开始按钮 */
+/* Start button */
 .practice-actions {
   text-align: center;
   margin-top: 2rem;

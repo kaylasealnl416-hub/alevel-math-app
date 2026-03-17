@@ -2,8 +2,150 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Toast from './common/Toast'
-import { API_BASE } from '../utils/constants'
+import { API_BASE, COLORS } from '../utils/constants'
 import { validateEmail, validatePassword } from '../utils/validation'
+
+const BRAND = COLORS.brand
+
+const styles = {
+  page: {
+    minHeight: '100vh',
+    background: '#F9FAFB',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '24px 16px',
+  },
+  card: {
+    background: '#FFFFFF',
+    borderRadius: 16,
+    border: '1px solid #E5E7EB',
+    boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
+    padding: '48px 40px 40px',
+    width: '100%',
+    maxWidth: 400,
+  },
+  logoWrap: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 36,
+  },
+  logoSymbol: {
+    width: 56,
+    height: 56,
+    borderRadius: '50%',
+    background: `${BRAND}15`,
+    border: `2px solid ${BRAND}30`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 26,
+    color: BRAND,
+    fontWeight: 700,
+    marginBottom: 16,
+  },
+  logoTitle: {
+    fontSize: 22,
+    fontWeight: 700,
+    color: '#111827',
+    marginBottom: 4,
+  },
+  logoSub: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  label: {
+    display: 'block',
+    fontSize: 13,
+    fontWeight: 600,
+    color: '#374151',
+    marginBottom: 6,
+  },
+  input: {
+    width: '100%',
+    padding: '11px 14px',
+    border: '1px solid #D1D5DB',
+    borderRadius: 8,
+    fontSize: 14,
+    color: '#111827',
+    background: '#FFFFFF',
+    outline: 'none',
+    transition: 'border-color 0.15s',
+    boxSizing: 'border-box',
+  },
+  inputError: {
+    borderColor: '#EF4444',
+  },
+  errorMsg: {
+    fontSize: 12,
+    color: '#EF4444',
+    marginTop: 5,
+  },
+  fieldWrap: {
+    marginBottom: 20,
+  },
+  checkboxRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 24,
+    cursor: 'pointer',
+  },
+  checkboxLabel: {
+    fontSize: 13,
+    color: '#374151',
+    cursor: 'pointer',
+  },
+  submitBtn: {
+    width: '100%',
+    padding: '12px',
+    background: BRAND,
+    color: '#FFFFFF',
+    fontWeight: 600,
+    fontSize: 15,
+    border: 'none',
+    borderRadius: 8,
+    cursor: 'pointer',
+    transition: 'background 0.15s',
+  },
+  footer: {
+    marginTop: 24,
+    textAlign: 'center',
+    fontSize: 13,
+    color: '#6B7280',
+  },
+  link: {
+    color: BRAND,
+    fontWeight: 600,
+    textDecoration: 'none',
+  },
+  testAccount: {
+    marginTop: 20,
+    padding: '12px 16px',
+    background: '#FFF5F5',
+    border: `1px solid ${BRAND}20`,
+    borderRadius: 8,
+    fontSize: 13,
+    color: '#6B7280',
+    textAlign: 'center',
+  },
+  testValue: {
+    color: BRAND,
+    fontWeight: 600,
+  },
+  spinner: {
+    width: 16,
+    height: 16,
+    border: '2px solid rgba(255,255,255,0.4)',
+    borderTopColor: '#FFF',
+    borderRadius: '50%',
+    animation: 'spin 0.6s linear infinite',
+    display: 'inline-block',
+    marginRight: 8,
+    verticalAlign: 'middle',
+  },
+}
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -12,105 +154,82 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
+  const [focusedField, setFocusedField] = useState(null)
 
-  // Initialize: restore remembered email from localStorage
   useEffect(() => {
     const savedEmail = localStorage.getItem('remembered_email')
     if (savedEmail) {
-      setFormData({ ...formData, email: savedEmail })
+      setFormData({ email: savedEmail, password: '' })
       setRememberMe(true)
     }
   }, [])
 
-  // Form validation
   const validateForm = () => {
     const newErrors = {}
-
     const emailError = validateEmail(formData.email)
-    if (emailError) {
-      newErrors.email = emailError
-    }
-
+    if (emailError) newErrors.email = emailError
     const passwordError = validatePassword(formData.password)
-    if (passwordError) {
-      newErrors.password = passwordError
-    }
-
+    if (passwordError) newErrors.password = passwordError
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    // Frontend validation
-    if (!validateForm()) {
-      return
-    }
-
+    if (!validateForm()) return
     setLoading(true)
 
     try {
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // Send and receive cookies
-        body: JSON.stringify(formData)
+        credentials: 'include',
+        body: JSON.stringify(formData),
       })
-
       const data = await res.json()
 
       if (!data.success) {
-        const errorMessage = data.error?.message || 'Login failed'
-        Toast.error(errorMessage)
+        Toast.error(data.error?.message || 'Login failed')
         setLoading(false)
         return
       }
 
-      // Remember email
       if (rememberMe) {
         localStorage.setItem('remembered_email', formData.email)
       } else {
         localStorage.removeItem('remembered_email')
       }
 
-      // Login successful (Token stored in httpOnly Cookie)
       Toast.success('Login successful!')
-      login(data.data.user) // Only pass user info, not token
-
-      // Delayed navigation
-      setTimeout(() => {
-        navigate('/exams')
-      }, 800)
-    } catch (err) {
+      login(data.data.user)
+      setTimeout(() => navigate('/'), 800)
+    } catch {
       Toast.error('Network error, please try again later')
       setLoading(false)
     }
   }
 
+  const inputStyle = (field) => ({
+    ...styles.input,
+    ...(errors[field] ? styles.inputError : {}),
+    ...(focusedField === field && !errors[field] ? { borderColor: BRAND } : {}),
+  })
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center p-4 animate-fade-in">
-      <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-10 w-full max-w-md border border-white/20 animate-scale-in">
-        {/* Title */}
-        <div className="text-center mb-10 animate-fade-in-down">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-full mb-5 shadow-2xl transform hover:scale-110 transition-transform duration-300">
-            <span className="text-5xl">🎓</span>
-          </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
-            Welcome Back
-          </h1>
-          <p className="text-gray-500 text-base">
-            A-Level Math Learning Hub
-          </p>
+    <div style={styles.page}>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div style={styles.card}>
+        {/* Logo */}
+        <div style={styles.logoWrap}>
+          <div style={styles.logoSymbol}>∑</div>
+          <div style={styles.logoTitle}>Welcome Back</div>
+          <div style={styles.logoSub}>Pearson Edexcel A Levels</div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email input */}
-          <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Email
-            </label>
+        <form onSubmit={handleSubmit}>
+          <div style={styles.fieldWrap}>
+            <label style={styles.label}>Email</label>
             <input
               type="email"
               value={formData.email}
@@ -118,25 +237,16 @@ export default function LoginPage() {
                 setFormData({ ...formData, email: e.target.value })
                 if (errors.email) setErrors({ ...errors, email: '' })
               }}
+              onFocus={() => setFocusedField('email')}
+              onBlur={() => setFocusedField(null)}
               placeholder="your@email.com"
-              className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all text-base ${
-                errors.email
-                  ? 'border-red-400 focus:ring-red-500 focus:border-red-500'
-                  : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white'
-              }`}
+              style={inputStyle('email')}
             />
-            {errors.email && (
-              <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
-                <span>⚠️</span> {errors.email}
-              </p>
-            )}
+            {errors.email && <div style={styles.errorMsg}>{errors.email}</div>}
           </div>
 
-          {/* Password input */}
-          <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Password
-            </label>
+          <div style={styles.fieldWrap}>
+            <label style={styles.label}>Password</label>
             <input
               type="password"
               value={formData.password}
@@ -144,70 +254,56 @@ export default function LoginPage() {
                 setFormData({ ...formData, password: e.target.value })
                 if (errors.password) setErrors({ ...errors, password: '' })
               }}
+              onFocus={() => setFocusedField('password')}
+              onBlur={() => setFocusedField(null)}
               placeholder="••••••••"
-              className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all text-base ${
-                errors.password
-                  ? 'border-red-400 focus:ring-red-500 focus:border-red-500'
-                  : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white'
-              }`}
+              style={inputStyle('password')}
             />
-            {errors.password && (
-              <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
-                <span>⚠️</span> {errors.password}
-              </p>
-            )}
+            {errors.password && <div style={styles.errorMsg}>{errors.password}</div>}
           </div>
 
-          {/* Remember me */}
-          <div className="flex items-center animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <label className="flex items-center gap-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-5 h-5 text-indigo-600 border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 cursor-pointer transition-all"
-              />
-              <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">Remember me</span>
-            </label>
-          </div>
+          <label style={styles.checkboxRow}>
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              style={{ accentColor: BRAND, width: 15, height: 15 }}
+            />
+            <span style={styles.checkboxLabel}>Remember me</span>
+          </label>
 
-          {/* Login button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-lg font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 focus:outline-none focus:ring-4 focus:ring-purple-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] animate-fade-in-up"
-            style={{ animationDelay: '0.4s' }}
+            style={{
+              ...styles.submitBtn,
+              opacity: loading ? 0.7 : 1,
+              cursor: loading ? 'not-allowed' : 'pointer',
+            }}
+            onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#B71C1C' }}
+            onMouseLeave={e => { e.currentTarget.style.background = BRAND }}
           >
             {loading ? (
-              <span className="flex items-center justify-center gap-3">
-                <svg className="animate-spin h-6 w-6" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Logging in...
-              </span>
+              <>
+                <span style={styles.spinner} />
+                Signing in...
+              </>
             ) : (
-              'Login →'
+              'Sign In'
             )}
           </button>
         </form>
 
-        {/* Register link */}
-        <p className="mt-8 text-center text-sm text-gray-600 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+        <div style={styles.footer}>
           Don't have an account?{' '}
-          <Link
-            to="/register"
-            className="text-indigo-600 hover:text-indigo-700 font-bold transition-colors hover:underline"
-          >
-            Sign up
-          </Link>
-        </p>
+          <Link to="/register" style={styles.link}>Sign up</Link>
+        </div>
 
-        {/* Test account */}
-        <div className="mt-6 p-5 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 rounded-2xl border-2 border-indigo-100 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-          <p className="text-sm text-gray-700 text-center font-semibold">
-            💡 Test account: <span className="text-indigo-600">student1@test.com</span> / <span className="text-indigo-600">test123</span>
-          </p>
+        <div style={styles.testAccount}>
+          Test account:{' '}
+          <span style={styles.testValue}>student1@test.com</span>
+          {' / '}
+          <span style={styles.testValue}>test123</span>
         </div>
       </div>
     </div>

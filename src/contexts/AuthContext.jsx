@@ -7,39 +7,51 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // 初始化：从 sessionStorage 恢复用户信息（不存储 Token）
+  // Restore user from sessionStorage, or verify via httpOnly cookie
   useEffect(() => {
     const savedUser = sessionStorage.getItem('auth_user')
 
     if (savedUser) {
       setUser(JSON.parse(savedUser))
+      setLoading(false)
+    } else {
+      // No sessionStorage (e.g. new tab) — try cookie-based auth
+      fetch(`${API_BASE}/api/auth/me`, { credentials: 'include' })
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data?.success && data.data) {
+            setUser(data.data)
+            sessionStorage.setItem('auth_user', JSON.stringify(data.data))
+          }
+        })
+        .catch(() => {})
+        .finally(() => setLoading(false))
     }
-    setLoading(false)
   }, [])
 
-  // 登录（Token 存储在 httpOnly Cookie 中，前端不可访问）
+  // Login (token is in httpOnly cookie, not accessible from JS)
   const login = (userData) => {
     setUser(userData)
     sessionStorage.setItem('auth_user', JSON.stringify(userData))
   }
 
-  // 登出
+  // Logout
   const logout = async () => {
-    // 调用后端登出 API 清除 Cookie
+    // Call backend logout to clear the cookie
     try {
       await fetch(`${API_BASE}/api/auth/logout`, {
         method: 'POST',
-        credentials: 'include' // 发送 Cookie
+        credentials: 'include' // include cookie
       })
     } catch (error) {
-      console.error('登出请求失败:', error)
+      console.error('Logout request failed:', error)
     }
 
     setUser(null)
     sessionStorage.removeItem('auth_user')
   }
 
-  // 更新用户信息
+  // Update user data
   const updateUser = (userData) => {
     setUser(userData)
     sessionStorage.setItem('auth_user', JSON.stringify(userData))

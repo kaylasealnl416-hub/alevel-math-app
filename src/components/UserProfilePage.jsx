@@ -18,7 +18,6 @@ export default function UserProfilePage() {
   const [loading, setLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
 
-  // 加载用户信息
   useEffect(() => {
     if (user) {
       setFormData({
@@ -31,18 +30,17 @@ export default function UserProfilePage() {
     }
   }, [user])
 
-  // 表单验证
   const validateForm = () => {
     const newErrors = {}
 
     if (!formData.nickname.trim()) {
-      newErrors.nickname = '昵称不能为空'
+      newErrors.nickname = 'Nickname is required'
     } else if (formData.nickname.length > 50) {
-      newErrors.nickname = '昵称不能超过 50 个字符'
+      newErrors.nickname = 'Nickname must be 50 characters or fewer'
     }
 
     if (formData.phone && !/^1[3-9]\d{9}$/.test(formData.phone)) {
-      newErrors.phone = '手机号格式不正确'
+      newErrors.phone = 'Invalid phone number format'
     }
 
     setErrors(newErrors)
@@ -71,29 +69,27 @@ export default function UserProfilePage() {
       const data = await res.json()
 
       if (!data.success) {
-        Toast.error(data.error?.message || '更新失败')
+        Toast.error(data.error?.message || 'Update failed')
         setLoading(false)
         return
       }
 
-      // 更新本地用户信息
       updateUser(data.data)
-      Toast.success('个人信息更新成功！')
+      Toast.success('Profile updated successfully!')
       setLoading(false)
 
-      // 延迟返回
       setTimeout(() => {
         navigate(-1)
       }, 1000)
     } catch (err) {
-      Toast.error('网络错误，请稍后重试')
+      Toast.error('Network error. Please try again.')
       setLoading(false)
     }
   }
 
   const handleLogout = () => {
     logout()
-    Toast.success('已退出登录')
+    Toast.success('Logged out successfully')
     navigate('/login')
   }
 
@@ -106,9 +102,9 @@ export default function UserProfilePage() {
       <div style={styles.card}>
         <div style={styles.header}>
           <button onClick={() => navigate(-1)} style={styles.backButton}>
-            ← 返回
+            ← Back
           </button>
-          <h1 style={styles.title}>个人信息</h1>
+          <h1 style={styles.title}>Profile</h1>
           <div style={{ width: 60 }} />
         </div>
 
@@ -121,7 +117,7 @@ export default function UserProfilePage() {
 
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.field}>
-            <label style={styles.label}>昵称</label>
+            <label style={styles.label}>Nickname</label>
             <input
               type="text"
               value={formData.nickname}
@@ -133,14 +129,14 @@ export default function UserProfilePage() {
                 ...styles.input,
                 ...(errors.nickname ? styles.inputError : {})
               }}
-              placeholder="你的昵称"
+              placeholder="Your nickname"
               maxLength={50}
             />
             {errors.nickname && <span style={styles.errorText}>{errors.nickname}</span>}
           </div>
 
           <div style={styles.field}>
-            <label style={styles.label}>年级</label>
+            <label style={styles.label}>Year</label>
             <select
               value={formData.grade}
               onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
@@ -152,18 +148,18 @@ export default function UserProfilePage() {
           </div>
 
           <div style={styles.field}>
-            <label style={styles.label}>目标大学（可选）</label>
+            <label style={styles.label}>Target University (optional)</label>
             <input
               type="text"
               value={formData.targetUniversity}
               onChange={(e) => setFormData({ ...formData, targetUniversity: e.target.value })}
               style={styles.input}
-              placeholder="例如：Cambridge, Oxford"
+              placeholder="e.g. Cambridge, Oxford"
             />
           </div>
 
           <div style={styles.field}>
-            <label style={styles.label}>手机号（可选）</label>
+            <label style={styles.label}>Phone (optional)</label>
             <input
               type="tel"
               value={formData.phone}
@@ -181,13 +177,13 @@ export default function UserProfilePage() {
           </div>
 
           <button type="submit" style={styles.button} disabled={loading}>
-            {loading ? '保存中...' : '保存更改'}
+            {loading ? 'Saving...' : 'Save Changes'}
           </button>
         </form>
 
         <div style={styles.footer}>
           <button onClick={handleLogout} style={styles.logoutButton}>
-            退出登录
+            Log Out
           </button>
         </div>
       </div>

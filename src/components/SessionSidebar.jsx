@@ -1,298 +1,114 @@
 // ============================================================
 // SessionSidebar Component
-// 会话列表侧边栏
+// Chat session list sidebar
 // ============================================================
 
 import { useState } from 'react'
+import { formatRelativeTime } from '../utils/helpers.js'
 
 export default function SessionSidebar({
-  sessions,
-  currentSessionId,
-  isLoading,
-  onSelectSession,
-  onNewSession,
-  onArchive,
-  onDelete,
-  onUpdateTitle,
-  show,
-  onToggle
+  sessions, currentSessionId, isLoading,
+  onSelectSession, onNewSession, onArchive, onDelete, onUpdateTitle
 }) {
   const [editingId, setEditingId] = useState(null)
   const [editTitle, setEditTitle] = useState('')
   const [menuOpenId, setMenuOpenId] = useState(null)
 
-  // Format time
-  const formatTime = (ts) => {
-    if (!ts) return ''
-    const date = new Date(ts)
-    const now = new Date()
-    const diff = now - date
-
-    // Less than 1 minute
-    if (diff < 60000) return 'Just now'
-    // Less than 1 hour
-    if (diff < 3600000) return Math.floor(diff / 60000) + ' min ago'
-    // Less than 24 hours
-    if (diff < 86400000) return Math.floor(diff / 3600000) + ' hr ago'
-    // Less than 7 days
-    if (diff < 604800000) return Math.floor(diff / 86400000) + ' days ago'
-
-    return date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' })
-  }
-
-  // 开始编辑标题
-  const startEditTitle = (session) => {
-    setEditingId(session.id)
-    setEditTitle(session.title || '新对话')
-  }
-
-  // 保存标题
-  const saveTitle = (sessionId) => {
-    if (editTitle.trim()) {
-      onUpdateTitle(sessionId, editTitle.trim())
-    }
-    setEditingId(null)
-  }
-
-  // 处理菜单点击
-  const handleMenuClick = (e, sessionId) => {
-    e.stopPropagation()
-    setMenuOpenId(menuOpenId === sessionId ? null : sessionId)
-  }
-
-  if (!show) {
-    return null
-  }
+  const startEdit = (session) => { setEditingId(session.id); setEditTitle(session.title || 'New Chat') }
+  const saveTitle = (id) => { if (editTitle.trim()) onUpdateTitle(id, editTitle.trim()); setEditingId(null) }
 
   return (
-    <div style={styles.container}>
-      {/* 头部 */}
-      <div style={styles.header}>
-        <h3 style={styles.headerTitle}>会话列表</h3>
-        <button style={styles.newBtn} onClick={onNewSession} title="新建会话">
-          + 新建
+    <div style={{ width: 272, background: '#fff', borderRadius: 16, border: '1px solid #E2E8F0', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', overflow: 'hidden', flexShrink: 0 }}>
+
+      {/* Header */}
+      <div style={{ padding: '14px 14px 12px', borderBottom: '1px solid #F1F5F9' }}>
+        <button
+          onClick={onNewSession}
+          style={{ width: '100%', background: '#0F172A', color: '#fff', border: 'none', borderRadius: 12, padding: '10px 0', fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#1E293B' }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#0F172A' }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Chat
         </button>
       </div>
 
-      {/* 会话列表 */}
-      <div style={styles.list}>
+      {/* List */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '10px 10px' }}>
         {isLoading ? (
-          <div style={styles.loading}>加载中...</div>
+          <div style={{ padding: 20, textAlign: 'center', fontSize: 13, color: '#94A3B8' }}>Loading...</div>
         ) : sessions.length === 0 ? (
-          <div style={styles.empty}>暂无会话</div>
+          <div style={{ padding: '32px 16px', textAlign: 'center' }}>
+            <div style={{ fontSize: 28, marginBottom: 8 }}>💬</div>
+            <div style={{ fontSize: 12, color: '#94A3B8' }}>No chats yet.<br/>Start one above.</div>
+          </div>
         ) : (
-          sessions.map(session => (
-            <div
-              key={session.id}
-              style={{
-                ...styles.item,
-                ...(session.id === currentSessionId ? styles.itemActive : {})
-              }}
-              onClick={() => onSelectSession(session.id)}
-            >
-              {editingId === session.id ? (
-                <input
-                  style={styles.editInput}
-                  value={editTitle}
-                  onChange={(e) => setEditTitle(e.target.value)}
-                  onBlur={() => saveTitle(session.id)}
-                  onKeyDown={(e) => e.key === 'Enter' && saveTitle(session.id)}
-                  autoFocus
-                  onClick={(e) => e.stopPropagation()}
-                />
-              ) : (
-                <>
-                  <div style={styles.itemContent}>
-                    <span style={styles.itemTitle}>{session.title || '新对话'}</span>
-                    <span style={styles.itemTime}>{formatTime(session.lastMessageAt)}</span>
-                  </div>
-                  <div style={styles.itemMeta}>
-                    <span style={styles.messageCount}>
-                      💬 {session.messageCount || 0}
-                    </span>
-                    <div style={styles.menuWrapper}>
-                      <button
-                        style={styles.menuBtn}
-                        onClick={(e) => handleMenuClick(e, session.id)}
-                      >
-                        ⋮
-                      </button>
-                      {menuOpenId === session.id && (
-                        <div style={styles.menu}>
-                          <button
-                            style={styles.menuItem}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              startEditTitle(session)
-                              setMenuOpenId(null)
-                            }}
-                          >
-                            ✏️ 重命名
-                          </button>
-                          <button
-                            style={styles.menuItem}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              onArchive(session.id)
-                              setMenuOpenId(null)
-                            }}
-                          >
-                            📁 归档
-                          </button>
-                          <button
-                            style={{ ...styles.menuItem, ...styles.menuItemDanger }}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              if (confirm('确定要删除这个会话吗？')) {
-                                onDelete(session.id)
-                              }
-                              setMenuOpenId(null)
-                            }}
-                          >
-                            🗑️ 删除
-                          </button>
-                        </div>
+          <>
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 8px 8px' }}>Recent Chats</div>
+            {sessions.map(session => {
+              const isActive = session.id === currentSessionId
+              return (
+                <div
+                  key={session.id}
+                  onClick={() => { if (editingId !== session.id) onSelectSession(session.id) }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 10px', borderRadius: 12, cursor: 'pointer', marginBottom: 2, background: isActive ? '#FEF2F2' : 'transparent', border: `1px solid ${isActive ? '#FECACA' : 'transparent'}`, transition: 'all 0.15s', position: 'relative' }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = '#F8FAFC' }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent' }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={isActive ? '#EF4444' : '#94A3B8'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  </svg>
+
+                  {editingId === session.id ? (
+                    <input
+                      value={editTitle}
+                      onChange={e => setEditTitle(e.target.value)}
+                      onBlur={() => saveTitle(session.id)}
+                      onKeyDown={e => e.key === 'Enter' && saveTitle(session.id)}
+                      onClick={e => e.stopPropagation()}
+                      autoFocus
+                      style={{ flex: 1, fontSize: 13, border: '1px solid #DA291C', borderRadius: 6, padding: '2px 6px', outline: 'none', color: '#0F172A' }}
+                    />
+                  ) : (
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 13, fontWeight: isActive ? 600 : 400, color: isActive ? '#B91C1C' : '#475569', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {session.title || 'New Chat'}
+                      </div>
+                      {session.lastMessageAt && (
+                        <div style={{ fontSize: 11, color: '#CBD5E1', marginTop: 1 }}>{formatRelativeTime(session.lastMessageAt)}</div>
                       )}
                     </div>
+                  )}
+
+                  {/* Menu */}
+                  <div style={{ position: 'relative', flexShrink: 0 }}>
+                    <button
+                      onClick={e => { e.stopPropagation(); setMenuOpenId(menuOpenId === session.id ? null : session.id) }}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 5px', borderRadius: 4, color: '#CBD5E1', fontSize: 16, lineHeight: 1 }}
+                    >⋮</button>
+                    {menuOpenId === session.id && (
+                      <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: 4, background: '#fff', border: '1px solid #E2E8F0', borderRadius: 10, boxShadow: '0 4px 16px rgba(0,0,0,0.1)', zIndex: 100, minWidth: 120, overflow: 'hidden' }}>
+                        {[
+                          { label: 'Rename', action: () => { startEdit(session); setMenuOpenId(null) } },
+                          { label: 'Archive', action: () => { onArchive(session.id); setMenuOpenId(null) } },
+                          { label: 'Delete', action: () => { if (confirm('Delete this chat?')) onDelete(session.id); setMenuOpenId(null) }, danger: true },
+                        ].map(item => (
+                          <button key={item.label}
+                            onClick={e => { e.stopPropagation(); item.action() }}
+                            style={{ display: 'block', width: '100%', padding: '9px 14px', background: 'none', border: 'none', textAlign: 'left', fontSize: 13, cursor: 'pointer', color: item.danger ? '#EF4444' : '#374151' }}
+                            onMouseEnter={e => { e.currentTarget.style.background = item.danger ? '#FEF2F2' : '#F8FAFC' }}
+                            onMouseLeave={e => { e.currentTarget.style.background = 'none' }}
+                          >{item.label}</button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </>
-              )}
-            </div>
-          ))
+                </div>
+              )
+            })}
+          </>
         )}
       </div>
     </div>
   )
-}
-
-const styles = {
-  container: {
-    width: '280px',
-    backgroundColor: '#fff',
-    borderRight: '1px solid #e0e0e0',
-    display: 'flex',
-    flexDirection: 'column',
-    flexShrink: 0
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '16px',
-    borderBottom: '1px solid #e0e0e0'
-  },
-  headerTitle: {
-    margin: 0,
-    fontSize: '16px',
-    fontWeight: 600,
-    color: '#333'
-  },
-  newBtn: {
-    padding: '6px 12px',
-    backgroundColor: '#1976d2',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '6px',
-    fontSize: '13px',
-    cursor: 'pointer'
-  },
-  list: {
-    flex: 1,
-    overflowY: 'auto',
-    padding: '8px'
-  },
-  loading: {
-    padding: '20px',
-    textAlign: 'center',
-    color: '#999'
-  },
-  empty: {
-    padding: '20px',
-    textAlign: 'center',
-    color: '#999'
-  },
-  item: {
-    padding: '12px',
-    marginBottom: '4px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
-    position: 'relative'
-  },
-  itemActive: {
-    backgroundColor: '#e3f2fd'
-  },
-  itemContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '4px'
-  },
-  itemTitle: {
-    fontSize: '14px',
-    color: '#333',
-    fontWeight: 500,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap'
-  },
-  itemTime: {
-    fontSize: '12px',
-    color: '#999'
-  },
-  itemMeta: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: '8px'
-  },
-  messageCount: {
-    fontSize: '12px',
-    color: '#666'
-  },
-  menuWrapper: {
-    position: 'relative'
-  },
-  menuBtn: {
-    padding: '4px 8px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    fontSize: '16px',
-    color: '#666',
-    borderRadius: '4px'
-  },
-  menu: {
-    position: 'absolute',
-    right: '0',
-    top: '100%',
-    backgroundColor: '#fff',
-    border: '1px solid #e0e0e0',
-    borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-    zIndex: 100,
-    minWidth: '120px',
-    overflow: 'hidden'
-  },
-  menuItem: {
-    display: 'block',
-    width: '100%',
-    padding: '10px 12px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    textAlign: 'left',
-    fontSize: '13px',
-    cursor: 'pointer',
-    color: '#333'
-  },
-  menuItemDanger: {
-    color: '#f44336'
-  },
-  editInput: {
-    width: '100%',
-    padding: '6px 8px',
-    fontSize: '14px',
-    border: '1px solid #1976d2',
-    borderRadius: '4px',
-    outline: 'none'
-  }
 }

@@ -64,8 +64,8 @@ export function parseAIResponse(rawText) {
     }
     return JSON.parse(rawText.replace(/```json|```/gi, "").trim());
   } catch (error) {
-    console.error("AI 返回的原始文本:", rawText);
-    throw new Error("无法解析 AI 返回的数据，请重试。");
+    console.error("AI raw response:", rawText);
+    throw new Error("Failed to parse AI response. Please try again.");
   }
 }
 
@@ -169,18 +169,18 @@ export { STORAGE_KEYS, API_ENDPOINTS };
 // Backend API Client
 // ============================================================
 
-// API配置 - 使用 constants.js 中的统一配置
+// API base URL from constants.js
 import { API_BASE } from './constants'
 
 const BACKEND_API_URL = API_BASE
 const USE_BACKEND_API = import.meta.env.VITE_USE_API === 'true'
 
-// 获取存储的 token (向后兼容)
+// Get stored token (legacy compatibility)
 function getAuthToken() {
   return localStorage.getItem('auth_token')
 }
 
-// 设置 token (向后兼容)
+// Set/clear stored token (legacy compatibility)
 export function setAuthToken(token) {
   if (token) {
     localStorage.setItem('auth_token', token)
@@ -189,7 +189,7 @@ export function setAuthToken(token) {
   }
 }
 
-// 统一请求函数 - 使用 apiClient.js 的方法
+// Unified request wrapper — delegates to apiClient.js methods
 async function backendRequest(endpoint, options = {}) {
   const { method = 'GET', body, ...config } = options
 
@@ -213,38 +213,34 @@ async function backendRequest(endpoint, options = {}) {
     }
     return { data }
   } catch (error) {
-    console.error('Backend API请求失败:', error)
+    console.error('Backend API request failed:', error)
     throw error
   }
 }
 
-// 科目相关API
+// Subjects API
 export const subjectsAPI = {
-  // 获取所有科目
   getAll: async () => {
     const response = await backendRequest('/api/subjects')
     return response.data
   },
 
-  // 获取单个科目详情
   getById: async (id) => {
     const response = await backendRequest(`/api/subjects/${id}`)
     return response.data
   },
 }
 
-// 章节相关API
+// Chapters API
 export const chaptersAPI = {
-  // 获取单个章节详情
   getById: async (id) => {
     const response = await backendRequest(`/api/chapters/${id}`)
     return response.data
   },
 }
 
-// 用户相关API
+// Users API
 export const usersAPI = {
-  // 创建用户
   create: async (userData) => {
     const response = await backendRequest('/api/users', {
       method: 'POST',
@@ -253,13 +249,11 @@ export const usersAPI = {
     return response.data
   },
 
-  // 获取用户信息
   getById: async (userId) => {
     const response = await backendRequest(`/api/users/${userId}`)
     return response.data
   },
 
-  // 更新用户信息
   update: async (userId, userData) => {
     const response = await backendRequest(`/api/users/${userId}`, {
       method: 'PUT',
@@ -268,13 +262,11 @@ export const usersAPI = {
     return response.data
   },
 
-  // 获取用户画像
   getProfile: async (userId) => {
     const response = await backendRequest(`/api/users/${userId}/profile`)
     return response.data
   },
 
-  // 更新用户画像
   updateProfile: async (userId, profileData) => {
     const response = await backendRequest(`/api/users/${userId}/profile`, {
       method: 'PUT',
@@ -283,28 +275,24 @@ export const usersAPI = {
     return response.data
   },
 
-  // 获取用户统计
   getStats: async (userId) => {
     const response = await backendRequest(`/api/users/${userId}/stats`)
     return response.data
   }
 }
 
-// 学习进度相关API
+// Progress API
 export const progressAPI = {
-  // 获取用户所有学习进度
   getAll: async (userId) => {
     const response = await backendRequest(`/api/progress/${userId}`)
     return response.data
   },
 
-  // 获取特定章节的学习进度
   getByChapter: async (userId, chapterId) => {
     const response = await backendRequest(`/api/progress/${userId}/chapter/${chapterId}`)
     return response.data
   },
 
-  // 记录/更新学习进度
   update: async (progressData) => {
     const response = await backendRequest('/api/progress', {
       method: 'POST',
@@ -313,13 +301,11 @@ export const progressAPI = {
     return response.data
   },
 
-  // 获取学习统计
   getStats: async (userId) => {
     const response = await backendRequest(`/api/progress/${userId}/stats`)
     return response.data
   },
 
-  // 删除学习进度（测试用）
   delete: async (userId, chapterId) => {
     const response = await backendRequest(`/api/progress/${userId}/chapter/${chapterId}`, {
       method: 'DELETE'
@@ -328,7 +314,6 @@ export const progressAPI = {
   }
 }
 
-// 导出配置
 export { BACKEND_API_URL, USE_BACKEND_API }
 
 // ============================================================
@@ -336,33 +321,28 @@ export { BACKEND_API_URL, USE_BACKEND_API }
 // ============================================================
 
 export const authAPI = {
-  // 用户注册
   register: async (userData) => {
     const response = await backendRequest('/api/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData)
     })
-    // 自动保存 token
     if (response.data?.token) {
       setAuthToken(response.data.token)
     }
     return response.data
   },
 
-  // 用户登录
   login: async (credentials) => {
     const response = await backendRequest('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify(credentials)
     })
-    // 自动保存 token
     if (response.data?.token) {
       setAuthToken(response.data.token)
     }
     return response.data
   },
 
-  // 登出
   logout: () => {
     setAuthToken(null)
   }
@@ -373,7 +353,6 @@ export const authAPI = {
 // ============================================================
 
 export const chatAPI = {
-  // 创建新会话
   createSession: async (sessionData) => {
     const response = await backendRequest('/api/chat/sessions', {
       method: 'POST',
@@ -382,7 +361,6 @@ export const chatAPI = {
     return response.data
   },
 
-  // 获取用户的会话列表
   getSessions: async (userId, options = {}) => {
     const params = new URLSearchParams({ userId })
     if (options.status) params.append('status', options.status)
@@ -393,13 +371,11 @@ export const chatAPI = {
     return response.data
   },
 
-  // 获取会话详情
   getSession: async (sessionId) => {
     const response = await backendRequest(`/api/chat/sessions/${sessionId}`)
     return response.data
   },
 
-  // 更新会话
   updateSession: async (sessionId, updateData) => {
     const response = await backendRequest(`/api/chat/sessions/${sessionId}`, {
       method: 'PUT',
@@ -408,7 +384,6 @@ export const chatAPI = {
     return response.data
   },
 
-  // 删除会话
   deleteSession: async (sessionId) => {
     const response = await backendRequest(`/api/chat/sessions/${sessionId}`, {
       method: 'DELETE'
@@ -416,7 +391,6 @@ export const chatAPI = {
     return response
   },
 
-  // 获取会话消息历史
   getMessages: async (sessionId, options = {}) => {
     const params = new URLSearchParams()
     if (options.limit) params.append('limit', options.limit.toString())
@@ -426,7 +400,6 @@ export const chatAPI = {
     return response.data
   },
 
-  // 发送消息并获取 AI 回复
   sendMessage: async (messageData) => {
     const response = await backendRequest('/api/chat/messages/send', {
       method: 'POST',

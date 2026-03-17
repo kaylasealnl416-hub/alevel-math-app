@@ -1,5 +1,6 @@
 import React from 'react'
 import '../../styles/ScoreCard.css'
+import { formatDuration } from '../../utils/helpers.js'
 
 /**
  * ScoreCard Component
@@ -13,13 +14,6 @@ function ScoreCard({ totalScore, maxScore, correctCount, totalCount, timeSpent, 
     if (percent >= 70) return { letter: 'C', color: '#f59e0b', label: 'Satisfactory' }
     if (percent >= 60) return { letter: 'D', color: '#ef4444', label: 'Pass' }
     return { letter: 'F', color: '#991b1b', label: 'Fail' }
-  }
-
-  const formatTime = (seconds) => {
-    if (!seconds) return '0:00'
-    const minutes = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${minutes}:${secs.toString().padStart(2, '0')}`
   }
 
   const grade = getGrade(percentage)
@@ -53,7 +47,7 @@ function ScoreCard({ totalScore, maxScore, correctCount, totalCount, timeSpent, 
             </div>
             <div className="metric">
               <span className="metric-label">Time:</span>
-              <span className="metric-value">{formatTime(timeSpent)}</span>
+              <span className="metric-value">{formatDuration(timeSpent)}</span>
             </div>
             <div className="metric">
               <span className="metric-label">Accuracy:</span>

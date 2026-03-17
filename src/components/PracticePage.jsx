@@ -1,6 +1,6 @@
 // ============================================================
-// 练习主页
-// 选择章节、组卷策略，开始练习
+// PracticePage
+// Select a chapter, question strategy, and start practicing
 // ============================================================
 
 import React, { useState, useEffect } from 'react'
@@ -19,7 +19,6 @@ const PracticePage = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // 加载章节列表
   useEffect(() => {
     loadChapters()
     loadStrategies()
@@ -27,36 +26,35 @@ const PracticePage = () => {
 
   const loadChapters = async () => {
     try {
-      // TODO: 从 API 加载章节列表
-      // 暂时使用模拟数据
+      // TODO: load chapters from API
       setChapters([
-        { id: 'e1c1', title: { zh: '供需理论', en: 'Supply and Demand' } },
-        { id: 'e1c2', title: { zh: '市场均衡', en: 'Market Equilibrium' } },
-        { id: 'm1c1', title: { zh: '代数基础', en: 'Algebra Basics' } }
+        { id: 'e1c1', title: { en: 'Supply and Demand' } },
+        { id: 'e1c2', title: { en: 'Market Equilibrium' } },
+        { id: 'm1c1', title: { en: 'Algebra Basics' } }
       ])
     } catch (err) {
-      setError('加载章节失败')
+      setError('Failed to load chapters')
     }
   }
 
   const loadStrategies = async () => {
     try {
-      // TODO: 从 API 加载组卷策略
+      // TODO: load strategies from API
       setStrategies([
-        { key: 'random', name: '随机选题', description: '从题库中随机选择题目', icon: '🎲' },
-        { key: 'difficulty', name: '难度分布', description: '按照难度比例选题（3:5:2）', icon: '📊' },
-        { key: 'knowledge', name: '知识点覆盖', description: '尽量覆盖更多知识点', icon: '🎓' },
-        { key: 'ai_recommend', name: 'AI 推荐', description: '根据你的薄弱点智能推荐', icon: '🤖' },
-        { key: 'exam_style', name: '真题风格', description: '优先选择历年真题', icon: '📝' }
+        { key: 'random',       name: 'Random',          description: 'Randomly select questions from the bank',          icon: '🎲' },
+        { key: 'difficulty',   name: 'By Difficulty',   description: 'Select by difficulty ratio (3:5:2)',               icon: '📊' },
+        { key: 'knowledge',    name: 'Topic Coverage',  description: 'Maximise coverage of knowledge points',            icon: '🎓' },
+        { key: 'ai_recommend', name: 'AI Recommended',  description: 'Smart selection based on your weak areas',         icon: '🤖' },
+        { key: 'exam_style',   name: 'Past Paper Style','description': 'Prioritise questions from past exam papers',     icon: '📝' }
       ])
     } catch (err) {
-      setError('加载策略失败')
+      setError('Failed to load strategies')
     }
   }
 
   const handleStartPractice = async () => {
     if (!selectedChapter) {
-      setError('请选择章节')
+      setError('Please select a chapter')
       return
     }
 
@@ -64,7 +62,6 @@ const PracticePage = () => {
     setError(null)
 
     try {
-      // 调用组卷 API
       const response = await fetch('/api/question-sets/compose', {
         method: 'POST',
         headers: {
@@ -82,13 +79,12 @@ const PracticePage = () => {
       const data = await response.json()
 
       if (data.success) {
-        // 跳转到答题页面
         navigate(`/practice/exam/${data.data.questionSet.id}`)
       } else {
-        setError(data.error?.message || '组卷失败')
+        setError(data.error?.message || 'Failed to generate question set')
       }
     } catch (err) {
-      setError('网络错误，请稍后重试')
+      setError('Network error. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -107,17 +103,15 @@ const PracticePage = () => {
   return (
     <div className="practice-page">
       <div className="practice-container">
-        <h1 className="practice-title">📝 开始练习</h1>
+        <h1 className="practice-title">📝 Start Practice</h1>
 
         {error && (
-          <div className="error-message">
-            ⚠️ {error}
-          </div>
+          <div className="error-message">⚠️ {error}</div>
         )}
 
-        {/* 选择章节 */}
+        {/* Step 1: Select chapter */}
         <section className="practice-section">
-          <h2 className="section-title">1. 选择章节</h2>
+          <h2 className="section-title">1. Select Chapter</h2>
           <div className="chapter-grid">
             {chapters.map(chapter => (
               <div
@@ -125,16 +119,15 @@ const PracticePage = () => {
                 className={`chapter-card ${selectedChapter === chapter.id ? 'selected' : ''}`}
                 onClick={() => setSelectedChapter(chapter.id)}
               >
-                <div className="chapter-title">{chapter.title.zh}</div>
-                <div className="chapter-subtitle">{chapter.title.en}</div>
+                <div className="chapter-title">{chapter.title.en}</div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* 选择组卷策略 */}
+        {/* Step 2: Select strategy */}
         <section className="practice-section">
-          <h2 className="section-title">2. 选择组卷策略</h2>
+          <h2 className="section-title">2. Select Strategy</h2>
           <div className="strategy-grid">
             {strategies.map(strategy => (
               <div
@@ -150,12 +143,12 @@ const PracticePage = () => {
           </div>
         </section>
 
-        {/* 题目配置 */}
+        {/* Step 3: Configuration */}
         <section className="practice-section">
-          <h2 className="section-title">3. 题目配置</h2>
+          <h2 className="section-title">3. Configuration</h2>
 
           <div className="config-group">
-            <label className="config-label">题目数量</label>
+            <label className="config-label">Number of questions</label>
             <div className="count-selector">
               {[5, 10, 15, 20].map(count => (
                 <button
@@ -163,20 +156,20 @@ const PracticePage = () => {
                   className={`count-btn ${questionCount === count ? 'active' : ''}`}
                   onClick={() => setQuestionCount(count)}
                 >
-                  {count} 题
+                  {count}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="config-group">
-            <label className="config-label">题目类型</label>
+            <label className="config-label">Question types</label>
             <div className="type-selector">
               {[
-                { key: 'multiple_choice', label: '选择题' },
-                { key: 'fill_blank', label: '填空题' },
-                { key: 'calculation', label: '计算题' },
-                { key: 'short_answer', label: '简答题' }
+                { key: 'multiple_choice', label: 'Multiple Choice' },
+                { key: 'fill_blank',      label: 'Fill in the Blank' },
+                { key: 'calculation',     label: 'Calculation' },
+                { key: 'short_answer',    label: 'Short Answer' }
               ].map(type => (
                 <button
                   key={type.key}
@@ -190,14 +183,13 @@ const PracticePage = () => {
           </div>
         </section>
 
-        {/* 开始按钮 */}
         <div className="practice-actions">
           <button
             className="start-btn"
             onClick={handleStartPractice}
             disabled={loading || !selectedChapter}
           >
-            {loading ? '正在组卷...' : '🚀 开始练习'}
+            {loading ? 'Generating...' : '🚀 Start Practice'}
           </button>
         </div>
       </div>

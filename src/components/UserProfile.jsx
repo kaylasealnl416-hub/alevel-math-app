@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import useUser from '../hooks/useUser'
 
 /**
- * 个人中心页面
- * 显示用户信息、学习偏好设置
+ * User profile page
+ * Displays user info and study preferences
  */
 export default function UserProfile() {
   const {
@@ -18,7 +18,6 @@ export default function UserProfile() {
     isLoggedIn
   } = useUser()
 
-  // 表单状态
   const [userForm, setUserForm] = useState({
     nickname: '',
     grade: '',
@@ -38,7 +37,6 @@ export default function UserProfile() {
   const [isEditing, setIsEditing] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
 
-  // 初始化表单数据
   useEffect(() => {
     if (user) {
       setUserForm({
@@ -63,13 +61,11 @@ export default function UserProfile() {
     }
   }, [profile])
 
-  // 处理用户信息表单变化
   const handleUserFormChange = (e) => {
     const { name, value } = e.target
     setUserForm(prev => ({ ...prev, [name]: value }))
   }
 
-  // 处理画像表单变化
   const handleProfileFormChange = (e) => {
     const { name, value, type, checked } = e.target
     setProfileForm(prev => ({
@@ -78,7 +74,6 @@ export default function UserProfile() {
     }))
   }
 
-  // 处理科目选择
   const handleSubjectToggle = (subjectId) => {
     setProfileForm(prev => {
       const subjects = prev.selectedSubjects || []
@@ -89,7 +84,6 @@ export default function UserProfile() {
     })
   }
 
-  // 保存用户信息
   const handleSave = async () => {
     if (!user) return
 
@@ -97,10 +91,8 @@ export default function UserProfile() {
       clearError()
       setSaveSuccess(false)
 
-      // 保存用户基本信息
       await updateUser(user.id, userForm)
 
-      // 保存用户画像
       await updateUserProfile(user.id, {
         ...profileForm,
         weeklyStudyHours: profileForm.weeklyStudyHours ? parseInt(profileForm.weeklyStudyHours) : null
@@ -109,31 +101,28 @@ export default function UserProfile() {
       setSaveSuccess(true)
       setIsEditing(false)
 
-      // 3秒后隐藏成功提示
       setTimeout(() => setSaveSuccess(false), 3000)
     } catch (err) {
-      console.error('保存失败:', err)
+      console.error('Save failed:', err)
     }
   }
 
-  // 如果未登录
   if (!isLoggedIn) {
     return (
       <div style={styles.container}>
         <div style={styles.card}>
-          <h2 style={styles.title}>个人中心</h2>
-          <p style={styles.notLoggedIn}>请先登录</p>
+          <h2 style={styles.title}>My Profile</h2>
+          <p style={styles.notLoggedIn}>Please log in to view your profile</p>
         </div>
       </div>
     )
   }
 
-  // 加载中
   if (loading && !user) {
     return (
       <div style={styles.container}>
         <div style={styles.card}>
-          <p style={styles.loading}>加载中...</p>
+          <p style={styles.loading}>Loading...</p>
         </div>
       </div>
     )
@@ -142,20 +131,18 @@ export default function UserProfile() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        {/* 标题 */}
         <div style={styles.header}>
-          <h2 style={styles.title}>个人中心</h2>
+          <h2 style={styles.title}>My Profile</h2>
           {!isEditing && (
             <button
               onClick={() => setIsEditing(true)}
               style={styles.editButton}
             >
-              编辑
+              Edit
             </button>
           )}
         </div>
 
-        {/* 错误提示 */}
         {error && (
           <div style={styles.error}>
             {error}
@@ -163,19 +150,18 @@ export default function UserProfile() {
           </div>
         )}
 
-        {/* 成功提示 */}
         {saveSuccess && (
           <div style={styles.success}>
-            保存成功！
+            Saved successfully!
           </div>
         )}
 
-        {/* 用户基本信息 */}
+        {/* Basic info */}
         <section style={styles.section}>
-          <h3 style={styles.sectionTitle}>基本信息</h3>
+          <h3 style={styles.sectionTitle}>Basic Info</h3>
           <div style={styles.formGrid}>
             <div style={styles.formGroup}>
-              <label style={styles.label}>昵称</label>
+              <label style={styles.label}>Nickname</label>
               <input
                 type="text"
                 name="nickname"
@@ -183,12 +169,12 @@ export default function UserProfile() {
                 onChange={handleUserFormChange}
                 disabled={!isEditing}
                 style={styles.input}
-                placeholder="请输入昵称"
+                placeholder="Enter your nickname"
               />
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>年级</label>
+              <label style={styles.label}>Year</label>
               <select
                 name="grade"
                 value={userForm.grade}
@@ -196,14 +182,14 @@ export default function UserProfile() {
                 disabled={!isEditing}
                 style={styles.input}
               >
-                <option value="">请选择</option>
+                <option value="">Select</option>
                 <option value="AS">AS Level</option>
                 <option value="A2">A2 Level</option>
               </select>
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>目标大学</label>
+              <label style={styles.label}>Target University</label>
               <input
                 type="text"
                 name="targetUniversity"
@@ -211,12 +197,12 @@ export default function UserProfile() {
                 onChange={handleUserFormChange}
                 disabled={!isEditing}
                 style={styles.input}
-                placeholder="如：Cambridge, Oxford"
+                placeholder="e.g. Cambridge, Oxford"
               />
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>邮箱</label>
+              <label style={styles.label}>Email</label>
               <input
                 type="email"
                 name="email"
@@ -230,13 +216,12 @@ export default function UserProfile() {
           </div>
         </section>
 
-        {/* 学习偏好 */}
+        {/* Study preferences */}
         <section style={styles.section}>
-          <h3 style={styles.sectionTitle}>学习偏好</h3>
+          <h3 style={styles.sectionTitle}>Study Preferences</h3>
 
-          {/* 科目选择 */}
           <div style={styles.formGroup}>
-            <label style={styles.label}>选择科目</label>
+            <label style={styles.label}>Subjects</label>
             <div style={styles.subjectGrid}>
               {AVAILABLE_SUBJECTS.map(subject => (
                 <button
@@ -256,7 +241,7 @@ export default function UserProfile() {
 
           <div style={styles.formGrid}>
             <div style={styles.formGroup}>
-              <label style={styles.label}>每周学习时长（小时）</label>
+              <label style={styles.label}>Weekly Study Hours</label>
               <input
                 type="number"
                 name="weeklyStudyHours"
@@ -264,14 +249,14 @@ export default function UserProfile() {
                 onChange={handleProfileFormChange}
                 disabled={!isEditing}
                 style={styles.input}
-                placeholder="如：20"
+                placeholder="e.g. 20"
                 min="0"
                 max="168"
               />
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>偏好学习时间</label>
+              <label style={styles.label}>Preferred Study Time</label>
               <select
                 name="preferredStudyTime"
                 value={profileForm.preferredStudyTime}
@@ -279,24 +264,24 @@ export default function UserProfile() {
                 disabled={!isEditing}
                 style={styles.input}
               >
-                <option value="">请选择</option>
-                <option value="morning">早晨 (6:00-12:00)</option>
-                <option value="afternoon">下午 (12:00-18:00)</option>
-                <option value="evening">傍晚 (18:00-22:00)</option>
-                <option value="night">深夜 (22:00-6:00)</option>
+                <option value="">Select</option>
+                <option value="morning">Morning (6:00–12:00)</option>
+                <option value="afternoon">Afternoon (12:00–18:00)</option>
+                <option value="evening">Evening (18:00–22:00)</option>
+                <option value="night">Night (22:00–6:00)</option>
               </select>
             </div>
           </div>
 
           <div style={styles.formGroup}>
-            <label style={styles.label}>学习目标</label>
+            <label style={styles.label}>Study Goals</label>
             <textarea
               name="studyGoals"
               value={profileForm.studyGoals}
               onChange={handleProfileFormChange}
               disabled={!isEditing}
               style={styles.textarea}
-              placeholder="描述你的学习目标..."
+              placeholder="Describe your study goals..."
               rows="3"
             />
           </div>
@@ -311,51 +296,51 @@ export default function UserProfile() {
                 disabled={!isEditing}
                 style={styles.checkbox}
               />
-              <span>接收学习提醒通知</span>
+              <span>Enable study reminders</span>
             </label>
           </div>
         </section>
 
-        {/* 学习统计 */}
+        {/* Study stats */}
         {stats && (
           <section style={styles.section}>
-            <h3 style={styles.sectionTitle}>学习统计</h3>
+            <h3 style={styles.sectionTitle}>Study Stats</h3>
             <div style={styles.statsGrid}>
               <div style={styles.statCard}>
                 <div style={styles.statValue}>{Math.floor(stats.totalStudyTime / 3600)}</div>
-                <div style={styles.statLabel}>学习时长（小时）</div>
+                <div style={styles.statLabel}>Study Hours</div>
               </div>
               <div style={styles.statCard}>
                 <div style={styles.statValue}>{stats.totalChaptersCompleted}</div>
-                <div style={styles.statLabel}>完成章节</div>
+                <div style={styles.statLabel}>Chapters Done</div>
               </div>
               <div style={styles.statCard}>
                 <div style={styles.statValue}>{stats.currentStreak}</div>
-                <div style={styles.statLabel}>连续学习（天）</div>
+                <div style={styles.statLabel}>Current Streak (days)</div>
               </div>
               <div style={styles.statCard}>
                 <div style={styles.statValue}>{stats.longestStreak}</div>
-                <div style={styles.statLabel}>最长连续（天）</div>
+                <div style={styles.statLabel}>Best Streak (days)</div>
               </div>
             </div>
           </section>
         )}
 
-        {/* 操作按钮 */}
+        {/* Action buttons */}
         {isEditing && (
           <div style={styles.actions}>
             <button
               onClick={() => setIsEditing(false)}
               style={styles.cancelButton}
             >
-              取消
+              Cancel
             </button>
             <button
               onClick={handleSave}
               style={styles.saveButton}
               disabled={loading}
             >
-              {loading ? '保存中...' : '保存'}
+              {loading ? 'Saving...' : 'Save'}
             </button>
           </div>
         )}
@@ -364,17 +349,15 @@ export default function UserProfile() {
   )
 }
 
-// 可选科目列表
 const AVAILABLE_SUBJECTS = [
-  { id: 'mathematics', name: '数学', icon: '📐' },
-  { id: 'economics', name: '经济学', icon: '📊' },
-  { id: 'history', name: '历史', icon: '📜' },
-  { id: 'politics', name: '政治', icon: '🏛️' },
-  { id: 'psychology', name: '心理学', icon: '🧠' },
-  { id: 'further_math', name: '进阶数学', icon: '🔢' }
+  { id: 'mathematics',  name: 'Mathematics',   icon: '📐' },
+  { id: 'economics',    name: 'Economics',      icon: '📊' },
+  { id: 'history',      name: 'History',        icon: '📜' },
+  { id: 'politics',     name: 'Politics',       icon: '🏛️' },
+  { id: 'psychology',   name: 'Psychology',     icon: '🧠' },
+  { id: 'further_math', name: 'Further Maths',  icon: '🔢' }
 ]
 
-// 样式
 const styles = {
   container: {
     maxWidth: '800px',

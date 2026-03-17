@@ -1,6 +1,6 @@
 // ============================================================
 // MessageList Component
-// 消息列表组件
+// Renders the list of chat messages
 // ============================================================
 
 import UserMessage from './UserMessage.jsx'
@@ -11,7 +11,7 @@ export default function MessageList({ messages, isLoading }) {
     return (
       <div style={styles.loadingContainer}>
         <div style={styles.loadingSpinner}></div>
-        <span>加载中...</span>
+        <span>Loading...</span>
       </div>
     )
   }
@@ -19,7 +19,7 @@ export default function MessageList({ messages, isLoading }) {
   if (messages.length === 0) {
     return (
       <div style={styles.emptyContainer}>
-        <p>还没有消息，开始对话吧！</p>
+        <p>No messages yet. Start a conversation!</p>
       </div>
     )
   }
@@ -83,11 +83,6 @@ const styles = {
   }
 }
 
-// 添加动画样式
 const styleSheet = document.createElement('style')
-styleSheet.textContent = `
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-`
+styleSheet.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`
 document.head.appendChild(styleSheet)

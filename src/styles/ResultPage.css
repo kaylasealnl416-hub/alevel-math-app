@@ -1,5 +1,5 @@
 /* ============================================================
-   结果页面样式
+   Result page styles
    ============================================================ */
 
 .result-page {
@@ -15,7 +15,7 @@
   align-items: center;
 }
 
-/* 头部 */
+/* Header */
 .result-header {
   max-width: 1200px;
   margin: 0 auto 2rem;
@@ -31,7 +31,7 @@
   margin: 0;
 }
 
-/* 总体统计 */
+/* Overall stats */
 .result-summary {
   max-width: 1200px;
   margin: 0 auto 2rem;
@@ -95,7 +95,7 @@
   opacity: 0.9;
 }
 
-/* 结果区块 */
+/* Result section */
 .result-section {
   max-width: 1200px;
   margin: 0 auto 2rem;
@@ -112,7 +112,7 @@
   margin: 0 0 1.5rem 0;
 }
 
-/* 难度统计 */
+/* Difficulty stats */
 .difficulty-stats {
   display: flex;
   flex-direction: column;
@@ -152,7 +152,7 @@
   text-align: right;
 }
 
-/* 知识点统计 */
+/* Topic stats */
 .tag-stats {
   display: flex;
   flex-direction: column;
@@ -206,7 +206,7 @@
   color: #f59e0b;
 }
 
-/* 错题列表 */
+/* Wrong answers list */
 .wrong-questions {
   display: flex;
   flex-direction: column;
@@ -282,7 +282,7 @@
   color: #10b981;
 }
 
-/* 操作按钮 */
+/* Action buttons */
 .result-actions {
   max-width: 1200px;
   margin: 2rem auto;

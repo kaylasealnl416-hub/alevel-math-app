@@ -182,10 +182,10 @@ function LearningPlanPage() {
 
   const getTypeLabel = (type) => {
     const labels = {
-      chapter: '章节学习',
-      practice: '练习题',
-      review: '错题复习',
-      video: '视频学习'
+      chapter: 'Chapter Study',
+      practice: 'Practice',
+      review: 'Wrong Answer Review',
+      video: 'Video Study'
     }
     return labels[type] || type
   }
@@ -197,9 +197,9 @@ function LearningPlanPage() {
   }
 
   const getPriorityLabel = (priority) => {
-    if (priority >= 4) return '高优先级'
-    if (priority >= 3) return '中优先级'
-    return '低优先级'
+    if (priority >= 4) return 'High priority'
+    if (priority >= 3) return 'Medium priority'
+    return 'Low priority'
   }
 
   const getPriorityBadgeClass = (priority) => {
@@ -310,7 +310,7 @@ function LearningPlanPage() {
                         <div className="mt-4 space-y-3">
                           {rec.weakTopics && rec.weakTopics.length > 0 && (
                             <div>
-                              <span className="text-sm font-semibold text-gray-600">薄弱知识点：</span>
+                              <span className="text-sm font-semibold text-gray-600">Weak topics:</span>
                               <div className="flex flex-wrap gap-2 mt-2">
                                 {rec.weakTopics.map((topic, i) => (
                                   <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
@@ -323,7 +323,7 @@ function LearningPlanPage() {
 
                           {rec.chapter && (
                             <div className="text-sm">
-                              <span className="font-semibold text-gray-600">推荐章节：</span>
+                              <span className="font-semibold text-gray-600">Recommended chapter:</span>
                               <span className="text-primary-600 font-medium ml-2">
                                 {rec.chapter.title?.zh || rec.chapter.title}
                               </span>

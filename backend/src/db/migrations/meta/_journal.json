@@ -43,6 +43,13 @@
       "when": 1773023086768,
       "tag": "0005_typical_quasar",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1773673578536,
+      "tag": "0006_funny_mysterio",
+      "breakpoints": true
     }
   ]
 }

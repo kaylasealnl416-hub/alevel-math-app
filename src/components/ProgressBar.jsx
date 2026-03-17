@@ -1,6 +1,6 @@
 // ============================================================
-// 进度条组件
-// 显示答题进度
+// ProgressBar Component
+// Displays question progress during an exam
 // ============================================================
 
 import React from 'react'
@@ -19,12 +19,8 @@ const ProgressBar = ({ current, total, answered = 0 }) => {
           <span className="progress-total">{total}</span>
         </div>
         <div className="progress-stats">
-          <span className="stat-item">
-            ✅ 已答 {answered}
-          </span>
-          <span className="stat-item">
-            ⏭️ 未答 {total - answered}
-          </span>
+          <span className="stat-item">✅ Answered: {answered}</span>
+          <span className="stat-item">⏭️ Remaining: {total - answered}</span>
         </div>
       </div>
       <div className="progress-bar">
@@ -38,7 +34,7 @@ const ProgressBar = ({ current, total, answered = 0 }) => {
         />
       </div>
       <div className="progress-percentage">
-        {Math.round(answeredProgress)}% 完成
+        {Math.round(answeredProgress)}% complete
       </div>
     </div>
   )

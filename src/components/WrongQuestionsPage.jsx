@@ -5,6 +5,7 @@ import Navbar from './Navbar'
 import Loading from './common/Loading'
 import { Button } from './ui'
 import { get } from '../utils/apiClient'
+import { formatDate, getDifficultyLabel } from '../utils/helpers.js'
 
 /**
  * Phase 4 Week 4 Day 11: Wrong Questions Page
@@ -29,8 +30,7 @@ function WrongQuestionsPage() {
   })
   const [showAnswer, setShowAnswer] = useState({})
 
-  // Mock user ID
-  const userId = 1
+  const userId = parseInt(localStorage.getItem('currentUserId')) || 1
 
   useEffect(() => {
     fetchWrongQuestions()
@@ -105,27 +105,6 @@ function WrongQuestionsPage() {
     acc[topic].push(q)
     return acc
   }, {})
-
-  const formatDate = (dateString) => {
-    if (!dateString) return ''
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-GB', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    })
-  }
-
-  const getDifficultyLabel = (difficulty) => {
-    const labels = {
-      1: 'Very Easy',
-      2: 'Easy',
-      3: 'Medium',
-      4: 'Hard',
-      5: 'Very Hard'
-    }
-    return labels[difficulty] || 'Medium'
-  }
 
   const getDifficultyBadgeClass = (difficulty) => {
     if (difficulty <= 2) return 'bg-success-100 text-success-700'

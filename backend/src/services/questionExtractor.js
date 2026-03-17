@@ -51,12 +51,15 @@ ${text}
     const response = await callGLMAPI([
       { role: 'user', content: prompt }
     ], {
-      temperature: 0.1, // 低温度，提高准确性
+      temperature: 0.1,
       model: 'glm-4-plus'
     })
 
-    const content = response.content
+    let content = response.content
     console.log('📝 AI 响应:', content.substring(0, 200) + '...')
+
+    // Strip markdown code blocks if present (```json ... ```)
+    content = content.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim()
 
     const result = JSON.parse(content)
 

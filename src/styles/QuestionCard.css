@@ -1,5 +1,5 @@
 /* ============================================================
-   题目卡片样式
+   Question card styles
    ============================================================ */
 
 .question-card {
@@ -57,7 +57,7 @@
   margin-bottom: 1.5rem;
 }
 
-/* LaTeX 公式样式 */
+/* LaTeX formula styles */
 .question-text .katex {
   font-size: 1.1em;
 }
@@ -66,7 +66,7 @@
   margin: 1rem 0;
 }
 
-/* 选择题选项 */
+/* Multiple choice options */
 .question-options {
   display: flex;
   flex-direction: column;
@@ -92,7 +92,7 @@
   background: #d1fae5;
 }
 
-/* 知识点标签 */
+/* Topic tags */
 .question-tags {
   display: flex;
   flex-wrap: wrap;
@@ -108,7 +108,7 @@
   font-size: 0.875rem;
 }
 
-/* 答案显示 */
+/* Answer display */
 .question-answer {
   margin-top: 1.5rem;
   padding: 1.5rem;

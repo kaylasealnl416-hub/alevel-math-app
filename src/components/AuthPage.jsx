@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useGoogleLogin } from '@react-oauth/google'
 import { useAuth } from '../contexts/AuthContext'
-import Toast from './common/Toast'
+// Toast helper — Toast component lacks static methods, use alert fallback
+const Toast = {
+  success: (msg) => console.log('SUCCESS:', msg),
+  error: (msg) => { console.error('ERROR:', msg); alert(msg) },
+}
 import { API_BASE, COLORS } from '../utils/constants'
 import { validateEmail, validatePassword } from '../utils/validation'
 
@@ -140,8 +144,7 @@ export default function AuthPage() {
   }, [])
 
   // ─── Login submit ──────────────────────────────────────────────────
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault()
+  const handleLoginSubmit = async () => {
     const newErrors = {}
     const emailError = validateEmail(email)
     if (emailError) newErrors.email = emailError
@@ -150,6 +153,7 @@ export default function AuthPage() {
     if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return }
 
     setLoading(true)
+    console.log('LOGIN: submitting to', `${API_BASE}/api/auth/login`)
     try {
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
@@ -178,8 +182,7 @@ export default function AuthPage() {
   }
 
   // ─── Register submit ───────────────────────────────────────────────
-  const handleRegisterSubmit = async (e) => {
-    e.preventDefault()
+  const handleRegisterSubmit = async () => {
     const newErrors = {}
     const emailError = validateEmail(email)
     if (emailError) newErrors.email = emailError
@@ -334,7 +337,7 @@ export default function AuthPage() {
           </div>
 
           {/* ─── Form (opacity toggle keeps height stable) ─── */}
-          <form onSubmit={isLogin ? handleLoginSubmit : handleRegisterSubmit}>
+          <div>
 
             {/* Email */}
             <div style={{ marginBottom: 14 }}>
@@ -412,8 +415,9 @@ export default function AuthPage() {
 
             {/* Submit button */}
             <button
-              type="submit"
+              type="button"
               disabled={loading}
+              onClick={isLogin ? handleLoginSubmit : handleRegisterSubmit}
               style={{ width: '100%', height: 44, padding: 0, background: loading ? '#475569' : DARK, color: '#fff', fontWeight: 600, fontSize: 14, border: 'none', borderRadius: 12, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.15s', marginBottom: 24 }}
               onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#1E293B' }}
               onMouseLeave={e => { if (!loading) e.currentTarget.style.background = DARK }}
@@ -423,7 +427,7 @@ export default function AuthPage() {
                 : <><span>{isLogin ? 'Sign In' : 'Create Account'}</span><ArrowRightIcon /></>
               }
             </button>
-          </form>
+          </div>
           {/* ─── Divider ─── */}
           <div style={{ display: 'flex', alignItems: 'center', margin: '24px 0 20px' }}>
             <div style={{ flex: 1, height: 1, background: '#E2E8F0' }} />

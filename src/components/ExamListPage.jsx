@@ -5,6 +5,7 @@ import Navbar from './Navbar'
 import Loading from './common/Loading'
 import { Button } from './ui'
 import { API_BASE } from '../utils/constants'
+import { formatDuration } from '../utils/helpers.js'
 
 /**
  * Phase 4 Week 2 Day 4: Exam List Page
@@ -105,13 +106,6 @@ function ExamListPage() {
       // View result
       navigate(`/exams/${exam.id}/result`)
     }
-  }
-
-  const formatTime = (seconds) => {
-    if (!seconds) return '-'
-    const minutes = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${minutes}:${secs.toString().padStart(2, '0')}`
   }
 
   const formatDate = (dateString) => {
@@ -292,7 +286,7 @@ function ExamListPage() {
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">Time:</span>
                           <span className="font-medium text-gray-900">
-                            {formatTime(exam.timeSpent)}
+                            {formatDuration(exam.timeSpent)}
                           </span>
                         </div>
                       )}

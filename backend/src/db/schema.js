@@ -52,6 +52,7 @@ export const users = pgTable('users', {
   id: serial('id').primaryKey(),
   wechatOpenid: varchar('wechat_openid', { length: 100 }).unique(),
   wechatUnionid: varchar('wechat_unionid', { length: 100 }),
+  googleId: varchar('google_id', { length: 255 }).unique(),
   nickname: varchar('nickname', { length: 100 }),
   avatar: text('avatar'),
   email: varchar('email', { length: 255 }).unique(),
