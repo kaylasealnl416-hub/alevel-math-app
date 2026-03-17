@@ -4,13 +4,13 @@
 // ============================================================
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import ALevelMathApp from './alevel-math-app.jsx'
 import ApiTestPage from './ApiTestPage.jsx'
 import Phase1TestPage from './components/Phase1TestPage.jsx'
 import Phase2TestPage from './components/Phase2TestPage.jsx'
-import AuthPage from './components/AuthPage.jsx'
+import LoginPage from './components/LoginPage.jsx'
+import RegisterPage from './components/RegisterPage.jsx'
 import UserProfilePage from './components/UserProfilePage.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import ExamListPage from './components/ExamListPage.jsx'
@@ -24,7 +24,6 @@ import ErrorBoundary from './components/ErrorBoundary.jsx'
 export default function AppRouter() {
   return (
     <ErrorBoundary>
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
       <AuthProvider>
         <BrowserRouter>
           <Routes>
@@ -32,8 +31,8 @@ export default function AppRouter() {
             <Route path="/" element={<ALevelMathApp />} />
 
             {/* Auth pages */}
-            <Route path="/login" element={<AuthPage />} />
-            <Route path="/register" element={<AuthPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/profile" element={
               <ProtectedRoute>
                 <UserProfilePage />
@@ -86,7 +85,6 @@ export default function AppRouter() {
           </Routes>
         </BrowserRouter>
       </AuthProvider>
-      </GoogleOAuthProvider>
     </ErrorBoundary>
   )
 }
