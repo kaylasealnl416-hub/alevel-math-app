@@ -14,6 +14,7 @@
 
 ## Session 总结
 
+- [session-2026-03-17.md](./session-2026-03-17.md) - Auth fix, question upload pipeline, deploy update
 - [session-2026-03-16.md](./session-2026-03-16.md) - UI中文清理、内容同步、崩溃修复
 - [final-project-completion-2026-03-13.md](./final-project-completion-2026-03-13.md) - 82章内容增强完成报告
 - [cumulative-progress-2026-03-13.md](./cumulative-progress-2026-03-13.md) - 内容增强累计进度
