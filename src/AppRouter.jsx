@@ -9,8 +9,7 @@ import ALevelMathApp from './alevel-math-app.jsx'
 import ApiTestPage from './ApiTestPage.jsx'
 import Phase1TestPage from './components/Phase1TestPage.jsx'
 import Phase2TestPage from './components/Phase2TestPage.jsx'
-import LoginPage from './components/LoginPage.jsx'
-import RegisterPage from './components/RegisterPage.jsx'
+import AuthPage from './components/AuthPage.jsx'
 import UserProfilePage from './components/UserProfilePage.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import ExamListPage from './components/ExamListPage.jsx'
@@ -31,8 +30,8 @@ export default function AppRouter() {
             <Route path="/" element={<ALevelMathApp />} />
 
             {/* Auth pages */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<AuthPage />} />
+            <Route path="/register" element={<AuthPage />} />
             <Route path="/profile" element={
               <ProtectedRoute>
                 <UserProfilePage />
