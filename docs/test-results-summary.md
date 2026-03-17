@@ -66,7 +66,7 @@
 
 ## 🔧 已修复的问题
 
-### 问题 1: 视频数据缺失 ✅ 已修复
+### 问题 1: 视频数据缺失 ✅ 已修复（两阶段）
 
 **问题描述**: 数据库中所有 82 个章节的视频字段为空
 
@@ -75,12 +75,17 @@
 - 数据库 schema 和导入脚本期望字段名 `videos`
 - 字段名不匹配导致视频数据导入失败
 
-**修复方案**:
-1. 批量替换数据源文件字段名: `youtube:` → `videos:`
+**第一阶段修复（后端）**:
+1. 批量替换 `backend/data-import/subjects.js` 字段名: `youtube:` → `videos:`
 2. 创建更新脚本 `update-videos.js` 更新数据库
 3. 成功更新所有 82 个章节的视频数据
 
-**验证**: 重新运行知识点验证，确认所有章节都有视频
+**第二阶段修复（前端，2026-03-16）**:
+- 发现 `backend/data-import/subjects.js` 的内容增强从未同步到前端使用的 `src/data/subjects.js`
+- 将 backend 文件（6665行）覆盖前端文件（原2682行），并将 `videos:` 改回 `youtube:`（前端读取该字段）
+- 两个文件各自维护各自的字段名：frontend 用 `youtube:`，backend 用 `videos:`
+
+**注意**: `src/data/subjects.js` 是前端的数据源，`backend/data-import/subjects.js` 是数据库导入源，未来内容更新后需手动同步。
 
 ---
 
