@@ -3325,6 +3325,27 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
                 </div>
               </section>
             )}
+
+            {ch.definitions && ch.definitions.length > 0 && (
+              <section style={styles.learnSection}>
+                <div style={styles.sectionHeader}>
+                  <div style={{ ...styles.sectionIconBox, background: "#F0FDF4" }}>📚</div>
+                  <h3 style={styles.sectionTitle}>Key Terms</h3>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 10 }}>
+                  {ch.definitions.map((d, i) => (
+                    <div key={i} style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: 10, overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,0.04)", borderTop: `3px solid ${color}` }}>
+                      <div style={{ padding: "10px 14px 6px", borderBottom: "1px solid #F1F5F9" }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: "#1E293B" }}>{d.term}</span>
+                      </div>
+                      <div style={{ padding: "8px 14px 12px" }}>
+                        <span style={{ fontSize: 12, color: "#6B7280", lineHeight: 1.6 }}>{d.definition}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
         </div>
       )}

@@ -1939,8 +1939,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES: (1) Was revolution inevitable? Marxist view: Yes - class conflict between bourgeoisie and aristocracy. Revisionist view: No - financial crisis could have been solved, revolution was contingent on events, (2) Was Terror necessary? Jacobin view: Yes - France surrounded by enemies, needed strong measures. Liberal view: No - Terror betrayed revolution's ideals, (3) Was Napoleon betrayer or fulfiller of revolution? Betrayer: Restored monarchy, censored press, limited rights. Fulfiller: Spread revolutionary ideas, meritocracy, legal equality, (4) Did revolution improve lives? Yes: Ended feudalism, legal equality, career open to talent. No: Wars killed millions, economic disruption, political instability"
             ],
             definitions: [
-              { term: "波旁王朝", definition: "法国皇室家族，1789年前统治法国" },
-              { term: "雅各宾派", definition: "法国大革命中的激进共和派" }
+              { term: "House of Bourbon", definition: "French royal dynasty that ruled France before the Revolution of 1789" },
+              { term: "Jacobins", definition: "Radical republican faction during the French Revolution, led by Robespierre; responsible for the Reign of Terror (1793–1794)" }
             ],
             difficulty: "Foundation",
             hardPoints: "理解革命各阶段的转变",
@@ -2000,8 +2000,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES: (1) Who was responsible? Fischer thesis (1960s): Germany deliberately started war (aggressive foreign policy, war aims). Revisionist view: All powers shared blame (alliance system, militarism, miscalculation), (2) Could war have been avoided? Determinist view: Long-term causes made war inevitable. Contingency view: War resulted from specific decisions in July 1914 - different choices could have prevented it, (3) Was war futile? Traditional view: Generals incompetent, sent men to die for nothing ('lions led by donkeys'). Revisionist view: Generals adapted to new conditions, eventually developed winning tactics (1918), (4) Did war change society? Optimist view: Accelerated social progress (women's rights, welfare state). Pessimist view: Destroyed European civilization, led to totalitarianism and WWII"
             ],
             definitions: [
-              { term: "同盟国", definition: "一战中的德国、奥匈帝国、奥斯曼帝国" },
-              { term: "协约国", definition: "一战中的英国、法国、俄国（后期美国）" }
+              { term: "Central Powers", definition: "WWI alliance of Germany, Austria-Hungary, and the Ottoman Empire" },
+              { term: "Allied Powers (WWI)", definition: "WWI alliance of Britain, France, and Russia; later joined by the United States" }
             ],
             difficulty: "Foundation",
             hardPoints: "分析战争的深层原因",
@@ -2055,8 +2055,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES: (1) Was revolution inevitable? Determinist view: Tsarist system doomed, revolution inevitable. Contingency view: WWI caused revolution, without war Tsarism might have survived, (2) Was October Revolution coup or revolution? Traditional Soviet view: Popular revolution, workers and peasants seized power. Revisionist view: Bolshevik coup, small group seized power, not mass uprising, (3) Why did Bolsheviks win Civil War? Red strengths: Geography, leadership, unity, propaganda. White weaknesses: Divided, unpopular, foreign intervention backfired, (4) Was Lenin's regime totalitarian from start? Totalitarian view: Lenin established dictatorship, terror, one-party state - Stalin continued Lenin's policies. Revisionist view: Lenin pragmatic, NEP showed flexibility, Stalin's terror far exceeded Lenin's, (5) Did revolution improve lives? Soviet view: Ended exploitation, created socialist society, industrialized Russia. Critical view: Totalitarian dictatorship, millions killed, living standards low, economic inefficiency"
             ],
             definitions: [
-              { term: "布尔什维克", definition: "俄国社会民主工党中的革命派" },
-              { term: "苏维埃", definition: "俄国工人、农民和士兵代表会议" }
+              { term: "Bolsheviks", definition: "Revolutionary faction of the Russian Social Democratic Labour Party, led by Lenin; seized power in the October Revolution of 1917" },
+              { term: "Soviet", definition: "Elected council of workers, peasants, and soldiers in revolutionary Russia; became the basis of Soviet government" }
             ],
             difficulty: "Intermediate",
             hardPoints: "理解革命的多阶段进程",
@@ -2120,8 +2120,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES: (1) Could WWII have been prevented? Appeasement critics: Should have stopped Hitler earlier (Rhineland 1936, Munich 1938). Appeasement defenders: Britain not ready for war, bought time to rearm, (2) Why did Germany lose? Allied strengths: Superior resources, industrial production, manpower. German weaknesses: Two-front war, Hitler's mistakes (Barbarossa, declaring war on US), (3) Was atomic bomb necessary? Truman: Saved lives (invasion would kill millions). Critics: Japan already defeated, US wanted to intimidate USSR, (4) Who won the war? Western view: US and Britain decisive (D-Day, atomic bomb). Soviet view: USSR bore brunt (80% of German casualties on Eastern Front), (5) Was WWII inevitable? Determinist: Versailles made war inevitable. Contingency: Different decisions could have prevented war (no appeasement, no Hitler)"
             ],
             definitions: [
-              { term: "轴心国", definition: "二战中的德国、意大利、日本" },
-              { term: "同盟国", definition: "二战中的英国、苏联、美国、中国等" }
+              { term: "Axis Powers", definition: "WWII alliance of Germany, Italy, and Japan" },
+              { term: "Allied Powers (WWII)", definition: "WWII coalition of Britain, the Soviet Union, the United States, China, and other nations opposed to the Axis" }
             ],
             difficulty: "Intermediate",
             hardPoints: "分析战争的全球性影响",
@@ -2287,8 +2287,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES: (1) Nonviolence vs militancy: Traditional view: Nonviolence was key to success, won over white moderates. Revisionist view: Militancy (Black Power, riots) forced government action, nonviolence alone insufficient, (2) Role of federal government: Liberal view: Federal government essential (Brown decision, Civil Rights Act, Voting Rights Act). Radical view: Government reluctant, only acted when forced by protests, FBI repressed movement, (3) Top-down vs bottom-up: Great man theory: King and other leaders drove movement. Grassroots view: Local activists (Ella Baker, Fannie Lou Hamer, SNCC) were real heroes, leaders got credit, (4) Success or failure: Optimist view: Achieved legal equality, transformed America. Pessimist view: Economic inequality persists, mass incarceration, police brutality - 'new Jim Crow', (5) Class vs race: Marxist view: Economic inequality is root problem, civil rights focused on race distracted from class struggle. Liberal view: Racism is distinct problem, not reducible to class"
             ],
             definitions: [
-              { term: "种族隔离", definition: "法律上的种族分离政策" },
-              { term: "吉姆·克劳法", definition: "美国南部实行的种族隔离法律" }
+              { term: "Racial Segregation", definition: "Legal policy enforcing the separation of people by race, as practised in the American South and apartheid South Africa" },
+              { term: "Jim Crow Laws", definition: "State and local laws enforcing racial segregation in the Southern United States from the 1870s to 1965" }
             ],
             difficulty: "Intermediate",
             hardPoints: "理解非暴力抵抗策略",
@@ -3064,8 +3064,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES - RECONSTRUCTION: (1) Dunning School (early 20th century): Reconstruction was corrupt, vindictive, Black people not ready for equality, (2) Revisionist (1960s): Reconstruction was noble experiment, failed due to white resistance and lack of federal commitment, (3) Post-revisionist: Reconstruction had achievements but also failures, complex, (4) Current view: Reconstruction was unfinished revolution, could have succeeded with more federal support and land redistribution"
             ],
             definitions: [
-              { term: "Manifest Destiny", definition: "19世纪美国扩张的理念" },
-              { term: "Reconstruction", definition: "战后重建时期(1865-1877)" }
+              { term: "Manifest Destiny", definition: "19th-century American belief that US westward expansion across North America was inevitable and divinely justified" },
+              { term: "Reconstruction", definition: "Post-Civil War period (1865–1877) during which the federal government worked to reintegrate Southern states and establish rights for freed slaves" }
             ],
             formulas: [
               { name: "Causes of the American Revolution", expr: "Taxation + representation + ideology = revolution" }
@@ -3224,8 +3224,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES - REUNIFICATION: (1) Peaceful revolution: Why did East Germany collapse peacefully? Gorbachev's role, people power, (2) Reunification process: Too fast? Should have been gradual?, (3) Costs: Was it worth it? West paid huge costs, East lost identity, (4) Success: Has reunification succeeded? Economic gap persists, political divisions, but overall success"
             ],
             definitions: [
-              { term: "Weimar Republic", definition: "德国魏玛共和国(1919-1933)" },
-              { term: "Cold War", definition: "冷战时期的东西方对抗" }
+              { term: "Weimar Republic", definition: "German democratic republic (1919–1933) established after WWI; collapsed with Hitler's rise to power" },
+              { term: "Cold War", definition: "Geopolitical tension (1947–1991) between the US-led Western bloc and the Soviet-led Eastern bloc, characterised by proxy wars and an arms race" }
             ],
             formulas: [
               { name: "Germany Historical Timeline", expr: "Unification → WWI → Weimar → Nazi → WWII → Division → Reunification" }
@@ -3297,8 +3297,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES - COMMONWEALTH: (1) Success or failure: Is Commonwealth meaningful or just symbolic?, (2) British influence: Does Britain still influence former colonies through Commonwealth?, (3) Alternatives: Could empire have evolved differently? Federal empire?, (4) Comparison: How does British decolonisation compare to French, Portuguese? (French fought in Algeria and Indochina, Portuguese in Angola and Mozambique until 1970s)"
             ],
             definitions: [
-              { term: "Decolonisation", definition: "非殖民化进程" },
-              { term: "Commonwealth", definition: "英联邦" }
+              { term: "Decolonisation", definition: "Process by which colonised nations gained independence from European empires, primarily from the 1940s to 1970s" },
+              { term: "Commonwealth", definition: "Political association of 56 member states, mostly former territories of the British Empire, promoting cooperation and shared values" }
             ],
             formulas: [
               { name: "Factors of Decolonisation", expr: "Economic pressure + Nationalism + International pressure = Imperial dissolution" }
@@ -3369,8 +3369,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES - BRITISH MOTIVES FOR LEAVING: (1) Economic: Britain couldn't afford empire after WWII, (2) Political: Labour government sympathetic to independence, (3) Military: Indian army unreliable after Quit India, (4) International: US and USSR pressure, UN anti-colonialism, (5) Nationalist pressure: Congress and League made India ungovernable, (6) Debate: Did Britain voluntarily give independence or forced to leave?"
             ],
             definitions: [
-              { term: "Satyagraha", definition: "甘地的非暴力抵抗哲学" },
-              { term: "Partition", definition: "1947年印巴分治" }
+              { term: "Satyagraha", definition: "Gandhi's philosophy of non-violent resistance ('truth-force'), used in the Indian independence movement against British rule" },
+              { term: "Partition", definition: "1947 division of British India into two independent states — India and Pakistan — along religious lines, causing mass migration and communal violence" }
             ],
             formulas: [
               { name: "Impact of Colonial Rule", expr: "Economic Exploitation + Social Change + National Awakening = Independence Movement" }
@@ -3445,8 +3445,8 @@ export const SUBJECTS = {
               "HISTORIOGRAPHICAL DEBATES - POST-SOVIET TRANSITION: (1) Shock therapy: Right approach vs too fast, caused suffering, (2) Democracy: Was Russia ready for democracy? Cultural factors?, (3) Oligarchs: Inevitable vs result of corrupt privatization, (4) Putin: Inevitable reaction to 1990s chaos vs could have been avoided, (5) Nostalgia: Why do many Russians miss Soviet Union? Propaganda vs genuine grievances?"
             ],
             definitions: [
-              { term: "Perestroika", definition: "戈尔巴乔夫的经济重组政策" },
-              { term: "Glasnost", definition: "戈尔巴乔夫的开放政策" }
+              { term: "Perestroika", definition: "Gorbachev's policy of economic restructuring (1986) aimed at modernising the Soviet economy by allowing limited market mechanisms" },
+              { term: "Glasnost", definition: "Gorbachev's policy of openness (1986) allowing greater freedom of speech and press, exposing government failures" }
             ],
             formulas: [
               { name: "Factors of Soviet Collapse", expr: "Economic crisis + Political reform + Nationalism = Soviet dissolution" }
@@ -3533,8 +3533,8 @@ export const SUBJECTS = {
               "Enhancing democracy: House of Lords reform (elected chamber), electoral reform (proportional representation), devolution (power to Scotland, Wales, Northern Ireland), referendums on major issues"
             ],
             definitions: [
-              { term: "简单多数制(FPTP)", definition: "得票最多的候选人获胜的选举制度" },
-              { term: "比例代表制", definition: "根据得票比例分配席位的选举制度" }
+              { term: "First Past the Post (FPTP)", definition: "Electoral system in which the candidate with the most votes in a constituency wins, regardless of achieving a majority" },
+              { term: "Proportional Representation (PR)", definition: "Electoral system in which parties gain seats in proportion to the number of votes they receive" }
             ],
             difficulty: "Foundation",
             hardPoints: "比较不同选举制度的优缺点",
@@ -4340,8 +4340,8 @@ export const SUBJECTS = {
               "Future of global governance: Multipolarity (US dominance declining, China rising), regional organizations gaining importance (EU, African Union, ASEAN), new challenges (AI, cyber warfare, space), need for reform (UN Security Council, WTO)"
             ],
             definitions: [
-              { term: "Sovereignty", definition: "国家主权概念" },
-              { term: "Human rights", definition: "人权与国际保护" }
+              { term: "Sovereignty", definition: "Supreme authority of a state to govern itself without external interference; a foundational concept in international relations and political theory" },
+              { term: "Human Rights", definition: "Universal rights and freedoms to which all people are entitled, protected by international law through instruments such as the UDHR (1948) and the ECHR" }
             ],
             formulas: [
               { name: "Global Governance Framework", expr: "International organisations + International law + Sovereign states = Global governance" }
@@ -4491,8 +4491,8 @@ export const SUBJECTS = {
               "Reducing aggression: Punishment (effective if immediate and consistent), modeling non-aggression, reducing frustration (catharsis doesn't work - increases aggression)"
             ],
             definitions: [
-              { term: "从众", definition: "个人因群体压力而改变行为或信念" },
-              { term: "服从", definition: "因权威人物要求而服从的行为" }
+              { term: "Conformity", definition: "Change in a person's behaviour or beliefs in response to real or perceived group pressure (e.g. Asch's line experiment)" },
+              { term: "Obedience", definition: "Compliance with instructions from an authority figure, studied by Milgram (1963) in his electric shock experiments" }
             ],
             difficulty: "Foundation",
             hardPoints: "理解经典实验的设计和伦理",
@@ -5546,8 +5546,8 @@ export const SUBJECTS = {
               "Diagnosis ethics: (1) Stigma - labels can harm self-esteem and social relationships, (2) Self-fulfilling prophecy - diagnosis affects how person seen and treated, (3) Overdiagnosis - medicalization of normal distress (grief, shyness), (4) Insurance discrimination"
             ],
             definitions: [
-              { term: "DSM", definition: "精神疾病诊断与统计手册" },
-              { term: "ICD", definition: "国际疾病分类" }
+              { term: "DSM (Diagnostic and Statistical Manual)", definition: "American classification system for mental disorders, published by the APA; currently in its fifth edition (DSM-5, 2013)" },
+              { term: "ICD (International Classification of Diseases)", definition: "WHO's global standard for diagnosing and classifying diseases and mental disorders; currently ICD-11 (2019)" }
             ],
             formulas: [
               { name: "Clinical Assessment Process", expr: "Interview + Psychometric testing + Observation = Comprehensive assessment" }
@@ -5742,8 +5742,8 @@ export const SUBJECTS = {
               "Suicide prevention strategies: Restrict access to lethal means (gun control, bridge barriers), mental health screening, crisis hotlines, reduce stigma"
             ],
             definitions: [
-              { term: "Mania", definition: "躁狂发作时期" },
-              { term: "Anhedonia", definition: "快感缺失" }
+              { term: "Mania", definition: "Episode of elevated or irritable mood, hyperactivity, and reduced need for sleep; a key feature of bipolar disorder" },
+              { term: "Anhedonia", definition: "Inability to feel pleasure in activities once enjoyed; a core symptom of depression and other mood disorders" }
             ],
             formulas: [
               { name: "Diagnostic Criteria for Depression", expr: "Emotional + Cognitive + Physical + Behavioural = Full symptom picture" }
