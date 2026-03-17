@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import QuestionCard from './QuestionCard'
 import AnswerInput from './AnswerInput'
+import { get, put, post } from '../utils/apiClient'
+import { formatDuration } from '../utils/helpers.js'
 
 /**
  * Phase 4 Week 2 Day 5: Exam Taking Page
@@ -15,8 +17,6 @@ import AnswerInput from './AnswerInput'
  * - Auto-save
  * - Anti-cheating detection
  */
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
 function ExamTakingPage() {
   const { examId } = useParams()
@@ -36,12 +36,14 @@ function ExamTakingPage() {
   const autoSaveTimerRef = useRef(null)
   const countdownTimerRef = useRef(null)
   const lastAnswerRef = useRef({})
+  const isMountedRef = useRef(true)
 
   useEffect(() => {
     fetchExamDetail()
     setupVisibilityDetection()
 
     return () => {
+      isMountedRef.current = false
       clearInterval(autoSaveTimerRef.current)
       clearInterval(countdownTimerRef.current)
     }
@@ -54,7 +56,7 @@ function ExamTakingPage() {
   }, [exam])
 
   useEffect(() => {
-    // 设置自动保存
+    // Set up auto-save
     if (autoSaveTimerRef.current) {
       clearInterval(autoSaveTimerRef.current)
     }
@@ -71,27 +73,22 @@ function ExamTakingPage() {
       setLoading(true)
       setError(null)
 
-      const response = await fetch(`${API_BASE}/api/exams/${examId}`)
-      const result = await response.json()
+      const result = await get(`/api/exams/${examId}`)
 
-      if (result.success) {
-        setExam(result.data)
-        setQuestions(result.data.questionSet.questions)
-        setAnswers(result.data.answers || {})
-        setMarkedQuestions(result.data.markedQuestions || [])
+      setExam(result)
+      setQuestions(result.questionSet.questions)
+      setAnswers(result.answers || {})
+      setMarkedQuestions(result.markedQuestions || [])
 
-        // Calculate remaining time
-        if (result.data.timeLimit) {
-          const elapsed = Math.floor((new Date() - new Date(result.data.startedAt)) / 1000)
-          const remaining = Math.max(0, result.data.timeLimit - elapsed)
-          setTimeRemaining(remaining)
-        }
-      } else {
-        setError(result.error.message)
+      // Calculate remaining time
+      if (result.timeLimit) {
+        const elapsed = Math.floor((new Date() - new Date(result.startedAt)) / 1000)
+        const remaining = Math.max(0, result.timeLimit - elapsed)
+        setTimeRemaining(remaining)
       }
     } catch (err) {
       console.error('Failed to fetch exam details:', err)
-      setError('Failed to load exam details. Please try again later.')
+      setError(err.message || 'Failed to load exam details. Please try again later.')
     } finally {
       setLoading(false)
     }
@@ -138,11 +135,7 @@ function ExamTakingPage() {
 
   const recordCheatingEvent = async (type) => {
     try {
-      await fetch(`${API_BASE}/api/exams/${examId}/focus-lost`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type })
-      })
+      await post(`/api/exams/${examId}/focus-lost`, { type }, { showErrorToast: false })
     } catch (err) {
       console.error('Failed to record cheating event:', err)
     }
@@ -161,27 +154,18 @@ function ExamTakingPage() {
     }
 
     try {
-      setAutoSaving(true)
+      if (isMountedRef.current) setAutoSaving(true)
       await saveAnswer(currentQuestion.id, currentAnswer)
       lastAnswerRef.current[currentQuestion.id] = currentAnswer
     } catch (err) {
       console.error('Auto-save failed:', err)
     } finally {
-      setAutoSaving(false)
+      if (isMountedRef.current) setAutoSaving(false)
     }
   }
 
   const saveAnswer = async (questionId, answer) => {
-    const response = await fetch(`${API_BASE}/api/exams/${examId}/answers`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ questionId, answer })
-    })
-
-    const result = await response.json()
-    if (!result.success) {
-      throw new Error(result.error.message)
-    }
+    await put(`/api/exams/${examId}/answers`, { questionId, answer }, { showErrorToast: false })
   }
 
   const handleAnswerChange = (questionId, answer) => {
@@ -195,20 +179,12 @@ function ExamTakingPage() {
     const isMarked = markedQuestions.includes(questionId)
 
     try {
-      const response = await fetch(`${API_BASE}/api/exams/${examId}/mark`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ questionId, marked: !isMarked })
-      })
-
-      const result = await response.json()
-      if (result.success) {
-        setMarkedQuestions((prev) =>
-          isMarked
-            ? prev.filter((id) => id !== questionId)
-            : [...prev, questionId]
-        )
-      }
+      await put(`/api/exams/${examId}/mark`, { questionId, marked: !isMarked }, { showErrorToast: false })
+      setMarkedQuestions((prev) =>
+        isMarked
+          ? prev.filter((id) => id !== questionId)
+          : [...prev, questionId]
+      )
     } catch (err) {
       console.error('Failed to mark question:', err)
     }
@@ -243,48 +219,25 @@ function ExamTakingPage() {
       }
 
       // Submit exam
-      const response = await fetch(`${API_BASE}/api/exams/${examId}/submit`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      })
+      await post(`/api/exams/${examId}/submit`, {}, { showErrorToast: false })
 
-      const result = await response.json()
-      if (result.success) {
-        // Navigate to result page
-        navigate(`/exams/${examId}/result`)
-      } else {
-        alert('Submission failed: ' + result.error.message)
-      }
+      // Navigate to result page
+      navigate(`/exams/${examId}/result`)
     } catch (err) {
       console.error('Failed to submit exam:', err)
-      alert('Submission failed. Please try again later.')
+      alert('Submission failed: ' + err.message)
     }
   }
 
   const handleAutoSubmit = async () => {
     try {
-      await fetch(`${API_BASE}/exams/${examId}/submit`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      })
+      await post(`/api/exams/${examId}/submit`, {}, { showErrorToast: false })
 
       alert('Time is up. Exam has been automatically submitted.')
       navigate(`/exams/${examId}/result`)
     } catch (err) {
       console.error('Auto-submit failed:', err)
     }
-  }
-
-  const formatTime = (seconds) => {
-    if (seconds === null) return ''
-    const hours = Math.floor(seconds / 3600)
-    const minutes = Math.floor((seconds % 3600) / 60)
-    const secs = seconds % 60
-
-    if (hours > 0) {
-      return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-    }
-    return `${minutes}:${secs.toString().padStart(2, '0')}`
   }
 
   const getAnsweredCount = () => {
@@ -343,7 +296,7 @@ function ExamTakingPage() {
           {timeRemaining !== null && (
             <div className={`timer ${timeRemaining < 300 ? 'warning' : ''}`}>
               <span className="icon">⏱</span>
-              <span className="time">{formatTime(timeRemaining)}</span>
+              <span className="time">{formatDuration(timeRemaining)}</span>
             </div>
           )}
 
