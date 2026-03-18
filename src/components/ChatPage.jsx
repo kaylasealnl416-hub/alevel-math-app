@@ -4,15 +4,15 @@
 // ============================================================
 
 import { useState, useEffect, useRef } from 'react'
+import { useAuth } from '../contexts/AuthContext'
 import { useChat } from '../hooks/useChat.js'
 import MessageList from './MessageList.jsx'
 import InputBox from './InputBox.jsx'
 import SessionSidebar from './SessionSidebar.jsx'
 
-const DEFAULT_USER_ID = 1
-
 export default function ChatPage({ nav, chapter, book, subject }) {
-  const [userId] = useState(() => parseInt(localStorage.getItem('currentUserId')) || DEFAULT_USER_ID)
+  const { user } = useAuth()
+  const userId = user?.id
 
   const {
     sessions, currentSession, messages, isLoading, isSending, error,

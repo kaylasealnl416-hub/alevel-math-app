@@ -3,6 +3,7 @@ import { db } from '../db/index.js'
 import { chatSessions, chatMessages } from '../db/schema.js'
 import { eq } from 'drizzle-orm'
 import { callAI, getAIProviderInfo } from '../services/aiClient.js'
+import { PROVIDERS } from '../services/providers/index.js'
 import { buildSystemPrompt, buildUserPrompt, buildConversationHistory } from '../services/promptBuilder.js'
 import { buildFullContext } from '../services/contextManager.js'
 
@@ -19,7 +20,7 @@ const app = new Hono()
 app.post('/send', async (c) => {
   try {
     const body = await c.req.json()
-    const { sessionId, message, context = {} } = body
+    const { sessionId, message, context = {}, provider, apiKey, model } = body
 
     // 验证必填字段
     if (!sessionId || !message) {
@@ -98,16 +99,28 @@ app.post('/send', async (c) => {
       content: userPrompt
     })
 
-    // 调用 AI API（自动根据配置选择提供商）
+    // 调用 AI API（用户 key 优先，无则 fallback 到服务端默认）
     let aiResponse
     try {
-      const aiProvider = getAIProviderInfo()
-      console.log(`使用 AI 提供商: ${aiProvider.name} (${aiProvider.model})`)
+      const aiOptions = { system: systemPrompt, temperature: 0.7 }
 
-      aiResponse = await callAI(conversationHistory, {
-        system: systemPrompt,
-        temperature: 0.7
-      })
+      // 用户指定了提供商和 key → 校验后使用
+      if (provider && apiKey) {
+        const providerConfig = PROVIDERS[provider]
+        if (providerConfig) {
+          aiOptions.provider = provider
+          aiOptions.apiKey = apiKey
+          if (model && providerConfig.models.some(m => m.id === model)) {
+            aiOptions.model = model
+          }
+          console.log(`使用用户 AI 提供商: ${providerConfig.name}`)
+        }
+      } else {
+        const info = getAIProviderInfo()
+        console.log(`使用默认 AI 提供商: ${info.defaultProvider.name} (${info.defaultProvider.model})`)
+      }
+
+      aiResponse = await callAI(conversationHistory, aiOptions)
     } catch (apiError) {
       console.error('AI API 调用失败:', apiError)
 

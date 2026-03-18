@@ -5,7 +5,9 @@ import { SUBJECTS } from "./data/subjects.js";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 import ChatPage from "./components/ChatPage.jsx";
+import AISettingsPanel from "./components/AISettingsPanel.jsx";
 import { callAI } from "./utils/callAI.js";
+import { getAISettings } from "./utils/aiProviders.js";
 
 // ============================================================
 // AI response parser (V1.1 fix)
@@ -2292,6 +2294,7 @@ function SubjectsView({ nav, lang }) {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [showAISettings, setShowAISettings] = useState(false);
 
   const BRAND = "#DA291C";
 
@@ -2399,6 +2402,25 @@ function SubjectsView({ nav, lang }) {
                   {user?.nickname || user?.email}
                 </span>
               </Link>
+              <button
+                onClick={() => setShowAISettings(true)}
+                title="AI Model Settings"
+                style={{
+                  padding: "7px 12px", borderRadius: 7, fontSize: 13, fontWeight: 500,
+                  background: "rgba(99,102,241,0.12)",
+                  border: "1px solid rgba(99,102,241,0.25)",
+                  color: "#A5B4FC", cursor: "pointer",
+                  transition: "background 0.2s",
+                  display: "flex", alignItems: "center", gap: 4,
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.22)"}
+                onMouseLeave={e => e.currentTarget.style.background = "rgba(99,102,241,0.12)"}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                AI
+              </button>
               <button
                 onClick={() => { logout(); navigate('/'); }}
                 style={{
@@ -2701,6 +2723,11 @@ function SubjectsView({ nav, lang }) {
           ))}
         </div>
       </section>
+
+      {/* AI Settings Panel (login-gated) */}
+      {isAuthenticated && (
+        <AISettingsPanel isOpen={showAISettings} onClose={() => setShowAISettings(false)} />
+      )}
     </div>
   );
 }
@@ -3509,7 +3536,12 @@ function QuizView({ chapter, book, nav, embedded, onAddError, t, lang, subject =
           keyPoints,
           formulas,
           difficulty,
-          count: 5
+          count: 5,
+          // 注入用户 AI 设置
+          ...(() => {
+            const s = getAISettings();
+            return (s?.provider && s?.apiKey) ? { provider: s.provider, apiKey: s.apiKey, model: s.model } : {};
+          })()
         })
       });
 

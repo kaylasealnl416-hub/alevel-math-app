@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 import QuestionCard from './QuestionCard'
 import Navbar from './Navbar'
 import Loading from './common/Loading'
@@ -19,6 +20,8 @@ import { formatDate, getDifficultyLabel } from '../utils/helpers.js'
 
 function WrongQuestionsPage() {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const userId = user?.id
 
   const [wrongQuestions, setWrongQuestions] = useState([])
   const [loading, setLoading] = useState(true)
@@ -29,8 +32,6 @@ function WrongQuestionsPage() {
     examType: 'all'
   })
   const [showAnswer, setShowAnswer] = useState({})
-
-  const userId = parseInt(localStorage.getItem('currentUserId')) || 1
 
   useEffect(() => {
     fetchWrongQuestions()

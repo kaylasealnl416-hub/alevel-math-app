@@ -4,6 +4,7 @@
 
 import { useState, useCallback, useRef } from 'react'
 import { chatAPI } from '../utils/api.js'
+import { getAISettings } from '../utils/aiProviders.js'
 
 export function useChat(userId) {
   const [sessions, setSessions] = useState([])
@@ -121,10 +122,17 @@ export function useChat(userId) {
     setMessages(prev => [...prev, tempUserMessage])
 
     try {
+      // 注入用户 AI 设置
+      const aiSettings = getAISettings()
+      const aiConfig = (aiSettings?.provider && aiSettings?.apiKey)
+        ? { provider: aiSettings.provider, apiKey: aiSettings.apiKey, model: aiSettings.model }
+        : {}
+
       const result = await chatAPI.sendMessage({
         sessionId: currentSession.id,
         message: content.trim(),
-        context
+        context,
+        ...aiConfig
       })
 
       if (result.success) {

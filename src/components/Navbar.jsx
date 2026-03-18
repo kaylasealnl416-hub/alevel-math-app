@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Button } from './ui'
+import AISettingsPanel from './AISettingsPanel'
 
 export default function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, logout } = useAuth()
+  const [showAISettings, setShowAISettings] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -25,6 +28,7 @@ export default function Navbar() {
   ]
 
   return (
+    <>
     <nav className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -70,6 +74,16 @@ export default function Navbar() {
                     {user.nickname || user.email}
                   </span>
                 </Link>
+                <button
+                  onClick={() => setShowAISettings(true)}
+                  title="AI Model Settings"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-primary-600 bg-primary-50 border border-primary-200 hover:bg-primary-100 transition-colors"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                  </svg>
+                  AI
+                </button>
                 <Button
                   variant="secondary"
                   size="sm"
@@ -118,5 +132,8 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
+
+    <AISettingsPanel isOpen={showAISettings} onClose={() => setShowAISettings(false)} />
+    </>
   )
 }

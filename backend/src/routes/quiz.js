@@ -5,6 +5,7 @@
 
 import { Hono } from 'hono'
 import { callAI } from '../services/aiClient.js'
+import { PROVIDERS } from '../services/providers/index.js'
 
 const quiz = new Hono()
 
@@ -22,7 +23,10 @@ quiz.post('/generate', async (c) => {
       keyPoints = '',
       formulas = '',
       difficulty = 'medium',
-      count = 5
+      count = 5,
+      provider,
+      apiKey,
+      model
     } = body
 
     // Validate input
@@ -121,10 +125,20 @@ Return ONLY a JSON array, no markdown:
       { role: 'user', content: userPrompt }
     ]
 
-    const response = await callAI(messages, {
-      system: systemPrompt,
-      maxTokens: 2000
-    })
+    const aiOptions = { system: systemPrompt, maxTokens: 2000 }
+    // 用户指定了提供商和 key → 校验后使用
+    if (provider && apiKey) {
+      const providerConfig = PROVIDERS[provider]
+      if (providerConfig) {
+        aiOptions.provider = provider
+        aiOptions.apiKey = apiKey
+        if (model && providerConfig.models.some(m => m.id === model)) {
+          aiOptions.model = model
+        }
+      }
+    }
+
+    const response = await callAI(messages, aiOptions)
 
     // Parse AI response
     const rawText = response.content

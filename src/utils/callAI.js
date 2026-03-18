@@ -1,9 +1,11 @@
 // ============================================================
 // 前端 AI 调用工具
-// 通过后端 /api/ai/generate 代理调用 GLM，不暴露 API Key
+// 通过后端 /api/ai/generate 代理调用 AI
+// 自动携带用户的提供商/key/模型设置
 // ============================================================
 
 import { API_BASE } from './constants'
+import { getAISettings } from './aiProviders'
 
 /**
  * 调用 AI 生成文本
@@ -13,10 +15,20 @@ import { API_BASE } from './constants'
  * @returns {Promise<string>} 生成的文本
  */
 export async function callAI(system, prompt, maxTokens = 1500) {
+  const body = { system, prompt, maxTokens }
+
+  // 自动注入用户的 AI 设置
+  const settings = getAISettings()
+  if (settings?.provider && settings?.apiKey) {
+    body.provider = settings.provider
+    body.apiKey = settings.apiKey
+    if (settings.model) body.model = settings.model
+  }
+
   const response = await fetch(`${API_BASE}/api/ai/generate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system, prompt, maxTokens })
+    body: JSON.stringify(body)
   })
 
   if (!response.ok) {
