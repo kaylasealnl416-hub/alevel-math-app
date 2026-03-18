@@ -5,6 +5,7 @@ import { SUBJECTS } from "./data/subjects.js";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 import ChatPage from "./components/ChatPage.jsx";
+import { callAI } from "./utils/callAI.js";
 
 // ============================================================
 // AI response parser (V1.1 fix)

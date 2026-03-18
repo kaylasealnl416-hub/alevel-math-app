@@ -19,6 +19,7 @@ import learningPlansRoutes from './routes/learningPlans.js'
 import wrongQuestionsRoutes from './routes/wrongQuestions.js'
 import questionUploadRoutes from './routes/questionUpload.js'
 import quizRoutes from './routes/quiz.js'
+import aiRoutes from './routes/ai.js'
 import { authMiddleware } from './middleware/auth.js'
 import { cacheMiddleware } from './middleware/cache.js'
 import { securityHeaders, requestSizeLimit } from './middleware/security.js'
@@ -174,7 +175,7 @@ app.use('/api/exams/*', authMiddleware, csrfProtection())
 app.use('/api/recommendations/*', authMiddleware, csrfProtection())
 app.use('/api/learning-plans/*', authMiddleware, csrfProtection())
 app.use('/api/wrong-questions/*', authMiddleware, csrfProtection())
-app.use('/api/quiz/*', authMiddleware, csrfProtection())
+// quiz 和 ai 为公开端点（全局速率限制已足够保护）
 
 app.route('/api/users', usersRoutes)
 app.route('/api/progress', progressRoutes)
@@ -189,6 +190,7 @@ app.route('/api/learning-plans', learningPlansRoutes)
 app.route('/api/wrong-questions', wrongQuestionsRoutes)
 app.route('/api/questions', questionUploadRoutes)
 app.route('/api/quiz', quizRoutes)
+app.route('/api/ai', aiRoutes)
 
 // 404处理
 app.notFound(notFoundHandler())
