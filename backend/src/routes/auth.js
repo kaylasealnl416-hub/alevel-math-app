@@ -6,7 +6,7 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
 import { users, userProfiles, userStats } from '../db/schema.js'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 import { generateToken, generateRefreshToken, verifyToken } from '../utils/jwt.js'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
@@ -77,13 +77,18 @@ app.post('/register', async (c) => {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     // 创建用户
+    // 第一个注册的用户自动成为 admin
+    const [{ count }] = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(users)
+    const isFirstUser = count === 0
+
     const newUser = await db
       .insert(users)
       .values({
         email,
         password: hashedPassword,
         nickname,
-        grade: grade || 'AS'
+        grade: grade || 'AS',
+        role: isFirstUser ? 'admin' : 'user'
       })
       .returning()
 

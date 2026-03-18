@@ -58,6 +58,7 @@ export const users = pgTable('users', {
   email: varchar('email', { length: 255 }).unique(),
   password: varchar('password', { length: 255 }), // bcrypt 加密后的密码
   phone: varchar('phone', { length: 20 }),
+  role: varchar('role', { length: 20 }).notNull().default('user'), // 'user' | 'admin'
   grade: varchar('grade', { length: 20 }), // 'AS' | 'A2'
   targetUniversity: varchar('target_university', { length: 100 }),
   createdAt: timestamp('created_at').defaultNow(),
