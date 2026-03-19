@@ -140,7 +140,8 @@ app.post('/register', async (c) => {
       success: false,
       error: {
         code: 'SERVER_ERROR',
-        message: '注册失败，请稍后重试'
+        message: '注册失败，请稍后重试',
+        debug: process.env.NODE_ENV !== 'production' ? error.message : error.message?.substring(0, 200)
       }
     }, 500)
   }

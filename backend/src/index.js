@@ -18,6 +18,7 @@ import recommendationsRoutes from './routes/recommendations.js'
 import learningPlansRoutes from './routes/learningPlans.js'
 import wrongQuestionsRoutes from './routes/wrongQuestions.js'
 import questionUploadRoutes from './routes/questionUpload.js'
+import practiceRoutes from './routes/practice.js'
 import quizRoutes from './routes/quiz.js'
 import aiRoutes from './routes/ai.js'
 import { authMiddleware } from './middleware/auth.js'
@@ -189,6 +190,7 @@ app.route('/api/recommendations', recommendationsRoutes)
 app.route('/api/learning-plans', learningPlansRoutes)
 app.route('/api/wrong-questions', wrongQuestionsRoutes)
 app.route('/api/questions', questionUploadRoutes)
+app.route('/api/practice', practiceRoutes)
 app.route('/api/quiz', quizRoutes)
 app.route('/api/ai', aiRoutes)
 

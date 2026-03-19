@@ -57,6 +57,26 @@ const SparklesIcon = () => (
   </svg>
 )
 
+// ─── Icon input wrapper (must be outside AuthPage to avoid remount on re-render) ──
+function IconInput({ icon: Icon, type = 'text', placeholder, value, onChange, onFocus, onBlur, style }) {
+  return (
+    <div style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none', display: 'flex', alignItems: 'center' }}>
+        <Icon />
+      </div>
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        placeholder={placeholder}
+        style={style}
+      />
+    </div>
+  )
+}
+
 // ─── Password strength ────────────────────────────────────────────
 const checkPasswordStrength = (password) => {
   if (!password) return { score: 0, text: '', color: '' }
@@ -215,24 +235,6 @@ export default function AuthPage() {
     cursor: 'pointer',
   }
 
-  // ─── Icon input wrapper ───────────────────────────────────────────
-  const IconInput = ({ icon: Icon, field, type = 'text', placeholder, value, onChange, onFocus, onBlur }) => (
-    <div style={{ position: 'relative' }}>
-      <div style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none', display: 'flex', alignItems: 'center' }}>
-        <Icon />
-      </div>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        placeholder={placeholder}
-        style={inputStyle(field)}
-      />
-    </div>
-  )
-
   return (
     <div style={{ minHeight: '100vh', display: 'flex', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', color: DARK }}>
       <style>{`
@@ -310,7 +312,7 @@ export default function AuthPage() {
             <div style={{ marginBottom: 14 }}>
               <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>Email Address</label>
               <IconInput
-                icon={MailIcon} field="email" type="email" placeholder="name@example.com"
+                icon={MailIcon} style={inputStyle('email')} type="email" placeholder="name@example.com"
                 value={email}
                 onChange={e => { setEmail(e.target.value); if (errors.email) setErrors({ ...errors, email: '' }) }}
                 onFocus={() => setFocusedField('email')}
@@ -325,7 +327,7 @@ export default function AuthPage() {
             <div style={{ marginBottom: 14 }}>
               <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>Password</label>
               <IconInput
-                icon={LockIcon} field="password" type="password" placeholder="••••••••"
+                icon={LockIcon} style={inputStyle('password')} type="password" placeholder="••••••••"
                 value={password}
                 onChange={e => {
                   setPassword(e.target.value)
@@ -355,7 +357,7 @@ export default function AuthPage() {
             <div style={{ marginBottom: 14, opacity: isLogin ? 0 : 1, pointerEvents: isLogin ? 'none' : 'auto', transition: 'opacity 0.2s' }}>
               <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>Confirm Password</label>
               <IconInput
-                icon={LockIcon} field="confirmPassword" type="password" placeholder="Enter password again"
+                icon={LockIcon} style={inputStyle('confirmPassword')} type="password" placeholder="Enter password again"
                 value={confirmPassword}
                 onChange={e => { setConfirmPassword(e.target.value); if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: '' }) }}
                 onFocus={() => setFocusedField('confirmPassword')}
