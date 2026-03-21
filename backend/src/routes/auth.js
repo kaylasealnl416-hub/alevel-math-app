@@ -15,10 +15,12 @@ import { z } from 'zod'
 // Cookie 配置辅助函数
 function setAuthCookies(c, token, refreshToken) {
   const isProduction = process.env.NODE_ENV === 'production'
+  // 前端 vercel.app 和后端 onrender.com 是不同域名
+  // 跨域 Cookie 必须 SameSite=None + Secure，CSRF 保护已覆盖安全需求
   const opts = {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'Strict' : 'Lax',
+    sameSite: isProduction ? 'None' : 'Lax',
     maxAge: 7 * 24 * 60 * 60, // 7天（秒）
     path: '/'
   }
