@@ -46,7 +46,7 @@ export default function ChatPage({ nav, chapter, book, subject }) {
         <button
           onClick={handleBack}
           style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748B', fontSize: 13, fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: '6px 8px', borderRadius: 8 }}
-          onMouseEnter={e => { e.currentTarget.style.color = '#DA291C' }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#1a73e8' }}
           onMouseLeave={e => { e.currentTarget.style.color = '#64748B' }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -54,7 +54,7 @@ export default function ChatPage({ nav, chapter, book, subject }) {
         </button>
 
         <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 24, height: 24, background: '#FEE2E2', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Georgia, serif', fontWeight: 700, fontStyle: 'italic', fontSize: 12, color: '#DA291C' }}>A</div>
+          <div style={{ width: 24, height: 24, background: '#e8f0fe', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'inherit', fontWeight: 700, fontStyle: 'italic', fontSize: 12, color: '#1a73e8' }}>A</div>
           <span style={{ fontSize: 14, fontWeight: 600, color: '#0F172A', letterSpacing: '-0.01em' }}>AI Teaching Assistant</span>
         </div>
 
@@ -83,13 +83,13 @@ export default function ChatPage({ nav, chapter, book, subject }) {
           <div style={{ height: 56, borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 20, paddingRight: 14, flexShrink: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ position: 'relative' }}>
-                <div style={{ width: 34, height: 34, background: 'linear-gradient(135deg, #EF4444 0%, #F97316 100%)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(239,68,68,0.28)' }}>
+                <div style={{ width: 34, height: 34, background: '#1a73e8', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(26,115,232,0.28)' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-4.24Z"/>
                     <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-4.24Z"/>
                   </svg>
                 </div>
-                <div style={{ position: 'absolute', bottom: -1, right: -1, width: 10, height: 10, background: '#10B981', border: '2px solid #fff', borderRadius: '50%' }} />
+                <div style={{ position: 'absolute', bottom: -1, right: -1, width: 10, height: 10, background: '#188038', border: '2px solid #fff', borderRadius: '50%' }} />
               </div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: '#0F172A' }}>AI Tutor</div>

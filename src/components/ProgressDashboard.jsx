@@ -95,7 +95,7 @@ export default function ProgressDashboard() {
               cy="100"
               r="80"
               fill="none"
-              stroke="#4CAF50"
+              stroke="#188038"
               strokeWidth="20"
               strokeDasharray={`${completionRate * 5.03} 503`}
               strokeLinecap="round"
@@ -128,7 +128,7 @@ export default function ProgressDashboard() {
         {/* Progress stats */}
         <div style={styles.statsRow}>
           <div style={styles.statItem}>
-            <div style={{...styles.statDot, backgroundColor: '#4CAF50'}}></div>
+            <div style={{...styles.statDot, backgroundColor: '#188038'}}></div>
             <div>
               <div style={styles.statValue}>{progressByStatus.completed}</div>
               <div style={styles.statLabel}>Completed</div>
@@ -253,7 +253,7 @@ function getStatusText(status) {
 }
 
 function getMasteryColor(level) {
-  if (level >= 80) return '#4CAF50'
+  if (level >= 80) return '#188038'
   if (level >= 60) return '#8BC34A'
   if (level >= 40) return '#FF9800'
   return '#F44336'
@@ -401,7 +401,7 @@ const styles = {
   },
   refreshButton: {
     padding: '12px 24px',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#188038',
     color: '#fff',
     border: 'none',
     borderRadius: '8px',

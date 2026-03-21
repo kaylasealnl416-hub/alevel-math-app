@@ -17,7 +17,8 @@ const app = new Hono()
  */
 app.post('/start', async (c) => {
   try {
-    const { chapterId, difficulty = 'medium', provider, apiKey, model } = await c.req.json()
+    const { chapterId, difficulty = 'medium', provider, apiKey, model,
+            chapterTitle, chapterKeyPoints, chapterFormulas } = await c.req.json()
 
     if (!chapterId) {
       return c.json({ success: false, error: { message: 'chapterId is required' } }, 400)
@@ -30,7 +31,15 @@ app.post('/start', async (c) => {
       if (model) aiOptions.model = model
     }
 
-    const questionList = await getQuestions(chapterId, difficulty, aiOptions)
+    // 前端传来的章节信息，作为 AI 生成题目的 fallback
+    const chapterFallback = chapterTitle ? {
+      id: chapterId,
+      title: chapterTitle,
+      keyPoints: chapterKeyPoints || [],
+      formulas: chapterFormulas || [],
+    } : null
+
+    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback)
 
     // Format for frontend — don't send answers yet
     const formatted = questionList.map(q => ({
@@ -62,10 +71,11 @@ app.post('/start', async (c) => {
  */
 app.post('/answer', async (c) => {
   try {
-    const { userId, questionId, answer, timeSpent = 0 } = await c.req.json()
+    const userId = c.get('userId')
+    const { questionId, answer, timeSpent = 0 } = await c.req.json()
 
-    if (!userId || !questionId || answer === undefined) {
-      return c.json({ success: false, error: { message: 'userId, questionId, and answer are required' } }, 400)
+    if (!questionId || answer === undefined) {
+      return c.json({ success: false, error: { message: 'questionId and answer are required' } }, 400)
     }
 
     // Get the question to check answer
@@ -74,9 +84,9 @@ app.post('/answer', async (c) => {
       return c.json({ success: false, error: { message: 'Question not found' } }, 404)
     }
 
-    // Check correctness
+    // Check correctness (大小写不敏感)
     const correctValue = question.answer?.value
-    const isCorrect = answer === correctValue
+    const isCorrect = String(answer).trim().toUpperCase() === String(correctValue).trim().toUpperCase()
 
     // Save answer
     await saveAnswer(userId, questionId, answer, isCorrect, timeSpent)

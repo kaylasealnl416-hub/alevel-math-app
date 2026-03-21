@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Toast from './common/Toast'
 import Loading from './common/Loading'
+import { Button } from './ui'
 import { API_BASE } from '../utils/constants'
 
 export default function UserProfilePage() {
@@ -50,9 +51,7 @@ export default function UserProfilePage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!validateForm()) {
-      return
-    }
+    if (!validateForm()) return
 
     setLoading(true)
 
@@ -78,9 +77,7 @@ export default function UserProfilePage() {
       Toast.success('Profile updated successfully!')
       setLoading(false)
 
-      setTimeout(() => {
-        navigate(-1)
-      }, 1000)
+      setTimeout(() => { navigate(-1) }, 1000)
     } catch (err) {
       Toast.error('Network error. Please try again.')
       setLoading(false)
@@ -93,31 +90,60 @@ export default function UserProfilePage() {
     navigate('/login')
   }
 
-  if (initialLoading) {
-    return <Loading size="large" />
+  if (initialLoading) return <Loading size="large" />
+
+  const S = {
+    page: { minHeight: '100vh', background: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 },
+    card: { background: '#fff', border: '1px solid #dadce0', borderRadius: 12, padding: 40, width: '100%', maxWidth: 480 },
+    header: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 },
+    title: { fontSize: 22, fontWeight: 600, color: '#202124', margin: 0, textAlign: 'center' },
+    avatarSection: { display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 28 },
+    avatar: {
+      width: 72, height: 72, borderRadius: '50%', background: '#1a73e8',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontSize: 28, fontWeight: 600, color: '#fff', marginBottom: 10,
+    },
+    email: { fontSize: 14, color: '#5f6368', margin: 0 },
+    form: { display: 'flex', flexDirection: 'column', gap: 18 },
+    field: { display: 'flex', flexDirection: 'column', gap: 6 },
+    label: { fontSize: 13, fontWeight: 500, color: '#5f6368' },
+    input: {
+      padding: '10px 12px', border: '1px solid #dadce0', borderRadius: 8,
+      fontSize: 14, color: '#202124', outline: 'none', background: '#fff',
+      transition: 'border-color 0.2s',
+    },
+    inputError: { borderColor: '#d93025' },
+    select: {
+      padding: '10px 12px', border: '1px solid #dadce0', borderRadius: 8,
+      fontSize: 14, color: '#202124', outline: 'none', background: '#fff',
+      cursor: 'pointer',
+    },
+    errorText: { color: '#d93025', fontSize: 12 },
+    footer: {
+      marginTop: 28, paddingTop: 20, borderTop: '1px solid #f1f3f4',
+      display: 'flex', justifyContent: 'center',
+    },
   }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <div style={styles.header}>
-          <button onClick={() => navigate(-1)} style={styles.backButton}>
-            ← Back
-          </button>
-          <h1 style={styles.title}>Profile</h1>
+    <div style={S.page}>
+      <div style={S.card}>
+        <div style={S.header}>
+          <Button variant="text" size="sm" onClick={() => navigate(-1)}>← Back</Button>
+          <h1 style={S.title}>Profile</h1>
           <div style={{ width: 60 }} />
         </div>
 
-        <div style={styles.avatarSection}>
-          <div style={styles.avatar}>
+        <div style={S.avatarSection}>
+          <div style={S.avatar}>
             {user?.nickname?.charAt(0)?.toUpperCase() || 'U'}
           </div>
-          <p style={styles.email}>{user?.email}</p>
+          <p style={S.email}>{user?.email}</p>
         </div>
 
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.field}>
-            <label style={styles.label}>Nickname</label>
+        <form onSubmit={handleSubmit} style={S.form}>
+          <div style={S.field}>
+            <label style={S.label}>Nickname</label>
             <input
               type="text"
               value={formData.nickname}
@@ -125,41 +151,38 @@ export default function UserProfilePage() {
                 setFormData({ ...formData, nickname: e.target.value })
                 if (errors.nickname) setErrors({ ...errors, nickname: '' })
               }}
-              style={{
-                ...styles.input,
-                ...(errors.nickname ? styles.inputError : {})
-              }}
+              style={{ ...S.input, ...(errors.nickname ? S.inputError : {}) }}
               placeholder="Your nickname"
               maxLength={50}
             />
-            {errors.nickname && <span style={styles.errorText}>{errors.nickname}</span>}
+            {errors.nickname && <span style={S.errorText}>{errors.nickname}</span>}
           </div>
 
-          <div style={styles.field}>
-            <label style={styles.label}>Year</label>
+          <div style={S.field}>
+            <label style={S.label}>Year</label>
             <select
               value={formData.grade}
               onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
-              style={styles.select}
+              style={S.select}
             >
               <option value="AS">AS Level</option>
               <option value="A2">A2 Level</option>
             </select>
           </div>
 
-          <div style={styles.field}>
-            <label style={styles.label}>Target University (optional)</label>
+          <div style={S.field}>
+            <label style={S.label}>Target University (optional)</label>
             <input
               type="text"
               value={formData.targetUniversity}
               onChange={(e) => setFormData({ ...formData, targetUniversity: e.target.value })}
-              style={styles.input}
+              style={S.input}
               placeholder="e.g. Cambridge, Oxford"
             />
           </div>
 
-          <div style={styles.field}>
-            <label style={styles.label}>Phone (optional)</label>
+          <div style={S.field}>
+            <label style={S.label}>Phone (optional)</label>
             <input
               type="tel"
               value={formData.phone}
@@ -167,159 +190,21 @@ export default function UserProfilePage() {
                 setFormData({ ...formData, phone: e.target.value })
                 if (errors.phone) setErrors({ ...errors, phone: '' })
               }}
-              style={{
-                ...styles.input,
-                ...(errors.phone ? styles.inputError : {})
-              }}
+              style={{ ...S.input, ...(errors.phone ? S.inputError : {}) }}
               placeholder="13800138000"
             />
-            {errors.phone && <span style={styles.errorText}>{errors.phone}</span>}
+            {errors.phone && <span style={S.errorText}>{errors.phone}</span>}
           </div>
 
-          <button type="submit" style={styles.button} disabled={loading}>
+          <Button variant="primary" size="md" disabled={loading} className="w-full" style={{ marginTop: 4 }}>
             {loading ? 'Saving...' : 'Save Changes'}
-          </button>
+          </Button>
         </form>
 
-        <div style={styles.footer}>
-          <button onClick={handleLogout} style={styles.logoutButton}>
-            Log Out
-          </button>
+        <div style={S.footer}>
+          <Button variant="danger" size="sm" onClick={handleLogout}>Log Out</Button>
         </div>
       </div>
     </div>
   )
-}
-
-const styles = {
-  container: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    padding: '20px'
-  },
-  card: {
-    background: 'white',
-    borderRadius: '12px',
-    padding: '40px',
-    width: '100%',
-    maxWidth: '500px',
-    boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '24px'
-  },
-  backButton: {
-    padding: '8px 16px',
-    background: 'transparent',
-    border: '1px solid #e2e8f0',
-    borderRadius: '8px',
-    fontSize: '14px',
-    color: '#4a5568',
-    cursor: 'pointer',
-    transition: 'all 0.2s'
-  },
-  title: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    color: '#1a202c',
-    textAlign: 'center'
-  },
-  avatarSection: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: '32px'
-  },
-  avatar: {
-    width: '80px',
-    height: '80px',
-    borderRadius: '50%',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '32px',
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: '12px'
-  },
-  email: {
-    fontSize: '14px',
-    color: '#718096'
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px'
-  },
-  field: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px'
-  },
-  label: {
-    fontSize: '14px',
-    fontWeight: '500',
-    color: '#2d3748'
-  },
-  input: {
-    padding: '12px',
-    border: '1px solid #e2e8f0',
-    borderRadius: '8px',
-    fontSize: '14px',
-    outline: 'none',
-    transition: 'border-color 0.2s'
-  },
-  inputError: {
-    borderColor: '#fc8181'
-  },
-  select: {
-    padding: '12px',
-    border: '1px solid #e2e8f0',
-    borderRadius: '8px',
-    fontSize: '14px',
-    outline: 'none',
-    backgroundColor: 'white',
-    cursor: 'pointer'
-  },
-  button: {
-    padding: '12px',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'opacity 0.2s',
-    marginTop: '8px'
-  },
-  errorText: {
-    color: '#e53e3e',
-    fontSize: '12px',
-    marginTop: '-4px'
-  },
-  footer: {
-    marginTop: '32px',
-    paddingTop: '24px',
-    borderTop: '1px solid #e2e8f0',
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  logoutButton: {
-    padding: '10px 24px',
-    background: 'transparent',
-    border: '1px solid #fc8181',
-    borderRadius: '8px',
-    fontSize: '14px',
-    color: '#e53e3e',
-    cursor: 'pointer',
-    transition: 'all 0.2s'
-  }
 }

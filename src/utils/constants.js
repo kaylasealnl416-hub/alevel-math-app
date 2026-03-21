@@ -16,62 +16,62 @@ export const API_BASE = import.meta.env.VITE_API_URL || '';
 // Single source of truth for all colors.
 // Components should import COLORS and SUBJECT_COLORS from here.
 export const COLORS = {
-  // Brand color (Math red / app accent) — used sparingly for interactive elements
-  brand:        '#DA291C',
-  brandHover:   '#B71C1C',
-  brandLight:   '#FEF2F2',
-  brandBorder:  '#FECACA',
-  brandRing:    'rgba(218,41,28,0.12)',
+  // Brand color (Google Blue accent)
+  brand:        '#1a73e8',
+  brandHover:   '#1967d2',
+  brandLight:   '#e8f0fe',
+  brandBorder:  '#aecbfa',
+  brandRing:    'rgba(26,115,232,0.12)',
 
-  // Neutral text scale
-  text:         '#0F172A',  // headings
-  textSub:      '#1E293B',  // subheadings / nav
-  textBody:     '#374151',  // form labels / body copy
-  textMuted:    '#64748B',  // secondary / captions
-  textFaint:    '#94A3B8',  // placeholders / hints
-  textDisabled: '#CBD5E1',  // disabled states
+  // Neutral text scale (Google Material)
+  text:         '#202124',  // headings
+  textSub:      '#202124',  // subheadings / nav
+  textBody:     '#3c4043',  // form labels / body copy
+  textMuted:    '#5f6368',  // secondary / captions
+  textFaint:    '#80868b',  // placeholders / hints
+  textDisabled: '#dadce0',  // disabled states
 
   // Background scale
-  bgPage:    '#F2F2F2',  // app background
-  bgCard:    '#FFFFFF',  // card / panel
-  bgSurface: '#F8FAFC',  // subtle surface
-  bgHover:   '#F1F5F9',  // hover overlay
+  bgPage:    '#f8f9fa',  // app background
+  bgCard:    '#ffffff',  // card / panel
+  bgSurface: '#f8f9fa',  // subtle surface
+  bgHover:   '#f1f3f4',  // hover overlay
 
   // Borders
-  border:      '#E2E8F0',
-  borderLight: '#F1F5F9',
+  border:      '#dadce0',
+  borderLight: '#f1f3f4',
 
   // Semantic states
-  success:      '#10B981',
-  successLight: '#D1FAE5',
-  successBorder:'#6EE7B7',
-  warning:      '#F59E0B',
-  warningLight: '#FEF3C7',
-  warningBorder:'#FCD34D',
-  error:        '#EF4444',
-  errorLight:   '#FEE2E2',
-  errorBorder:  '#FECACA',
-  info:         '#3B82F6',
-  infoLight:    '#DBEAFE',
-  infoBorder:   '#BFDBFE',
+  success:      '#188038',
+  successLight: '#e6f4ea',
+  successBorder:'#ceead6',
+  warning:      '#f9ab00',
+  warningLight: '#fef7e0',
+  warningBorder:'#fdd663',
+  error:        '#d93025',
+  errorLight:   '#fce8e6',
+  errorBorder:  '#fad2cf',
+  info:         '#1a73e8',
+  infoLight:    '#e8f0fe',
+  infoBorder:   '#aecbfa',
 
   // Backward compatibility aliases
-  primary:      '#DA291C',
-  primaryLight: 'rgba(218,41,28,0.1)',
-  secondary:    '#003087',
-  accent:       '#FFC72C',
-  background:   '#F2F2F2',
+  primary:      '#1a73e8',
+  primaryLight: 'rgba(26,115,232,0.1)',
+  secondary:    '#1967d2',
+  accent:       '#fbbc04',
+  background:   '#f8f9fa',
 };
 
 // ─── Subject Colors ──────────────────────────────────────────
 // Each subject gets base + light + border for card styling.
 // Designed to be fresh and visually distinct from each other.
 export const SUBJECT_COLORS = {
-  mathematics:  { base: '#DA291C', light: '#FEF2F2', border: '#FECACA', hover: '#B71C1C' },
+  mathematics:  { base: '#1a73e8', light: '#e8f0fe', border: '#aecbfa', hover: '#1967d2' },
   further_math: { base: '#7C3AED', light: '#F5F3FF', border: '#DDD6FE', hover: '#6D28D9' },
   economics:    { base: '#0891B2', light: '#ECFEFF', border: '#A5F3FC', hover: '#0E7490' },
   history:      { base: '#B45309', light: '#FFFBEB', border: '#FDE68A', hover: '#92400E' },
-  politics:     { base: '#2563EB', light: '#EFF6FF', border: '#BFDBFE', hover: '#1D4ED8' },
+  politics:     { base: '#1967d2', light: '#e8f0fe', border: '#BFDBFE', hover: '#1D4ED8' },
   chemistry:    { base: '#4F46E5', light: '#EEF2FF', border: '#C7D2FE', hover: '#4338CA' },
   physics:      { base: '#0E7490', light: '#F0FDFF', border: '#67E8F9', hover: '#0C5F72' },
   biology:      { base: '#16A34A', light: '#F0FDF4', border: '#BBF7D0', hover: '#15803D' },
@@ -99,9 +99,9 @@ export const APP_INFO = {
 
 // Difficulty Levels
 export const DIFFICULTY_LEVELS = {
-  foundation:   { label: 'Foundation',   labelZh: 'Foundation',   color: '#10B981' },
+  foundation:   { label: 'Foundation',   labelZh: 'Foundation',   color: '#188038' },
   intermediate: { label: 'Intermediate', labelZh: 'Intermediate', color: '#F59E0B' },
-  advanced:     { label: 'Advanced',     labelZh: 'Advanced',     color: '#EF4444' }
+  advanced:     { label: 'Advanced',     labelZh: 'Advanced',     color: '#d93025' }
 };
 
 export default {

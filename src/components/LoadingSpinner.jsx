@@ -15,7 +15,7 @@ function LoadingSpinner({ message = "Loading..." }) {
       width: '40px',
       height: '40px',
       border: '3px solid #f3f3f3',
-      borderTop: '3px solid #DA291C',
+      borderTop: '3px solid #1a73e8',
       borderRadius: '50%',
       animation: 'spin 1s linear infinite'
     },

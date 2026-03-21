@@ -75,11 +75,11 @@ const styles = {
     boxSizing: 'border-box',
   },
   inputError: {
-    borderColor: '#EF4444',
+    borderColor: '#d93025',
   },
   errorMsg: {
     fontSize: 12,
-    color: '#EF4444',
+    color: '#d93025',
     marginTop: 5,
   },
   fieldWrap: {

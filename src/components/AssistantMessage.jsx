@@ -39,7 +39,7 @@ const styles = {
     width: '36px',
     height: '36px',
     borderRadius: '50%',
-    backgroundColor: '#e8f5e9',
+    backgroundColor: '#e6f4ea',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -80,8 +80,8 @@ const styles = {
   },
   tokens: {
     fontSize: '12px',
-    color: '#4caf50',
-    backgroundColor: '#e8f5e9',
+    color: '#188038',
+    backgroundColor: '#e6f4ea',
     padding: '2px 6px',
     borderRadius: '4px'
   }

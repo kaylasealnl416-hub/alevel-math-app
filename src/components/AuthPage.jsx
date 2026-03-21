@@ -88,7 +88,7 @@ const checkPasswordStrength = (password) => {
   if (/[^a-zA-Z0-9]/.test(password)) score++
   const levels = [
     { score: 0, text: '', color: '' },
-    { score: 1, text: 'Weak', color: '#EF4444' },
+    { score: 1, text: 'Weak', color: '#d93025' },
     { score: 2, text: 'Fair', color: '#F59E0B' },
     { score: 3, text: 'Good', color: '#EAB308' },
     { score: 4, text: 'Strong', color: '#22C55E' },
@@ -210,7 +210,7 @@ export default function AuthPage() {
   const inputStyle = (field) => ({
     width: '100%',
     padding: '10px 14px 10px 38px',
-    border: `1px solid ${errors[field] ? '#EF4444' : focusedField === field ? BRAND : '#E2E8F0'}`,
+    border: `1px solid ${errors[field] ? '#d93025' : focusedField === field ? BRAND : '#E2E8F0'}`,
     borderRadius: 12,
     fontSize: 14,
     color: DARK,
@@ -262,8 +262,8 @@ export default function AuthPage() {
       >
         {/* Mobile logo */}
         <div style={{ position: 'absolute', top: 24, left: 32, display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 32, height: 32, background: BRAND, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 16, fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>∑</div>
-          <span style={{ fontWeight: 600, fontSize: 16, color: '#1E293B', letterSpacing: '-0.3px' }}>A-Level Hub</span>
+          <div style={{ width: 32, height: 32, background: BRAND, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 16, fontFamily: 'inherit', fontStyle: 'italic' }}>∑</div>
+          <span style={{ fontWeight: 600, fontSize: 16, color: '#202124', letterSpacing: '-0.3px' }}>A-Level Hub</span>
         </div>
 
         <div style={{ width: '100%', maxWidth: 400, margin: '0 auto', paddingTop: 40 }}>
@@ -282,7 +282,7 @@ export default function AuthPage() {
                   borderRadius: 10,
                   border: isLogin === key ? '1px solid #E2E8F0' : '1px solid transparent',
                   background: isLogin === key ? '#FFFFFF' : 'transparent',
-                  color: isLogin === key ? '#1E293B' : '#64748B',
+                  color: isLogin === key ? '#202124' : '#64748B',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                   boxShadow: isLogin === key ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
@@ -295,7 +295,7 @@ export default function AuthPage() {
 
           {/* Heading */}
           <div style={{ marginBottom: 28 }}>
-            <h1 style={{ fontSize: 28, fontWeight: 700, fontFamily: 'Georgia, "Times New Roman", serif', color: '#1E293B', marginBottom: 8, lineHeight: 1.2 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 700, fontFamily: 'inherit', color: '#202124', marginBottom: 8, lineHeight: 1.2 }}>
               {isLogin ? 'Welcome back' : 'Start your journey'}
             </h1>
             <p style={{ fontSize: 13, color: '#64748B', lineHeight: 1.5, minHeight: 40 }}>
@@ -319,7 +319,7 @@ export default function AuthPage() {
                 onBlur={() => setFocusedField(null)}
               />
               <div style={{ minHeight: 20, paddingTop: 4 }}>
-                {errors.email && <span style={{ fontSize: 12, color: '#EF4444' }}>{errors.email}</span>}
+                {errors.email && <span style={{ fontSize: 12, color: '#d93025' }}>{errors.email}</span>}
               </div>
             </div>
 
@@ -338,7 +338,7 @@ export default function AuthPage() {
                 onBlur={() => setFocusedField(null)}
               />
               <div style={{ minHeight: 20, paddingTop: 4 }}>
-                {errors.password && <span style={{ fontSize: 12, color: '#EF4444' }}>{errors.password}</span>}
+                {errors.password && <span style={{ fontSize: 12, color: '#d93025' }}>{errors.password}</span>}
               </div>
               {/* Password strength bar — fixed-height container */}
               <div style={{ height: 20 }}>
@@ -364,7 +364,7 @@ export default function AuthPage() {
                 onBlur={() => setFocusedField(null)}
               />
               <div style={{ minHeight: 20, paddingTop: 4 }}>
-                {errors.confirmPassword && <span style={{ fontSize: 12, color: '#EF4444' }}>{errors.confirmPassword}</span>}
+                {errors.confirmPassword && <span style={{ fontSize: 12, color: '#d93025' }}>{errors.confirmPassword}</span>}
               </div>
             </div>
 
@@ -388,7 +388,7 @@ export default function AuthPage() {
               disabled={loading}
               onClick={isLogin ? handleLoginSubmit : handleRegisterSubmit}
               style={{ width: '100%', height: 44, padding: 0, background: loading ? '#475569' : DARK, color: '#fff', fontWeight: 600, fontSize: 14, border: 'none', borderRadius: 12, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.15s', marginBottom: 24 }}
-              onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#1E293B' }}
+              onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#202124' }}
               onMouseLeave={e => { if (!loading) e.currentTarget.style.background = DARK }}
             >
               {loading
@@ -412,7 +412,7 @@ export default function AuthPage() {
         className="auth-right"
         style={{
           width: '50%',
-          background: '#1E293B',
+          background: '#202124',
           position: 'relative',
           alignItems: 'center',
           justifyContent: 'center',
@@ -431,12 +431,12 @@ export default function AuthPage() {
         <div style={{ position: 'relative', zIndex: 10, maxWidth: 420, color: '#fff', padding: 48 }}>
           {/* Brand logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 52 }}>
-            <div style={{ width: 44, height: 44, background: BRAND, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 22, fontFamily: 'Georgia, serif', fontStyle: 'italic', boxShadow: `0 0 24px ${BRAND}60` }}>∑</div>
+            <div style={{ width: 44, height: 44, background: BRAND, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 22, fontFamily: 'inherit', fontStyle: 'italic', boxShadow: `0 0 24px ${BRAND}60` }}>∑</div>
             <span style={{ fontWeight: 600, fontSize: 22, letterSpacing: '-0.4px' }}>A-Level Hub</span>
           </div>
 
           {/* Heading */}
-          <h2 style={{ fontSize: 38, fontWeight: 700, fontFamily: 'Georgia, "Times New Roman", serif', lineHeight: 1.2, marginBottom: 20 }}>
+          <h2 style={{ fontSize: 38, fontWeight: 700, fontFamily: 'inherit', lineHeight: 1.2, marginBottom: 20 }}>
             Master A-Level<br />
             with{' '}
             <span style={{ background: `linear-gradient(135deg, ${BRAND}, #FF6B6B)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
@@ -471,7 +471,7 @@ export default function AuthPage() {
           <div style={{ display: 'flex', gap: 32, marginTop: 40 }}>
             {[{ num: '6', label: 'Subjects' }, { num: '82+', label: 'Chapters' }, { num: 'AI', label: 'Tutor' }].map(({ num, label }) => (
               <div key={label}>
-                <div style={{ fontSize: 24, fontWeight: 700, fontFamily: 'Georgia, serif', color: '#fff' }}>{num}</div>
+                <div style={{ fontSize: 24, fontWeight: 700, fontFamily: 'inherit', color: '#fff' }}>{num}</div>
                 <div style={{ fontSize: 12, color: '#64748B', marginTop: 2 }}>{label}</div>
               </div>
             ))}

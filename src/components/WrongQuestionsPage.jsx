@@ -2,21 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import QuestionCard from './QuestionCard'
-import Navbar from './Navbar'
 import Loading from './common/Loading'
 import { Button } from './ui'
 import { get } from '../utils/apiClient'
 import { formatDate, getDifficultyLabel } from '../utils/helpers.js'
 
-/**
- * Phase 4 Week 4 Day 11: Wrong Questions Page
- *
- * Features:
- * - Display all incorrectly answered questions from past exams
- * - Filter by topic, difficulty, and exam type
- * - Redo questions functionality
- * - Track improvement progress
- */
+const DIFF_STYLES = {
+  easy: { background: '#e6f4ea', color: '#0d652d' },
+  medium: { background: '#fef7e0', color: '#e37400' },
+  hard: { background: '#fce8e6', color: '#a50e0e' },
+}
 
 function WrongQuestionsPage() {
   const navigate = useNavigate()
@@ -26,50 +21,25 @@ function WrongQuestionsPage() {
   const [wrongQuestions, setWrongQuestions] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [filter, setFilter] = useState({
-    topic: 'all',
-    difficulty: 'all',
-    examType: 'all'
-  })
+  const [filter, setFilter] = useState({ topic: 'all', difficulty: 'all', examType: 'all' })
   const [showAnswer, setShowAnswer] = useState({})
 
-  useEffect(() => {
-    fetchWrongQuestions()
-  }, [])
+  useEffect(() => { fetchWrongQuestions() }, [])
 
   const fetchWrongQuestions = async () => {
     try {
       setLoading(true)
       setError(null)
-
-      // Use dedicated wrong questions API
-      const result = await get(`/api/wrong-questions?userId=${userId}&limit=100`)
-
-      if (result.success) {
-        // Transform API response to component format
-        const wrong = result.data.wrongQuestions.map(wq => ({
-          id: wq.question.id,
-          type: wq.question.type,
-          difficulty: wq.question.difficulty,
-          content: wq.question.content,
-          options: wq.question.options,
-          answer: wq.question.answer,
-          explanation: wq.question.explanation,
-          tags: wq.question.tags,
-          chapterId: wq.question.chapterId,
-          examId: wq.examId,
-          examType: wq.exam.type,
-          examDate: wq.exam.createdAt,
-          userAnswer: wq.userAnswer,
-          aiFeedback: wq.aiFeedback,
-          chapter: wq.chapter,
-          attemptCount: 1
-        }))
-
-        setWrongQuestions(wrong)
-      } else {
-        setError(result.error?.message || 'Failed to load wrong questions')
-      }
+      const data = await get(`/api/wrong-questions?userId=${userId}&limit=100`)
+      const list = data?.wrongQuestions || data || []
+      const wrong = (Array.isArray(list) ? list : []).map(wq => ({
+        id: wq.question.id, type: wq.question.type, difficulty: wq.question.difficulty,
+        content: wq.question.content, options: wq.question.options, answer: wq.question.answer,
+        explanation: wq.question.explanation, tags: wq.question.tags, chapterId: wq.question.chapterId,
+        examId: wq.examId, examType: wq.exam.type, examDate: wq.exam.createdAt,
+        userAnswer: wq.userAnswer, aiFeedback: wq.aiFeedback, chapter: wq.chapter, attemptCount: 1
+      }))
+      setWrongQuestions(wrong)
     } catch (err) {
       console.error('Failed to fetch wrong questions:', err)
       setError('Failed to load wrong questions. Please try again later.')
@@ -79,19 +49,12 @@ function WrongQuestionsPage() {
   }
 
   const toggleAnswer = (questionId) => {
-    setShowAnswer(prev => ({
-      ...prev,
-      [questionId]: !prev[questionId]
-    }))
+    setShowAnswer(prev => ({ ...prev, [questionId]: !prev[questionId] }))
   }
 
-  // Get unique topics
   const topics = ['all', ...new Set(wrongQuestions.flatMap(q => q.tags || []))]
-
-  // Get unique exam types
   const examTypes = ['all', ...new Set(wrongQuestions.map(q => q.examType))]
 
-  // Filter questions
   const filteredQuestions = wrongQuestions.filter(q => {
     if (filter.topic !== 'all' && !q.tags?.includes(filter.topic)) return false
     if (filter.difficulty !== 'all' && q.difficulty !== parseInt(filter.difficulty)) return false
@@ -99,7 +62,6 @@ function WrongQuestionsPage() {
     return true
   })
 
-  // Group by topic
   const groupedByTopic = filteredQuestions.reduce((acc, q) => {
     const topic = q.tags?.[0] || 'Other'
     if (!acc[topic]) acc[topic] = []
@@ -107,192 +69,165 @@ function WrongQuestionsPage() {
     return acc
   }, {})
 
-  const getDifficultyBadgeClass = (difficulty) => {
-    if (difficulty <= 2) return 'bg-success-100 text-success-700'
-    if (difficulty === 3) return 'bg-warning-100 text-warning-700'
-    return 'bg-error-100 text-error-700'
+  const getDiffStyle = (d) => {
+    if (d <= 2) return DIFF_STYLES.easy
+    if (d === 3) return DIFF_STYLES.medium
+    return DIFF_STYLES.hard
   }
 
   const getExamTypeLabel = (type) => {
-    const labels = {
-      chapter_test: 'Chapter Test',
-      unit_test: 'Unit Test',
-      mock_exam: 'Mock Exam',
-      diagnostic: 'Diagnostic Test'
-    }
+    const labels = { chapter_test: 'Chapter Test', unit_test: 'Unit Test', mock_exam: 'Mock Exam', diagnostic: 'Diagnostic Test' }
     return labels[type] || type
   }
 
-  if (loading) {
-    return <Loading message="Loading wrong questions..." size="large" fullScreen />
-  }
+  if (loading) return <Loading message="Loading wrong questions..." size="large" fullScreen />
 
   if (error) {
     return (
-      <>
-        <Navbar />
-        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex items-center justify-center p-4">
-          <div className="bg-error-50 border border-error-200 rounded-xl p-8 text-center max-w-md">
-            <p className="text-error-700 mb-4">{error}</p>
-            <Button variant="primary" size="md" onClick={fetchWrongQuestions}>
-              Retry
-            </Button>
-          </div>
+      <div style={{ minHeight: '100vh', background: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+        <div style={{ background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 32, textAlign: 'center', maxWidth: 400 }}>
+          <p style={{ color: '#c5221f', fontSize: 14, marginBottom: 16 }}>{error}</p>
+          <Button variant="primary" size="md" onClick={fetchWrongQuestions}>Retry</Button>
         </div>
-      </>
+      </div>
     )
   }
 
+  const S = {
+    page: { minHeight: '100vh', background: '#f8f9fa' },
+    inner: { maxWidth: 1080, margin: '0 auto', padding: '32px 24px' },
+    card: { background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 24 },
+    label: { display: 'block', fontSize: 13, color: '#5f6368', marginBottom: 6, fontWeight: 500 },
+    select: { width: '100%', padding: '8px 12px', border: '1px solid #dadce0', borderRadius: 8, fontSize: 14, color: '#202124', background: '#fff', outline: 'none' },
+    badge: { display: 'inline-block', padding: '3px 10px', borderRadius: 12, fontSize: 11, fontWeight: 600, textTransform: 'uppercase' },
+    statCard: { background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 20, textAlign: 'center' },
+    statNum: { fontSize: 32, fontWeight: 700, color: '#1a73e8', marginBottom: 4 },
+    statLabel: { fontSize: 12, color: '#5f6368', textTransform: 'uppercase', letterSpacing: '0.5px' },
+  }
+
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header */}
-          <div className="text-center mb-8 animate-fade-in-down">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">📚 Wrong Questions Collection</h1>
-            <p className="text-lg text-gray-600">Review and master your mistakes</p>
-          </div>
-
-          {/* Statistics */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-              <div className="text-4xl font-bold text-error-600 mb-2">{wrongQuestions.length}</div>
-              <div className="text-sm text-gray-600 uppercase tracking-wide">Total Wrong</div>
-            </div>
-            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-              <div className="text-4xl font-bold text-error-600 mb-2">{Object.keys(groupedByTopic).length}</div>
-              <div className="text-sm text-gray-600 uppercase tracking-wide">Topics</div>
-            </div>
-            <div className="bg-white rounded-xl shadow-md p-6 text-center border-2 border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-              <div className="text-4xl font-bold text-error-600 mb-2">{filteredQuestions.length}</div>
-              <div className="text-sm text-gray-600 uppercase tracking-wide">Filtered</div>
-            </div>
-          </div>
-
-          {/* Filters */}
-          <div className="bg-white rounded-xl shadow-md p-6 mb-8 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Topic:</label>
-                <select
-                  value={filter.topic}
-                  onChange={(e) => setFilter({ ...filter, topic: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                >
-                  {topics.map(topic => (
-                    <option key={topic} value={topic}>
-                      {topic === 'all' ? 'All Topics' : topic}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Difficulty:</label>
-                <select
-                  value={filter.difficulty}
-                  onChange={(e) => setFilter({ ...filter, difficulty: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                >
-                  <option value="all">All Levels</option>
-                  <option value="1">Very Easy</option>
-                  <option value="2">Easy</option>
-                  <option value="3">Medium</option>
-                  <option value="4">Hard</option>
-                  <option value="5">Very Hard</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Exam Type:</label>
-                <select
-                  value={filter.examType}
-                  onChange={(e) => setFilter({ ...filter, examType: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                >
-                  {examTypes.map(type => (
-                    <option key={type} value={type}>
-                      {type === 'all' ? 'All Types' : getExamTypeLabel(type)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Questions List */}
-          {filteredQuestions.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-md p-12 text-center animate-scale-in">
-              <div className="text-6xl mb-4">🎉</div>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-2">No wrong questions found!</h2>
-              <p className="text-gray-600 mb-6">
-                {wrongQuestions.length === 0
-                  ? "You haven't taken any exams yet, or you got everything right!"
-                  : "Try adjusting your filters to see more questions."}
-              </p>
-              <Button variant="primary" size="md" onClick={() => navigate('/exams')}>
-                Take an Exam
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-8">
-              {Object.entries(groupedByTopic).map(([topic, questions], topicIndex) => (
-                <div key={topic} className="bg-white rounded-xl shadow-md p-6 animate-fade-in-up" style={{ animationDelay: `${0.5 + topicIndex * 0.1}s`, animationFillMode: 'both' }}>
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4 pb-3 border-b-2 border-error-500 flex items-center gap-3">
-                    {topic}
-                    <span className="text-base text-gray-600 font-normal">({questions.length} questions)</span>
-                  </h2>
-
-                  <div className="space-y-6">
-                    {questions.map((question, index) => (
-                      <div key={`${question.id}-${question.examId}`} className="border border-gray-200 rounded-lg p-6 bg-gray-50 hover:shadow-lg hover:border-error-500 transition-all duration-300">
-                        <div className="flex flex-wrap gap-3 mb-4 items-center">
-                          <span className="text-lg font-bold text-error-600">#{index + 1}</span>
-                          <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase ${getDifficultyBadgeClass(question.difficulty)}`}>
-                            {getDifficultyLabel(question.difficulty)}
-                          </span>
-                          <span className="px-3 py-1 bg-info-100 text-info-700 rounded-full text-xs font-medium">
-                            {getExamTypeLabel(question.examType)}
-                          </span>
-                          <span className="text-sm text-gray-600 ml-auto">
-                            {formatDate(question.examDate)}
-                          </span>
-                        </div>
-
-                        <QuestionCard
-                          question={question}
-                          questionNumber={index + 1}
-                          totalQuestions={questions.length}
-                          showAnswer={showAnswer[question.id]}
-                        />
-
-                        <div className="flex flex-wrap gap-4 mt-4 items-center">
-                          <Button
-                            variant={showAnswer[question.id] ? 'secondary' : 'primary'}
-                            size="sm"
-                            onClick={() => toggleAnswer(question.id)}
-                          >
-                            {showAnswer[question.id] ? '🙈 Hide Answer' : '👁️ Show Answer'}
-                          </Button>
-
-                          {!showAnswer[question.id] && (
-                            <div className="flex gap-2 items-center px-4 py-2 bg-white rounded-lg border border-gray-200">
-                              <span className="text-sm text-gray-600">Your answer:</span>
-                              <span className="text-base font-bold text-error-600">{question.userAnswer?.value || 'No answer'}</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+    <div style={S.page}>
+      <div style={S.inner}>
+        {/* Header */}
+        <div style={{ marginBottom: 24 }}>
+          <h1 style={{ fontSize: 24, fontWeight: 600, color: '#202124', margin: '0 0 4px' }}>Wrong Questions</h1>
+          <p style={{ fontSize: 14, color: '#5f6368', margin: 0 }}>Review and master your mistakes</p>
         </div>
+
+        {/* Statistics */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
+          <div style={S.statCard}>
+            <div style={S.statNum}>{wrongQuestions.length}</div>
+            <div style={S.statLabel}>Total Wrong</div>
+          </div>
+          <div style={S.statCard}>
+            <div style={S.statNum}>{Object.keys(groupedByTopic).length}</div>
+            <div style={S.statLabel}>Topics</div>
+          </div>
+          <div style={S.statCard}>
+            <div style={S.statNum}>{filteredQuestions.length}</div>
+            <div style={S.statLabel}>Filtered</div>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div style={{ ...S.card, marginBottom: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
+            <div>
+              <label style={S.label}>Topic</label>
+              <select style={S.select} value={filter.topic} onChange={e => setFilter({ ...filter, topic: e.target.value })}>
+                {topics.map(t => <option key={t} value={t}>{t === 'all' ? 'All Topics' : t}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={S.label}>Difficulty</label>
+              <select style={S.select} value={filter.difficulty} onChange={e => setFilter({ ...filter, difficulty: e.target.value })}>
+                <option value="all">All Levels</option>
+                <option value="1">Very Easy</option>
+                <option value="2">Easy</option>
+                <option value="3">Medium</option>
+                <option value="4">Hard</option>
+                <option value="5">Very Hard</option>
+              </select>
+            </div>
+            <div>
+              <label style={S.label}>Exam Type</label>
+              <select style={S.select} value={filter.examType} onChange={e => setFilter({ ...filter, examType: e.target.value })}>
+                {examTypes.map(t => <option key={t} value={t}>{t === 'all' ? 'All Types' : getExamTypeLabel(t)}</option>)}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Questions List */}
+        {filteredQuestions.length === 0 ? (
+          <div style={{ ...S.card, textAlign: 'center', padding: '60px 24px' }}>
+            <div style={{ fontSize: 48, marginBottom: 8 }}>🎉</div>
+            <h2 style={{ fontSize: 18, fontWeight: 500, color: '#202124', margin: '0 0 8px' }}>No wrong questions found!</h2>
+            <p style={{ fontSize: 14, color: '#5f6368', marginBottom: 24 }}>
+              {wrongQuestions.length === 0
+                ? "You haven't taken any exams yet, or you got everything right!"
+                : "Try adjusting your filters to see more questions."}
+            </p>
+            <Button variant="primary" size="md" onClick={() => navigate('/exams')}>Take an Exam</Button>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            {Object.entries(groupedByTopic).map(([topic, questions]) => (
+              <div key={topic} style={S.card}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, paddingBottom: 12, borderBottom: '2px solid #1a73e8' }}>
+                  <h2 style={{ fontSize: 18, fontWeight: 600, color: '#202124', margin: 0 }}>{topic}</h2>
+                  <span style={{ fontSize: 13, color: '#5f6368' }}>({questions.length} questions)</span>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {questions.map((question, index) => (
+                    <div key={`${question.id}-${question.examId}`} style={{ border: '1px solid #dadce0', borderRadius: 8, padding: 20, background: '#f8f9fa' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12, alignItems: 'center' }}>
+                        <span style={{ fontSize: 14, fontWeight: 600, color: '#1a73e8' }}>#{index + 1}</span>
+                        <span style={{ ...S.badge, ...getDiffStyle(question.difficulty) }}>
+                          {getDifficultyLabel(question.difficulty)}
+                        </span>
+                        <span style={{ ...S.badge, background: '#e8f0fe', color: '#185abc' }}>
+                          {getExamTypeLabel(question.examType)}
+                        </span>
+                        <span style={{ fontSize: 13, color: '#80868b', marginLeft: 'auto' }}>
+                          {formatDate(question.examDate)}
+                        </span>
+                      </div>
+
+                      <QuestionCard
+                        question={question}
+                        questionNumber={index + 1}
+                        totalQuestions={questions.length}
+                        showAnswer={showAnswer[question.id]}
+                      />
+
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 12, alignItems: 'center' }}>
+                        <Button
+                          variant={showAnswer[question.id] ? 'secondary' : 'primary'}
+                          size="sm"
+                          onClick={() => toggleAnswer(question.id)}
+                        >
+                          {showAnswer[question.id] ? 'Hide Answer' : 'Show Answer'}
+                        </Button>
+
+                        {!showAnswer[question.id] && (
+                          <div style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '6px 12px', background: '#fff', borderRadius: 8, border: '1px solid #dadce0' }}>
+                            <span style={{ fontSize: 13, color: '#5f6368' }}>Your answer:</span>
+                            <span style={{ fontSize: 14, fontWeight: 600, color: '#d93025' }}>{question.userAnswer?.value || 'No answer'}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </>
+    </div>
   )
 }
 

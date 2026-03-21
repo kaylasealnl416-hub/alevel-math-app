@@ -55,7 +55,7 @@ export default function SessionSidebar({
                   onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = '#F8FAFC' }}
                   onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent' }}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={isActive ? '#EF4444' : '#94A3B8'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={isActive ? '#d93025' : '#94A3B8'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                   </svg>
 
@@ -67,7 +67,7 @@ export default function SessionSidebar({
                       onKeyDown={e => e.key === 'Enter' && saveTitle(session.id)}
                       onClick={e => e.stopPropagation()}
                       autoFocus
-                      style={{ flex: 1, fontSize: 13, border: '1px solid #DA291C', borderRadius: 6, padding: '2px 6px', outline: 'none', color: '#0F172A' }}
+                      style={{ flex: 1, fontSize: 13, border: '1px solid #1a73e8', borderRadius: 6, padding: '2px 6px', outline: 'none', color: '#0F172A' }}
                     />
                   ) : (
                     <div style={{ flex: 1, minWidth: 0 }}>
@@ -95,7 +95,7 @@ export default function SessionSidebar({
                         ].map(item => (
                           <button key={item.label}
                             onClick={e => { e.stopPropagation(); item.action() }}
-                            style={{ display: 'block', width: '100%', padding: '9px 14px', background: 'none', border: 'none', textAlign: 'left', fontSize: 13, cursor: 'pointer', color: item.danger ? '#EF4444' : '#374151' }}
+                            style={{ display: 'block', width: '100%', padding: '9px 14px', background: 'none', border: 'none', textAlign: 'left', fontSize: 13, cursor: 'pointer', color: item.danger ? '#d93025' : '#374151' }}
                             onMouseEnter={e => { e.currentTarget.style.background = item.danger ? '#FEF2F2' : '#F8FAFC' }}
                             onMouseLeave={e => { e.currentTarget.style.background = 'none' }}
                           >{item.label}</button>

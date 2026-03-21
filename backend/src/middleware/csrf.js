@@ -6,6 +6,10 @@
 import { randomBytes } from 'crypto'
 
 // 存储 CSRF Token（生产环境应使用 Redis）
+// 警告：服务重启后所有 token 失效，用户会遇到 403 直到重新请求 token
+if (process.env.NODE_ENV === 'production') {
+  console.warn('[CSRF] 使用内存存储 token，服务重启后所有用户需重新获取 CSRF token')
+}
 const csrfTokens = new Map()
 
 // Token 过期时间（1小时）

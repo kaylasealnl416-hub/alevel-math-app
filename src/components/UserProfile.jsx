@@ -384,7 +384,7 @@ const styles = {
   },
   editButton: {
     padding: '8px 16px',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#188038',
     color: '#fff',
     border: 'none',
     borderRadius: '6px',
@@ -450,7 +450,7 @@ const styles = {
     transition: 'all 0.2s'
   },
   subjectButtonActive: {
-    borderColor: '#4CAF50',
+    borderColor: '#188038',
     backgroundColor: '#f1f8f4',
     fontWeight: '600'
   },
@@ -481,7 +481,7 @@ const styles = {
   statValue: {
     fontSize: '32px',
     fontWeight: 'bold',
-    color: '#4CAF50',
+    color: '#188038',
     marginBottom: '8px'
   },
   statLabel: {
@@ -507,7 +507,7 @@ const styles = {
   },
   saveButton: {
     padding: '10px 24px',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#188038',
     color: '#fff',
     border: 'none',
     borderRadius: '6px',

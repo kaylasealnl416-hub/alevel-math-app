@@ -4,18 +4,8 @@ import ScoreCard from './exam/ScoreCard'
 import AIFeedback from './exam/AIFeedback'
 import Loading from './common/Loading'
 import Toast from './common/Toast'
+import { Button } from './ui'
 import { get } from '../utils/apiClient'
-
-/**
- * Phase 4 Week 2 Day 6: Exam Result Page (Optimized)
- *
- * Features:
- * - Display overall score and statistics
- * - Show topic-wise performance
- * - Display question-by-question results
- * - AI feedback with enhanced UI
- * - Share results functionality
- */
 
 function ExamResultPage() {
   const { examId } = useParams()
@@ -29,69 +19,41 @@ function ExamResultPage() {
   const [loadingFeedback, setLoadingFeedback] = useState(false)
   const [toast, setToast] = useState(null)
 
-  useEffect(() => {
-    fetchExamResult()
-  }, [examId])
+  useEffect(() => { fetchExamResult() }, [examId])
 
   useEffect(() => {
-    if (exam && exam.status === 'graded') {
-      fetchAIFeedback()
-    }
+    if (exam && exam.status === 'graded') fetchAIFeedback()
   }, [exam])
 
   const fetchExamResult = async () => {
     try {
-      setLoading(true)
-      setError(null)
-
-      const result = await get(`/api/exams/${examId}`)
-
-      if (result.success) {
-        setExam(result.data)
-        setQuestions(result.data.questionSet.questions)
-      } else {
-        setError(result.error.message)
-      }
+      setLoading(true); setError(null)
+      const data = await get(`/api/exams/${examId}`)
+      setExam(data)
+      setQuestions(data.questionSet?.questions || [])
     } catch (err) {
       console.error('Failed to fetch exam result:', err)
       setError('Failed to load exam result. Please try again later.')
-    } finally {
-      setLoading(false)
-    }
+    } finally { setLoading(false) }
   }
 
   const fetchAIFeedback = async () => {
     try {
       setLoadingFeedback(true)
-
-      const result = await get(`/api/exams/${examId}/feedback`)
-
-      if (result.success) {
-        setAiFeedback(result.data)
-      }
+      const data = await get(`/api/exams/${examId}/feedback`)
+      setAiFeedback(data)
     } catch (err) {
       console.error('Failed to fetch AI feedback:', err)
-      // Don't show error to user, AI feedback is optional
-    } finally {
-      setLoadingFeedback(false)
-    }
+    } finally { setLoadingFeedback(false) }
   }
 
   const shareResults = () => {
-    const percentage = exam.totalCount > 0
-      ? Math.round((exam.correctCount / exam.totalCount) * 100)
-      : 0
-
-    const text = `I scored ${exam.totalScore}/${exam.maxScore} (${percentage}%) on my A-Level exam! 🎉`
+    const pct = exam.totalCount > 0 ? Math.round((exam.correctCount / exam.totalCount) * 100) : 0
+    const text = `I scored ${exam.totalScore}/${exam.maxScore} (${pct}%) on my A-Level exam!`
 
     if (navigator.share) {
-      navigator.share({
-        title: 'My Exam Results',
-        text: text,
-        url: window.location.href
-      }).catch(() => {
-        copyToClipboard(text)
-      })
+      navigator.share({ title: 'My Exam Results', text, url: window.location.href })
+        .catch(() => copyToClipboard(text))
     } else {
       copyToClipboard(text)
     }
@@ -109,223 +71,251 @@ function ExamResultPage() {
     const userAnswer = exam.answers[questionId]
     const question = questions.find(q => q.id === questionId)
     if (!question) return null
-
     const isCorrect = userAnswer?.value === question.answer?.value
     return { userAnswer, question, isCorrect }
   }
 
-  const getGradeClass = (percentage) => {
-    if (percentage >= 90) return 'grade-a'
-    if (percentage >= 80) return 'grade-b'
-    if (percentage >= 70) return 'grade-c'
-    if (percentage >= 60) return 'grade-d'
-    return 'grade-f'
-  }
-
-  if (loading) {
-    return <Loading message="Loading exam results..." size="large" fullScreen />
-  }
+  if (loading) return <Loading message="Loading exam results..." size="large" fullScreen />
 
   if (error) {
     return (
-      <div className="exam-result-error">
-        <p>{error}</p>
-        <button onClick={() => navigate('/exams')}>Back to Exam List</button>
+      <div style={{ minHeight: '100vh', background: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+        <div style={{ background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 32, textAlign: 'center', maxWidth: 400 }}>
+          <p style={{ color: '#c5221f', fontSize: 14, marginBottom: 16 }}>{error}</p>
+          <Button variant="primary" size="md" onClick={() => navigate('/exams')}>Back to Exam List</Button>
+        </div>
       </div>
     )
   }
 
   if (!exam || exam.status === 'in_progress') {
     return (
-      <div className="exam-result-error">
-        <p>This exam has not been submitted yet.</p>
-        <button onClick={() => navigate(`/exams/${examId}/take`)}>Continue Exam</button>
+      <div style={{ minHeight: '100vh', background: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+        <div style={{ background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 32, textAlign: 'center', maxWidth: 400 }}>
+          <p style={{ color: '#5f6368', fontSize: 14, marginBottom: 16 }}>This exam has not been submitted yet.</p>
+          <Button variant="primary" size="md" onClick={() => navigate(`/exams/${examId}/take`)}>Continue Exam</Button>
+        </div>
       </div>
     )
   }
 
-  const percentage = exam.totalCount > 0
-    ? Math.round((exam.correctCount / exam.totalCount) * 100)
-    : 0
+  const percentage = exam.totalCount > 0 ? Math.round((exam.correctCount / exam.totalCount) * 100) : 0
+
+  const S = {
+    page: { minHeight: '100vh', background: '#f8f9fa' },
+    inner: { maxWidth: 1080, margin: '0 auto', padding: '32px 24px' },
+    header: {
+      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      marginBottom: 24, flexWrap: 'wrap', gap: 12,
+    },
+    title: { fontSize: 24, fontWeight: 600, color: '#202124', margin: 0 },
+    statsSection: {
+      background: '#fff', border: '1px solid #dadce0', borderRadius: 8,
+      padding: 24, marginBottom: 24,
+    },
+    sectionTitle: { fontSize: 18, fontWeight: 500, color: '#202124', margin: '0 0 16px' },
+    statsGrid: {
+      display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16,
+    },
+    statCard: {
+      background: '#f8f9fa', borderRadius: 8, padding: 16,
+    },
+    statCardTitle: { fontSize: 14, fontWeight: 500, color: '#202124', margin: '0 0 10px' },
+    statItem: {
+      display: 'flex', justifyContent: 'space-between', padding: '4px 0',
+      fontSize: 14,
+    },
+    statLabel: { color: '#5f6368' },
+    statValue: { color: '#202124', fontWeight: 500 },
+    statPercent: { fontSize: 12, color: '#80868b', marginLeft: 4 },
+    reviewSection: {
+      background: '#fff', border: '1px solid #dadce0', borderRadius: 8,
+      padding: 24, marginBottom: 24,
+    },
+    questionCard: (isCorrect) => ({
+      border: '1px solid',
+      borderColor: isCorrect ? '#81c995' : '#f5bcba',
+      borderRadius: 8, padding: 20, marginBottom: 12,
+      borderLeftWidth: 4,
+      borderLeftColor: isCorrect ? '#188038' : '#d93025',
+    }),
+    questionHeader: {
+      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      marginBottom: 12, flexWrap: 'wrap', gap: 8,
+    },
+    questionNum: { fontSize: 15, fontWeight: 500, color: '#202124' },
+    resultBadge: (isCorrect) => ({
+      padding: '3px 10px', borderRadius: 12, fontSize: 12, fontWeight: 600,
+      background: isCorrect ? '#e6f4ea' : '#fce8e6',
+      color: isCorrect ? '#0d652d' : '#a50e0e',
+    }),
+    tag: {
+      display: 'inline-block', padding: '2px 8px', borderRadius: 4,
+      fontSize: 11, background: '#f1f3f4', color: '#5f6368', marginRight: 4,
+    },
+    questionText: { fontSize: 14, color: '#202124', lineHeight: 1.6, margin: '12px 0' },
+    optionItem: (isUser, isCorrect) => ({
+      padding: '8px 12px', borderRadius: 6, fontSize: 14, marginBottom: 4,
+      border: '1px solid',
+      background: isCorrect ? '#e6f4ea' : isUser ? '#fce8e6' : '#fff',
+      borderColor: isCorrect ? '#81c995' : isUser ? '#f5bcba' : '#f1f3f4',
+      color: '#202124',
+    }),
+    optionBadge: {
+      fontSize: 11, fontWeight: 600, marginLeft: 8, padding: '2px 6px',
+      borderRadius: 4, background: '#f1f3f4', color: '#5f6368',
+    },
+    explanation: {
+      background: '#e8f0fe', borderRadius: 8, padding: 14, marginTop: 12,
+    },
+    explanationTitle: { fontSize: 13, fontWeight: 500, color: '#185abc', margin: '0 0 6px' },
+    explanationText: { fontSize: 13, color: '#202124', lineHeight: 1.5, margin: 0 },
+    actions: {
+      display: 'flex', gap: 12, justifyContent: 'center', marginTop: 8,
+    },
+  }
 
   return (
-    <div className="exam-result-page">
-      {/* Toast Notification */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
+    <div style={S.page}>
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
-      {/* Header */}
-      <div className="exam-result-header">
-        <button className="btn-back" onClick={() => navigate('/exams')}>
-          ← Back to Exams
-        </button>
-        <h1>Exam Results</h1>
-        <button className="btn-share" onClick={shareResults}>
-          📤 Share
-        </button>
-      </div>
-
-      {/* Score Card */}
-      <ScoreCard
-        totalScore={exam.totalScore}
-        maxScore={exam.maxScore}
-        correctCount={exam.correctCount}
-        totalCount={exam.totalCount}
-        timeSpent={exam.timeSpent}
-        percentage={percentage}
-      />
-
-      {/* Statistics */}
-      <div className="exam-stats-section">
-        <h2>Performance Breakdown</h2>
-
-        <div className="stats-grid">
-          {/* Difficulty Stats */}
-          {exam.difficultyStats && (
-            <div className="stat-card">
-              <h3>By Difficulty</h3>
-              <div className="stat-items">
-                {exam.difficultyStats.easy && exam.difficultyStats.easy.total > 0 && (
-                  <div className="stat-item">
-                    <span className="stat-label">Easy:</span>
-                    <span className="stat-value">
-                      {exam.difficultyStats.easy.correct}/{exam.difficultyStats.easy.total}
-                      <span className="stat-percentage">
-                        ({Math.round((exam.difficultyStats.easy.correct / exam.difficultyStats.easy.total) * 100)}%)
-                      </span>
-                    </span>
-                  </div>
-                )}
-                {exam.difficultyStats.medium && exam.difficultyStats.medium.total > 0 && (
-                  <div className="stat-item">
-                    <span className="stat-label">Medium:</span>
-                    <span className="stat-value">
-                      {exam.difficultyStats.medium.correct}/{exam.difficultyStats.medium.total}
-                      <span className="stat-percentage">
-                        ({Math.round((exam.difficultyStats.medium.correct / exam.difficultyStats.medium.total) * 100)}%)
-                      </span>
-                    </span>
-                  </div>
-                )}
-                {exam.difficultyStats.hard && exam.difficultyStats.hard.total > 0 && (
-                  <div className="stat-item">
-                    <span className="stat-label">Hard:</span>
-                    <span className="stat-value">
-                      {exam.difficultyStats.hard.correct}/{exam.difficultyStats.hard.total}
-                      <span className="stat-percentage">
-                        ({Math.round((exam.difficultyStats.hard.correct / exam.difficultyStats.hard.total) * 100)}%)
-                      </span>
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Topic Stats */}
-          {exam.topicStats && Object.keys(exam.topicStats).length > 0 && (
-            <div className="stat-card">
-              <h3>By Topic</h3>
-              <div className="stat-items">
-                {Object.entries(exam.topicStats).map(([topic, stats]) => (
-                  <div key={topic} className="stat-item">
-                    <span className="stat-label">{topic}:</span>
-                    <span className="stat-value">
-                      {stats.correct}/{stats.total}
-                      <span className="stat-percentage">
-                        ({Math.round((stats.correct / stats.total) * 100)}%)
-                      </span>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+      <div style={S.inner}>
+        {/* Header */}
+        <div style={S.header}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <Button variant="secondary" size="sm" onClick={() => navigate('/exams')}>
+              ← Back
+            </Button>
+            <h1 style={S.title}>Exam Results</h1>
+          </div>
+          <Button variant="text" size="sm" onClick={shareResults}>Share</Button>
         </div>
-      </div>
 
-      {/* AI Feedback Section - Using new AIFeedback component */}
-      <AIFeedback feedback={aiFeedback} loading={loadingFeedback} />
+        {/* Score Card */}
+        <ScoreCard
+          totalScore={exam.totalScore}
+          maxScore={exam.maxScore}
+          correctCount={exam.correctCount}
+          totalCount={exam.totalCount}
+          timeSpent={exam.timeSpent}
+          percentage={percentage}
+        />
 
-      {/* Question Results */}
-      <div className="question-results-section">
-        <h2>Question-by-Question Review</h2>
+        {/* Statistics */}
+        {(exam.difficultyStats || (exam.topicStats && Object.keys(exam.topicStats).length > 0)) && (
+          <div style={S.statsSection}>
+            <h2 style={S.sectionTitle}>Performance Breakdown</h2>
+            <div style={S.statsGrid}>
+              {exam.difficultyStats && (
+                <div style={S.statCard}>
+                  <h3 style={S.statCardTitle}>By Difficulty</h3>
+                  {['easy', 'medium', 'hard'].map(level => {
+                    const stats = exam.difficultyStats[level]
+                    if (!stats || stats.total === 0) return null
+                    return (
+                      <div key={level} style={S.statItem}>
+                        <span style={S.statLabel}>{level.charAt(0).toUpperCase() + level.slice(1)}</span>
+                        <span style={S.statValue}>
+                          {stats.correct}/{stats.total}
+                          <span style={S.statPercent}>
+                            ({Math.round((stats.correct / stats.total) * 100)}%)
+                          </span>
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
 
-        <div className="question-results-list">
+              {exam.topicStats && Object.keys(exam.topicStats).length > 0 && (
+                <div style={S.statCard}>
+                  <h3 style={S.statCardTitle}>By Topic</h3>
+                  {Object.entries(exam.topicStats).map(([topic, stats]) => (
+                    <div key={topic} style={S.statItem}>
+                      <span style={S.statLabel}>{topic}</span>
+                      <span style={S.statValue}>
+                        {stats.correct}/{stats.total}
+                        <span style={S.statPercent}>
+                          ({Math.round((stats.correct / stats.total) * 100)}%)
+                        </span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* AI Feedback */}
+        <AIFeedback feedback={aiFeedback} loading={loadingFeedback} />
+
+        {/* Question Results */}
+        <div style={S.reviewSection}>
+          <h2 style={S.sectionTitle}>Question-by-Question Review</h2>
+
           {questions.map((question, index) => {
             const result = getQuestionResult(question.id)
             if (!result) return null
 
             return (
-              <div
-                key={question.id}
-                className={`question-result-card ${result.isCorrect ? 'correct' : 'incorrect'}`}
-              >
-                <div className="question-result-header">
-                  <div className="question-number">
+              <div key={question.id} style={S.questionCard(result.isCorrect)}>
+                <div style={S.questionHeader}>
+                  <span style={S.questionNum}>
                     Question {index + 1}
-                    <span className={`result-badge ${result.isCorrect ? 'correct' : 'incorrect'}`}>
-                      {result.isCorrect ? '✓ Correct' : '✗ Incorrect'}
-                    </span>
-                  </div>
-                  <div className="question-tags">
-                    {question.tags?.map((tag) => (
-                      <span key={tag} className="tag">{tag}</span>
+                  </span>
+                  <span style={S.resultBadge(result.isCorrect)}>
+                    {result.isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                  </span>
+                </div>
+
+                {question.tags && question.tags.length > 0 && (
+                  <div style={{ marginBottom: 8 }}>
+                    {question.tags.map((tag) => (
+                      <span key={tag} style={S.tag}>{tag}</span>
                     ))}
                   </div>
-                </div>
+                )}
 
-                <div className="question-content">
-                  <p className="question-text">
-                    {question.content?.en || question.content}
-                  </p>
+                <p style={S.questionText}>
+                  {question.content?.en || question.content}
+                </p>
 
-                  {question.type === 'multiple_choice' && question.options && (
-                    <div className="question-options">
-                      {question.options.map((option) => {
-                        const isUserAnswer = option.startsWith(result.userAnswer?.value)
-                        const isCorrectAnswer = option.startsWith(question.answer?.value)
+                {question.type === 'multiple_choice' && question.options && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 12 }}>
+                    {question.options.map((option) => {
+                      const isUserAnswer = option.startsWith(result.userAnswer?.value)
+                      const isCorrectAnswer = option.startsWith(question.answer?.value)
 
-                        return (
-                          <div
-                            key={option}
-                            className={`option-item ${isUserAnswer ? 'user-answer' : ''} ${isCorrectAnswer ? 'correct-answer' : ''}`}
-                          >
-                            {option}
-                            {isUserAnswer && !isCorrectAnswer && <span className="badge">Your answer</span>}
-                            {isCorrectAnswer && <span className="badge">Correct answer</span>}
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )}
+                      return (
+                        <div key={option} style={S.optionItem(isUserAnswer && !isCorrectAnswer, isCorrectAnswer)}>
+                          {option}
+                          {isUserAnswer && !isCorrectAnswer && <span style={S.optionBadge}>Your answer</span>}
+                          {isCorrectAnswer && <span style={{ ...S.optionBadge, background: '#e6f4ea', color: '#0d652d' }}>Correct</span>}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
 
-                  {question.answer?.explanation && (
-                    <div className="question-explanation">
-                      <h4>Explanation:</h4>
-                      <p>{question.answer.explanation?.en || question.answer.explanation}</p>
-                    </div>
-                  )}
-                </div>
+                {question.answer?.explanation && (
+                  <div style={S.explanation}>
+                    <h4 style={S.explanationTitle}>Explanation</h4>
+                    <p style={S.explanationText}>
+                      {question.answer.explanation?.en || question.answer.explanation}
+                    </p>
+                  </div>
+                )}
               </div>
             )
           })}
         </div>
-      </div>
 
-      {/* Actions */}
-      <div className="exam-result-actions">
-        <button className="btn-primary" onClick={() => navigate('/exams')}>
-          Back to Exam List
-        </button>
-        <button className="btn-secondary" onClick={() => navigate('/')}>
-          Back to Home
-        </button>
+        {/* Actions */}
+        <div style={S.actions}>
+          <Button variant="primary" size="md" onClick={() => navigate('/exams')}>Back to Exam List</Button>
+          <Button variant="secondary" size="md" onClick={() => navigate('/')}>Back to Home</Button>
+        </div>
       </div>
     </div>
   )

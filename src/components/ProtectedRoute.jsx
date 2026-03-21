@@ -33,7 +33,7 @@ const styles = {
     width: '40px',
     height: '40px',
     border: '4px solid #e2e8f0',
-    borderTop: '4px solid #667eea',
+    borderTop: '4px solid #1a73e8',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite'
   },

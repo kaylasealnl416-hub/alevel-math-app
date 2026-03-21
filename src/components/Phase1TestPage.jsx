@@ -222,7 +222,7 @@ export default function Phase1TestPage() {
                       key={index}
                       style={{
                         ...styles.resultItem,
-                        borderLeftColor: result.success ? '#4CAF50' : '#F44336'
+                        borderLeftColor: result.success ? '#188038' : '#d93025'
                       }}
                     >
                       <div style={styles.resultHeader}>
@@ -320,8 +320,8 @@ const styles = {
     transition: 'all 0.2s'
   },
   tabActive: {
-    color: '#4CAF50',
-    borderBottomColor: '#4CAF50'
+    color: '#188038',
+    borderBottomColor: '#188038'
   },
   content: {
     minHeight: '400px'
@@ -390,7 +390,7 @@ const styles = {
   },
   runAllButton: {
     padding: '12px 16px',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#188038',
     color: '#fff',
     border: 'none',
     borderRadius: '8px',
@@ -458,7 +458,7 @@ const styles = {
   statValue: {
     fontSize: '28px',
     fontWeight: 'bold',
-    color: '#4CAF50',
+    color: '#188038',
     marginBottom: '4px'
   },
   statLabel: {

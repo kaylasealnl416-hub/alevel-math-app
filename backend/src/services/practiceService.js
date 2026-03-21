@@ -13,7 +13,7 @@ const ROUND_SIZE = 5
 /**
  * Get 5 questions for practice: from bank first, AI fills gaps
  */
-export async function getQuestions(chapterId, difficulty, aiOptions = {}) {
+export async function getQuestions(chapterId, difficulty, aiOptions = {}, chapterFallback = null) {
   const diffRange = {
     easy: [1, 2],
     medium: [2, 3],
@@ -44,7 +44,7 @@ export async function getQuestions(chapterId, difficulty, aiOptions = {}) {
   // 3. Need AI to generate more
   const needed = ROUND_SIZE - bankQuestions.length
   const chapterData = await db.select().from(chapters).where(eq(chapters.id, chapterId)).limit(1)
-  const chapter = chapterData[0]
+  const chapter = chapterData[0] || chapterFallback
 
   if (!chapter) throw new Error('Chapter not found')
 
@@ -104,14 +104,24 @@ Return ONLY a JSON array, no markdown.`
   const response = await callAI(messages, opts)
   const rawText = response.content
 
-  // Parse JSON from response
+  // Parse JSON from response (容错处理)
   let parsed
-  const startIdx = rawText.indexOf('[')
-  const endIdx = rawText.lastIndexOf(']')
-  if (startIdx !== -1 && endIdx > startIdx) {
-    parsed = JSON.parse(rawText.substring(startIdx, endIdx + 1))
-  } else {
-    parsed = JSON.parse(rawText.replace(/```json|```/gi, '').trim())
+  try {
+    const startIdx = rawText.indexOf('[')
+    const endIdx = rawText.lastIndexOf(']')
+    if (startIdx !== -1 && endIdx > startIdx) {
+      parsed = JSON.parse(rawText.substring(startIdx, endIdx + 1))
+    } else {
+      parsed = JSON.parse(rawText.replace(/```json|```/gi, '').trim())
+    }
+  } catch (parseErr) {
+    console.error('AI response JSON parse failed:', parseErr.message)
+    console.error('Raw AI response:', rawText.substring(0, 500))
+    throw new Error('AI generated invalid response, please try again')
+  }
+
+  if (!Array.isArray(parsed) || parsed.length === 0) {
+    throw new Error('AI returned empty question list, please try again')
   }
 
   // Save each question to DB
@@ -174,17 +184,19 @@ export async function saveAnswer(userId, questionId, answer, isCorrect, timeSpen
 export async function getRecommendations(chapterId, wrongQuestionIds) {
   const recs = []
 
-  // 1. If wrong answers exist, recommend redo of those topics
+  // 1. If wrong answers exist, recommend redo by tags (最多推荐前3个薄弱标签)
   if (wrongQuestionIds.length > 0) {
     const wrongQs = await db.select().from(questions).where(inArray(questions.id, wrongQuestionIds))
     const wrongTags = [...new Set(wrongQs.flatMap(q => q.tags || []))]
-    if (wrongTags.length > 0) {
+    const topTags = wrongTags.slice(0, 3)
+    for (const tag of topTags) {
       recs.push({
         type: 'redo_topic',
-        title: `Redo: ${wrongTags[0]}`,
-        description: `You got ${wrongQuestionIds.length} wrong — practice more`,
+        title: `Redo: ${tag}`,
+        description: `Practice more on "${tag}"`,
         chapterId,
-        tags: wrongTags,
+        tags: [tag],
+        difficulty: 'medium',
         priority: 1
       })
     }

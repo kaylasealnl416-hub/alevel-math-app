@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { SUBJECTS } from "./data/subjects.js";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 import ChatPage from "./components/ChatPage.jsx";
-import AISettingsPanel from "./components/AISettingsPanel.jsx";
 import { callAI } from "./utils/callAI.js";
 import { getAISettings } from "./utils/aiProviders.js";
+import PracticeView from "./components/practice/PracticeView";
 
 // ============================================================
 // AI response parser (V1.1 fix)
@@ -72,10 +72,10 @@ function MathText({ text, displayMode = false }) {
 // ============================================================
 // DATA: A-Level Math Curriculum (P1, P2, P3, P4, S1, M1)
 // ============================================================
-const CURRICULUM = {
+export const CURRICULUM = {
   P1: {
     title: "Pure Mathematics 1",
-    color: "#DA291C",
+    color: "#1a73e8",
     icon: "∫",
     chapters: [
       // ── Chapter 1 ──────────────────────────────────────────────
@@ -1660,7 +1660,7 @@ const ALL_SUBJECTS = {
     name: { zh: "数学", en: "Mathematics" },
     nameFull: { zh: "爱德思IAL数学", en: "Pearson Edexcel IAL Mathematics" },
     icon: "📐",
-    color: "#DA291C",
+    color: "#1a73e8",
     level: "IAL (International A-Level)"
   },
   ...SUBJECTS
@@ -2241,14 +2241,11 @@ export default function ALevelMathApp() {
           <ChapterView key={`${selectedSubject}-${selectedBook}`} chapter={selectedChapter} book={selectedBook} nav={nav} t={t} lang={lang} subject={selectedSubject} />
         )}
         {activeView === "quiz" && (
-          <QuizView
+          <PracticeView
             chapter={selectedChapter}
             book={selectedBook}
-            nav={nav}
-            t={t}
-            lang={lang}
             subject={selectedSubject}
-            onAddError={(q) => setErrorBook(prev => [...prev.filter(e => e.id !== q.id), q])}
+            onBack={() => nav.goTo("curriculum")}
           />
         )}
         {activeView === "exam" && (
@@ -2291,19 +2288,17 @@ export default function ALevelMathApp() {
 // SUBJECTS VIEW - Subject Selection
 // ============================================================
 function SubjectsView({ nav, lang }) {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [showAISettings, setShowAISettings] = useState(false);
-
-  const BRAND = "#DA291C";
+  const BRAND = "#1a73e8";
 
   const mathSubject = {
     id: "mathematics",
     name: { zh: "数学", en: "Mathematics" },
     nameFull: { zh: "爱德思IAL数学", en: "Pearson Edexcel IAL Mathematics" },
     icon: "📐",
-    color: "#DA291C",
+    color: "#1a73e8",
     bgColor: "#FEF2F2",
     level: "IAL (International A-Level)",
     books: CURRICULUM,
@@ -2331,7 +2326,7 @@ function SubjectsView({ nav, lang }) {
     <div>
       {/* ── Hero ── */}
       <section style={{
-        background: "#1E293B",
+        background: "#202124",
         padding: "0 0 60px",
         position: "relative",
         overflow: "hidden",
@@ -2345,132 +2340,8 @@ function SubjectsView({ nav, lang }) {
         <div style={{
           position: "absolute", bottom: "-20%", left: "-5%",
           width: 500, height: 500, borderRadius: "50%",
-          background: "#3B82F6", filter: "blur(140px)", opacity: 0.07, pointerEvents: "none",
+          background: "#1a73e8", filter: "blur(140px)", opacity: 0.07, pointerEvents: "none",
         }} />
-
-        {/* ── Top Navbar ── */}
-        <div style={{
-          ...INNER,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "18px 24px",
-          borderBottom: "1px solid rgba(255,255,255,0.07)",
-          position: "relative", zIndex: 2,
-        }}>
-          {/* Logo */}
-          <button
-            onClick={() => nav("subjects")}
-            style={{ display: "flex", alignItems: "center", gap: 10, background: "none", border: "none", cursor: "pointer", padding: 0 }}
-          >
-            <span style={{
-              width: 36, height: 36, borderRadius: 8,
-              background: `${BRAND}20`, border: `1px solid ${BRAND}40`,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 13, fontWeight: 800, color: BRAND, letterSpacing: -0.5,
-            }}>PE</span>
-            <div style={{ textAlign: "left" }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#F1F5F9", lineHeight: 1.2 }}>Pearson Edexcel A Levels</div>
-              <div style={{ fontSize: 10, color: "#475569", letterSpacing: 1, textTransform: "uppercase" }}>A Level Learning Platform</div>
-            </div>
-          </button>
-
-          {/* Auth area */}
-          {isAuthenticated ? (
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <Link
-                to="/profile"
-                style={{
-                  display: "flex", alignItems: "center", gap: 8,
-                  textDecoration: "none", padding: "6px 12px", borderRadius: 8,
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.10)",
-                  transition: "background 0.2s",
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.12)"}
-                onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.06)"}
-              >
-                <div style={{
-                  width: 26, height: 26, borderRadius: "50%",
-                  background: `linear-gradient(135deg, ${BRAND} 0%, #7C3AED 100%)`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 12, fontWeight: 700, color: "#fff",
-                }}>
-                  {user?.nickname?.charAt(0)?.toUpperCase() || 'U'}
-                </div>
-                <span style={{ fontSize: 13, color: "#CBD5E1" }}>
-                  {user?.nickname || user?.email}
-                </span>
-              </Link>
-              <button
-                onClick={() => setShowAISettings(true)}
-                title="AI Model Settings"
-                style={{
-                  padding: "7px 12px", borderRadius: 7, fontSize: 13, fontWeight: 500,
-                  background: "rgba(99,102,241,0.12)",
-                  border: "1px solid rgba(99,102,241,0.25)",
-                  color: "#A5B4FC", cursor: "pointer",
-                  transition: "background 0.2s",
-                  display: "flex", alignItems: "center", gap: 4,
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.22)"}
-                onMouseLeave={e => e.currentTarget.style.background = "rgba(99,102,241,0.12)"}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                </svg>
-                AI
-              </button>
-              <button
-                onClick={() => { logout(); navigate('/'); }}
-                style={{
-                  padding: "7px 14px", borderRadius: 7, fontSize: 13, fontWeight: 500,
-                  background: "rgba(218,41,28,0.12)",
-                  border: "1px solid rgba(218,41,28,0.25)",
-                  color: "#FCA5A5", cursor: "pointer",
-                  transition: "background 0.2s",
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(218,41,28,0.22)"}
-                onMouseLeave={e => e.currentTarget.style.background = "rgba(218,41,28,0.12)"}
-              >
-                Sign Out
-              </button>
-            </div>
-          ) : (
-            <div style={{ display: "flex", gap: 8 }}>
-              <Link
-                to="/login"
-                style={{
-                  padding: "7px 18px", borderRadius: 7, fontSize: 13, fontWeight: 500,
-                  background: "transparent",
-                  border: "1px solid rgba(255,255,255,0.20)",
-                  color: "#CBD5E1", textDecoration: "none",
-                  transition: "all 0.2s",
-                  display: "inline-block",
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.20)"; }}
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/register"
-                style={{
-                  padding: "7px 18px", borderRadius: 7, fontSize: 13, fontWeight: 600,
-                  background: "#F8FAFC",
-                  border: "1px solid transparent",
-                  color: "#1E293B", textDecoration: "none",
-                  transition: "all 0.2s",
-                  display: "inline-block",
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = "#E2E8F0"}
-                onMouseLeave={e => e.currentTarget.style.background = "#F8FAFC"}
-              >
-                Sign Up
-              </Link>
-            </div>
-          )}
-        </div>
 
         {/* ── Hero Content ── */}
         <div style={{
@@ -2498,7 +2369,7 @@ function SubjectsView({ nav, lang }) {
             <h1 style={{
               fontSize: "clamp(30px, 4vw, 50px)", fontWeight: 700,
               lineHeight: 1.15, color: "#F8FAFC",
-              margin: "0 0 18px", fontFamily: "Georgia, serif",
+              margin: "0 0 18px", fontFamily: "inherit",
             }}>
               Master A-Level<br />
               <span style={{ color: BRAND }}>with Precision.</span>
@@ -2579,7 +2450,7 @@ function SubjectsView({ nav, lang }) {
               padding: "22px 16px",
               borderRight: i < 3 ? "1px solid #E2E8F0" : "none",
             }}>
-              <div style={{ fontSize: 28, fontWeight: 700, color: "#1E293B", fontFamily: "Georgia, serif" }}>{s.value}</div>
+              <div style={{ fontSize: 28, fontWeight: 700, color: "#202124", fontFamily: "inherit" }}>{s.value}</div>
               <div style={{ fontSize: 13, color: "#64748B", marginTop: 4 }}>{s.label}</div>
             </div>
           ))}
@@ -2590,7 +2461,7 @@ function SubjectsView({ nav, lang }) {
       <section id="subjects-section" style={{ ...INNER, padding: "48px 24px 32px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 24 }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: "#1E293B", fontFamily: "Georgia, serif" }}>
+            <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: "#202124", fontFamily: "inherit" }}>
               My Learning Dashboard
             </h2>
             <p style={{ margin: "6px 0 0", fontSize: 14, color: "#64748B" }}>
@@ -2635,7 +2506,7 @@ function SubjectsView({ nav, lang }) {
                   </span>
                 </div>
 
-                <h3 style={{ margin: "0 0 5px", fontSize: 17, fontWeight: 700, color: "#1E293B" }}>
+                <h3 style={{ margin: "0 0 5px", fontSize: 17, fontWeight: 700, color: "#202124" }}>
                   {subject.name[lang]}
                 </h3>
                 <p style={{ margin: "0 0 14px", fontSize: 13, color: "#64748B" }}>
@@ -2655,7 +2526,7 @@ function SubjectsView({ nav, lang }) {
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, fontWeight: 500, marginBottom: 6 }}>
                     <span style={{ color: "#94A3B8" }}>Chapters</span>
-                    <span style={{ color: "#1E293B", fontWeight: 700 }}>{chapterCount}</span>
+                    <span style={{ color: "#202124", fontWeight: 700 }}>{chapterCount}</span>
                   </div>
                   <div style={{ width: "100%", height: 5, background: "#F1F5F9", borderRadius: 3, overflow: "hidden" }}>
                     <div style={{
@@ -2716,7 +2587,7 @@ function SubjectsView({ nav, lang }) {
                 {item.icon}
               </div>
               <div>
-                <h3 style={{ margin: "0 0 5px", fontSize: 15, fontWeight: 700, color: "#1E293B" }}>{item.title}</h3>
+                <h3 style={{ margin: "0 0 5px", fontSize: 15, fontWeight: 700, color: "#202124" }}>{item.title}</h3>
                 <p style={{ margin: 0, fontSize: 13, color: "#475569", lineHeight: 1.55 }}>{item.desc}</p>
               </div>
             </div>
@@ -2724,10 +2595,6 @@ function SubjectsView({ nav, lang }) {
         </div>
       </section>
 
-      {/* AI Settings Panel (login-gated) */}
-      {isAuthenticated && (
-        <AISettingsPanel isOpen={showAISettings} onClose={() => setShowAISettings(false)} />
-      )}
     </div>
   );
 }
@@ -2769,11 +2636,11 @@ function CurriculumView({ nav, t, lang, subject = "mathematics", book: initialBo
 
   const getBookTitle = (b) => typeof b.title === "object" ? b.title[lang] : b.title;
   const getBookSubtitle = (b) => b.subtitle ? (typeof b.subtitle === "object" ? b.subtitle[lang] : b.subtitle) : "";
-  const getBookColor = (b) => b.color || "#DA291C";
+  const getBookColor = (b) => b.color || "#1a73e8";
   const bookColor = getBookColor(book);
 
   const subjectMeta = ALL_SUBJECTS[subject];
-  const subjectColor = subjectMeta?.color || "#DA291C";
+  const subjectColor = subjectMeta?.color || "#1a73e8";
 
   // Course codes per book key
   const BOOK_CODES = {
@@ -2794,7 +2661,7 @@ function CurriculumView({ nav, t, lang, subject = "mathematics", book: initialBo
   return (
     <div>
       {/* ── Subject Header ── */}
-      <div style={{ background: "#1E293B", padding: "36px 24px 44px", position: "relative", overflow: "hidden" }}>
+      <div style={{ background: "#202124", padding: "36px 24px 44px", position: "relative", overflow: "hidden" }}>
         <div style={{
           position: "absolute", top: "-30%", right: "-5%",
           width: 360, height: 360, borderRadius: "50%",
@@ -2833,7 +2700,7 @@ function CurriculumView({ nav, t, lang, subject = "mathematics", book: initialBo
               </div>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                  <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, color: "#F8FAFC", fontFamily: "Georgia, serif" }}>
+                  <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, color: "#F8FAFC", fontFamily: "inherit" }}>
                     {getBookTitle(book)}
                   </h1>
                   {BOOK_CODES[activeBook] && (
@@ -2947,7 +2814,7 @@ function CurriculumView({ nav, t, lang, subject = "mathematics", book: initialBo
                         {String(ch.num).padStart(2, "0")}
                       </div>
                       <div>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: isOpen ? "#1E293B" : "#374151" }}>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: isOpen ? "#202124" : "#374151" }}>
                           {lch.title}
                         </div>
                         <div style={{ display: "flex", gap: 10, marginTop: 4, flexWrap: "wrap" }}>
@@ -3157,7 +3024,7 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
 
   if (!bookData) return <div style={styles.pageWrap}>Loading...</div>;
 
-  const color = bookData.color || "#DA291C";
+  const color = bookData.color || "#1a73e8";
   const videos = chapter.youtube || [];
 
   const TABS = [
@@ -3192,7 +3059,7 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
           <div style={{ display: "inline-block", padding: "3px 12px", borderRadius: 20, background: color, color: "#fff", fontSize: 12, fontWeight: 700, marginBottom: 14 }}>
             {book} — Chapter {ch.num}
           </div>
-          <h1 style={{ margin: "0 0 12px", fontSize: 26, fontWeight: 700, color: "#1E293B", fontFamily: "Georgia, serif", lineHeight: 1.25 }}>
+          <h1 style={{ margin: "0 0 12px", fontSize: 26, fontWeight: 700, color: "#202124", fontFamily: "inherit", lineHeight: 1.25 }}>
             {ch.title}
           </h1>
           <p style={{ margin: "0 0 20px", fontSize: 14, color: "#64748B", lineHeight: 1.7, maxWidth: 700 }}>
@@ -3200,9 +3067,9 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
           </p>
           <button
             onClick={() => nav("chat", undefined, undefined, subject)}
-            style={{ padding: "9px 20px", background: "#1E40AF", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, boxShadow: "0 2px 8px rgba(30,64,175,0.25)", transition: "background 0.15s" }}
+            style={{ padding: "9px 20px", background: "#185abc", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, boxShadow: "0 2px 8px rgba(30,64,175,0.25)", transition: "background 0.15s" }}
             onMouseEnter={e => e.currentTarget.style.background = "#1D4ED8"}
-            onMouseLeave={e => e.currentTarget.style.background = "#1E40AF"}
+            onMouseLeave={e => e.currentTarget.style.background = "#185abc"}
           >
             🤖 Ask AI Tutor
           </button>
@@ -3340,7 +3207,7 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
                   {(ch.examples || []).map((ex, i) => (
                     <div key={i} style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: 10, overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
                       <div style={{ padding: "14px 18px", borderBottom: "1px solid #F1F5F9" }}>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: "#1E293B", lineHeight: 1.6 }}>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: "#202124", lineHeight: 1.6 }}>
                           <MathText text={lang === 'en' ? ex.question.en : ex.question.zh || ex.question.en} />
                         </div>
                       </div>
@@ -3364,7 +3231,7 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
                   {ch.definitions.map((d, i) => (
                     <div key={i} style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: 10, overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,0.04)", borderTop: `3px solid ${color}` }}>
                       <div style={{ padding: "10px 14px 6px", borderBottom: "1px solid #F1F5F9" }}>
-                        <span style={{ fontSize: 13, fontWeight: 700, color: "#1E293B" }}>{d.term}</span>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: "#202124" }}>{d.term}</span>
                       </div>
                       <div style={{ padding: "8px 14px 12px" }}>
                         <span style={{ fontSize: 12, color: "#6B7280", lineHeight: 1.6 }}>{d.definition}</span>
@@ -3400,7 +3267,7 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
                     <a href={videos[activeVideo]?.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", height: "100%", alignItems: "center", justifyContent: "center", color: "#fff", textDecoration: "none", fontSize: 48 }}>▶</a>
                   )}
                 </div>
-                <h3 style={{ margin: "0 0 6px", fontSize: 16, fontWeight: 700, color: "#1E293B" }}>{videos[activeVideo]?.title}</h3>
+                <h3 style={{ margin: "0 0 6px", fontSize: 16, fontWeight: 700, color: "#202124" }}>{videos[activeVideo]?.title}</h3>
                 <p style={{ margin: 0, fontSize: 13, color: "#64748B" }}>{videos[activeVideo]?.channel}</p>
               </div>
 
@@ -3458,328 +3325,10 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
       )}
 
       {/* ── Quiz ── */}
-      {tab === "quiz" && <QuizView chapter={chapter} book={book} nav={nav} t={t} lang={lang} subject={subject} embedded />}
+      {tab === "quiz" && <PracticeView chapter={chapter} book={book} subject={subject} embedded onBack={() => setTab("learn")} />}
 
       {/* ── Exam ── */}
       {tab === "exam" && <ExamView chapter={chapter} book={book} nav={nav} t={t} lang={lang} embedded />}
-    </div>
-  );
-}
-
-// ============================================================
-// QUIZ VIEW (AI-generated)
-// ============================================================
-function QuizView({ chapter, book, nav, embedded, onAddError, t, lang, subject = "mathematics" }) {
-  const [difficulty, setDifficulty] = useState("medium");
-  const [questions, setQuestions] = useState([]);
-  const [current, setCurrent] = useState(0);
-  const [userAnswer, setUserAnswer] = useState("");
-  const [feedback, setFeedback] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [score, setScore] = useState({ correct: 0, total: 0 });
-  const [started, setStarted] = useState(false);
-  const [selectedBook, setSelectedBook] = useState(book || (subject === "mathematics" ? "P1" : "Unit1"));
-  const [selectedChapter, setSelectedChapter] = useState(chapter || null);
-
-  // Get the correct data source based on subject
-  const isMath = subject === "mathematics";
-  const dataSource = isMath ? CURRICULUM : (SUBJECTS[subject]?.books || {});
-
-  // Get available books for this subject
-  const availableBooks = Object.keys(dataSource);
-  const chapterList = selectedBook ? dataSource[selectedBook]?.chapters || [] : [];
-
-  const generateQuestions = async () => {
-    setLoading(true);
-    setStarted(true);
-    setQuestions([]);
-    setCurrent(0);
-    setScore({ correct: 0, total: 0 });
-    setFeedback(null);
-
-    const chapterInfo = selectedChapter || (chapterList[0] || null);
-
-    // Handle title - can be string (math) or object (other subjects)
-    const getTitle = () => {
-      if (typeof chapterInfo?.title === 'object' && chapterInfo.title !== null) {
-        return lang === 'en' ? chapterInfo.title.en : chapterInfo.title.zh;
-      }
-      const subjectNames = {
-        mathematics: "General A-Level Mathematics",
-        economics: "General A-Level Economics",
-        history: "General A-Level History",
-        politics: "General A-Level Politics",
-        psychology: "General A-Level Psychology",
-        further_math: "General A-Level Further Mathematics"
-      };
-      return chapterInfo?.title || (subjectNames[subject] || "General A-Level");
-    };
-
-    const chTitle = getTitle();
-    const keyPoints = chapterInfo?.keyPoints?.join("; ") || "";
-    const formulas = chapterInfo?.formulas?.map(f => `${f.name}: ${f.expr}`).join("; ") || "";
-
-    try {
-      // Call backend API instead of frontend AI
-      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';
-
-      const response = await fetch(`${API_BASE}/api/quiz/generate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Include auth cookies
-        body: JSON.stringify({
-          subject,
-          book: selectedBook,
-          chapterTitle: chTitle,
-          keyPoints,
-          formulas,
-          difficulty,
-          count: 5,
-          // 注入用户 AI 设置
-          ...(() => {
-            const s = getAISettings();
-            return (s?.provider && s?.apiKey) ? { provider: s.provider, apiKey: s.apiKey, model: s.model } : {};
-          })()
-        })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.error?.message || 'Failed to generate questions');
-      }
-
-      setQuestions(data.data.questions);
-    } catch (e) {
-      // Show error message
-      const errorMsg = e.message || "Unknown error";
-      if (errorMsg.includes("API_KEY") || errorMsg.includes("not configured")) {
-        alert("AI service is not configured. Please contact the administrator.");
-      } else if (errorMsg.includes("401") || errorMsg.includes("authentication")) {
-        alert("Please login first to use the Quiz feature.");
-      } else {
-        alert(`Failed to generate questions: ${errorMsg}`);
-      }
-      setStarted(false);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const submitAnswer = () => {
-    if (!userAnswer) return;
-    const q = questions[current];
-    const isCorrect = userAnswer === q.correct;
-    setFeedback({
-      isCorrect,
-      correct: q.correct,
-      solution: q.solution,
-      concept: q.concept,
-      deepExplanation: q.deepExplanation || "",
-      keyFormula: q.keyFormula || "",
-      commonMistake: q.commonMistake || "",
-      whyOthersWrong: q.whyOthersWrong || {},
-      userAnswer,
-    });
-    setScore(s => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }));
-    if (!isCorrect && onAddError) {
-      onAddError({ ...q, chapter: selectedChapter?.title || "General", book: selectedBook, subject, userAnswer, timestamp: Date.now() });
-    }
-  };
-
-  const next = () => {
-    setUserAnswer("");
-    setFeedback(null);
-    setCurrent(c => c + 1);
-  };
-
-  if (!started) {
-    return (
-      <div style={{ ...styles.setupPanel, maxWidth: 560 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 44, height: 44, background: 'linear-gradient(135deg, #EF4444 0%, #F97316 100%)', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(239,68,68,0.25)', flexShrink: 0 }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: '#0F172A', letterSpacing: '-0.01em' }}>AI Quiz Generator</div>
-            <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2 }}>5 questions · Instant feedback</div>
-          </div>
-        </div>
-        {!embedded && (
-          <>
-            <label style={styles.label}>{t.selectTextbook}</label>
-            <select style={styles.select} value={selectedBook}
-              onChange={e => { setSelectedBook(e.target.value); setSelectedChapter(null); }}>
-              {Object.entries(dataSource).map(([k, v]) => (
-                <option key={k} value={k}>{k} — {typeof v.title === 'object' ? v.title[lang] || v.title.en || k : v.title}</option>
-              ))}
-            </select>
-            <label style={styles.label}>{t.selectChapter}</label>
-            <select style={styles.select} value={selectedChapter?.id || ""}
-              onChange={e => setSelectedChapter(chapterList.find(c => c.id === e.target.value) || null)}>
-              <option value="">{t.allChapters}</option>
-              {dataSource[selectedBook]?.chapters.map(c => (
-                <option key={c.id} value={c.id}>Ch {c.num}: {typeof c.title === 'object' ? (c.title[lang] || c.title.en) : c.title}</option>
-              ))}
-            </select>
-          </>
-        )}
-        <label style={styles.label}>{t.diffLabel}</label>
-        <div style={styles.diffRow}>
-          {["medium", "hard"].map(d => (
-            <button key={d} onClick={() => setDifficulty(d)}
-              style={{ ...styles.diffBtn, ...(difficulty === d ? styles.diffBtnActive : {}) }}>
-              {d === "medium" ? t.medium : t.hard}
-            </button>
-          ))}
-        </div>
-        <button onClick={generateQuestions} style={styles.btnPrimary}>
-          {t.generateBtn}
-        </button>
-      </div>
-    );
-  }
-
-  if (loading) return <LoadingSpinner message={t.generatingMsg} />;
-
-  if (current >= questions.length) {
-    return (
-      <div style={styles.resultPanel}>
-        <div style={styles.resultScore}>{score.correct}/{score.total}</div>
-        <div style={styles.resultLabel}>{t.questionsCorrect}</div>
-        <div style={styles.resultGrade}>
-          {score.correct === score.total ? t.perfect :
-            score.correct >= score.total * 0.8 ? t.excellent :
-              score.correct >= score.total * 0.6 ? t.goodWork : t.keepPractising}
-        </div>
-        <div style={styles.resultBtns}>
-          <button onClick={() => { setStarted(false); setQuestions([]); }} style={styles.btnSecondary}>{t.newQuiz}</button>
-          <button onClick={generateQuestions} style={styles.btnPrimary}>{t.tryAgain}</button>
-        </div>
-      </div>
-    );
-  }
-
-  const q = questions[current];
-
-  return (
-    <div style={styles.quizPanel}>
-      <div style={styles.quizProgress}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: 0.5 }}>
-            {t.questionOf(current + 1, questions.length)}
-          </span>
-          <span style={{ width: 1, height: 14, background: "#E2E8F0" }} />
-          <span style={{ fontSize: 12, color: "#64748B" }}>{t.scoreLabel} <strong style={{ color: "#1E293B" }}>{score.correct}/{score.total}</strong></span>
-        </div>
-        <span style={{ ...styles.diffTag, background: difficulty === "hard" ? "#7C2020" : "#FEF3C7", color: difficulty === "hard" ? "#fff" : "#92400E" }}>
-          {difficulty === "hard" ? t.hard : t.medium}
-        </span>
-      </div>
-      <div style={styles.questionBox}>
-        <div style={styles.questionText}><MathText text={q.question} /></div>
-      </div>
-      <div style={styles.optionsGrid}>
-        {Object.entries(q.options).map(([letter, text]) => {
-          const isSelected = userAnswer === letter && !feedback;
-          const isCorrect = feedback && letter === q.correct;
-          const isWrong = feedback && userAnswer === letter && letter !== q.correct;
-          const radioColor = isCorrect ? "#16A34A" : "#DA291C";
-          return (
-            <button key={letter}
-              onClick={() => !feedback && setUserAnswer(letter)}
-              style={{
-                ...styles.optionBtn,
-                ...(isSelected ? styles.optionSelected : {}),
-                ...(isCorrect ? styles.optionCorrect : {}),
-                ...(isWrong ? styles.optionWrong : {}),
-              }}>
-              <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${isSelected ? "#DA291C" : isCorrect ? "#16A34A" : isWrong ? "#DA291C" : "#CBD5E1"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "border-color 0.15s" }}>
-                {(isSelected || isCorrect || isWrong) && <div style={{ width: 8, height: 8, borderRadius: "50%", background: radioColor }} />}
-              </div>
-              <span style={styles.optionLetter}>{letter}</span>
-              <span>{text}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {!feedback ? (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 4, borderTop: "1px solid #F1F5F9", marginTop: 4 }}>
-          <button
-            onClick={() => nav("chat", undefined, undefined, subject)}
-            style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, color: "#94A3B8", display: "flex", alignItems: "center", gap: 6, padding: "8px 0", transition: "color 0.15s" }}
-            onMouseEnter={e => e.currentTarget.style.color = "#2563EB"}
-            onMouseLeave={e => e.currentTarget.style.color = "#94A3B8"}
-          >
-            ✨ Need a hint from AI?
-          </button>
-          <button onClick={submitAnswer} disabled={!userAnswer} style={{ ...styles.btnPrimary, margin: 0, opacity: userAnswer ? 1 : 0.45, padding: "11px 28px" }}>
-            {t.submitAnswer}
-          </button>
-        </div>
-      ) : (
-        <div style={{ ...styles.feedbackBox, borderColor: feedback.isCorrect ? "#1D4ED8" : "#7c4a4a" }}>
-          <div style={{ ...styles.feedbackHeader, background: feedback.isCorrect ? "rgba(26,122,60,0.08)" : "rgba(218,41,28,0.06)" }}>
-            <span style={{ fontSize: 22 }}>{feedback.isCorrect ? "✅" : "❌"}</span>
-            <div>
-              <div style={{ fontWeight: 700, fontSize: 17, color: feedback.isCorrect ? "#1A7A3C" : "#DA291C" }}>
-                {feedback.isCorrect ? t.feedCorrect : `${t.feedIncorrect} ${feedback.correct}`}
-              </div>
-              <div style={{ fontSize: 12, color: "#5C5C5C", marginTop: 2 }}>
-                🎯 {t.conceptTested} <em>{feedback.concept}</em>
-              </div>
-            </div>
-          </div>
-          {feedback.keyFormula && (
-            <div style={styles.explanationBlock}>
-              <div style={styles.explanationLabel}>{t.secKeyFormula}</div>
-              <div style={styles.formulaHighlight}>{feedback.keyFormula}</div>
-            </div>
-          )}
-          <div style={styles.explanationBlock}>
-            <div style={styles.explanationLabel}>{t.secSolution}</div>
-            <div style={styles.solutionSteps}>{feedback.solution}</div>
-          </div>
-          {feedback.deepExplanation && (
-            <div style={styles.explanationBlock}>
-              <div style={styles.explanationLabel}>{t.secAIExplain}</div>
-              <div style={styles.deepExplain}>{feedback.deepExplanation}</div>
-            </div>
-          )}
-          {feedback.whyOthersWrong && Object.keys(feedback.whyOthersWrong).length > 0 && (
-            <div style={styles.explanationBlock}>
-              <div style={styles.explanationLabel}>{t.secWhyWrong}</div>
-              <div style={styles.wrongOptionsGrid}>
-                {Object.entries(feedback.whyOthersWrong).map(([letter, reason]) => (
-                  <div key={letter} style={styles.wrongOptionRow}>
-                    <span style={{ ...styles.wrongLetter, background: letter === feedback.userAnswer ? "#DA291C" : "#E8E8E8" }}>{letter}</span>
-                    <span style={styles.wrongReason}>{reason}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          {feedback.commonMistake && (
-            <div style={{ ...styles.explanationBlock, borderLeft: "3px solid #DA291C" }}>
-              <div style={{ ...styles.explanationLabel, color: "#DA291C" }}>{t.secMistake}</div>
-              <div style={{ color: "#5C1A1A", fontSize: 14, lineHeight: 1.7 }}>{feedback.commonMistake}</div>
-            </div>
-          )}
-          <div style={{ padding: "16px 20px" }}>
-            <button onClick={next} style={{ ...styles.btnPrimary, marginTop: 0, width: "100%" }}>
-              {current + 1 < questions.length ? t.nextQuestion : t.seeResults}
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -3889,7 +3438,7 @@ Return ONLY this JSON:
     return (
       <div style={styles.setupPanel}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 44, height: 44, background: 'linear-gradient(135deg, #EF4444 0%, #F97316 100%)', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(239,68,68,0.25)', flexShrink: 0 }}>
+          <div style={{ width: 44, height: 44, background: 'linear-gradient(135deg, #d93025 0%, #e37400 100%)', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(239,68,68,0.25)', flexShrink: 0 }}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           </div>
           <div>
@@ -3928,15 +3477,15 @@ Return ONLY this JSON:
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
           {[
             {
-              icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DA291C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
+              icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
               value: NUM_QUESTIONS, label: t.numQLabel
             },
             {
-              icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DA291C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+              icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
               value: EXAM_MINUTES + " min", label: t.minLabel
             },
             {
-              icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DA291C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-4.24Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-4.24Z"/></svg>,
+              icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-4.24Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-4.24Z"/></svg>,
               value: "AI", label: t.markedByAI
             },
           ].map((item, i) => (
@@ -3977,8 +3526,8 @@ Return ONLY this JSON:
                     <button key={letter}
                       onClick={() => setAnswers(a => ({ ...a, [q.id]: letter }))}
                       style={{ ...styles.optionBtn, ...(isSelected ? styles.optionSelected : {}) }}>
-                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${isSelected ? "#DA291C" : "#CBD5E1"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "border-color 0.15s" }}>
-                        {isSelected && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#DA291C" }} />}
+                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${isSelected ? "#1a73e8" : "#CBD5E1"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "border-color 0.15s" }}>
+                        {isSelected && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#1a73e8" }} />}
                       </div>
                       <span style={styles.optionLetter}>{letter}</span>
                       <span>{text}</span>
@@ -3989,7 +3538,7 @@ Return ONLY this JSON:
             </div>
           ))}
         </div>
-        <button onClick={submitExam} style={{ ...styles.btnPrimary, background: "#DA291C", marginTop: 24 }}>
+        <button onClick={submitExam} style={{ ...styles.btnPrimary, background: "#1a73e8", marginTop: 24 }}>
           {t.submitExam}
         </button>
       </div>
@@ -4011,7 +3560,7 @@ Return ONLY this JSON:
             <div key={q.id} style={{ ...styles.reviewItem, borderColor: q.isCorrect ? "#1D4ED8" : "#7C2020" }}>
               <div style={styles.reviewHeader}>
                 <span>{q.isCorrect ? "✅" : "❌"} Q{i + 1}</span>
-                <span style={{ color: q.isCorrect ? "#1A7A3C" : "#DA291C" }}>
+                <span style={{ color: q.isCorrect ? "#1A7A3C" : "#1a73e8" }}>
                   {q.isCorrect ? t.correctAnswerLabel : `${t.yourAnswerLabel} ${q.userAnswer || t.noAnswer} · ${t.correctLabel}: ${q.correct}`}
                 </span>
               </div>
@@ -4195,8 +3744,8 @@ Return ONLY JSON array:
                     <button key={letter}
                       onClick={() => setAnswers(a => ({ ...a, [q.id]: letter }))}
                       style={{ ...styles.optionBtn, ...(isSelected ? styles.optionSelected : {}) }}>
-                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${isSelected ? "#DA291C" : "#CBD5E1"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "border-color 0.15s" }}>
-                        {isSelected && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#DA291C" }} />}
+                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${isSelected ? "#1a73e8" : "#CBD5E1"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "border-color 0.15s" }}>
+                        {isSelected && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#1a73e8" }} />}
                       </div>
                       <span style={styles.optionLetter}>{letter}</span>
                       <span>{text}</span>
@@ -4207,7 +3756,7 @@ Return ONLY JSON array:
             </div>
           ))}
         </div>
-        <button onClick={submitMock} style={{ ...styles.btnPrimary, background: "#DA291C", marginTop: 24 }}>
+        <button onClick={submitMock} style={{ ...styles.btnPrimary, background: "#1a73e8", marginTop: 24 }}>
           {t.submitExam}
         </button>
       </div>
@@ -4361,31 +3910,25 @@ function LoadingSpinner({ message }) {
 const styles = {
   root: {
     minHeight: "100vh",
-    background: "#F2F2F2",
-    color: "#111111",
-    fontFamily: "'Georgia', 'Times New Roman', serif",
+    background: "#f8f9fa",
+    color: "#202124",
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
     position: "relative",
     overflowX: "hidden",
   },
   bgDecor: {
-    position: "fixed", inset: 0, zIndex: 0,
-    background: "radial-gradient(ellipse 80% 60% at 20% 10%, rgba(218,41,28,0.04) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,48,135,0.03) 0%, transparent 60%)",
-    pointerEvents: "none",
+    display: "none",
   },
   bgGrid: {
-    position: "fixed", inset: 0, zIndex: 0,
-    backgroundImage: "linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)",
-    backgroundSize: "60px 60px",
-    pointerEvents: "none",
+    display: "none",
   },
   header: {
     position: "sticky", top: 0, zIndex: 100,
-    background: "rgba(255,255,255,0.98)",
-    borderBottom: "2px solid #DA291C",
-    backdropFilter: "blur(10px)",
+    background: "#fff",
+    borderBottom: "1px solid #dadce0",
   },
   headerInner: {
-    maxWidth: 1200, margin: "0 auto", padding: "12px 24px",
+    maxWidth: 1080, margin: "0 auto", padding: "12px 24px",
     display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
     flexWrap: "wrap",
   },
@@ -4394,14 +3937,13 @@ const styles = {
     display: "flex", alignItems: "center", gap: 12, padding: 0,
   },
   logoSymbol: {
-    fontSize: 28, fontWeight: 900, color: "#DA291C",
-    fontFamily: "Georgia, serif",
-    background: "rgba(218,41,28,0.1)", width: 44, height: 44,
+    fontSize: 28, fontWeight: 900, color: "#1a73e8",
+    background: "#e8f0fe", width: 44, height: 44,
     display: "flex", alignItems: "center", justifyContent: "center",
-    borderRadius: 8, border: "1px solid rgba(218,41,28,0.3)",
+    borderRadius: 8, border: "1px solid #aecbfa",
   },
-  logoTitle: { fontSize: 16, fontWeight: 700, color: "#111111", letterSpacing: 0.5 },
-  logoSub: { fontSize: 11, color: "#888888", marginTop: 2, letterSpacing: 1, textTransform: "uppercase" },
+  logoTitle: { fontSize: 16, fontWeight: 700, color: "#202124", letterSpacing: 0.5 },
+  logoSub: { fontSize: 11, color: "#5f6368", marginTop: 2, letterSpacing: 1, textTransform: "uppercase" },
   subjectBadge: {
     padding: "6px 14px",
     borderRadius: 20,
@@ -4421,90 +3963,90 @@ const styles = {
   },
   headerNav: { display: "flex", gap: 6, flexWrap: "wrap" },
   navBtn: {
-    background: "none", border: "1px solid transparent", borderRadius: 6,
-    color: "#5C5C5C", fontSize: 13, padding: "7px 14px", cursor: "pointer",
-    transition: "all 0.2s", fontFamily: "Georgia, serif",
+    background: "none", border: "1px solid transparent", borderRadius: 8,
+    color: "#5f6368", fontSize: 13, padding: "7px 14px", cursor: "pointer",
+    transition: "all 0.15s",
     position: "relative",
   },
   navBtnActive: {
-    background: "rgba(218,41,28,0.1)", borderColor: "rgba(218,41,28,0.3)",
-    color: "#DA291C",
+    background: "#e8f0fe", borderColor: "transparent",
+    color: "#1a73e8",
   },
   navLinkBtn: {
-    background: "rgba(0,48,135,0.08)", border: "1px solid rgba(0,48,135,0.2)",
-    borderRadius: 6, color: "#003087", fontSize: 13, padding: "7px 14px",
-    cursor: "pointer", fontFamily: "Georgia, serif", transition: "all 0.2s",
+    background: "#e8f0fe", border: "1px solid transparent",
+    borderRadius: 8, color: "#1a73e8", fontSize: 13, padding: "7px 14px",
+    cursor: "pointer", transition: "all 0.15s",
     textDecoration: "none", display: "inline-block", whiteSpace: "nowrap",
   },
   langToggleBtn: {
-    background: "rgba(0,0,0,0.04)", border: "1px solid #D0D0D0",
-    borderRadius: 6, color: "#2D2D2D", fontSize: 13, padding: "7px 14px",
-    cursor: "pointer", fontFamily: "Georgia, serif", transition: "all 0.2s",
+    background: "#f1f3f4", border: "1px solid #dadce0",
+    borderRadius: 8, color: "#202124", fontSize: 13, padding: "7px 14px",
+    cursor: "pointer", transition: "all 0.15s",
     whiteSpace: "nowrap", flexShrink: 0,
   },
   badge: {
     position: "absolute", top: -4, right: -4,
-    background: "#DA291C", color: "#fff", borderRadius: "50%",
+    background: "#1a73e8", color: "#fff", borderRadius: "50%",
     width: 18, height: 18, fontSize: 10, display: "flex",
-    alignItems: "center", justifyContent: "center", fontFamily: "sans-serif",
+    alignItems: "center", justifyContent: "center",
   },
-  main: { maxWidth: 1200, margin: "0 auto", padding: "32px 24px", position: "relative", zIndex: 1 },
+  main: { maxWidth: 1080, margin: "0 auto", padding: "32px 24px", position: "relative", zIndex: 1 },
 
   // Home
   homeWrap: { display: "flex", flexDirection: "column", gap: 48 },
   heroSection: { textAlign: "center", padding: "48px 24px" },
   heroTag: {
     display: "inline-block", padding: "6px 16px",
-    border: "1px solid rgba(218,41,28,0.5)", borderRadius: 20,
-    color: "#DA291C", fontSize: 12, letterSpacing: 2, textTransform: "uppercase", marginBottom: 24,
+    border: "1px solid #aecbfa", borderRadius: 20,
+    color: "#1a73e8", fontSize: 12, letterSpacing: 2, textTransform: "uppercase", marginBottom: 24,
   },
-  heroTitle: { fontSize: "clamp(36px,5vw,60px)", fontWeight: 700, color: "#1A1A1A", margin: "0 0 16px", lineHeight: 1.2 },
-  heroAccent: { color: "#DA291C" },
-  heroDesc: { fontSize: 17, color: "#5C5C5C", maxWidth: 580, margin: "0 auto 32px", lineHeight: 1.7 },
+  heroTitle: { fontSize: "clamp(36px,5vw,60px)", fontWeight: 700, color: "#202124", margin: "0 0 16px", lineHeight: 1.2 },
+  heroAccent: { color: "#1a73e8" },
+  heroDesc: { fontSize: 17, color: "#5f6368", maxWidth: 580, margin: "0 auto 32px", lineHeight: 1.7 },
   heroBtns: { display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" },
 
   booksGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 },
   bookCard: {
-    background: "#FFFFFF", border: "1px solid",
-    borderRadius: 12, padding: 24, cursor: "pointer",
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: 24, cursor: "pointer",
     transition: "all 0.2s",
   },
   bookIcon: { fontSize: 40, marginBottom: 8 },
-  bookKey: { fontSize: 24, fontWeight: 700, color: "#1A1A1A" },
-  bookTitle: { fontSize: 14, color: "#777777", marginTop: 4 },
-  bookChapters: { fontSize: 13, color: "#999999", marginTop: 8 },
+  bookKey: { fontSize: 24, fontWeight: 700, color: "#202124" },
+  bookTitle: { fontSize: 14, color: "#5f6368", marginTop: 4 },
+  bookChapters: { fontSize: 13, color: "#80868b", marginTop: 8 },
 
   featuresGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 },
   featureCard: {
-    background: "#FAFAFA", border: "1px solid #E8E8E8",
-    borderRadius: 10, padding: 20,
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: 20,
   },
   featureIcon: { fontSize: 28, marginBottom: 10 },
-  featureTitle: { fontSize: 15, fontWeight: 600, color: "#1A1A1A", marginBottom: 8 },
-  featureDesc: { fontSize: 13, color: "#777777", lineHeight: 1.6 },
+  featureTitle: { fontSize: 15, fontWeight: 600, color: "#202124", marginBottom: 8 },
+  featureDesc: { fontSize: 13, color: "#5f6368", lineHeight: 1.6 },
 
   // Page
   pageWrap: { display: "flex", flexDirection: "column", gap: 24 },
-  pageTitle: { fontSize: 28, fontWeight: 700, color: "#1A1A1A", margin: 0 },
-  pageDesc: { color: "#777777", fontSize: 15, margin: 0, lineHeight: 1.6 },
+  pageTitle: { fontSize: 28, fontWeight: 700, color: "#202124", margin: 0 },
+  pageDesc: { color: "#5f6368", fontSize: 15, margin: 0, lineHeight: 1.6 },
   backBtn: {
-    background: "none", border: "1px solid #D8D8D8", color: "#888888",
-    padding: "8px 16px", borderRadius: 6, cursor: "pointer", fontSize: 13, width: "fit-content",
+    background: "none", border: "1px solid #dadce0", color: "#5f6368",
+    padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13, width: "fit-content",
   },
 
   // Curriculum
   bookTabs: { display: "flex", gap: 10, flexWrap: "wrap" },
   bookTab: {
-    background: "#FFFFFF", border: "1px solid #D8D8D8",
-    color: "#888888", padding: "10px 20px", borderRadius: 8, cursor: "pointer",
-    fontSize: 14, display: "flex", alignItems: "center", gap: 8, fontFamily: "Georgia, serif",
+    background: "#fff", border: "1px solid #dadce0",
+    color: "#5f6368", padding: "10px 20px", borderRadius: 8, cursor: "pointer",
+    fontSize: 14, display: "flex", alignItems: "center", gap: 8,
   },
-  bookTabActive: { background: "rgba(218,41,28,0.08)", borderColor: "#DA291C", color: "#DA291C" },
+  bookTabActive: { background: "#e8f0fe", borderColor: "#1a73e8", color: "#1a73e8" },
 
   chapterList: { display: "flex", flexDirection: "column", gap: 12 },
   chapterCard: {
-    background: "transparent", border: "1px solid #E8E8E8",
-    borderRadius: 10, padding: 20, display: "flex", alignItems: "center", gap: 16,
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: 20, display: "flex", alignItems: "center", gap: 16,
     cursor: "pointer", transition: "all 0.2s",
   },
   chNum: {
@@ -4513,32 +4055,32 @@ const styles = {
     color: "#fff", flexShrink: 0,
   },
   chInfo: { flex: 1 },
-  chTitle: { fontSize: 16, fontWeight: 600, color: "#1A1A1A" },
-  chOverview: { fontSize: 13, color: "#777777", marginTop: 4, lineHeight: 1.5 },
+  chTitle: { fontSize: 16, fontWeight: 600, color: "#202124" },
+  chOverview: { fontSize: 13, color: "#5f6368", marginTop: 4, lineHeight: 1.5 },
   chMeta: { display: "flex", gap: 10, marginTop: 10, alignItems: "center", flexWrap: "wrap" },
-  diffBadge: { fontSize: 11, padding: "3px 8px", borderRadius: 4, color: "#111111", fontFamily: "sans-serif", background: "transparent" },
-  chMetaText: { fontSize: 12, color: "#AAAAAA" },
-  chArrow: { color: "#BBBBBB", fontSize: 20 },
+  diffBadge: { fontSize: 11, padding: "3px 8px", borderRadius: 4, color: "#202124", background: "transparent" },
+  chMetaText: { fontSize: 12, color: "#80868b" },
+  chArrow: { color: "#dadce0", fontSize: 20 },
 
   // Chapter
   chapterHeader: {
-    background: "#FFFFFF", border: "1px solid",
-    borderRadius: 12, padding: 28,
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: 28,
   },
   chapterBookBadge: {
     display: "inline-block", padding: "4px 12px", borderRadius: 20,
     fontSize: 12, color: "#fff", marginBottom: 12, fontFamily: "sans-serif",
   },
-  chapterTitle: { fontSize: 26, fontWeight: 700, color: "#1A1A1A", margin: "0 0 12px" },
-  chapterOverview: { color: "#444444", lineHeight: 1.7, margin: 0, fontSize: 15 },
+  chapterTitle: { fontSize: 26, fontWeight: 700, color: "#202124", margin: "0 0 12px" },
+  chapterOverview: { color: "#5f6368", lineHeight: 1.7, margin: 0, fontSize: 15 },
 
-  tabBar: { display: "flex", gap: 8, borderBottom: "1px solid #E0E0E0", paddingBottom: 0 },
+  tabBar: { display: "flex", gap: 8, borderBottom: "1px solid #dadce0", paddingBottom: 0 },
   tab: {
-    background: "none", border: "none", color: "#777777",
+    background: "none", border: "none", color: "#5f6368",
     padding: "10px 16px", cursor: "pointer", fontSize: 14,
-    borderBottom: "2px solid transparent", fontFamily: "Georgia, serif",
+    borderBottom: "2px solid transparent",
   },
-  tabActive: { borderBottom: "2px solid", color: "#DA291C" },
+  tabActive: { borderBottom: "2px solid #1a73e8", color: "#1a73e8" },
 
   // Learn
   learnContent: { display: "flex", flexDirection: "column", gap: 32 },
@@ -4550,90 +4092,89 @@ const styles = {
     width: 32, height: 32, borderRadius: 8, display: "flex",
     alignItems: "center", justifyContent: "center", fontSize: 16, flexShrink: 0,
   },
-  sectionTitle: { fontSize: 17, fontWeight: 700, color: "#1E293B", margin: 0 },
+  sectionTitle: { fontSize: 17, fontWeight: 700, color: "#202124", margin: 0 },
   keyPointsList: {
     listStyle: "none", padding: 0, margin: 0,
     display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 10,
   },
   formulasGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 },
   formulaCard: {
-    background: "#FFFFFF", border: "1px solid #E8E8E8",
-    borderRadius: 10, padding: "14px 16px", position: "relative", overflow: "hidden",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: "14px 16px", position: "relative", overflow: "hidden",
   },
-  formulaName: { fontSize: 11, color: "#94A3B8", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.6, fontWeight: 600 },
+  formulaName: { fontSize: 11, color: "#80868b", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.6, fontWeight: 600 },
   formulaExpr: {
     fontSize: 14,
-    background: "#F8FAFC", padding: "10px 14px",
-    borderRadius: 6, border: "1px solid", lineHeight: 1.8,
+    background: "#f8f9fa", padding: "10px 14px",
+    borderRadius: 6, border: "1px solid #dadce0", lineHeight: 1.8,
     overflowX: "auto",
   },
   hardPointBox: {
-    background: "#FFF7F7", border: "1px solid rgba(218,41,28,0.18)",
-    borderRadius: 10, padding: 16, display: "flex", gap: 14, alignItems: "flex-start",
+    background: "#fef7e0", border: "1px solid #fdd663",
+    borderRadius: 8, padding: 16, display: "flex", gap: 14, alignItems: "flex-start",
   },
   hardIcon: {
-    width: 28, height: 28, background: "#DA291C", borderRadius: 8,
+    width: 28, height: 28, background: "#f9ab00", borderRadius: 8,
     display: "flex", alignItems: "center", justifyContent: "center",
     color: "#fff", fontSize: 14, fontWeight: 700, flexShrink: 0,
   },
-  hardText: { color: "#5C1A1A", lineHeight: 1.7, margin: 0, fontSize: 13 },
+  hardText: { color: "#5f6368", lineHeight: 1.7, margin: 0, fontSize: 13 },
 
   // Videos
-  videoIntro: { color: "#777777", fontSize: 14, marginBottom: 4, fontFamily: "Georgia, serif" },
+  videoIntro: { color: "#5f6368", fontSize: 14, marginBottom: 4 },
   videoCard: {
-    background: "#FAFAFA", border: "1px solid #E8E8E8",
-    borderRadius: 10, padding: 18, display: "flex", gap: 16, alignItems: "center",
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: 18, display: "flex", gap: 16, alignItems: "center",
     cursor: "pointer", textDecoration: "none", marginBottom: 12,
     transition: "all 0.2s",
   },
   videoThumb: {
-    width: 60, height: 44, background: "#DA291C", borderRadius: 6,
+    width: 60, height: 44, background: "#1a73e8", borderRadius: 6,
     display: "flex", alignItems: "center", justifyContent: "center",
     fontSize: 20, color: "#fff", flexShrink: 0,
   },
   videoInfo: {},
-  videoTitle: { fontSize: 15, fontWeight: 600, color: "#1A1A1A" },
-  videoChannel: { fontSize: 13, color: "#777777", marginTop: 3 },
-  videoHint: { fontSize: 12, color: "#DA291C", marginTop: 6 },
+  videoTitle: { fontSize: 15, fontWeight: 600, color: "#202124" },
+  videoChannel: { fontSize: 13, color: "#5f6368", marginTop: 3 },
+  videoHint: { fontSize: 12, color: "#1a73e8", marginTop: 6 },
   videoCardAlt: {
     display: "block", textAlign: "center", padding: 14,
-    background: "rgba(218,41,28,0.07)", border: "1px solid rgba(218,41,28,0.2)",
-    borderRadius: 8, color: "#DA291C", textDecoration: "none", fontSize: 14,
+    background: "#e8f0fe", border: "1px solid #aecbfa",
+    borderRadius: 8, color: "#1a73e8", textDecoration: "none", fontSize: 14,
   },
 
   // Quiz/Exam Setup
   setupPanel: {
-    width: "100%", maxWidth: 480, margin: "0 auto", background: "#FFFFFF",
-    border: "1px solid #E2E8F0", borderRadius: 20, padding: "28px 28px 28px",
+    width: "100%", maxWidth: 480, margin: "0 auto", background: "#fff",
+    border: "1px solid #dadce0", borderRadius: 8, padding: "28px 28px 28px",
     display: "flex", flexDirection: "column", gap: 18,
-    boxShadow: "0 4px 16px rgba(0,0,0,0.07)",
+    boxShadow: "0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15)",
   },
-  setupTitle: { fontSize: 20, fontWeight: 700, color: "#1E293B", margin: 0 },
-  label: { fontSize: 11, color: "#94A3B8", marginBottom: -10, textTransform: "uppercase", letterSpacing: 0.7, fontWeight: 600 },
+  setupTitle: { fontSize: 20, fontWeight: 700, color: "#202124", margin: 0 },
+  label: { fontSize: 11, color: "#80868b", marginBottom: -10, textTransform: "uppercase", letterSpacing: 0.7, fontWeight: 600 },
   select: {
-    background: "#F8FAFC", border: "1px solid #E2E8F0",
-    color: "#1E293B", padding: "10px 14px", borderRadius: 10, fontSize: 14,
+    background: "#f8f9fa", border: "1px solid #dadce0",
+    color: "#202124", padding: "10px 14px", borderRadius: 8, fontSize: 14,
     fontFamily: "inherit", width: "100%", outline: "none",
   },
   diffRow: { display: "flex", gap: 8 },
   diffBtn: {
-    flex: 1, background: "#F8FAFC", border: "1px solid #E2E8F0",
-    color: "#64748B", padding: "11px 16px", borderRadius: 12, cursor: "pointer",
+    flex: 1, background: "#f8f9fa", border: "1px solid #dadce0",
+    color: "#5f6368", padding: "11px 16px", borderRadius: 8, cursor: "pointer",
     fontSize: 13, fontWeight: 500, transition: "all 0.15s",
   },
-  diffBtnActive: { background: "#FEF2F2", borderColor: "#FECACA", color: "#DA291C", fontWeight: 600 },
+  diffBtnActive: { background: "#e8f0fe", borderColor: "#aecbfa", color: "#1a73e8", fontWeight: 600 },
   examInfo: {
     display: "flex", gap: 20, justifyContent: "center",
-    color: "#64748B", fontSize: 12, flexWrap: "wrap",
-    padding: "10px 0", borderTop: "1px solid #F1F5F9",
+    color: "#5f6368", fontSize: 12, flexWrap: "wrap",
+    padding: "10px 0", borderTop: "1px solid #dadce0",
   },
 
   // Quiz Panel
   quizPanel: { maxWidth: 680, margin: "0 auto", display: "flex", flexDirection: "column", gap: 18 },
   quizProgress: {
     display: "flex", alignItems: "center", justifyContent: "space-between",
-    paddingBottom: 14, borderBottom: "1px solid #E2E8F0",
+    paddingBottom: 14, borderBottom: "1px solid #dadce0",
     flexWrap: "wrap", gap: 8,
   },
   diffTag: {
@@ -4641,60 +4182,59 @@ const styles = {
     fontSize: 11, fontWeight: 700, letterSpacing: 0.3,
   },
   questionBox: {
-    background: "#F8FAFC", border: "1px solid #E2E8F0",
-    borderRadius: 14, padding: "22px 26px",
-    boxShadow: "inset 0 1px 3px rgba(0,0,0,0.03)",
+    background: "#f8f9fa", border: "1px solid #dadce0",
+    borderRadius: 8, padding: "22px 26px",
   },
-  questionText: { fontSize: 16, color: "#1E293B", lineHeight: 1.85, fontFamily: "Georgia, serif" },
+  questionText: { fontSize: 16, color: "#202124", lineHeight: 1.85 },
   optionsGrid: { display: "flex", flexDirection: "column", gap: 8 },
   optionBtn: {
-    background: "#FFFFFF", border: "1px solid #E2E8F0",
-    color: "#374151", padding: "13px 16px", borderRadius: 10, cursor: "pointer",
+    background: "#fff", border: "1px solid #dadce0",
+    color: "#202124", padding: "13px 16px", borderRadius: 8, cursor: "pointer",
     fontSize: 14, textAlign: "left", display: "flex", alignItems: "center", gap: 12,
-    transition: "all 0.15s", boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+    transition: "all 0.15s",
   },
-  optionSelected: { background: "rgba(218,41,28,0.04)", borderColor: "rgba(218,41,28,0.45)", color: "#991B1B", boxShadow: "0 0 0 1px rgba(218,41,28,0.2)" },
+  optionSelected: { background: "#e8f0fe", borderColor: "#1a73e8", color: "#1a73e8", boxShadow: "0 0 0 1px rgba(26,115,232,0.2)" },
   optionCorrect: { background: "rgba(22,163,74,0.07)", borderColor: "#16A34A", color: "#15803D" },
-  optionWrong: { background: "rgba(218,41,28,0.06)", borderColor: "#DA291C", color: "#B91C1C" },
+  optionWrong: { background: "rgba(217,48,37,0.06)", borderColor: "#d93025", color: "#c5221f" },
   optionLetter: {
-    width: 26, height: 26, background: "#F1F5F9", borderRadius: 6,
+    width: 26, height: 26, background: "#f1f3f4", borderRadius: 6,
     display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 11, fontWeight: 700, flexShrink: 0, color: "#64748B",
+    fontSize: 11, fontWeight: 700, flexShrink: 0, color: "#5f6368",
     letterSpacing: 0.3,
   },
   feedbackBox: {
-    background: "#FFFFFF", border: "1.5px solid",
-    borderRadius: 14, padding: 0, display: "flex", flexDirection: "column", gap: 0,
-    overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: 0, display: "flex", flexDirection: "column", gap: 0,
+    overflow: "hidden",
   },
   feedbackHeader: {
     display: "flex", alignItems: "center", gap: 14,
-    padding: "16px 20px", borderBottom: "1px solid #F0F0F0",
+    padding: "16px 20px", borderBottom: "1px solid #dadce0",
   },
-  feedbackSolution: { fontSize: 14, color: "#2D2D2D", lineHeight: 1.6 },
-  feedbackConcept: { fontSize: 13, color: "#777777" },
+  feedbackSolution: { fontSize: 14, color: "#202124", lineHeight: 1.6 },
+  feedbackConcept: { fontSize: 13, color: "#5f6368" },
 
   // Rich explanation styles
   explanationBlock: {
     padding: "14px 20px",
-    borderBottom: "1px solid #F5F5F5",
+    borderBottom: "1px solid #f1f3f4",
   },
   explanationLabel: {
     fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-    textTransform: "uppercase", color: "#999999", marginBottom: 8,
+    textTransform: "uppercase", color: "#80868b", marginBottom: 8,
   },
   formulaHighlight: {
-    fontFamily: "monospace", fontSize: 15, color: "#B81E14",
-    background: "#FFF5F5", border: "1px solid rgba(218,41,28,0.2)",
+    fontFamily: "monospace", fontSize: 15, color: "#1967d2",
+    background: "#e8f0fe", border: "1px solid #aecbfa",
     borderRadius: 6, padding: "10px 14px", lineHeight: 1.6,
   },
   solutionSteps: {
-    fontSize: 14, color: "#003087", lineHeight: 1.8,
-    background: "rgba(0,48,135,0.06)", borderRadius: 6,
+    fontSize: 14, color: "#1a73e8", lineHeight: 1.8,
+    background: "#e8f0fe", borderRadius: 6,
     padding: "10px 14px", fontFamily: "monospace",
   },
   deepExplain: {
-    fontSize: 14, color: "#2D2D2D", lineHeight: 1.85,
+    fontSize: 14, color: "#202124", lineHeight: 1.85,
   },
   wrongOptionsGrid: {
     display: "flex", flexDirection: "column", gap: 8,
@@ -4705,167 +4245,164 @@ const styles = {
   wrongLetter: {
     flexShrink: 0, width: 26, height: 26, borderRadius: 6,
     display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 12, fontWeight: 700, color: "#111111",
+    fontSize: 12, fontWeight: 700, color: "#202124",
   },
   wrongReason: {
-    fontSize: 13, color: "#5C5C5C", lineHeight: 1.6, paddingTop: 4,
+    fontSize: 13, color: "#5f6368", lineHeight: 1.6, paddingTop: 4,
   },
 
   // Result panel (Quiz)
   resultPanel: {
     maxWidth: 420, margin: "20px auto", textAlign: "center",
-    background: "#FFFFFF", border: "1px solid #E2E8F0",
-    borderRadius: 20, padding: "44px 40px", boxShadow: "0 4px 20px rgba(0,0,0,0.07)",
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: "44px 40px", boxShadow: "0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15)",
   },
-  resultScore: { fontSize: 72, fontWeight: 700, color: "#DA291C", lineHeight: 1, fontFamily: "Georgia, serif", letterSpacing: -2 },
-  resultLabel: { fontSize: 14, color: "#94A3B8", marginBottom: 14, marginTop: 6 },
-  resultGrade: { fontSize: 18, color: "#1E293B", fontWeight: 600, marginBottom: 28, padding: "10px 20px", background: "#F8FAFC", borderRadius: 10, display: "inline-block" },
+  resultScore: { fontSize: 72, fontWeight: 700, color: "#1a73e8", lineHeight: 1, letterSpacing: -2 },
+  resultLabel: { fontSize: 14, color: "#80868b", marginBottom: 14, marginTop: 6 },
+  resultGrade: { fontSize: 18, color: "#202124", fontWeight: 600, marginBottom: 28, padding: "10px 20px", background: "#f8f9fa", borderRadius: 8, display: "inline-block" },
   resultBtns: { display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" },
 
   // Exam
   examPanel: { display: "flex", flexDirection: "column", gap: 20 },
   examHeader: {
-    background: "#FFFFFF", border: "1px solid #E2E8F0",
-    borderRadius: 12, padding: "14px 20px", display: "flex", justifyContent: "space-between",
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: "14px 20px", display: "flex", justifyContent: "space-between",
     alignItems: "center", flexWrap: "wrap", gap: 12,
-    boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
   },
-  examTitle: { fontSize: 15, fontWeight: 700, color: "#1E293B" },
-  examSubtitle: { fontSize: 12, color: "#94A3B8", marginTop: 2 },
+  examTitle: { fontSize: 15, fontWeight: 700, color: "#202124" },
+  examSubtitle: { fontSize: 12, color: "#80868b", marginTop: 2 },
   timer: {
-    fontSize: 22, fontWeight: 700, color: "#DA291C",
-    background: "rgba(218,41,28,0.08)", padding: "6px 16px", borderRadius: 8,
+    fontSize: 22, fontWeight: 700, color: "#1a73e8",
+    background: "#e8f0fe", padding: "6px 16px", borderRadius: 8,
     fontFamily: "monospace", letterSpacing: 1,
   },
-  timerUrgent: { color: "#DA291C", background: "rgba(218,41,28,0.14)", animation: "pulse 1s infinite" },
-  examProgress: { fontSize: 13, color: "#64748B" },
+  timerUrgent: { color: "#d93025", background: "#fce8e6", animation: "pulse 1s infinite" },
+  examProgress: { fontSize: 13, color: "#5f6368" },
   examInstructions: {
-    background: "rgba(0,48,135,0.04)", border: "1px solid rgba(0,48,135,0.15)",
-    borderRadius: 8, padding: 12, fontSize: 13, color: "#1D4ED8",
+    background: "#e8f0fe", border: "1px solid #aecbfa",
+    borderRadius: 8, padding: 12, fontSize: 13, color: "#1a73e8",
   },
   examQuestions: { display: "flex", flexDirection: "column", gap: 20 },
   examQuestion: {
-    background: "#FFFFFF", border: "1px solid #E2E8F0",
-    borderRadius: 12, padding: "20px 24px",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: "20px 24px",
   },
   examQHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14 },
   examQNum: {
-    background: "#1E293B", color: "#fff",
+    background: "#202124", color: "#fff",
     padding: "4px 14px", borderRadius: 20, fontSize: 12, fontWeight: 700, letterSpacing: 0.5,
   },
   examQMarks: {
-    color: "#64748B", fontSize: 11, fontWeight: 600,
-    background: "#F1F5F9", padding: "3px 10px", borderRadius: 20,
+    color: "#5f6368", fontSize: 11, fontWeight: 600,
+    background: "#f1f3f4", padding: "3px 10px", borderRadius: 20,
   },
-  examQText: { fontSize: 15, color: "#1E293B", lineHeight: 1.75, marginBottom: 14, fontFamily: "Georgia, serif" },
+  examQText: { fontSize: 15, color: "#202124", lineHeight: 1.75, marginBottom: 14 },
   examOptions: { display: "flex", flexDirection: "column", gap: 8 },
 
   // Results (Exam)
   resultsPanel: { display: "flex", flexDirection: "column", gap: 24 },
   resultsHeader: {
-    textAlign: "center", background: "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)",
-    borderRadius: 16, padding: "40px 36px", color: "#fff",
-    boxShadow: "0 4px 24px rgba(15,23,42,0.3)",
+    textAlign: "center", background: "#1a73e8",
+    borderRadius: 8, padding: "40px 36px", color: "#fff",
   },
-  resultsGrade: { fontSize: 80, fontWeight: 700, color: "#fff", lineHeight: 1, fontFamily: "Georgia, serif", textShadow: "0 2px 12px rgba(255,255,255,0.15)" },
-  resultsScore: { fontSize: 22, color: "#94A3B8", marginTop: 10 },
-  resultsLabel: { fontSize: 13, color: "#475569", marginTop: 8 },
-  umsScore: { fontSize: 15, color: "#DA291C", marginTop: 12, fontFamily: "sans-serif" },
+  resultsGrade: { fontSize: 80, fontWeight: 700, color: "#fff", lineHeight: 1 },
+  resultsScore: { fontSize: 22, color: "rgba(255,255,255,0.7)", marginTop: 10 },
+  resultsLabel: { fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 8 },
+  umsScore: { fontSize: 15, color: "#fff", marginTop: 12 },
   gradeBands: { display: "flex", gap: 8, flexWrap: "wrap" },
   gradeBand: {
     padding: "8px 16px", borderRadius: 8, display: "flex", alignItems: "center",
     gap: 8, fontSize: 13,
   },
-  gradeBandLabel: { fontWeight: 700, color: "#1A1A1A" },
-  gradeBandPct: { color: "#777777" },
-  gradeBandCheck: { color: "#1A7A3C" },
-  reviewTitle: { fontSize: 18, fontWeight: 700, color: "#111111", margin: "0 0 4px" },
+  gradeBandLabel: { fontWeight: 700, color: "#202124" },
+  gradeBandPct: { color: "#5f6368" },
+  gradeBandCheck: { color: "#188038" },
+  reviewTitle: { fontSize: 18, fontWeight: 700, color: "#202124", margin: "0 0 4px" },
   reviewList: { display: "flex", flexDirection: "column", gap: 14 },
   reviewItem: {
-    background: "#FFFFFF", border: "1px solid #E8E8E8",
-    borderRadius: 10, padding: 18,
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: 18,
   },
-  reviewHeader: { display: "flex", justifyContent: "space-between", fontSize: 14, color: "#5C5C5C", marginBottom: 10, flexWrap: "wrap", gap: 8 },
-  reviewQuestion: { fontSize: 15, color: "#1A1A1A", lineHeight: 1.6, marginBottom: 10 },
-  reviewSolution: { fontSize: 13, color: "#5C5C5C", lineHeight: 1.6, background: "#F7F7F7", padding: 12, borderRadius: 6 },
-  reviewTopic: { fontSize: 12, color: "#AAAAAA", marginTop: 6 },
+  reviewHeader: { display: "flex", justifyContent: "space-between", fontSize: 14, color: "#5f6368", marginBottom: 10, flexWrap: "wrap", gap: 8 },
+  reviewQuestion: { fontSize: 15, color: "#202124", lineHeight: 1.6, marginBottom: 10 },
+  reviewSolution: { fontSize: 13, color: "#5f6368", lineHeight: 1.6, background: "#f8f9fa", padding: 12, borderRadius: 6 },
+  reviewTopic: { fontSize: 12, color: "#80868b", marginTop: 6 },
   aiExplanation: {
-    fontSize: 13, color: "#B81E14", marginTop: 10, padding: 10,
-    background: "#FFF5F5", borderRadius: 6,
+    fontSize: 13, color: "#1967d2", marginTop: 10, padding: 10,
+    background: "#e8f0fe", borderRadius: 6,
   },
 
   // Mock exam papers
   papersGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 },
   paperCard: {
-    background: "#FFFFFF", border: "1px solid #E0E0E0",
-    borderRadius: 10, padding: 22, display: "flex", flexDirection: "column", gap: 8,
+    background: "#fff", border: "1px solid #dadce0",
+    borderRadius: 8, padding: 22, display: "flex", flexDirection: "column", gap: 8,
     textAlign: "center",
   },
-  paperYear: { fontSize: 28, fontWeight: 700, color: "#1A1A1A" },
-  paperSession: { fontSize: 13, color: "#777777" },
-  paperPaper: { fontSize: 18, color: "#DA291C", fontWeight: 600 },
-  paperMeta: { display: "flex", justifyContent: "center", gap: 14, color: "#777777", fontSize: 13, margin: "4px 0" },
+  paperYear: { fontSize: 28, fontWeight: 700, color: "#202124" },
+  paperSession: { fontSize: 13, color: "#5f6368" },
+  paperPaper: { fontSize: 18, color: "#1a73e8", fontWeight: 600 },
+  paperMeta: { display: "flex", justifyContent: "center", gap: 14, color: "#5f6368", fontSize: 13, margin: "4px 0" },
 
   // Error Book
   errorList: { display: "flex", flexDirection: "column", gap: 14 },
   errorCard: {
-    background: "rgba(218,41,28,0.06)", border: "1px solid rgba(218,41,28,0.18)",
-    borderRadius: 10, padding: 18,
+    background: "#fce8e6", border: "1px solid #fad2cf",
+    borderRadius: 8, padding: 18,
   },
-  errorCardActive: { borderColor: "rgba(218,41,28,0.3)", background: "rgba(218,41,28,0.06)" },
+  errorCardActive: { borderColor: "#f5bcba", background: "#fce8e6" },
   errorCardHeader: { display: "flex", justifyContent: "space-between", gap: 12, alignItems: "flex-start", flexWrap: "wrap" },
-  errorChapter: { fontSize: 12, color: "#AAAAAA", marginBottom: 6, display: "block" },
-  errorQuestion: { fontSize: 15, color: "#1A1A1A", lineHeight: 1.5 },
+  errorChapter: { fontSize: 12, color: "#80868b", marginBottom: 6, display: "block" },
+  errorQuestion: { fontSize: 15, color: "#202124", lineHeight: 1.5 },
   errorCardBtns: { display: "flex", gap: 8, flexShrink: 0 },
   errorAnswers: { display: "flex", gap: 16, marginTop: 12, fontSize: 13, flexWrap: "wrap" },
-  errorWrong: { color: "#DA291C" },
-  errorCorrect: { color: "#1A7A3C" },
+  errorWrong: { color: "#d93025" },
+  errorCorrect: { color: "#188038" },
   explanationBox: {
-    marginTop: 14, background: "#F7F7F7", borderRadius: 8,
-    padding: 16, borderLeft: "3px solid #DA291C",
+    marginTop: 14, background: "#f8f9fa", borderRadius: 8,
+    padding: 16, borderLeft: "3px solid #1a73e8",
   },
-  explanationText: { color: "#2D2D2D", fontSize: 14, lineHeight: 1.7, whiteSpace: "pre-wrap" },
-  errorCount: { fontSize: 16, color: "#DA291C", fontWeight: 400, marginLeft: 10 },
+  explanationText: { color: "#202124", fontSize: 14, lineHeight: 1.7, whiteSpace: "pre-wrap" },
+  errorCount: { fontSize: 16, color: "#d93025", fontWeight: 400, marginLeft: 10 },
   emptyState: { textAlign: "center", padding: 60, display: "flex", flexDirection: "column", alignItems: "center", gap: 12 },
   emptyIcon: { fontSize: 60 },
-  emptyText: { fontSize: 20, color: "#1A1A1A" },
-  emptyDesc: { color: "#777777", fontSize: 15, maxWidth: 340 },
+  emptyText: { fontSize: 20, color: "#202124" },
+  emptyDesc: { color: "#5f6368", fontSize: 15, maxWidth: 340 },
 
   // Buttons
   btnPrimary: {
-    background: "linear-gradient(135deg, #DA291C, #B81E14)",
+    background: "#1a73e8",
     border: "none", color: "#FFFFFF",
-    padding: "12px 24px", borderRadius: 8, fontSize: 15, fontWeight: 700,
-    cursor: "pointer", fontFamily: "Georgia, serif", transition: "all 0.2s",
+    padding: "12px 24px", borderRadius: 8, fontSize: 15, fontWeight: 600,
+    cursor: "pointer", transition: "all 0.15s",
     alignSelf: "flex-start",
   },
   btnSecondary: {
-    background: "#FFFFFF", border: "1px solid #CCCCCC",
-    color: "#111111", padding: "11px 22px", borderRadius: 8, fontSize: 14,
-    cursor: "pointer", fontFamily: "Georgia, serif",
+    background: "#fff", border: "1px solid #dadce0",
+    color: "#202124", padding: "11px 22px", borderRadius: 8, fontSize: 14,
+    cursor: "pointer",
   },
   btnSmall: {
-    background: "rgba(218,41,28,0.1)", border: "1px solid rgba(218,41,28,0.3)",
-    color: "#DA291C", padding: "6px 12px", borderRadius: 6, fontSize: 12,
-    cursor: "pointer", fontFamily: "Georgia, serif",
+    background: "#e8f0fe", border: "1px solid #aecbfa",
+    color: "#1a73e8", padding: "6px 12px", borderRadius: 6, fontSize: 12,
+    cursor: "pointer",
   },
   btnSmallDanger: {
-    background: "rgba(218,41,28,0.15)", border: "1px solid rgba(218,41,28,0.3)",
-    color: "#DA291C", padding: "6px 12px", borderRadius: 6, fontSize: 12,
-    cursor: "pointer", fontFamily: "Georgia, serif",
+    background: "#fce8e6", border: "1px solid #fad2cf",
+    color: "#d93025", padding: "6px 12px", borderRadius: 6, fontSize: 12,
+    cursor: "pointer",
   },
 
   // Loading
   loading: { display: "flex", flexDirection: "column", alignItems: "center", gap: 16, padding: 40 },
   spinner: {
     width: 36, height: 36,
-    border: "3px solid #F5C5C2",
-    borderTop: "3px solid #DA291C",
+    border: "3px solid #d2e3fc",
+    borderTop: "3px solid #1a73e8",
     borderRadius: "50%",
     animation: "spin 0.8s linear infinite",
   },
-  loadingMsg: { color: "#777777", fontSize: 14 },
+  loadingMsg: { color: "#5f6368", fontSize: 14 },
 };
 
 // Inject keyframe animations

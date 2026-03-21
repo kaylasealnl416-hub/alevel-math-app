@@ -87,11 +87,11 @@ const styles = {
     boxSizing: 'border-box',
   },
   inputError: {
-    borderColor: '#EF4444',
+    borderColor: '#d93025',
   },
   errorMsg: {
     fontSize: 12,
-    color: '#EF4444',
+    color: '#d93025',
     marginTop: 5,
   },
   fieldWrap: {
@@ -161,7 +161,7 @@ const checkPasswordStrength = (password) => {
   if (/[^a-zA-Z0-9]/.test(password)) score++
   const levels = [
     { score: 0, text: '', color: '' },
-    { score: 1, text: 'Weak', color: '#EF4444' },
+    { score: 1, text: 'Weak', color: '#d93025' },
     { score: 2, text: 'Fair', color: '#F59E0B' },
     { score: 3, text: 'Good', color: '#EAB308' },
     { score: 4, text: 'Strong', color: '#22C55E' },

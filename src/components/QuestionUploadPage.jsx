@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { post, get } from '../utils/apiClient'
 import { API_BASE } from '../utils/constants'
-import Navbar from './Navbar'
 import {
   UploadCloud,
   FileText,
@@ -145,7 +144,6 @@ export default function QuestionUploadPage() {
 
   return (
     <div style={GRID_BG}>
-      <Navbar />
       <div style={{ maxWidth: 680, margin: '0 auto', padding: '64px 24px 0' }}>
 
         {/* ── Title area ── */}
@@ -160,7 +158,7 @@ export default function QuestionUploadPage() {
             margin: '0 auto 24px',
             position: 'relative',
           }}>
-            <Database size={32} color="#059669" />
+            <Database size={32} color="#0d652d" />
             <div style={{
               position: 'absolute', top: -8, right: -8,
               width: 24, height: 24,
@@ -169,12 +167,12 @@ export default function QuestionUploadPage() {
               border: '2px solid #fff',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Sparkles size={12} color="#059669" />
+              <Sparkles size={12} color="#0d652d" />
             </div>
           </div>
           <h1 style={{
             fontSize: 30, fontWeight: 700,
-            fontFamily: 'Georgia, "Times New Roman", serif',
+            fontFamily: 'inherit',
             color: '#1e293b', margin: '0 0 12px',
           }}>
             Upload Question Bank
@@ -196,7 +194,7 @@ export default function QuestionUploadPage() {
           onDrop={handleDrop}
           style={{
             background: dragActive ? '#f0fdf4' : '#fff',
-            border: `2px dashed ${dragActive ? '#34d399' : '#cbd5e1'}`,
+            border: `2px dashed ${dragActive ? '#81c995' : '#cbd5e1'}`,
             borderRadius: 16,
             boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
             padding: file ? 20 : 48,
@@ -287,7 +285,7 @@ export default function QuestionUploadPage() {
             <div style={{ height: 6, background: '#e2e8f0', borderRadius: 4, overflow: 'hidden' }}>
               <div style={{
                 height: '100%',
-                background: 'linear-gradient(90deg, #34d399, #059669)',
+                background: 'linear-gradient(90deg, #81c995, #188038)',
                 borderRadius: 4,
                 width: `${progress}%`,
                 transition: 'width 0.5s ease',
@@ -324,7 +322,7 @@ export default function QuestionUploadPage() {
                   <div style={{
                     width: 16, height: 16,
                     border: '2px solid rgba(52,211,153,0.4)',
-                    borderTopColor: '#34d399',
+                    borderTopColor: '#81c995',
                     borderRadius: '50%',
                     animation: 'spin 0.7s linear infinite',
                   }} />
@@ -492,7 +490,6 @@ function QuestionReview({ questions, onBack }) {
 
   return (
     <div style={GRID_BG}>
-      <Navbar />
       <div style={{ maxWidth: 860, margin: '0 auto', padding: '40px 24px 0' }}>
 
         {/* Header */}
@@ -512,7 +509,7 @@ function QuestionReview({ questions, onBack }) {
           </button>
           <h2 style={{
             fontSize: 24, fontWeight: 700,
-            fontFamily: 'Georgia, "Times New Roman", serif',
+            fontFamily: 'inherit',
             color: '#1e293b', margin: 0,
           }}>
             Review Questions{' '}
@@ -601,7 +598,7 @@ function QuestionReview({ questions, onBack }) {
               ) : (
                 <>
                   Applied {importResult.applied} answers ·{' '}
-                  <span style={{ color: '#059669', fontWeight: 600 }}>{importResult.matched} matched AI</span>
+                  <span style={{ color: '#0d652d', fontWeight: 600 }}>{importResult.matched} matched AI</span>
                   {importResult.corrected > 0 && (
                     <> · <span style={{ color: '#d97706', fontWeight: 600 }}>{importResult.corrected} corrected</span></>
                   )}
@@ -635,7 +632,7 @@ function QuestionReview({ questions, onBack }) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <span style={{
                     fontSize: 12, fontWeight: 600,
-                    color: q.confidence > 0.9 ? '#059669' : q.confidence > 0.7 ? '#d97706' : '#dc2626',
+                    color: q.confidence > 0.9 ? '#0d652d' : q.confidence > 0.7 ? '#d97706' : '#dc2626',
                   }}>
                     {(q.confidence * 100).toFixed(0)}% confidence
                   </span>
@@ -698,7 +695,7 @@ function QuestionReview({ questions, onBack }) {
                       value={q.answer.value}
                       onChange={(e) => handleEdit(index, 'answer.value', e.target.value)}
                       rows={5}
-                      style={{ ...inputStyle, resize: 'vertical', ...(q.answer?.source === 'official' ? { borderColor: '#059669', background: '#f0fdf4' } : {}) }}
+                      style={{ ...inputStyle, resize: 'vertical', ...(q.answer?.source === 'official' ? { borderColor: '#0d652d', background: '#f0fdf4' } : {}) }}
                     />
                   </div>
                   <div>
@@ -718,7 +715,7 @@ function QuestionReview({ questions, onBack }) {
                     <input
                       value={q.answer.value}
                       onChange={(e) => handleEdit(index, 'answer.value', e.target.value)}
-                      style={{ ...inputStyle, ...(q.answer?.source === 'official' ? { borderColor: '#059669', background: '#f0fdf4' } : {}) }}
+                      style={{ ...inputStyle, ...(q.answer?.source === 'official' ? { borderColor: '#0d652d', background: '#f0fdf4' } : {}) }}
                     />
                   </div>
                   <div>

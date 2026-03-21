@@ -141,8 +141,8 @@ export default function AISettingsPanel({ isOpen, onClose }) {
                   ...(active ? S.providerCardActive : {}),
                 }}
               >
-                <div style={{ ...S.providerName, color: active ? '#1E293B' : '#475569' }}>{p.name}</div>
-                <div style={{ ...S.providerDesc, color: active ? '#64748B' : '#94A3B8' }}>{p.description}</div>
+                <div style={{ ...S.providerName, color: active ? '#202124' : '#475569' }}>{p.name}</div>
+                <div style={{ ...S.providerDesc, color: active ? '#64748B' : '#80868b' }}>{p.description}</div>
                 {active && <div style={S.activeCheck}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>}
@@ -172,11 +172,11 @@ export default function AISettingsPanel({ isOpen, onClose }) {
                   >
                     <div style={{
                       ...S.radioOuter,
-                      borderColor: active ? '#DA291C' : '#CBD5E1',
+                      borderColor: active ? '#1a73e8' : '#CBD5E1',
                     }}>
                       {active && <div style={S.radioInner} />}
                     </div>
-                    <span style={{ color: active ? '#1E293B' : '#64748B', fontWeight: active ? 600 : 400 }}>
+                    <span style={{ color: active ? '#202124' : '#64748B', fontWeight: active ? 600 : 400 }}>
                       {m.name}
                     </span>
                   </button>
@@ -218,17 +218,17 @@ export default function AISettingsPanel({ isOpen, onClose }) {
                     onCut={e => e.preventDefault()}
                     style={S.keyInput}
                   />
-                  <svg style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="2" strokeLinecap="round">
+                  <svg style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#80868b" strokeWidth="2" strokeLinecap="round">
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                   </svg>
                 </div>
-                <div style={{ marginTop: 6, fontSize: 11, color: '#94A3B8' }}>
+                <div style={{ marginTop: 6, fontSize: 11, color: '#80868b' }}>
                   Your key is stored locally in your browser and never saved on our server.{' '}
                   <a
                     href={currentProvider.keyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: '#DA291C', textDecoration: 'none', fontWeight: 500 }}
+                    style={{ color: '#1a73e8', textDecoration: 'none', fontWeight: 500 }}
                   >
                     Get API Key
                     <svg style={{ marginLeft: 2, verticalAlign: 'middle' }} width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -254,7 +254,7 @@ export default function AISettingsPanel({ isOpen, onClose }) {
               ...S.saveBtn,
               opacity: (!provider || (isEditing && !apiKey)) ? 0.4 : 1,
               cursor: (!provider || (isEditing && !apiKey)) ? 'not-allowed' : 'pointer',
-              background: saved ? '#16A34A' : '#DA291C',
+              background: saved ? '#16A34A' : '#1a73e8',
             }}
           >
             {saved ? (
@@ -306,21 +306,21 @@ const S = {
     display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
   },
   title: {
-    margin: 0, fontSize: 20, fontWeight: 700, color: '#1E293B',
-    fontFamily: "'Georgia', serif",
+    margin: 0, fontSize: 20, fontWeight: 700, color: '#202124',
+    fontFamily: "inherit",
   },
   subtitle: {
-    margin: '4px 0 0', fontSize: 13, color: '#94A3B8', fontWeight: 400,
+    margin: '4px 0 0', fontSize: 13, color: '#80868b', fontWeight: 400,
   },
   closeBtn: {
-    background: '#F8FAFC', border: '1px solid #E2E8F0',
+    background: '#f8f9fa', border: '1px solid #dadce0',
     borderRadius: 8, width: 32, height: 32,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    cursor: 'pointer', color: '#94A3B8', flexShrink: 0,
+    cursor: 'pointer', color: '#80868b', flexShrink: 0,
     transition: 'background 0.15s',
   },
   divider: {
-    height: 1, background: '#F1F5F9', margin: '18px 0',
+    height: 1, background: '#f1f3f4', margin: '18px 0',
   },
   stepLabel: {
     display: 'flex', alignItems: 'center', gap: 8,
@@ -328,9 +328,9 @@ const S = {
   },
   stepNum: {
     width: 22, height: 22, borderRadius: '50%',
-    background: '#FEF2F2',
-    border: '1px solid #FECACA',
-    color: '#DA291C', fontSize: 11, fontWeight: 700,
+    background: '#e8f0fe',
+    border: '1px solid #aecbfa',
+    color: '#1a73e8', fontSize: 11, fontWeight: 700,
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
     flexShrink: 0,
   },
@@ -342,14 +342,14 @@ const S = {
   },
   providerCard: {
     padding: '12px 14px', borderRadius: 10, cursor: 'pointer',
-    border: '1.5px solid #E2E8F0',
+    border: '1.5px solid #dadce0',
     background: '#fff',
     textAlign: 'left', transition: 'all 0.15s', position: 'relative',
     overflow: 'hidden',
   },
   providerCardActive: {
-    background: '#FEF2F2',
-    borderColor: '#DA291C',
+    background: '#e8f0fe',
+    borderColor: '#1a73e8',
   },
   providerName: {
     fontWeight: 600, fontSize: 13, lineHeight: 1.3,
@@ -360,7 +360,7 @@ const S = {
   activeCheck: {
     position: 'absolute', top: 6, right: 6,
     width: 18, height: 18, borderRadius: '50%',
-    background: '#DA291C',
+    background: '#1a73e8',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
   },
 
@@ -372,13 +372,13 @@ const S = {
     display: 'flex', alignItems: 'center', gap: 10,
     padding: '10px 14px', borderRadius: 8,
     background: '#fff',
-    border: '1.5px solid #E2E8F0',
+    border: '1.5px solid #dadce0',
     cursor: 'pointer', fontSize: 13, transition: 'all 0.15s',
     textAlign: 'left',
   },
   modelBtnActive: {
-    background: '#FEF2F2',
-    borderColor: '#FECACA',
+    background: '#e8f0fe',
+    borderColor: '#aecbfa',
   },
   radioOuter: {
     width: 16, height: 16, borderRadius: '50%',
@@ -388,7 +388,7 @@ const S = {
   },
   radioInner: {
     width: 8, height: 8, borderRadius: '50%',
-    background: '#DA291C',
+    background: '#1a73e8',
   },
 
   // Saved key display
@@ -403,8 +403,8 @@ const S = {
   },
   reenterBtn: {
     padding: '10px 14px', borderRadius: 8, fontSize: 12, fontWeight: 500,
-    background: '#F8FAFC',
-    border: '1px solid #E2E8F0',
+    background: '#f8f9fa',
+    border: '1px solid #dadce0',
     color: '#64748B', cursor: 'pointer', whiteSpace: 'nowrap',
     transition: 'background 0.15s',
   },
@@ -415,9 +415,9 @@ const S = {
   },
   keyInput: {
     width: '100%', padding: '10px 14px 10px 36px', borderRadius: 8,
-    background: '#F8FAFC',
-    border: '1.5px solid #E2E8F0',
-    color: '#1E293B', fontSize: 13, boxSizing: 'border-box',
+    background: '#f8f9fa',
+    border: '1.5px solid #dadce0',
+    color: '#202124', fontSize: 13, boxSizing: 'border-box',
     outline: 'none', fontFamily: 'monospace',
     WebkitTextSecurity: 'disc',
     transition: 'border-color 0.15s',
@@ -429,8 +429,8 @@ const S = {
   },
   resetBtn: {
     padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 500,
-    background: '#F8FAFC',
-    border: '1px solid #E2E8F0',
+    background: '#f8f9fa',
+    border: '1px solid #dadce0',
     color: '#64748B', cursor: 'pointer',
     transition: 'all 0.15s',
   },
@@ -445,8 +445,8 @@ const S = {
   statusBar: {
     display: 'flex', alignItems: 'center', gap: 6,
     marginTop: 14, padding: '10px 14px', borderRadius: 8,
-    background: '#F8FAFC',
-    border: '1px solid #F1F5F9',
+    background: '#f8f9fa',
+    border: '1px solid #f1f3f4',
     fontSize: 12, color: '#64748B',
   },
   statusDot: {

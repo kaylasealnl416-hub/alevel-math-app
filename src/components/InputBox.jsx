@@ -76,14 +76,14 @@ export default function InputBox({ onSend, disabled = false, isSending = false }
   const canSend = !!message.trim() && !isDisabled
 
   const borderColor = focused && !isDisabled
-    ? (canSend ? '#DA291C' : '#94A3B8')
-    : '#E2E8F0'
+    ? (canSend ? '#1a73e8' : '#94A3B8')
+    : '#dadce0'
   const ringColor = focused && !isDisabled
     ? (canSend ? 'rgba(218,41,28,0.1)' : 'rgba(148,163,184,0.1)')
     : 'transparent'
 
   return (
-    <div style={{ padding: '12px 20px 16px', background: '#fff', borderTop: '1px solid #F1F5F9' }}>
+    <div style={{ padding: '12px 20px 16px', background: '#fff', borderTop: '1px solid #f1f3f4' }}>
       <div style={{ maxWidth: 800, margin: '0 auto' }}>
 
         {/* Toolbar */}
@@ -95,9 +95,9 @@ export default function InputBox({ onSend, disabled = false, isSending = false }
               onClick={() => setShowLatexMenu(!showLatexMenu)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px',
-                borderRadius: 8, border: `1px solid ${showLatexMenu ? '#FECACA' : '#E2E8F0'}`,
-                background: showLatexMenu ? '#FEF2F2' : '#F8FAFC',
-                color: showLatexMenu ? '#DA291C' : '#64748B',
+                borderRadius: 8, border: `1px solid ${showLatexMenu ? '#FECACA' : '#dadce0'}`,
+                background: showLatexMenu ? '#FEF2F2' : '#f8f9fa',
+                color: showLatexMenu ? '#1a73e8' : '#64748B',
                 fontSize: 12, fontWeight: 500, cursor: 'pointer'
               }}
             >
@@ -106,19 +106,19 @@ export default function InputBox({ onSend, disabled = false, isSending = false }
             </button>
 
             {showLatexMenu && (
-              <div style={{ position: 'absolute', bottom: '100%', left: 0, marginBottom: 8, background: '#fff', border: '1px solid #E2E8F0', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.1)', padding: 12, zIndex: 100, minWidth: 220 }}>
+              <div style={{ position: 'absolute', bottom: '100%', left: 0, marginBottom: 8, background: '#fff', border: '1px solid #dadce0', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.1)', padding: 12, zIndex: 100, minWidth: 220 }}>
                 <div style={{ fontSize: 11, color: '#94A3B8', marginBottom: 8, fontWeight: 500 }}>Insert formula template</div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6 }}>
                   {LATEX_TEMPLATES.map((t, i) => (
                     <button key={i} onClick={() => insertLatex(t)}
-                      style={{ padding: '7px 4px', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 7, cursor: 'pointer', textAlign: 'center', fontSize: 13, fontFamily: 'KaTeX_Main, Georgia, serif', color: '#374151' }}
-                      onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#CBD5E1' }}
-                      onMouseLeave={e => { e.currentTarget.style.background = '#F8FAFC'; e.currentTarget.style.borderColor = '#E2E8F0' }}
+                      style={{ padding: '7px 4px', background: '#f8f9fa', border: '1px solid #dadce0', borderRadius: 7, cursor: 'pointer', textAlign: 'center', fontSize: 13, fontFamily: 'KaTeX_Main, Georgia, serif', color: '#374151' }}
+                      onMouseEnter={e => { e.currentTarget.style.background = '#f1f3f4'; e.currentTarget.style.borderColor = '#CBD5E1' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = '#f8f9fa'; e.currentTarget.style.borderColor = '#dadce0' }}
                     >{t.label}</button>
                   ))}
                 </div>
-                <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px solid #F1F5F9', fontSize: 11, color: '#CBD5E1' }}>
-                  Wrap with <code style={{ background: '#F1F5F9', padding: '1px 4px', borderRadius: 3 }}>$...$</code> e.g. $x^2$
+                <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px solid #f1f3f4', fontSize: 11, color: '#CBD5E1' }}>
+                  Wrap with <code style={{ background: '#f1f3f4', padding: '1px 4px', borderRadius: 3 }}>$...$</code> e.g. $x^2$
                 </div>
               </div>
             )}
@@ -126,9 +126,9 @@ export default function InputBox({ onSend, disabled = false, isSending = false }
 
           {/* Upload Image (placeholder) */}
           <button
-            style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', borderRadius: 8, border: '1px solid #E2E8F0', background: '#F8FAFC', color: '#64748B', fontSize: 12, fontWeight: 500, cursor: 'pointer' }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9' }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#F8FAFC' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', borderRadius: 8, border: '1px solid #dadce0', background: '#f8f9fa', color: '#64748B', fontSize: 12, fontWeight: 500, cursor: 'pointer' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#f1f3f4' }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#f8f9fa' }}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             Image
@@ -172,7 +172,7 @@ export default function InputBox({ onSend, disabled = false, isSending = false }
             style={{
               position: 'absolute', right: 10, bottom: 10,
               width: 34, height: 34, borderRadius: 10, border: 'none',
-              background: canSend ? '#DA291C' : '#F1F5F9',
+              background: canSend ? '#1a73e8' : '#f1f3f4',
               color: canSend ? '#fff' : '#CBD5E1',
               cursor: canSend ? 'pointer' : 'not-allowed',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -195,9 +195,9 @@ export default function InputBox({ onSend, disabled = false, isSending = false }
 
         {/* Hint */}
         <div style={{ textAlign: 'center', marginTop: 8, fontSize: 11, color: '#CBD5E1' }}>
-          Press <kbd style={{ padding: '1px 5px', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 4, fontSize: 10, fontFamily: 'inherit' }}>Enter</kbd> to send
+          Press <kbd style={{ padding: '1px 5px', background: '#f8f9fa', border: '1px solid #dadce0', borderRadius: 4, fontSize: 10, fontFamily: 'inherit' }}>Enter</kbd> to send
           &nbsp;·&nbsp;
-          <kbd style={{ padding: '1px 5px', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 4, fontSize: 10, fontFamily: 'inherit' }}>Shift + Enter</kbd> for new line
+          <kbd style={{ padding: '1px 5px', background: '#f8f9fa', border: '1px solid #dadce0', borderRadius: 4, fontSize: 10, fontFamily: 'inherit' }}>Shift + Enter</kbd> for new line
         </div>
       </div>
     </div>

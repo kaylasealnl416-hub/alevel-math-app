@@ -1,22 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { get, post, put } from '../utils/apiClient'
-import Navbar from './Navbar'
 import Loading from './common/Loading'
 import Toast from './common/Toast'
 import { Button } from './ui'
-
-/**
- * Phase 4 Day 10: Learning Plan Page (Optimized)
- *
- * Features:
- * - Display personalized learning recommendations
- * - Generate learning plans with progress tracking
- * - Track recommendation completion
- * - Show daily tasks and goals
- * - Progress visualization
- * - Toast notifications (using global component)
- */
 
 function LearningPlanPage() {
   const navigate = useNavigate()
@@ -31,470 +18,312 @@ function LearningPlanPage() {
   const [completedTasks, setCompletedTasks] = useState({})
   const [toast, setToast] = useState(null)
 
-  useEffect(() => {
-    fetchRecommendations()
-    loadCompletedTasks()
-  }, [])
+  useEffect(() => { fetchRecommendations(); loadCompletedTasks() }, [])
 
-  // Toast notification
   const showToast = (message, type = 'success') => {
     setToast({ message, type })
     setTimeout(() => setToast(null), 3000)
   }
 
-  // Load completed tasks from localStorage
   const loadCompletedTasks = () => {
     try {
       const saved = localStorage.getItem('completedTasks')
-      if (saved) {
-        setCompletedTasks(JSON.parse(saved))
-      }
-    } catch (err) {
-      console.error('Failed to load completed tasks:', err)
-    }
+      if (saved) setCompletedTasks(JSON.parse(saved))
+    } catch (err) { console.error('Failed to load completed tasks:', err) }
   }
 
-  // Save completed tasks to localStorage
   const saveCompletedTasks = (tasks) => {
     try {
       localStorage.setItem('completedTasks', JSON.stringify(tasks))
       setCompletedTasks(tasks)
-    } catch (err) {
-      console.error('Failed to save completed tasks:', err)
-    }
+    } catch (err) { console.error('Failed to save completed tasks:', err) }
   }
 
   const fetchRecommendations = async () => {
     try {
-      setLoading(true)
-      setError(null)
-
-      const result = await get('/api/recommendations?status=pending')
-
-      if (result.success) {
-        setRecommendations(result.data)
-      } else {
-        setError(result.error.message)
-      }
+      setLoading(true); setError(null)
+      const data = await get('/api/recommendations?status=pending')
+      setRecommendations(Array.isArray(data) ? data : [])
     } catch (err) {
       console.error('Failed to fetch recommendations:', err)
       setError('Failed to load recommendations')
-    } finally {
-      setLoading(false)
-    }
+    } finally { setLoading(false) }
   }
 
   const generatePlan = async () => {
     try {
-      setGenerating(true)
-      setError(null)
-
-      const result = await post('/api/learning-plans/generate', {
-        duration: planDuration
-      })
-
-      if (result.success) {
-        setLearningPlan(result.data)
-      } else {
-        setError(result.error.message)
-      }
+      setGenerating(true); setError(null)
+      const data = await post('/api/learning-plans/generate', { duration: planDuration })
+      setLearningPlan(data)
     } catch (err) {
       console.error('Failed to generate plan:', err)
       setError('Failed to generate learning plan')
-    } finally {
-      setGenerating(false)
-    }
+    } finally { setGenerating(false) }
   }
 
   const completeRecommendation = async (recId) => {
     try {
-      const result = await put(`/api/recommendations/${recId}/complete`)
-
-      if (result.success) {
-        showToast('✓ Recommendation completed!', 'success')
-        fetchRecommendations()
-        setLearningPlan(null)
-      } else {
-        showToast('Failed to complete recommendation', 'error')
-      }
-    } catch (err) {
-      console.error('Failed to complete recommendation:', err)
-      showToast('Failed to complete recommendation', 'error')
-    }
+      await put(`/api/recommendations/${recId}/complete`)
+      showToast('Recommendation completed!', 'success'); fetchRecommendations(); setLearningPlan(null)
+    } catch (err) { showToast('Failed to complete recommendation', 'error') }
   }
 
   const skipRecommendation = async (recId) => {
     try {
-      const result = await put(`/api/recommendations/${recId}/skip`)
-
-      if (result.success) {
-        showToast('Recommendation skipped', 'info')
-        fetchRecommendations()
-        setLearningPlan(null)
-      } else {
-        showToast('Failed to skip recommendation', 'error')
-      }
-    } catch (err) {
-      console.error('Failed to skip recommendation:', err)
-      showToast('Failed to skip recommendation', 'error')
-    }
+      await put(`/api/recommendations/${recId}/skip`)
+      showToast('Recommendation skipped', 'info'); fetchRecommendations(); setLearningPlan(null)
+    } catch (err) { showToast('Failed to skip recommendation', 'error') }
   }
 
-  const toggleRecExpanded = (recId) => {
-    setExpandedRecs(prev => ({
-      ...prev,
-      [recId]: !prev[recId]
-    }))
-  }
+  const toggleRecExpanded = (recId) => setExpandedRecs(prev => ({ ...prev, [recId]: !prev[recId] }))
 
   const toggleTaskComplete = (dayIndex, taskIndex) => {
     const taskKey = `${dayIndex}-${taskIndex}`
-    const newCompleted = {
-      ...completedTasks,
-      [taskKey]: !completedTasks[taskKey]
-    }
+    const newCompleted = { ...completedTasks, [taskKey]: !completedTasks[taskKey] }
     saveCompletedTasks(newCompleted)
-
-    if (newCompleted[taskKey]) {
-      showToast('✓ Task completed!', 'success')
-    }
+    if (newCompleted[taskKey]) showToast('Task completed!', 'success')
   }
 
   const getCompletionStats = () => {
     if (!learningPlan) return { completed: 0, total: 0, percentage: 0 }
-
     const total = learningPlan.totalTasks || 0
     const completed = Object.values(completedTasks).filter(Boolean).length
-    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0
-
-    return { completed, total, percentage }
+    return { completed, total, percentage: total > 0 ? Math.round((completed / total) * 100) : 0 }
   }
 
-  const getTypeIcon = (type) => {
-    const icons = {
-      chapter: '📚',
-      practice: '✏️',
-      review: '🔄',
-      video: '🎥'
-    }
-    return icons[type] || '📝'
-  }
+  const getTypeLabel = (type) => ({ chapter: 'Chapter Study', practice: 'Practice', review: 'Wrong Answer Review', video: 'Video Study' })[type] || type
 
-  const getTypeLabel = (type) => {
-    const labels = {
-      chapter: 'Chapter Study',
-      practice: 'Practice',
-      review: 'Wrong Answer Review',
-      video: 'Video Study'
-    }
-    return labels[type] || type
+  const PRIORITY = {
+    high: { bg: '#fce8e6', color: '#a50e0e', border: '#d93025', label: 'High priority' },
+    mid:  { bg: '#fef7e0', color: '#b06000', border: '#f9ab00', label: 'Medium priority' },
+    low:  { bg: '#e6f4ea', color: '#0d652d', border: '#188038', label: 'Low priority' },
   }
+  const getPriority = (p) => p >= 4 ? PRIORITY.high : p >= 3 ? PRIORITY.mid : PRIORITY.low
 
-  const getPriorityClass = (priority) => {
-    if (priority >= 4) return 'border-l-4 border-error-500'
-    if (priority >= 3) return 'border-l-4 border-warning-500'
-    return 'border-l-4 border-success-500'
-  }
-
-  const getPriorityLabel = (priority) => {
-    if (priority >= 4) return 'High priority'
-    if (priority >= 3) return 'Medium priority'
-    return 'Low priority'
-  }
-
-  const getPriorityBadgeClass = (priority) => {
-    if (priority >= 4) return 'bg-error-100 text-error-600'
-    if (priority >= 3) return 'bg-warning-100 text-warning-600'
-    return 'bg-success-100 text-success-600'
-  }
-
-  if (loading) {
-    return <Loading message="Loading your learning plan..." size="large" fullScreen />
+  const S = {
+    page: { minHeight: '100vh', background: '#f8f9fa' },
+    inner: { maxWidth: 1080, margin: '0 auto', padding: '32px 24px' },
+    card: { background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 24 },
+    label: { display: 'block', fontSize: 13, color: '#5f6368', marginBottom: 6, fontWeight: 500 },
+    select: { width: '100%', padding: '8px 12px', border: '1px solid #dadce0', borderRadius: 8, fontSize: 14, color: '#202124', background: '#fff', outline: 'none' },
+    badge: { display: 'inline-block', padding: '3px 10px', borderRadius: 12, fontSize: 12, fontWeight: 500 },
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Toast Notification */}
-          {toast && (
-            <Toast
-              message={toast.message}
-              type={toast.type}
-              onClose={() => setToast(null)}
-            />
-          )}
+    <div style={S.page}>
+      <div style={S.inner}>
+        {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
-          {/* Header */}
-          <div className="mb-8 animate-fade-in-down">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">📅 My Learning Plan</h1>
-            <p className="text-lg text-gray-600">Personalized recommendations based on your exam performance</p>
+        {/* Header */}
+        <div style={{ marginBottom: 24 }}>
+          <h1 style={{ fontSize: 24, fontWeight: 600, color: '#202124', margin: '0 0 4px' }}>My Learning Plan</h1>
+          <p style={{ fontSize: 14, color: '#5f6368', margin: 0 }}>Personalized recommendations based on your exam performance</p>
+        </div>
+
+        {loading ? (
+          <Loading message="Loading your learning plan..." size="medium" />
+        ) : (<>
+
+        {/* Error */}
+        {error && (
+          <div style={{ background: '#fce8e6', border: '1px solid #fad2cf', borderRadius: 8, padding: '12px 16px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ color: '#c5221f', fontSize: 14 }}>{error}</span>
+          </div>
+        )}
+
+        {/* Progress Overview */}
+        {learningPlan && (
+          <div style={{ ...S.card, marginBottom: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 500, color: '#202124', margin: 0 }}>Overall Progress</h3>
+              <span style={{ fontSize: 24, fontWeight: 700, color: '#1a73e8' }}>{getCompletionStats().percentage}%</span>
+            </div>
+            <div style={{ width: '100%', background: '#f1f3f4', borderRadius: 4, height: 8, marginBottom: 8 }}>
+              <div style={{ width: `${getCompletionStats().percentage}%`, background: '#1a73e8', borderRadius: 4, height: 8, transition: 'width 0.3s' }} />
+            </div>
+            <div style={{ fontSize: 13, color: '#5f6368' }}>
+              {getCompletionStats().completed} / {getCompletionStats().total} tasks completed
+            </div>
+          </div>
+        )}
+
+        {/* Recommendations */}
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <h2 style={{ fontSize: 18, fontWeight: 600, color: '#202124', margin: 0 }}>Learning Recommendations</h2>
+            <span style={{ ...S.badge, background: '#1a73e8', color: '#fff' }}>{recommendations.length} pending</span>
           </div>
 
-          {/* Error Message */}
-          {error && (
-            <div className="bg-error-50 border border-error-200 rounded-xl p-4 mb-8 flex items-center gap-3 animate-fade-in-down">
-              <span className="text-2xl">⚠️</span>
-              <p className="text-error-700">{error}</p>
+          {recommendations.length === 0 ? (
+            <div style={{ ...S.card, textAlign: 'center', padding: '60px 24px' }}>
+              <div style={{ fontSize: 48, marginBottom: 12 }}>📚</div>
+              <h3 style={{ fontSize: 18, fontWeight: 500, color: '#202124', margin: '0 0 8px' }}>No recommendations yet</h3>
+              <p style={{ fontSize: 14, color: '#5f6368', margin: '0 0 24px', lineHeight: 1.6 }}>
+                Complete an exam first, and we'll generate a personalised study plan based on your results.
+              </p>
+              <button
+                onClick={() => navigate('/exams')}
+                style={{
+                  padding: '10px 28px', background: '#1a73e8', color: '#fff', border: 'none',
+                  borderRadius: 8, fontSize: 15, fontWeight: 500, cursor: 'pointer',
+                }}
+              >
+                Take an Exam
+              </button>
             </div>
-          )}
-
-          {/* Progress Overview */}
-          {learningPlan && (
-            <div className="mb-8 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-              <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-xl font-semibold text-gray-900">📊 Overall Progress</h3>
-                  <span className="text-3xl font-bold text-primary-600">{getCompletionStats().percentage}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
-                  <div
-                    className="bg-gradient-to-r from-primary-500 to-secondary-500 h-3 rounded-full transition-all duration-500"
-                    style={{ width: `${getCompletionStats().percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-sm text-gray-600">
-                  {getCompletionStats().completed} / {getCompletionStats().total} tasks completed
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Recommendations Section */}
-          <div className="mb-12 animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900">🎯 Learning Recommendations</h2>
-              <span className="px-4 py-1 bg-primary-500 text-white rounded-full text-sm font-medium">
-                {recommendations.length} pending
-              </span>
-            </div>
-
-            {recommendations.length === 0 ? (
-              <div className="bg-white rounded-xl shadow-md p-12 text-center animate-scale-in">
-                <div className="text-6xl mb-4">🎉</div>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-2">All caught up!</h3>
-                <p className="text-gray-600 mb-6">Complete an exam to get personalized recommendations</p>
-                <Button variant="primary" size="md" onClick={() => navigate('/exams')}>
-                  Take an Exam
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {recommendations.map((rec, index) => (
-                  <div
-                    key={rec.id}
-                    className={`bg-white rounded-xl shadow-md p-6 border-2 border-gray-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300 ${getPriorityClass(rec.priority)} animate-fade-in-up`}
-                    style={{ animationDelay: `${0.3 + index * 0.1}s`, animationFillMode: 'both' }}
-                  >
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {recommendations.map(rec => {
+                const pri = getPriority(rec.priority)
+                return (
+                  <div key={rec.id} style={{ ...S.card, borderLeft: `3px solid ${pri.border}` }}>
                     <div
-                      className="flex justify-between items-center cursor-pointer"
+                      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
                       onClick={() => toggleRecExpanded(rec.id)}
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="text-3xl">{getTypeIcon(rec.type)}</span>
-                        <span className="text-lg font-semibold text-gray-900">{getTypeLabel(rec.type)}</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPriorityBadgeClass(rec.priority)}`}>
-                          {getPriorityLabel(rec.priority)}
-                        </span>
-                        <span className="text-gray-400 text-xl">{expandedRecs[rec.id] ? '▼' : '▶'}</span>
+                      <span style={{ fontSize: 15, fontWeight: 500, color: '#202124' }}>{getTypeLabel(rec.type)}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ ...S.badge, background: pri.bg, color: pri.color }}>{pri.label}</span>
+                        <span style={{ color: '#80868b', fontSize: 14 }}>{expandedRecs[rec.id] ? '▼' : '▶'}</span>
                       </div>
                     </div>
 
-                    <div className="mt-4">
-                      <p className="text-gray-700 leading-relaxed">{rec.reason}</p>
+                    <p style={{ fontSize: 14, color: '#5f6368', marginTop: 8, lineHeight: 1.6 }}>{rec.reason}</p>
 
-                      {expandedRecs[rec.id] && (
-                        <div className="mt-4 space-y-3">
-                          {rec.weakTopics && rec.weakTopics.length > 0 && (
-                            <div>
-                              <span className="text-sm font-semibold text-gray-600">Weak topics:</span>
-                              <div className="flex flex-wrap gap-2 mt-2">
-                                {rec.weakTopics.map((topic, i) => (
-                                  <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
-                                    {topic}
-                                  </span>
-                                ))}
-                              </div>
+                    {expandedRecs[rec.id] && (
+                      <div style={{ marginTop: 12 }}>
+                        {rec.weakTopics?.length > 0 && (
+                          <div style={{ marginBottom: 12 }}>
+                            <span style={{ fontSize: 13, fontWeight: 500, color: '#5f6368' }}>Weak topics:</span>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
+                              {rec.weakTopics.map((topic, i) => (
+                                <span key={i} style={{ padding: '4px 10px', background: '#f1f3f4', borderRadius: 12, fontSize: 13, color: '#202124' }}>{topic}</span>
+                              ))}
                             </div>
-                          )}
-
-                          {rec.chapter && (
-                            <div className="text-sm">
-                              <span className="font-semibold text-gray-600">Recommended chapter:</span>
-                              <span className="text-primary-600 font-medium ml-2">
-                                {rec.chapter.title?.zh || rec.chapter.title}
-                              </span>
-                            </div>
-                          )}
-
-                          <div className="flex gap-3 mt-4">
-                            <Button
-                              variant="primary"
-                              size="sm"
-                              className="flex-1"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                completeRecommendation(rec.id)
-                              }}
-                            >
-                              ✓ Mark as Done
-                            </Button>
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              className="flex-1"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                skipRecommendation(rec.id)
-                              }}
-                            >
-                              Skip
-                            </Button>
                           </div>
+                        )}
+
+                        {rec.chapter && (
+                          <div style={{ fontSize: 13, marginBottom: 12 }}>
+                            <span style={{ color: '#5f6368' }}>Recommended chapter: </span>
+                            <span style={{ color: '#1a73e8', fontWeight: 500 }}>{rec.chapter.title?.zh || rec.chapter.title}</span>
+                          </div>
+                        )}
+
+                        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                          <Button variant="primary" size="sm" onClick={e => { e.stopPropagation(); completeRecommendation(rec.id) }}>Mark as Done</Button>
+                          <Button variant="secondary" size="sm" onClick={e => { e.stopPropagation(); skipRecommendation(rec.id) }}>Skip</Button>
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Learning Plan Generator */}
-          {recommendations.length > 0 && (
-            <div className="bg-gray-50 rounded-xl p-6 animate-fade-in" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">📆 Generate Study Plan</h2>
-
-              <div className="flex flex-col sm:flex-row gap-4 items-end mb-6">
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Plan Duration:
-                  </label>
-                  <select
-                    value={planDuration}
-                    onChange={(e) => setPlanDuration(Number(e.target.value))}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                  >
-                    <option value={3}>3 days</option>
-                    <option value={7}>7 days (1 week)</option>
-                    <option value={14}>14 days (2 weeks)</option>
-                    <option value={30}>30 days (1 month)</option>
-                  </select>
-                </div>
-
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={generatePlan}
-                  disabled={generating}
-                  className="w-full sm:w-auto"
-                >
-                  {generating ? 'Generating...' : '🚀 Generate Plan'}
-                </Button>
-              </div>
-
-              {learningPlan && (
-                <div className="bg-white rounded-xl shadow-md p-6 animate-fade-in-up">
-                  <div className="mb-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      Your {learningPlan.duration}-Day Study Plan
-                    </h3>
-                    <p className="text-gray-600">Total tasks: {learningPlan.totalTasks}</p>
-                  </div>
-
-                  <div className="space-y-6">
-                    {learningPlan.plan.map((day, dayIndex) => {
-                      const dayTasks = day.tasks.length
-                      const dayCompleted = day.tasks.filter((_, taskIndex) =>
-                        completedTasks[`${dayIndex}-${taskIndex}`]
-                      ).length
-                      const dayProgress = dayTasks > 0 ? Math.round((dayCompleted / dayTasks) * 100) : 0
-
-                      return (
-                        <div key={day.day} className="bg-gray-50 rounded-xl p-6 border border-gray-200 animate-fade-in-up" style={{ animationDelay: `${dayIndex * 0.1}s`, animationFillMode: 'both' }}>
-                          <div className="flex justify-between items-start mb-4">
-                            <div>
-                              <div className="text-2xl font-bold text-primary-600">Day {day.day}</div>
-                              <div className="text-sm text-gray-600">
-                                {new Date(day.date).toLocaleDateString('en-US', {
-                                  month: 'short',
-                                  day: 'numeric'
-                                })}
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="text-sm text-gray-600 mb-1">
-                                {dayCompleted}/{dayTasks} tasks
-                              </div>
-                              <div className="w-16 h-16 rounded-full border-4 border-gray-200 flex items-center justify-center relative"
-                                style={{
-                                  background: `conic-gradient(#4CAF50 ${dayProgress * 3.6}deg, transparent 0deg)`
-                                }}
-                              >
-                                <div className="absolute inset-1 bg-gray-50 rounded-full flex items-center justify-center">
-                                  <span className="text-sm font-semibold text-gray-900">{dayProgress}%</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-2 mb-4 p-3 bg-white rounded-lg">
-                            <span className="text-xl">🎯</span>
-                            <span className="text-gray-700 font-medium">{day.goal}</span>
-                          </div>
-
-                          <div className="space-y-3">
-                            {day.tasks.map((task, taskIndex) => {
-                              const taskKey = `${dayIndex}-${taskIndex}`
-                              const isCompleted = completedTasks[taskKey]
-
-                              return (
-                                <div
-                                  key={taskIndex}
-                                  onClick={() => toggleTaskComplete(dayIndex, taskIndex)}
-                                  className={`flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                                    isCompleted
-                                      ? 'bg-success-50 border-success-300'
-                                      : 'bg-white border-gray-200 hover:border-primary-300'
-                                  }`}
-                                >
-                                  <div className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center text-sm font-bold ${
-                                    isCompleted
-                                      ? 'bg-success-500 border-success-500 text-white'
-                                      : 'border-gray-300 text-gray-400'
-                                  }`}>
-                                    {isCompleted ? '✓' : '○'}
-                                  </div>
-                                  <span className="text-2xl">{getTypeIcon(task.type)}</span>
-                                  <div className="flex-1">
-                                    <div className={`font-medium mb-1 ${isCompleted ? 'line-through text-gray-500' : 'text-gray-900'}`}>
-                                      {task.description}
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 text-sm">
-                                      <span className="text-gray-600">⏱️ {task.estimatedTime} min</span>
-                                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPriorityBadgeClass(task.priority)}`}>
-                                        {getPriorityLabel(task.priority)}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              )
-                            })}
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
+                )
+              })}
             </div>
           )}
         </div>
+
+        {/* Plan Generator */}
+        {recommendations.length > 0 && (
+          <div style={{ ...S.card, background: '#f8f9fa', border: '1px solid #dadce0' }}>
+            <h2 style={{ fontSize: 18, fontWeight: 600, color: '#202124', margin: '0 0 16px' }}>Generate Study Plan</h2>
+
+            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end', flexWrap: 'wrap', marginBottom: 20 }}>
+              <div style={{ flex: 1, minWidth: 200 }}>
+                <label style={S.label}>Plan Duration</label>
+                <select style={S.select} value={planDuration} onChange={e => setPlanDuration(Number(e.target.value))}>
+                  <option value={3}>3 days</option>
+                  <option value={7}>7 days (1 week)</option>
+                  <option value={14}>14 days (2 weeks)</option>
+                  <option value={30}>30 days (1 month)</option>
+                </select>
+              </div>
+              <Button variant="primary" size="md" onClick={generatePlan} disabled={generating}>
+                {generating ? 'Generating...' : 'Generate Plan'}
+              </Button>
+            </div>
+
+            {learningPlan && (
+              <div style={{ background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 24 }}>
+                <div style={{ marginBottom: 20 }}>
+                  <h3 style={{ fontSize: 16, fontWeight: 500, color: '#202124', margin: '0 0 4px' }}>
+                    Your {learningPlan.duration}-Day Study Plan
+                  </h3>
+                  <p style={{ fontSize: 13, color: '#5f6368', margin: 0 }}>Total tasks: {learningPlan.totalTasks}</p>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {learningPlan.plan.map((day, dayIndex) => {
+                    const dayTasks = day.tasks.length
+                    const dayCompleted = day.tasks.filter((_, ti) => completedTasks[`${dayIndex}-${ti}`]).length
+                    const dayPct = dayTasks > 0 ? Math.round((dayCompleted / dayTasks) * 100) : 0
+
+                    return (
+                      <div key={day.day} style={{ background: '#f8f9fa', border: '1px solid #dadce0', borderRadius: 8, padding: 20 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                          <div>
+                            <div style={{ fontSize: 16, fontWeight: 600, color: '#1a73e8' }}>Day {day.day}</div>
+                            <div style={{ fontSize: 13, color: '#5f6368' }}>
+                              {new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                            </div>
+                          </div>
+                          <span style={{ fontSize: 13, color: '#5f6368' }}>{dayCompleted}/{dayTasks} done ({dayPct}%)</span>
+                        </div>
+
+                        <div style={{ background: '#fff', borderRadius: 8, padding: '10px 14px', marginBottom: 12, fontSize: 14, color: '#202124', fontWeight: 500 }}>
+                          {day.goal}
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                          {day.tasks.map((task, taskIndex) => {
+                            const taskKey = `${dayIndex}-${taskIndex}`
+                            const done = completedTasks[taskKey]
+                            const pri = getPriority(task.priority)
+
+                            return (
+                              <div
+                                key={taskIndex}
+                                onClick={() => toggleTaskComplete(dayIndex, taskIndex)}
+                                style={{
+                                  display: 'flex', alignItems: 'flex-start', gap: 10, padding: '10px 14px', borderRadius: 8,
+                                  border: `1px solid ${done ? '#ceead6' : '#dadce0'}`,
+                                  background: done ? '#e6f4ea' : '#fff',
+                                  cursor: 'pointer', transition: 'all 0.15s',
+                                }}
+                              >
+                                <div style={{
+                                  width: 20, height: 20, borderRadius: '50%', flexShrink: 0, marginTop: 2,
+                                  border: `2px solid ${done ? '#188038' : '#dadce0'}`,
+                                  background: done ? '#188038' : 'transparent',
+                                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                  color: '#fff', fontSize: 11, fontWeight: 700,
+                                }}>
+                                  {done ? '✓' : ''}
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                  <div style={{ fontSize: 14, color: done ? '#80868b' : '#202124', textDecoration: done ? 'line-through' : 'none', fontWeight: 500, marginBottom: 4 }}>
+                                    {task.description}
+                                  </div>
+                                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                                    <span style={{ fontSize: 12, color: '#80868b' }}>{task.estimatedTime} min</span>
+                                    <span style={{ ...S.badge, background: pri.bg, color: pri.color, fontSize: 11 }}>{pri.label}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        </>)}
       </div>
-    </>
+    </div>
   )
 }
 

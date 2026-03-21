@@ -66,10 +66,10 @@ export function formatDate(dateString) {
  */
 export function getDifficultyInfo(difficulty) {
   const map = {
-    1: { text: 'Very Easy', color: '#10B981' },
-    2: { text: 'Easy',      color: '#3B82F6' },
+    1: { text: 'Very Easy', color: '#188038' },
+    2: { text: 'Easy',      color: '#1a73e8' },
     3: { text: 'Medium',    color: '#F59E0B' },
-    4: { text: 'Hard',      color: '#EF4444' },
+    4: { text: 'Hard',      color: '#d93025' },
     5: { text: 'Very Hard', color: '#991B1B' },
   }
   return map[difficulty] || map[3]

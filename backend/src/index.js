@@ -19,12 +19,12 @@ import learningPlansRoutes from './routes/learningPlans.js'
 import wrongQuestionsRoutes from './routes/wrongQuestions.js'
 import questionUploadRoutes from './routes/questionUpload.js'
 import practiceRoutes from './routes/practice.js'
-import quizRoutes from './routes/quiz.js'
+// quiz.js 已被 practice.js + practiceService.js 替代，不再注册
 import aiRoutes from './routes/ai.js'
 import { authMiddleware } from './middleware/auth.js'
 import { cacheMiddleware } from './middleware/cache.js'
 import { securityHeaders, requestSizeLimit } from './middleware/security.js'
-import { performanceMonitor } from './middleware/performance.js'
+import { performanceMonitor, queryMonitor } from './middleware/performance.js'
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js'
 import { csrfProtection, getCsrfToken } from './middleware/csrf.js'
 
@@ -56,6 +56,7 @@ app.use('*', cors({
     // 默认允许的域名列表
     const allowedOrigins = [
       'http://localhost:3000',
+      'http://localhost:3002',
       'http://localhost:5173',
       'https://alevel-math-app.vercel.app',
       ...envOrigins
@@ -105,7 +106,6 @@ app.get('/health', (c) => {
 // 性能统计端点（仅开发环境）
 if (process.env.NODE_ENV === 'development') {
   app.get('/api/stats', (c) => {
-    const { queryMonitor } = require('./middleware/performance.js')
     return c.json({
       success: true,
       data: queryMonitor.getStats()
@@ -190,8 +190,9 @@ app.route('/api/recommendations', recommendationsRoutes)
 app.route('/api/learning-plans', learningPlansRoutes)
 app.route('/api/wrong-questions', wrongQuestionsRoutes)
 app.route('/api/questions', questionUploadRoutes)
+app.use('/api/practice/*', authMiddleware, csrfProtection())
 app.route('/api/practice', practiceRoutes)
-app.route('/api/quiz', quizRoutes)
+// /api/quiz 已废弃，统一使用 /api/practice
 app.route('/api/ai', aiRoutes)
 
 // 404处理

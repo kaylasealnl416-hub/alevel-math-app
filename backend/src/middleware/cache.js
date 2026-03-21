@@ -16,6 +16,8 @@ export function cacheMiddleware(options = {}) {
       return next()
     }
 
+    // 注意：cache key 不含用户身份，仅适用于公开数据（subjects/chapters）。
+    // 若将来对含用户数据的端点启用缓存，需将 c.get('userId') 加入 key。
     const cacheKey = keyPrefix + c.req.url
     const cached = cache.get(cacheKey)
 

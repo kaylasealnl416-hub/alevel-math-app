@@ -4,12 +4,27 @@
 // ============================================================
 
 import { Hono } from 'hono'
+import { setCookie, deleteCookie } from 'hono/cookie'
 import { db } from '../db/index.js'
 import { users, userProfiles, userStats } from '../db/schema.js'
 import { eq, sql } from 'drizzle-orm'
 import { generateToken, generateRefreshToken, verifyToken } from '../utils/jwt.js'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
+
+// Cookie 配置辅助函数
+function setAuthCookies(c, token, refreshToken) {
+  const isProduction = process.env.NODE_ENV === 'production'
+  const opts = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'Strict' : 'Lax',
+    maxAge: 7 * 24 * 60 * 60, // 7天（秒）
+    path: '/'
+  }
+  setCookie(c, 'auth_token', token, opts)
+  setCookie(c, 'refresh_token', refreshToken, opts)
+}
 
 const app = new Hono()
 
@@ -76,53 +91,35 @@ app.post('/register', async (c) => {
     // 加密密码
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    // 创建用户
-    // 第一个注册的用户自动成为 admin
-    const [{ count }] = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(users)
-    const isFirstUser = count === 0
-
-    const newUser = await db
-      .insert(users)
-      .values({
+    // 创建用户（事务内检查是否首个用户，避免竞态条件）
+    const newUser = await db.transaction(async (tx) => {
+      const ADMIN_EMAILS = ['108951066@qq.com']
+      const [{ count }] = await tx.select({ count: sql`count(*)`.mapWith(Number) }).from(users)
+      const isAdmin = ADMIN_EMAILS.includes(email) || count === 0
+      const [user] = await tx.insert(users).values({
         email,
         password: hashedPassword,
         nickname,
         grade: grade || 'AS',
-        role: isFirstUser ? 'admin' : 'user'
+        role: isAdmin ? 'admin' : 'user'
+      }).returning()
+
+      await tx.insert(userProfiles).values({
+        userId: user.id,
+        selectedSubjects: [],
+        notificationEnabled: true
       })
-      .returning()
+      await tx.insert(userStats).values({ userId: user.id })
 
-    const userId = newUser[0].id
-
-    // 创建用户画像
-    await db.insert(userProfiles).values({
-      userId,
-      selectedSubjects: [],
-      notificationEnabled: true
-    })
-
-    // 创建用户统计
-    await db.insert(userStats).values({
-      userId
+      return [user]
     })
 
     // 生成 Token
-    const token = generateToken({ userId, email })
-    const refreshToken = generateRefreshToken({ userId })
+    const token = generateToken({ userId: newUser[0].id, email: newUser[0].email })
+    const refreshToken = generateRefreshToken({ userId: newUser[0].id })
 
-    // 设置 httpOnly Cookie（安全存储 Token）
-    const isProduction = process.env.NODE_ENV === 'production'
-    const cookieOptions = {
-      httpOnly: true, // 防止 JavaScript 访问
-      secure: isProduction, // 生产环境使用 HTTPS
-      sameSite: isProduction ? 'strict' : 'lax', // CSRF 保护
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 天
-      path: '/'
-    }
-
-    // 设置 Cookie
-    c.header('Set-Cookie', `auth_token=${token}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`)
-    c.header('Set-Cookie', `refresh_token=${refreshToken}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`, { append: true })
+    // 设置 httpOnly Cookie
+    setAuthCookies(c, token, refreshToken)
 
     // 返回用户信息（不包含密码和 Token）
     const { password: _, ...userWithoutPassword } = newUser[0]
@@ -214,19 +211,8 @@ app.post('/login', async (c) => {
     const token = generateToken({ userId: user[0].id, email: user[0].email })
     const refreshToken = generateRefreshToken({ userId: user[0].id })
 
-    // 设置 httpOnly Cookie（安全存储 Token）
-    const isProduction = process.env.NODE_ENV === 'production'
-    const cookieOptions = {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? 'strict' : 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 天
-      path: '/'
-    }
-
-    // 设置 Cookie
-    c.header('Set-Cookie', `auth_token=${token}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`)
-    c.header('Set-Cookie', `refresh_token=${refreshToken}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`, { append: true })
+    // 设置 httpOnly Cookie
+    setAuthCookies(c, token, refreshToken)
 
     // 返回用户信息（不包含密码）
     const { password: _, ...userWithoutPassword } = user[0]
@@ -259,49 +245,63 @@ app.post('/login', async (c) => {
  */
 app.post('/refresh', async (c) => {
   try {
-    const body = await c.req.json()
-    const { refreshToken } = body
+    // 优先从 httpOnly Cookie 读取，兼容 body 传参
+    const cookies = c.req.header('Cookie')
+    let refreshToken = null
+    if (cookies) {
+      const match = cookies.match(/refresh_token=([^;]+)/)
+      if (match) refreshToken = match[1]
+    }
+    if (!refreshToken) {
+      const body = await c.req.json().catch(() => ({}))
+      refreshToken = body.refreshToken
+    }
 
     if (!refreshToken) {
       return c.json({
         success: false,
-        error: {
-          code: 'MISSING_TOKEN',
-          message: '缺少刷新令牌'
-        }
+        error: { code: 'MISSING_TOKEN', message: '缺少刷新令牌' }
       }, 400)
     }
 
-    // 验证刷新令牌
     const payload = verifyToken(refreshToken)
-
     if (!payload) {
       return c.json({
         success: false,
-        error: {
-          code: 'INVALID_TOKEN',
-          message: '刷新令牌无效或已过期'
-        }
+        error: { code: 'INVALID_TOKEN', message: '刷新令牌无效或已过期' }
       }, 401)
     }
 
-    // 生成新的访问令牌
-    const newToken = generateToken({ userId: payload.userId, email: payload.email })
+    // refresh token 只含 userId，查库取 email 再生成新 access token
+    const user = await db.select().from(users).where(eq(users.id, payload.userId)).limit(1)
+    if (user.length === 0) {
+      return c.json({
+        success: false,
+        error: { code: 'USER_NOT_FOUND', message: '用户不存在' }
+      }, 404)
+    }
+
+    const newToken = generateToken({ userId: user[0].id, email: user[0].email })
+
+    // 新 token 写入 httpOnly Cookie
+    const isProduction = process.env.NODE_ENV === 'production'
+    setCookie(c, 'auth_token', newToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'Strict' : 'Lax',
+      maxAge: 7 * 24 * 60 * 60,
+      path: '/'
+    })
 
     return c.json({
       success: true,
-      data: {
-        token: newToken
-      }
+      data: { token: newToken }
     })
   } catch (error) {
     console.error('刷新令牌失败:', error)
     return c.json({
       success: false,
-      error: {
-        code: 'SERVER_ERROR',
-        message: '刷新令牌失败'
-      }
+      error: { code: 'SERVER_ERROR', message: '刷新令牌失败' }
     }, 500)
   }
 })
@@ -469,17 +469,8 @@ app.post('/google', async (c) => {
     const token = generateToken({ userId: user.id, email: user.email })
     const refreshToken = generateRefreshToken({ userId: user.id })
 
-    const isProduction = process.env.NODE_ENV === 'production'
-    const cookieOptions = {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? 'strict' : 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: '/'
-    }
-
-    c.header('Set-Cookie', `auth_token=${token}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`)
-    c.header('Set-Cookie', `refresh_token=${refreshToken}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`, { append: true })
+    // 设置 httpOnly Cookie
+    setAuthCookies(c, token, refreshToken)
 
     const { password: _, ...userWithoutPassword } = user
 
@@ -507,16 +498,8 @@ app.post('/google', async (c) => {
 app.post('/logout', async (c) => {
   try {
     // 清除 Cookie
-    const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-      maxAge: 0, // 立即过期
-      path: '/'
-    }
-
-    c.header('Set-Cookie', `auth_token=; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`)
-    c.header('Set-Cookie', `refresh_token=; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`, { append: true })
+    deleteCookie(c, 'auth_token', { path: '/' })
+    deleteCookie(c, 'refresh_token', { path: '/' })
 
     return c.json({
       success: true,
