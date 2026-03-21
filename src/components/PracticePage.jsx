@@ -5,7 +5,7 @@
 
 import { useState } from 'react'
 import PracticeView from './practice/PracticeView'
-import { CURRICULUM } from '../alevel-math-app'
+import { CURRICULUM } from '../data/curriculum.js'
 import { SUBJECTS } from '../data/subjects'
 
 // 整合所有科目数据为统一格式

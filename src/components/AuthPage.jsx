@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-// Toast helper — Toast component lacks static methods, use alert fallback
-const Toast = {
-  success: (msg) => console.log('SUCCESS:', msg),
-  error: (msg) => { console.error('ERROR:', msg); alert(msg) },
-}
+import Toast from './common/Toast'
 import { API_BASE, COLORS } from '../utils/constants'
 import { validateEmail, validatePassword } from '../utils/validation'
 
