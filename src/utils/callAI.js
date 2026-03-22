@@ -6,6 +6,7 @@
 
 import { API_BASE } from './constants'
 import { getAISettings } from './aiProviders'
+import { trackFreeAIUsage } from './helpers'
 
 /**
  * 调用 AI 生成文本
@@ -19,7 +20,8 @@ export async function callAI(system, prompt, maxTokens = 1500) {
 
   // 自动注入用户的 AI 设置
   const settings = getAISettings()
-  if (settings?.provider && settings?.apiKey) {
+  const hasOwnKey = !!(settings?.provider && settings?.apiKey)
+  if (hasOwnKey) {
     body.provider = settings.provider
     body.apiKey = settings.apiKey
     if (settings.model) body.model = settings.model
@@ -40,6 +42,9 @@ export async function callAI(system, prompt, maxTokens = 1500) {
   if (!data.success) {
     throw new Error(data.error?.message || 'AI generation failed')
   }
+
+  // 使用服务端 AI 时计数
+  if (!hasOwnKey) trackFreeAIUsage()
 
   return data.data.text
 }

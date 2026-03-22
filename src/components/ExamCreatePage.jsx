@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { post } from '../utils/apiClient'
 import Toast from './common/Toast'
+import { shouldRemindAPIKey, dismissAPIKeyReminder } from '../utils/helpers'
 import { CURRICULUM } from '../data/curriculum.js'
 import { SUBJECTS } from '../data/subjects'
 
@@ -108,6 +109,12 @@ export default function ExamCreatePage() {
 
       const exam = await post('/api/exams/quick-start', body, { timeout: 120000, retry: 0 })
       Toast.success('Exam created!')
+
+      if (shouldRemindAPIKey()) {
+        Toast.info('Free AI quota is limited. Click the AI button in the navbar to configure your own API key.')
+        dismissAPIKeyReminder()
+      }
+
       navigate(`/exams/${exam.id}/take`)
     } catch (err) {
       // Toast.error already shown by apiClient

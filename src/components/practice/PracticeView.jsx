@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { post } from '../../utils/apiClient'
+import Toast from '../common/Toast'
+import { shouldRemindAPIKey, dismissAPIKeyReminder } from '../../utils/helpers'
 import PracticeSetup from './PracticeSetup'
 import PracticeQuestion from './PracticeQuestion'
 import PracticeFeedback from './PracticeFeedback'
@@ -73,6 +75,12 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
       setCurrentDifficulty(difficulty)
       questionStartTime.current = Date.now()
       setPhase('practicing')
+
+      // 没有自己 key 时，达到阈值提醒
+      if (shouldRemindAPIKey()) {
+        Toast.info('Free AI quota is limited. Click the AI button in the navbar to configure your own API key.')
+        dismissAPIKeyReminder()
+      }
     } catch (e) {
       setError(e.message)
     } finally {
