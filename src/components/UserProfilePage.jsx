@@ -4,11 +4,11 @@ import { useAuth } from '../contexts/AuthContext'
 import Toast from './common/Toast'
 import Loading from './common/Loading'
 import { Button } from './ui'
-import { API_BASE } from '../utils/constants'
+import { put } from '../utils/apiClient'
 
 export default function UserProfilePage() {
   const navigate = useNavigate()
-  const { user, token, updateUser, logout } = useAuth()
+  const { user, updateUser, logout } = useAuth()
   const [formData, setFormData] = useState({
     nickname: '',
     grade: 'AS',
@@ -56,24 +56,8 @@ export default function UserProfilePage() {
     setLoading(true)
 
     try {
-      const res = await fetch(`${API_BASE}/api/users/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      })
-
-      const data = await res.json()
-
-      if (!data.success) {
-        Toast.error(data.error?.message || 'Update failed')
-        setLoading(false)
-        return
-      }
-
-      updateUser(data.data)
+      const data = await put('/api/users/profile', formData)
+      updateUser(data)
       Toast.success('Profile updated successfully!')
       setLoading(false)
 

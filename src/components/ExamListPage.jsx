@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Loading from './common/Loading'
 import { Button } from './ui'
-import { API_BASE } from '../utils/constants'
+import { get } from '../utils/apiClient'
 import { formatDuration } from '../utils/helpers.js'
 
 const EXAM_TYPE_MAP = {
@@ -34,7 +34,7 @@ const STATUS_STYLES = {
 
 function ExamListPage() {
   const navigate = useNavigate()
-  const { user, token } = useAuth()
+  const { user } = useAuth()
   const [exams, setExams] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -50,12 +50,8 @@ function ExamListPage() {
       if (filter.type !== 'all') params.append('type', filter.type)
       if (filter.status !== 'all') params.append('status', filter.status)
 
-      const response = await fetch(`${API_BASE}/api/exams?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      const result = await response.json()
-      if (result.success) setExams(result.data.exams)
-      else setError(result.error.message)
+      const data = await get(`/api/exams?${params}`)
+      setExams(data.exams || [])
     } catch (err) {
       console.error('Failed to fetch exam list:', err)
       setError('Failed to load exam list. Please try again later.')
