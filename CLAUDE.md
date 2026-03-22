@@ -90,6 +90,67 @@ bun run lint
 - 死代码直接删除
 - 开工前充分分析
 
+## 开发铁律（跨对话必读）
+
+### 替换即删除
+新组件替代旧组件时，**必须在同一次提交里删除旧文件和对应的 CSS**。不留"万一以后用"的死代码。
+
+### apiClient 返回值
+`src/utils/apiClient.js` 的 `get()`/`post()`/`put()` 返回的是**解包后的 `data.data`**，不是 `{success, data, error}` 原始响应。直接用返回值，不要写 `if (result.success)`。
+
+### 样式规范
+- 全站统一用**内联样式对象**（`const S = { page: {...}, card: {...} }`）
+- **不新建 CSS 文件**，不用 Tailwind 类名（Tailwind JIT 有 purge 问题）
+- 仅保留的 CSS：`src/styles/animations.css`、`src/styles/QuestionCard.css`、`src/styles/AnswerInput.css`、`src/components/common/Loading.css`、`src/components/common/Toast.css`
+
+### 配色体系（Google Clean）
+| 用途 | 色值 |
+|------|------|
+| 主色 | `#1a73e8` |
+| 主文本 | `#202124` |
+| 次文本 | `#5f6368` |
+| 页面背景 | `#f8f9fa` |
+| 卡片表面 | `#fff` |
+| 边框 | `#dadce0` |
+| 成功 | `#188038` |
+| 错误 | `#d93025` |
+| 警告 | `#f9ab00` |
+| 悬停背景 | `#f1f3f4` |
+| 选中背景 | `#e8f0fe` |
+
+不引入这个色板之外的颜色。
+
+### Toast 使用
+用 `import Toast from './common/Toast'`，然后 `Toast.success(msg)` / `Toast.error(msg)`。不要自己定义假 Toast 对象。
+
+### 组件现状（避免重复造轮子）
+| 功能 | 现有组件 | 不要再建 |
+|------|---------|---------|
+| 登录+注册 | `AuthPage.jsx`（tab 切换） | LoginPage、RegisterPage |
+| 考试进行 | `ExamTakingPage.jsx` | ExamPage |
+| 考试结果 | `ExamResultPage.jsx` | ResultPage |
+| 按钮 | `ui/Button.jsx`（内联样式） | 新的 Button 组件 |
+| 练习 | `PracticePage.jsx` + `practice/` 子组件 | 独立的 Quiz 页面 |
+
+### 提交前检查清单
+1. `bun run build` 必须通过
+2. 新建的组件必须在路由或其他组件中实际引用
+3. 删除的组件必须确认无其他文件 import 它
+
+## 架构说明
+
+### 前端
+- **路由**：`AppRouter.jsx` 使用 `React.lazy` 按路由代码分割
+- **数据**：课程数据在 `src/data/curriculum.js`（1580行），科目数据在 `src/data/subjects.js`
+- **认证**：httpOnly Cookie + sessionStorage 缓存，通过 `useAuth()` hook 访问
+- **AI 设置**：localStorage key `ai_settings`，格式 `{provider, apiKey, model}`
+
+### 后端
+- **框架**：Hono.js + Bun，部署在 Render
+- **数据库**：Supabase PostgreSQL（Drizzle ORM）
+- **认证**：JWT（auth_token + refresh_token），httpOnly Cookie
+- **管理员**：ADMIN_EMAILS 白名单 + 首个注册用户自动 admin
+
 ## 自动化
 
 - 使用 Makefile targets，不创建 shell 脚本
