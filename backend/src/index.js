@@ -81,7 +81,7 @@ app.use('*', cors({
   },
   credentials: true,
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization'],
+  allowHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token'],
   maxAge: 86400, // 24 小时
 }))
 
