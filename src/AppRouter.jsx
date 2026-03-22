@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import Layout from './components/Layout.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import { AdminRoute } from './components/ProtectedRoute.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 // Lazy-loaded route components for code splitting
@@ -107,11 +108,11 @@ export default function AppRouter() {
                   </ProtectedRoute>
                 } />
 
-                {/* Question bank upload (requires auth) */}
+                {/* Question bank upload (admin only) */}
                 <Route path="/questions/upload" element={
-                  <ProtectedRoute>
+                  <AdminRoute>
                     <QuestionUploadPage />
-                  </ProtectedRoute>
+                  </AdminRoute>
                 } />
 
                 {/* 404 fallback */}

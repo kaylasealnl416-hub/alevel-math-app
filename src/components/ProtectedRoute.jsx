@@ -20,6 +20,38 @@ export default function ProtectedRoute({ children }) {
   return children
 }
 
+export function AdminRoute({ children }) {
+  const { user, isAuthenticated, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div style={styles.container}>
+        <div style={styles.spinner}></div>
+        <p style={styles.text}>Loading...</p>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />
+  }
+
+  if (user?.role !== 'admin') {
+    return (
+      <div style={{ minHeight: '100vh', background: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 32, textAlign: 'center', maxWidth: 400 }}>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
+          <h2 style={{ fontSize: 18, fontWeight: 600, color: '#202124', margin: '0 0 8px' }}>Admin Only</h2>
+          <p style={{ fontSize: 14, color: '#5f6368', margin: '0 0 20px' }}>This page requires administrator privileges.</p>
+          <a href="/" style={{ color: '#1a73e8', fontSize: 14, fontWeight: 500, textDecoration: 'none' }}>Back to Home</a>
+        </div>
+      </div>
+    )
+  }
+
+  return children
+}
+
 const styles = {
   container: {
     minHeight: '100vh',

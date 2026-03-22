@@ -80,6 +80,38 @@ export async function optionalAuthMiddleware(c, next) {
 }
 
 /**
+ * 管理员权限中间件
+ * 必须在 authMiddleware 之后使用
+ */
+export function requireAdmin() {
+  return async (c, next) => {
+    const userId = c.get('userId')
+    if (!userId) {
+      return c.json({
+        success: false,
+        error: { code: 'UNAUTHORIZED', message: '需要登录' }
+      }, 401)
+    }
+
+    const { db } = await import('../db/index.js')
+    const { users } = await import('../db/schema.js')
+    const { eq } = await import('drizzle-orm')
+
+    const [user] = await db.select({ role: users.role })
+      .from(users).where(eq(users.id, userId)).limit(1)
+
+    if (!user || user.role !== 'admin') {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '需要管理员权限' }
+      }, 403)
+    }
+
+    await next()
+  }
+}
+
+/**
  * 权限检查中间件
  * 确保用户只能访问自己的资源
  */

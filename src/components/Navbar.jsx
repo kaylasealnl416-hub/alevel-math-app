@@ -61,7 +61,9 @@ export default function Navbar() {
             gap: 4,
             flex: 1,
           }} className="hidden-mobile">
-            {NAV_LINKS.map(link => (
+            {NAV_LINKS.concat(
+              user?.role === 'admin' ? [{ path: '/questions/upload', label: 'Question Bank' }] : []
+            ).map(link => (
               <Link
                 key={link.path}
                 to={link.path}
@@ -229,7 +231,9 @@ export default function Navbar() {
             padding: '8px 16px',
             background: '#fff',
           }} className="show-mobile-only">
-            {NAV_LINKS.map(link => (
+            {NAV_LINKS.concat(
+              user?.role === 'admin' ? [{ path: '/questions/upload', label: 'Question Bank' }] : []
+            ).map(link => (
               <Link
                 key={link.path}
                 to={link.path}

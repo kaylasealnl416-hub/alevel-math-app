@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { cleanupFile } from '../middleware/upload.js'
+import { requireAdmin } from '../middleware/auth.js'
 import { parseDocument, splitTextIntoChunks } from '../services/documentParser.js'
 import { extractQuestionsFromChunks, validateQuestion } from '../services/questionExtractor.js'
 import { db } from '../db/index.js'
@@ -13,6 +14,11 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const app = new Hono()
+
+// 所有上传相关路由需要管理员权限
+app.use('/upload', requireAdmin())
+app.use('/upload/*', requireAdmin())
+app.use('/batch', requireAdmin())
 
 // 存储上传任务状态（生产环境应使用 Redis）
 const uploadTasks = new Map()
