@@ -1,3 +1,5 @@
+import MathText from './MathText'
+
 export default function PracticeSummary({ score, results, recommendations, onAnotherRound, onBack, onRecommendationStart }) {
   const percentage = score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0
   const totalTime = results.reduce((sum, r) => sum + (r.timeSpent || 0), 0)
@@ -68,7 +70,7 @@ export default function PracticeSummary({ score, results, recommendations, onAno
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 13, color: '#1E293B', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                Q{i + 1}: {r.questionText || 'Question'}
+                Q{i + 1}: <MathText text={r.questionText || 'Question'} />
               </div>
               <div style={{ fontSize: 11, color: r.isCorrect ? '#94A3B8' : '#B91C1C', marginTop: 2 }}>
                 {(r.tags || []).join(', ')}

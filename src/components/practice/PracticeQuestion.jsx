@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import MathText from './MathText'
 
 export default function PracticeQuestion({ question, onSubmit }) {
   const [selected, setSelected] = useState(null)
@@ -26,7 +27,7 @@ export default function PracticeQuestion({ question, onSubmit }) {
           ))}
         </div>
         <div style={{ fontSize: 16, color: '#1E293B', lineHeight: 1.7, fontWeight: 500 }}>
-          {contentText}
+          <MathText text={contentText} />
         </div>
       </div>
 
@@ -54,7 +55,7 @@ export default function PracticeQuestion({ question, onSubmit }) {
                   {letter}
                 </div>
                 <span style={{ fontSize: 14, color: isSelected ? '#1E293B' : '#374151', fontWeight: isSelected ? 600 : 400 }}>
-                  {text}
+                  <MathText text={text} />
                 </span>
               </button>
             )

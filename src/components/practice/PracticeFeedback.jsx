@@ -1,3 +1,5 @@
+import MathText from './MathText'
+
 export default function PracticeFeedback({ isCorrect, userAnswer, feedback, onNext }) {
   return (
     <div style={{ maxWidth: 680, margin: '0 auto', padding: '28px 24px' }}>
@@ -31,13 +33,13 @@ export default function PracticeFeedback({ isCorrect, userAnswer, feedback, onNe
 
       {/* Solution */}
       <Section icon="📝" title="Solution" bg="#F8FAFC" borderColor="#E2E8F0">
-        <div style={{ whiteSpace: 'pre-line' }}>{feedback.solution}</div>
+        <div style={{ whiteSpace: 'pre-line' }}><MathText text={feedback.solution} /></div>
       </Section>
 
       {/* Detailed explanation */}
       {feedback.deepExplanation && (
         <Section icon="💡" title="Detailed Explanation" bg="#e8f0fe" borderColor="#d2e3fc" titleColor="#185abc">
-          {feedback.deepExplanation}
+          <MathText text={feedback.deepExplanation} />
         </Section>
       )}
 
@@ -67,13 +69,13 @@ export default function PracticeFeedback({ isCorrect, userAnswer, feedback, onNe
             {feedback.keyFormula && (
               <div style={{ background: '#FFFBEB', borderRadius: 12, padding: 16, border: '1px solid #FDE68A' }}>
                 <div style={{ fontSize: 12, fontWeight: 700, color: '#92400E', marginBottom: 8 }}>🔑 Key Formula</div>
-                <div style={{ fontSize: 13, color: '#78716C', lineHeight: 1.6 }}>{feedback.keyFormula}</div>
+                <div style={{ fontSize: 13, color: '#78716C', lineHeight: 1.6 }}><MathText text={feedback.keyFormula} /></div>
               </div>
             )}
             {feedback.commonMistake && (
               <div style={{ background: '#FEF2F2', borderRadius: 12, padding: 16, border: '1px solid #FECACA' }}>
                 <div style={{ fontSize: 12, fontWeight: 700, color: '#991B1B', marginBottom: 8 }}>⚠️ Common Mistake</div>
-                <div style={{ fontSize: 13, color: '#78716C', lineHeight: 1.6 }}>{feedback.commonMistake}</div>
+                <div style={{ fontSize: 13, color: '#78716C', lineHeight: 1.6 }}><MathText text={feedback.commonMistake} /></div>
               </div>
             )}
           </div>
