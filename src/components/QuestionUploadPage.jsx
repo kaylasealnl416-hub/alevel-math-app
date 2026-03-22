@@ -461,7 +461,7 @@ function QuestionReview({ questions, onBack }) {
         const { source: _src, ...answerRest } = q.answer || {}
         return { ...q, answer: answerRest }
       })
-      const result = await post('/questions/batch', {
+      const result = await post('/api/questions/batch', {
         questions: cleanedQuestions,
         chapterId: selectedChapter,
       }, { showSuccessToast: true, successMessage: `Saved ${reviewedQuestions.length} questions successfully` })
