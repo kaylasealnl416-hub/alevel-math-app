@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import MathText from './practice/MathText'
 import Loading from './common/Loading'
+import Toast from './common/Toast'
 import { Button } from './ui'
 import { get, put, post } from '../utils/apiClient'
 import { formatDuration } from '../utils/helpers.js'
@@ -191,18 +192,24 @@ function ExamTakingPage() {
       navigate(`/exams/${examId}/result`)
     } catch (err) {
       console.error('Failed to submit exam:', err)
-      alert('Submission failed: ' + err.message)
+      // 如果是"已提交"类错误，直接跳结果页
+      if (err.message?.includes('已提交') || err.message?.includes('已结束')) {
+        navigate(`/exams/${examId}/result`)
+        return
+      }
+      Toast.error('Submission failed: ' + err.message)
     }
   }
 
   const handleAutoSubmit = async () => {
     try {
       await post(`/api/exams/${examId}/submit`, {}, { showErrorToast: false })
-      alert('Time is up. Exam has been automatically submitted.')
-      navigate(`/exams/${examId}/result`)
     } catch (err) {
       console.error('Auto-submit failed:', err)
     }
+    // 无论提交是否成功，时间到了都跳结果页
+    Toast.info('Time is up. Exam has been automatically submitted.')
+    navigate(`/exams/${examId}/result`)
   }
 
   const getAnsweredCount = () => {

@@ -11,7 +11,7 @@ import InputBox from './InputBox.jsx'
 import SessionSidebar from './SessionSidebar.jsx'
 
 export default function ChatPage({ nav, chapter, book, subject }) {
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const userId = user?.id
 
   const {
@@ -24,6 +24,19 @@ export default function ChatPage({ nav, chapter, book, subject }) {
 
   useEffect(() => { if (userId) loadSessions() }, [userId, loadSessions])
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages])
+
+  // 未登录或认证加载中（所有 hooks 必须在此之前）
+  if (authLoading) {
+    return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#5f6368', fontSize: 14 }}>Loading...</div>
+  }
+
+  if (!user) {
+    return (
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12 }}>
+        <p style={{ color: '#5f6368', fontSize: 14 }}>Please log in to use AI Tutor</p>
+      </div>
+    )
+  }
 
   const handleSendMessage = async (content) => {
     if (!currentSession) {

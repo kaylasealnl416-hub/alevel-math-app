@@ -405,6 +405,6 @@ export const chatAPI = {
       method: 'POST',
       body: JSON.stringify(messageData)
     })
-    return response
+    return { success: true, data: response.data }
   }
 }

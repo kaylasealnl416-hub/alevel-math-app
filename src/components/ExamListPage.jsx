@@ -39,6 +39,7 @@ function ExamListPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [filter, setFilter] = useState({ type: 'all', status: 'all' })
+  const [slowLoading, setSlowLoading] = useState(false)
 
   useEffect(() => { fetchExams() }, [filter])
 
@@ -46,17 +47,24 @@ function ExamListPage() {
     try {
       setLoading(true)
       setError(null)
+      setSlowLoading(false)
+
+      // 5秒后提示服务器冷启动
+      const slowTimer = setTimeout(() => setSlowLoading(true), 5000)
+
       const params = new URLSearchParams({ userId: user.id.toString(), limit: '50' })
       if (filter.type !== 'all') params.append('type', filter.type)
       if (filter.status !== 'all') params.append('status', filter.status)
 
-      const data = await get(`/api/exams?${params}`)
+      const data = await get(`/api/exams?${params}`, { timeout: 60000 })
       setExams(data.exams || [])
     } catch (err) {
       console.error('Failed to fetch exam list:', err)
       setError('Failed to load exam list. Please try again later.')
     } finally {
+      clearTimeout(slowTimer)
       setLoading(false)
+      setSlowLoading(false)
     }
   }
 
@@ -78,7 +86,7 @@ function ExamListPage() {
     return '#d93025'
   }
 
-  if (loading) return <Loading message="Loading exams..." size="large" fullScreen />
+  if (loading) return <Loading message={slowLoading ? "Server is waking up, please wait..." : "Loading exams..."} size="large" fullScreen />
 
   const S = {
     page: { minHeight: '100vh', background: '#f8f9fa' },

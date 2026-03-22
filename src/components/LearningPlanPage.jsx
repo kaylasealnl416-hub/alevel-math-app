@@ -13,6 +13,7 @@ function LearningPlanPage() {
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState(null)
+  const [slowLoading, setSlowLoading] = useState(false)
   const [planDuration, setPlanDuration] = useState(7)
   const [expandedRecs, setExpandedRecs] = useState({})
   const [completedTasks, setCompletedTasks] = useState({})
@@ -41,13 +42,14 @@ function LearningPlanPage() {
 
   const fetchRecommendations = async () => {
     try {
-      setLoading(true); setError(null)
-      const data = await get('/api/recommendations?status=pending')
+      setLoading(true); setError(null); setSlowLoading(false)
+      const slowTimer = setTimeout(() => setSlowLoading(true), 5000)
+      const data = await get('/api/recommendations?status=pending', { timeout: 60000 })
       setRecommendations(Array.isArray(data) ? data : [])
     } catch (err) {
       console.error('Failed to fetch recommendations:', err)
-      setError('Failed to load recommendations')
-    } finally { setLoading(false) }
+      setError('Failed to load recommendations. Please try again.')
+    } finally { clearTimeout(slowTimer); setLoading(false); setSlowLoading(false) }
   }
 
   const generatePlan = async () => {
@@ -121,13 +123,21 @@ function LearningPlanPage() {
         </div>
 
         {loading ? (
-          <Loading message="Loading your learning plan..." size="medium" />
+          <div style={{ textAlign: 'center', padding: '60px 24px' }}>
+            <Loading message={slowLoading ? "Server is waking up, please wait..." : "Loading your learning plan..."} size="medium" />
+            {slowLoading && (
+              <Button variant="secondary" size="sm" onClick={() => { setLoading(false); setError('Loading timed out. Please retry.') }} style={{ marginTop: 16 }}>
+                Cancel
+              </Button>
+            )}
+          </div>
         ) : (<>
 
         {/* Error */}
         {error && (
-          <div style={{ background: '#fce8e6', border: '1px solid #fad2cf', borderRadius: 8, padding: '12px 16px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ color: '#c5221f', fontSize: 14 }}>{error}</span>
+          <div style={{ background: '#fce8e6', border: '1px solid #fad2cf', borderRadius: 8, padding: 16, marginBottom: 24, textAlign: 'center' }}>
+            <span style={{ color: '#c5221f', fontSize: 14, display: 'block', marginBottom: 12 }}>{error}</span>
+            <Button variant="primary" size="sm" onClick={fetchRecommendations}>Retry</Button>
           </div>
         )}
 

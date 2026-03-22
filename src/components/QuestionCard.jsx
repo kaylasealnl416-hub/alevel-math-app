@@ -71,12 +71,20 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, showAnswer = f
         {/* Multiple choice options */}
         {question.type === 'multiple_choice' && question.options && (
           <div className="question-options">
-            {question.options.map((option) => (
+            {(Array.isArray(question.options)
+              ? question.options.map((opt) => {
+                  const letter = opt.match(/^([A-D])/)?.[1]
+                  return { key: opt, text: opt, isCorrect: showAnswer && letter === question.answer?.value }
+                })
+              : Object.entries(question.options).map(([letter, text]) => ({
+                  key: letter, text: `${letter}. ${text}`, isCorrect: showAnswer && letter === question.answer?.value
+                }))
+            ).map(({ key, text, isCorrect }) => (
               <div
-                key={option}
-                className={`option-item ${showAnswer && option.startsWith(question.answer?.value) ? 'correct-answer' : ''}`}
+                key={key}
+                className={`option-item ${isCorrect ? 'correct-answer' : ''}`}
               >
-                <div dangerouslySetInnerHTML={{ __html: renderLatex(option) }} />
+                <div dangerouslySetInnerHTML={{ __html: renderLatex(text) }} />
               </div>
             ))}
           </div>

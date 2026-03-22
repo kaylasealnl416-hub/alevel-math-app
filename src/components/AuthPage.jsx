@@ -96,7 +96,12 @@ const checkPasswordStrength = (password) => {
 export default function AuthPage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { login } = useAuth()
+  const { login, user } = useAuth()
+
+  // 已登录用户自动跳转首页
+  useEffect(() => {
+    if (user) navigate('/', { replace: true })
+  }, [user, navigate])
 
   const [isLogin, setIsLogin] = useState(location.pathname !== '/register')
 

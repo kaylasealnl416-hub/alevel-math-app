@@ -200,7 +200,7 @@ export const questionSets = pgTable('question_sets', {
   questionIds: jsonb('question_ids').notNull(), // [1, 2, 3, ...]
   totalQuestions: integer('total_questions').notNull(),
   totalPoints: integer('total_points').default(100),
-  timeLimit: integer('time_limit'), // 时间限制（分钟）
+  timeLimit: integer('time_limit'), // 时间限制（秒）
 
   // 难度分布
   difficultyDistribution: jsonb('difficulty_distribution'), // { "1": 2, "2": 3, "3": 4, "4": 1, "5": 0 }

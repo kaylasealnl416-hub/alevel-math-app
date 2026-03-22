@@ -217,7 +217,11 @@ export async function autoSubmitExam(examId, reason = 'auto') {
     }
 
     if (exam.status !== ExamStatus.IN_PROGRESS) {
-      throw new Error('考试已结束，无法提交')
+      // 已提交过，直接返回成功
+      return {
+        success: true,
+        data: { examId: exam.id, timeSpent: exam.timeSpent, alreadySubmitted: true }
+      }
     }
 
     // 计算用时
@@ -264,7 +268,11 @@ export async function submitExam(examId) {
     }
 
     if (exam.status !== ExamStatus.IN_PROGRESS) {
-      throw new Error('考试已提交，无法重复提交')
+      // 已提交过，直接返回成功（防止重复提交报错）
+      return {
+        success: true,
+        data: { examId: exam.id, timeSpent: exam.timeSpent, alreadySubmitted: true }
+      }
     }
 
     // 计算用时
@@ -327,7 +335,11 @@ export async function saveAnswer(examId, questionId, answer) {
     }
 
     if (exam.status !== ExamStatus.IN_PROGRESS) {
-      throw new Error('考试已结束，无法保存答案')
+      // 考试已结束，静默忽略（避免自动保存在提交后报错）
+      return {
+        success: true,
+        data: { message: '考试已结束，答案未保存' }
+      }
     }
 
     // 检查是否超时

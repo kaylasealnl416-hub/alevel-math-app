@@ -13,25 +13,6 @@ import Toast from "./components/common/Toast";
 import { CURRICULUM } from "./data/curriculum.js";
 
 // ============================================================
-// AI response parser (V1.1 fix)
-// ============================================================
-function parseAIResponse(rawText) {
-  try {
-    const startIndex = rawText.indexOf('[');
-    const endIndex = rawText.lastIndexOf(']');
-
-    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-      const jsonString = rawText.substring(startIndex, endIndex + 1);
-      return JSON.parse(jsonString);
-    }
-    return JSON.parse(rawText.replace(/```json|```/gi, "").trim());
-  } catch (error) {
-    console.error("AI raw response:", rawText);
-    throw new Error("Failed to parse AI response. Please try again.");
-  }
-}
-
-// ============================================================
 // Math formula renderer (KaTeX)
 // Fixed: use dangerouslySetInnerHTML instead of innerHTML
 // ============================================================
@@ -1818,8 +1799,8 @@ function ExamView({ chapter, book, nav, embedded, t, lang, subject = "mathematic
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           </div>
           <div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: '#0F172A', letterSpacing: '-0.01em' }}>AI Exam</div>
-            <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2 }}>Timed · AI marked · Full feedback</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: '#202124', letterSpacing: '-0.01em' }}>AI Exam</div>
+            <div style={{ fontSize: 12, color: '#5f6368', marginTop: 2 }}>Timed · AI marked · Full feedback</div>
           </div>
         </div>
         {!embedded && (
@@ -1865,10 +1846,10 @@ function ExamView({ chapter, book, nav, embedded, t, lang, subject = "mathematic
               value: "AI", label: t.markedByAI
             },
           ].map((item, i) => (
-            <div key={i} style={{ background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
+            <div key={i} style={{ background: "#e8f0fe", border: "1px solid #dadce0", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
               <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>{item.icon}</div>
-              <div style={{ fontSize: 18, fontWeight: 700, color: "#0F172A", lineHeight: 1 }}>{item.value}</div>
-              <div style={{ fontSize: 11, color: "#94A3B8", marginTop: 4 }}>{item.label}</div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: "#202124", lineHeight: 1 }}>{item.value}</div>
+              <div style={{ fontSize: 11, color: "#5f6368", marginTop: 4 }}>{item.label}</div>
             </div>
           ))}
         </div>

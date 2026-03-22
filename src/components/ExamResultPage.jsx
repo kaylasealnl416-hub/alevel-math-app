@@ -283,13 +283,20 @@ function ExamResultPage() {
 
                 {question.type === 'multiple_choice' && question.options && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 12 }}>
-                    {question.options.map((option) => {
-                      const isUserAnswer = option.startsWith(result.userAnswer?.value)
-                      const isCorrectAnswer = option.startsWith(question.answer?.value)
-
+                    {(Array.isArray(question.options)
+                      ? question.options.map((opt) => {
+                          const letter = opt.match(/^([A-D])/)?.[1]
+                          return { key: opt, text: opt, letter }
+                        })
+                      : Object.entries(question.options).map(([letter, text]) => ({
+                          key: letter, text: `${letter}. ${text}`, letter
+                        }))
+                    ).map(({ key, text, letter }) => {
+                      const isUserAnswer = letter === (typeof result.userAnswer === 'string' ? result.userAnswer : result.userAnswer?.value)
+                      const isCorrectAnswer = letter === question.answer?.value
                       return (
-                        <div key={option} style={S.optionItem(isUserAnswer && !isCorrectAnswer, isCorrectAnswer)}>
-                          {option}
+                        <div key={key} style={S.optionItem(isUserAnswer && !isCorrectAnswer, isCorrectAnswer)}>
+                          {text}
                           {isUserAnswer && !isCorrectAnswer && <span style={S.optionBadge}>Your answer</span>}
                           {isCorrectAnswer && <span style={{ ...S.optionBadge, background: '#e6f4ea', color: '#0d652d' }}>Correct</span>}
                         </div>
