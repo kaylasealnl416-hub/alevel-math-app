@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import QuestionCard from './QuestionCard'
-import AnswerInput from './AnswerInput'
+import MathText from './practice/MathText'
 import Loading from './common/Loading'
 import { Button } from './ui'
 import { get, put, post } from '../utils/apiClient'
@@ -29,12 +28,13 @@ function ExamTakingPage() {
 
   useEffect(() => {
     fetchExamDetail()
-    setupVisibilityDetection()
+    const cleanupVisibility = setupVisibilityDetection()
 
     return () => {
       isMountedRef.current = false
       clearInterval(autoSaveTimerRef.current)
       clearInterval(countdownTimerRef.current)
+      if (cleanupVisibility) cleanupVisibility()
     }
   }, [examId])
 
@@ -364,15 +364,72 @@ function ExamTakingPage() {
               </button>
             </div>
 
-            <div style={{ margin: '16px 0' }}>
-              <QuestionCard question={currentQuestion} showAnswer={false} />
+            {/* 题目内容 */}
+            <div style={{ margin: '16px 0', fontSize: 16, color: '#202124', lineHeight: 1.7, fontWeight: 500 }}>
+              <MathText text={currentQuestion.content?.en || currentQuestion.content?.zh || (typeof currentQuestion.content === 'string' ? currentQuestion.content : '')} />
             </div>
 
-            <AnswerInput
-              question={currentQuestion}
-              value={answers[currentQuestion.id]}
-              onChange={(answer) => handleAnswerChange(currentQuestion.id, answer)}
-            />
+            {/* 题目标签 */}
+            {currentQuestion.tags && currentQuestion.tags.length > 0 && (
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 16 }}>
+                {currentQuestion.tags.slice(0, 3).map((tag, i) => (
+                  <span key={i} style={{ background: '#e6f4ea', color: '#188038', padding: '2px 10px', borderRadius: 6, fontSize: 11, fontWeight: 600 }}>{tag}</span>
+                ))}
+              </div>
+            )}
+
+            {/* 选项 */}
+            {currentQuestion.type === 'multiple_choice' && currentQuestion.options && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 8 }}>
+                {(Array.isArray(currentQuestion.options)
+                  ? currentQuestion.options.map((opt, i) => [String.fromCharCode(65 + i), opt])
+                  : Object.entries(currentQuestion.options)
+                ).map(([letter, text]) => {
+                  const isSelected = answers[currentQuestion.id] === letter
+                  return (
+                    <button key={letter} onClick={() => handleAnswerChange(currentQuestion.id, letter)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 12, padding: '14px 18px',
+                        background: isSelected ? '#e8f0fe' : '#fff',
+                        border: `2px solid ${isSelected ? '#1a73e8' : '#dadce0'}`,
+                        borderRadius: 12, cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s',
+                      }}>
+                      <div style={{
+                        width: 28, height: 28, borderRadius: '50%',
+                        background: isSelected ? '#1a73e8' : 'transparent',
+                        border: `2px solid ${isSelected ? '#1a73e8' : '#dadce0'}`,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 13, fontWeight: 700, color: isSelected ? '#fff' : '#5f6368', flexShrink: 0,
+                      }}>
+                        {letter}
+                      </div>
+                      <span style={{ fontSize: 14, color: isSelected ? '#202124' : '#5f6368', fontWeight: isSelected ? 600 : 400 }}>
+                        <MathText text={typeof text === 'string' ? text : String(text)} />
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+
+            {/* 非选择题输入 */}
+            {currentQuestion.type !== 'multiple_choice' && (
+              <div style={{ marginBottom: 8 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#5f6368', marginBottom: 8 }}>Your Answer:</div>
+                <textarea
+                  value={answers[currentQuestion.id] || ''}
+                  onChange={(e) => handleAnswerChange(currentQuestion.id, e.target.value)}
+                  placeholder="Type your answer..."
+                  style={{
+                    width: '100%', minHeight: 100, padding: 14, fontSize: 14,
+                    border: '1px solid #dadce0', borderRadius: 8, resize: 'vertical',
+                    fontFamily: 'inherit', lineHeight: 1.6, outline: 'none',
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#1a73e8'}
+                  onBlur={(e) => e.target.style.borderColor = '#dadce0'}
+                />
+              </div>
+            )}
           </div>
 
           <div style={S.navRow}>

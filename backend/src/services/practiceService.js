@@ -8,12 +8,13 @@ import { questions, userAnswers, chapters } from '../db/schema.js'
 import { eq, and, sql, inArray } from 'drizzle-orm'
 import { callAI } from './aiClient.js'
 
-const ROUND_SIZE = 5
+const DEFAULT_COUNT = 5
 
 /**
- * Get 5 questions for practice: from bank first, AI fills gaps
+ * Get questions for practice/exam: from bank first, AI fills gaps
+ * @param {number} count - 需要的题目数量（默认5）
  */
-export async function getQuestions(chapterId, difficulty, aiOptions = {}, chapterFallback = null) {
+export async function getQuestions(chapterId, difficulty, aiOptions = {}, chapterFallback = null, count = DEFAULT_COUNT) {
   const diffRange = {
     easy: [1, 2],
     medium: [2, 3],
@@ -34,21 +35,30 @@ export async function getQuestions(chapterId, difficulty, aiOptions = {}, chapte
       )
     )
     .orderBy(sql`RANDOM()`)
-    .limit(ROUND_SIZE)
+    .limit(count)
 
   // 2. If enough questions, return them
-  if (bankQuestions.length >= ROUND_SIZE) {
-    return bankQuestions.slice(0, ROUND_SIZE)
+  if (bankQuestions.length >= count) {
+    return bankQuestions.slice(0, count)
   }
 
   // 3. Need AI to generate more
-  const needed = ROUND_SIZE - bankQuestions.length
+  const needed = count - bankQuestions.length
   const chapterData = await db.select().from(chapters).where(eq(chapters.id, chapterId)).limit(1)
   const chapter = chapterData[0] || chapterFallback
 
   if (!chapter) throw new Error('Chapter not found')
 
-  const aiQuestions = await generateAndSaveQuestions(chapter, needed, difficulty, aiOptions)
+  // 分批生成（每批最多 10 题，避免 AI 输出截断）
+  const BATCH_SIZE = 10
+  const aiQuestions = []
+  let remaining = needed
+  while (remaining > 0) {
+    const batch = Math.min(remaining, BATCH_SIZE)
+    const batchResult = await generateAndSaveQuestions(chapter, batch, difficulty, aiOptions)
+    aiQuestions.push(...batchResult)
+    remaining -= batch
+  }
 
   return [...bankQuestions, ...aiQuestions]
 }

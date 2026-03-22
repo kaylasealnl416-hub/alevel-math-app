@@ -124,11 +124,28 @@ export function validate(schema, source = 'body') {
   }
 }
 
+/**
+ * 快速创建考试的验证 Schema
+ */
+export const quickStartExamSchema = z.object({
+  chapterId: z.string().min(1, 'Chapter ID is required'),
+  questionCount: z.number().int().min(5).max(20).default(10),
+  difficulty: z.enum(['easy', 'medium', 'hard']).default('medium'),
+  timeLimit: z.number().int().positive().optional(),
+  chapterTitle: z.string().optional(),
+  chapterKeyPoints: z.array(z.any()).optional(),
+  chapterFormulas: z.array(z.any()).optional(),
+  provider: z.string().optional(),
+  apiKey: z.string().optional(),
+  model: z.string().optional(),
+})
+
 export default {
   createExamSchema,
   saveAnswerSchema,
   markQuestionSchema,
   focusLostSchema,
   queryParamsSchema,
+  quickStartExamSchema,
   validate
 }

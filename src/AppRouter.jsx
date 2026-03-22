@@ -15,6 +15,7 @@ const ALevelMathApp = lazy(() => import('./alevel-math-app.jsx'))
 const AuthPage = lazy(() => import('./components/AuthPage.jsx'))
 const UserProfilePage = lazy(() => import('./components/UserProfilePage.jsx'))
 const ExamListPage = lazy(() => import('./components/ExamListPage.jsx'))
+const ExamCreatePage = lazy(() => import('./components/ExamCreatePage.jsx'))
 const ExamTakingPage = lazy(() => import('./components/ExamTakingPage.jsx'))
 const ExamResultPage = lazy(() => import('./components/ExamResultPage.jsx'))
 const LearningPlanPage = lazy(() => import('./components/LearningPlanPage.jsx'))
@@ -62,6 +63,11 @@ export default function AppRouter() {
                 <Route path="/exams" element={
                   <ProtectedRoute>
                     <ExamListPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/exams/create" element={
+                  <ProtectedRoute>
+                    <ExamCreatePage />
                   </ProtectedRoute>
                 } />
                 <Route path="/exams/:examId/take" element={

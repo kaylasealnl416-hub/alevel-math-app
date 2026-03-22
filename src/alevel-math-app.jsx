@@ -8,6 +8,8 @@ import ChatPage from "./components/ChatPage.jsx";
 import { callAI } from "./utils/callAI.js";
 import { getAISettings } from "./utils/aiProviders.js";
 import PracticeView from "./components/practice/PracticeView";
+import { post } from "./utils/apiClient";
+import Toast from "./components/common/Toast";
 import { CURRICULUM } from "./data/curriculum.js";
 
 // ============================================================
@@ -673,7 +675,6 @@ export default function ALevelMathApp() {
             t={t}
             lang={lang}
             subject={selectedSubject}
-            onAddError={(q) => setErrorBook(prev => [...prev.filter(e => e.id !== q.id), q])}
           />
         )}
         {activeView === "mock" && (
@@ -1753,17 +1754,12 @@ function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
 // ============================================================
 // EXAM VIEW (AI-generated, timed)
 // ============================================================
-function ExamView({ chapter, book, nav, embedded, onAddError, t, lang, subject = "mathematics" }) {
-  const [phase, setPhase] = useState("setup");
+function ExamView({ chapter, book, nav, embedded, t, lang, subject = "mathematics" }) {
+  const examNavigate = useNavigate();
   const [difficulty, setDifficulty] = useState("medium");
-  const [questions, setQuestions] = useState([]);
-  const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [results, setResults] = useState(null);
   const [selectedBook, setSelectedBook] = useState(book || (subject === "mathematics" ? "P1" : "Unit1"));
   const [selectedChapter, setSelectedChapter] = useState(chapter || null);
-  const timerRef = useRef();
 
   // Get the correct data source based on subject
   const isMath = subject === "mathematics";
@@ -1775,8 +1771,8 @@ function ExamView({ chapter, book, nav, embedded, onAddError, t, lang, subject =
   const startExam = async () => {
     setLoading(true);
     const chapterInfo = selectedChapter || dataSource[selectedBook]?.chapters[0];
+    if (!chapterInfo) { Toast.error("Please select a chapter first."); setLoading(false); return; }
 
-    // Handle title - can be string (math) or object (other subjects)
     const getTitle = () => {
       if (typeof chapterInfo?.title === 'object' && chapterInfo.title !== null) {
         return lang === 'en' ? chapterInfo.title.en : chapterInfo.title.zh;
@@ -1784,78 +1780,41 @@ function ExamView({ chapter, book, nav, embedded, onAddError, t, lang, subject =
       return chapterInfo?.title || "Mixed Topics";
     };
 
-    const getSubjectName = () => {
-      const names = {
-        mathematics: "Mathematics",
-        economics: "Economics",
-        history: "History",
-        politics: "Politics",
-        psychology: "Psychology",
-        further_math: "Further Mathematics"
-      };
-      return names[subject] || "the subject";
-    };
-
     const chTitle = getTitle();
-    const keyPoints = chapterInfo?.keyPoints?.join("; ") || "";
-    const subjectName = getSubjectName();
-    const examBoard = isMath ? "Cambridge" : "Pearson Edexcel";
 
-    const system = `You are a Pearson Edexcel International A-Level (IAL) ${subjectName} examiner. Generate exam questions exactly like a real ${examBoard} paper. JSON only, no markdown.$""`;
-    const prompt = `Create ${NUM_QUESTIONS} ${difficulty === "hard" ? "high difficulty exam-style" : "medium difficulty exam-style"} multiple-choice questions for "${chTitle}" IAL ${subjectName}.
+    // 读取 AI 设置
+    let aiSettings = {};
+    try { aiSettings = JSON.parse(localStorage.getItem('ai_settings')) || {}; } catch {}
 
-Topics: ${keyPoints}
-
-Return ONLY this JSON:
-[{"id":"q1","question":"...","marks":3,"options":{"A":"...","B":"...","C":"...","D":"..."},"correct":"A","solution":"Full worked solution...","topic":"..."}]`;
+    const body = {
+      chapterId: chapterInfo.id,
+      questionCount: NUM_QUESTIONS,
+      difficulty,
+      timeLimit: EXAM_MINUTES * 60,
+      chapterTitle: chTitle,
+      chapterKeyPoints: chapterInfo.keyPoints || [],
+      chapterFormulas: chapterInfo.formulas || [],
+    };
+    if (aiSettings.provider && aiSettings.apiKey) {
+      body.provider = aiSettings.provider;
+      body.apiKey = aiSettings.apiKey;
+      if (aiSettings.model) body.model = aiSettings.model;
+    }
 
     try {
-      const raw = await callAI(system, prompt, 2500);
-      const clean = raw.replace(/```json|```/g, "").trim();
-      const qs = JSON.parse(clean);
-      setQuestions(qs);
-      setAnswers({});
-      setTimeLeft(EXAM_MINUTES * 60);
-      setPhase("exam");
+      const exam = await post('/api/exams/quick-start', body, { timeout: 120000, retry: 0 });
+      examNavigate(`/exams/${exam.id}/take`);
     } catch (e) {
-      alert("Failed to generate exam. Please try again.");
+      // Toast.error already shown by apiClient
     }
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (phase === "exam" && timeLeft > 0) {
-      timerRef.current = setInterval(() => {
-        setTimeLeft(t => {
-          if (t <= 1) { clearInterval(timerRef.current); submitExam(); return 0; }
-          return t - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timerRef.current);
-  }, [phase]);
 
-  const submitExam = () => {
-    clearInterval(timerRef.current);
-    let correct = 0;
-    const review = questions.map(q => {
-      const isCorrect = answers[q.id] === q.correct;
-      if (isCorrect) correct++;
-      else if (onAddError) onAddError({ ...q, chapter: selectedChapter?.title, book: selectedBook, subject, userAnswer: answers[q.id], timestamp: Date.now() });
-      return { ...q, userAnswer: answers[q.id], isCorrect };
-    });
-    setResults({ correct, total: questions.length, review });
-    setPhase("results");
-  };
-
-  const fmt = (s) => `${Math.floor(s / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
-  const urgency = timeLeft < 300;
-
-  if (phase === "setup") {
-    return (
-      <div style={styles.setupPanel}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 44, height: 44, background: 'linear-gradient(135deg, #d93025 0%, #e37400 100%)', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(239,68,68,0.25)', flexShrink: 0 }}>
+  return (
+    <div style={styles.setupPanel}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ width: 44, height: 44, background: 'linear-gradient(135deg, #d93025 0%, #e37400 100%)', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(239,68,68,0.25)', flexShrink: 0 }}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           </div>
           <div>
@@ -1918,85 +1877,6 @@ Return ONLY this JSON:
         )}
       </div>
     );
-  }
-
-  if (phase === "exam") {
-    return (
-      <div style={styles.examPanel}>
-        <div style={styles.examHeader}>
-          <div style={styles.examTitle}>{t.examPaperTitle}</div>
-          <div style={{ ...styles.timer, ...(urgency ? styles.timerUrgent : {}) }}>⏱️ {fmt(timeLeft)}</div>
-          <div style={styles.examProgress}>{Object.keys(answers).length}/{questions.length} {t.answered}</div>
-        </div>
-        <div style={styles.examQuestions}>
-          {questions.map((q, i) => (
-            <div key={q.id} style={styles.examQuestion}>
-              <div style={styles.examQHeader}>
-                <span style={styles.examQNum}>Q{i + 1}</span>
-                {q.marks && <span style={styles.examQMarks}>[{q.marks} {t.marks}]</span>}
-              </div>
-              <div style={styles.examQText}><MathText text={q.question} /></div>
-              <div style={styles.examOptions}>
-                {Object.entries(q.options).map(([letter, text]) => {
-                  const isSelected = answers[q.id] === letter;
-                  return (
-                    <button key={letter}
-                      onClick={() => setAnswers(a => ({ ...a, [q.id]: letter }))}
-                      style={{ ...styles.optionBtn, ...(isSelected ? styles.optionSelected : {}) }}>
-                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${isSelected ? "#1a73e8" : "#CBD5E1"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "border-color 0.15s" }}>
-                        {isSelected && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#1a73e8" }} />}
-                      </div>
-                      <span style={styles.optionLetter}>{letter}</span>
-                      <span>{text}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-        <button onClick={submitExam} style={{ ...styles.btnPrimary, background: "#1a73e8", marginTop: 24 }}>
-          {t.submitExam}
-        </button>
-      </div>
-    );
-  }
-
-  if (phase === "results" && results) {
-    const pct = Math.round((results.correct / results.total) * 100);
-    const grade = pct >= 90 ? "A*" : pct >= 80 ? "A" : pct >= 70 ? "B" : pct >= 60 ? "C" : pct >= 50 ? "D" : "E";
-    return (
-      <div style={styles.resultsPanel}>
-        <div style={styles.resultsHeader}>
-          <div style={styles.resultsGrade}>{grade}</div>
-          <div style={styles.resultsScore}>{results.correct}/{results.total} · {pct}%</div>
-          <div style={styles.resultsLabel}>{t.examComplete}</div>
-        </div>
-        <div style={styles.reviewList}>
-          {results.review.map((q, i) => (
-            <div key={q.id} style={{ ...styles.reviewItem, borderColor: q.isCorrect ? "#1D4ED8" : "#7C2020" }}>
-              <div style={styles.reviewHeader}>
-                <span>{q.isCorrect ? "✅" : "❌"} Q{i + 1}</span>
-                <span style={{ color: q.isCorrect ? "#1A7A3C" : "#1a73e8" }}>
-                  {q.isCorrect ? t.correctAnswerLabel : `${t.yourAnswerLabel} ${q.userAnswer || t.noAnswer} · ${t.correctLabel}: ${q.correct}`}
-                </span>
-              </div>
-              <div style={styles.reviewQuestion}>{q.question}</div>
-              {!q.isCorrect && (
-                <>
-                  <div style={styles.reviewSolution}><strong>Solution:</strong> <MathText text={q.solution} /></div>
-                  <div style={styles.reviewTopic}><strong>Topic:</strong> {q.topic}</div>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
-        <button onClick={() => setPhase("setup")} style={styles.btnSecondary}>Take Another Exam</button>
-      </div>
-    );
-  }
-
-  return null;
 }
 
 // ============================================================

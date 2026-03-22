@@ -7,7 +7,8 @@ import * as examGrader from '../services/examGrader.js'
 import * as examAnalyzer from '../services/examAnalyzer.js'
 import { authMiddleware } from '../middleware/auth.js'
 import { rateLimit, rateLimitPresets } from '../middleware/rateLimit.js'
-import { validate, createExamSchema, saveAnswerSchema, markQuestionSchema, focusLostSchema } from '../utils/validation.js'
+import { validate, createExamSchema, saveAnswerSchema, markQuestionSchema, focusLostSchema, quickStartExamSchema } from '../utils/validation.js'
+import { getQuestions } from '../services/practiceService.js'
 
 const app = new Hono()
 
@@ -55,6 +56,74 @@ app.post('/', validate(createExamSchema), async (c) => {
     return c.json({
       success: false,
       error: { message: '创建考试失败', details: error.message }
+    }, 500)
+  }
+})
+
+// ============================================================
+// 1.5 快速创建考试（题库优先 + AI 补题）
+// ============================================================
+app.post('/quick-start', validate(quickStartExamSchema), async (c) => {
+  try {
+    const userId = c.get('userId')
+    const { chapterId, questionCount, difficulty, timeLimit,
+            chapterTitle, chapterKeyPoints, chapterFormulas,
+            provider, apiKey, model } = c.get('validated')
+
+    // 1. 获取题目（题库优先，不够则 AI 生成并存库）
+    const aiOptions = {}
+    if (provider && apiKey) {
+      aiOptions.provider = provider
+      aiOptions.apiKey = apiKey
+      if (model) aiOptions.model = model
+    }
+    const chapterFallback = {
+      id: chapterId,
+      title: chapterTitle || chapterId,
+      keyPoints: chapterKeyPoints || [],
+      formulas: chapterFormulas || [],
+    }
+
+    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, questionCount)
+
+    if (!questionList || questionList.length === 0) {
+      return c.json({ success: false, error: { message: 'No questions generated' } }, 400)
+    }
+
+    // 2. 创建试卷（questionSet）
+    const [questionSet] = await db.insert(questionSets).values({
+      userId,
+      title: `Quick Exam - ${chapterTitle || chapterId}`,
+      type: 'exam',
+      chapterId,
+      questionIds: questionList.map(q => q.id),
+      totalQuestions: questionList.length,
+      totalPoints: questionList.length * 10,
+      timeLimit: timeLimit || null,
+      generatedBy: 'ai',
+    }).returning()
+
+    // 3. 创建考试
+    const result = await examService.createExam({
+      userId,
+      questionSetId: questionSet.id,
+      type: 'chapter_test',
+      mode: 'exam',
+      timeLimit: timeLimit || null,
+      allowReview: true,
+    })
+
+    if (!result.success) {
+      return c.json(result, 400)
+    }
+
+    return c.json(result)
+
+  } catch (error) {
+    console.error('快速创建考试失败：', error)
+    return c.json({
+      success: false,
+      error: { message: error.message || '创建考试失败' }
     }, 500)
   }
 })
@@ -166,27 +235,11 @@ app.post('/:id/submit', rateLimit(rateLimitPresets.moderate), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
 
-    // 使用 examService 提交考试
+    // submitExam 内部已包含批改流程（调用 gradeExam）
     const result = await examService.submitExam(examId)
 
     if (!result.success) {
       return c.json(result, 400)
-    }
-
-    // 自动批改考试
-    const gradeResult = await examGrader.gradeExam(examId)
-
-    if (!gradeResult.success) {
-      console.error('批改失败，但考试已提交：', gradeResult.error)
-      // 批改失败不影响提交，返回提交成功
-      return c.json({
-        success: true,
-        data: {
-          ...result.data,
-          gradeStatus: 'pending',
-          gradeError: gradeResult.error.message
-        }
-      })
     }
 
     return c.json({
@@ -194,7 +247,6 @@ app.post('/:id/submit', rateLimit(rateLimitPresets.moderate), async (c) => {
       data: {
         ...result.data,
         gradeStatus: 'completed',
-        gradeResult: gradeResult.data
       }
     })
 
