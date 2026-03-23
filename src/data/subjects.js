@@ -5937,12 +5937,18 @@ export const SUBJECTS = {
               "Exam technique: Always express final answers in the form requested (Cartesian, polar, or exponential)"
             ],
             formulas: [
-              { name: "Complex Number Multiplication", expr: "z1z2 = r1r2[cos(θ1+θ2) + isin(θ1+θ2)]" },
-              { name: "De Moivre's Theorem", expr: "(cosθ + isinθ)^n = cos(nθ) + isin(nθ)" }
+              { name: "Modulus", expr: "|z| = √(a² + b²)" },
+              { name: "Argument", expr: "arg(z) = tan⁻¹(b/a), considering quadrant" },
+              { name: "Polar Form", expr: "z = r(cosθ + isinθ) = re^(iθ)" },
+              { name: "Multiplication (Polar)", expr: "z₁z₂ = r₁r₂[cos(θ₁+θ₂) + isin(θ₁+θ₂)]" },
+              { name: "De Moivre's Theorem", expr: "[r(cosθ + isinθ)]ⁿ = rⁿ(cos nθ + isin nθ)" },
+              { name: "nth Roots", expr: "z_k = r^(1/n)[cos((θ+2πk)/n) + isin((θ+2πk)/n)]" },
+              { name: "Conjugate Product", expr: "zz* = |z|² = a² + b²" },
+              { name: "Euler's Formula", expr: "e^(iθ) = cosθ + isinθ" }
             ],
             difficulty: "Advanced",
-            hardPoints: "理解复数的几何意义",
-            examTips: "熟练使用极坐标形式",
+            hardPoints: "Geometric interpretation of Argand diagrams; correctly identifying arguments in all four quadrants (watch for tan⁻¹ quadrant errors); applying De Moivre's theorem to find all n roots (don't forget to find ALL roots); loci problems involving modulus and argument conditions",
+            examTips: "Always convert to polar/exponential form before multiplying or dividing complex numbers. In loci questions, sketch the Argand diagram first. For nth roots, remember they are equally spaced on a circle — state radius and angular spacing. Show all working for De Moivre applications.",
             youtube: [
               { title: "Complex Numbers (Year 1) in 14 minutes", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=-AqvC88Udig" },
               { title: "Edexcel AS Level Further Maths: 1.1 Imaginary and Complex Numbers", channel: "Edexcel", url: "https://www.youtube.com/watch?v=DwpRYP-7Lrk" },
@@ -5998,12 +6004,17 @@ export const SUBJECTS = {
               "Exam technique: For 3×3 determinants, choose row/column with most zeros for expansion"
             ],
             formulas: [
-              { name: "2×2 Matrix Inverse", expr: "A^-1 = (1/det(A)) × adj(A)" },
-              { name: "Determinant", expr: "det(A) = ad - bc (for 2x2)" }
+              { name: "2×2 Determinant", expr: "det[a b; c d] = ad - bc" },
+              { name: "2×2 Inverse", expr: "A⁻¹ = (1/(ad-bc))[d -b; -c a]" },
+              { name: "3×3 Determinant", expr: "Expand along row/column using cofactors: Σ aᵢⱼ(-1)^(i+j)Mᵢⱼ" },
+              { name: "Inverse Product", expr: "(AB)⁻¹ = B⁻¹A⁻¹ (reverse order)" },
+              { name: "Transpose Product", expr: "(AB)ᵀ = BᵀAᵀ (reverse order)" },
+              { name: "Determinant Product", expr: "det(AB) = det(A)·det(B)" },
+              { name: "Scalar Determinant", expr: "det(kA) = kⁿ det(A) for n×n matrix" }
             ],
             difficulty: "Advanced",
-            hardPoints: "矩阵运算的维度匹配",
-            examTips: "熟练计算3x3行列式",
+            hardPoints: "Dimension compatibility in matrix multiplication (m×n times n×p only); remembering that AB ≠ BA in general; correctly computing 3×3 determinants via cofactor expansion; finding inverse matrices and recognising singular cases (det = 0); geometric interpretation of transformations",
+            examTips: "For 3×3 determinants, expand along the row or column with the most zeros to save time. Always verify A·A⁻¹ = I after finding an inverse. In transformation questions, state clearly what the matrix does geometrically (rotation, reflection, enlargement, shear).",
             youtube: [
               { title: "Matrices in 33 minutes - A-Level Further Maths, Core Pure 1", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=DWYAMr6eI-4" },
               { title: "Edexcel AS Level Further Maths: 6.1 Introduction to Matrices", channel: "Edexcel", url: "https://www.youtube.com/watch?v=MPTQd2_E6uY" },
@@ -6057,11 +6068,14 @@ export const SUBJECTS = {
               "Connection to recursion: Induction proves recursive definitions are well-defined"
             ],
             formulas: [
-              { name: "Induction Step", expr: "Assume true for n=k, prove true for n=k+1" }
+              { name: "Induction Principle", expr: "P(n₀) true ∧ [P(k)⇒P(k+1)] ⇒ P(n) true ∀n≥n₀" },
+              { name: "Summation Base", expr: "Verify: LHS for n=1 equals RHS for n=1" },
+              { name: "Divisibility Pattern", expr: "f(k+1) = a·f(k) + (multiple of d)" },
+              { name: "Matrix Power", expr: "Aᵏ⁺¹ = Aᵏ · A (use inductive hypothesis for Aᵏ)" }
             ],
             difficulty: "Advanced",
-            hardPoints: "正确的归纳假设",
-            examTips: "清晰写出归纳步骤",
+            hardPoints: "Stating the inductive hypothesis precisely; actually using P(k) in the proof of P(k+1) — not circular reasoning; correct algebra in the inductive step; divisibility proofs require careful factoring; matrix induction requires computing Aᵏ⁺¹ = Aᵏ·A correctly",
+            examTips: "Write the four steps clearly: (1) Base case, (2) Assume true for n=k, (3) Prove for n=k+1, (4) Conclude 'by mathematical induction'. Always end with the conclusion statement — marks are specifically allocated for it. Show the base case working, not just 'LHS = RHS'.",
             youtube: [
               { title: "Proof by Induction in 20 minutes - A-Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=zRHuTNF1x9c" },
               { title: "A Level Further Maths | Core Pure | Introduction to Proof by Induction", channel: "Edexcel", url: "https://www.youtube.com/watch?v=P-WBmCB0Y5k" },
@@ -6115,12 +6129,16 @@ export const SUBJECTS = {
               "Exam technique: Check initial conditions match when finding constants A, B in general solution"
             ],
             formulas: [
-              { name: "Arithmetic Series", expr: "Sn = n/2(a1 + an)" },
-              { name: "Geometric Series", expr: "Sn = a1(1-r^n)/(1-r)" }
+              { name: "Arithmetic Series Sum", expr: "Sₙ = n/2(2a + (n-1)d) = n/2(a + l)" },
+              { name: "Geometric Series Sum", expr: "Sₙ = a(1-rⁿ)/(1-r), S∞ = a/(1-r) for |r|<1" },
+              { name: "Sum of Natural Numbers", expr: "Σr = n(n+1)/2" },
+              { name: "Sum of Squares", expr: "Σr² = n(n+1)(2n+1)/6" },
+              { name: "Sum of Cubes", expr: "Σr³ = [n(n+1)/2]²" },
+              { name: "Method of Differences", expr: "Σ[f(r)-f(r+1)] = f(1) - f(n+1)" }
             ],
             difficulty: "Advanced",
-            hardPoints: "递推关系的求解",
-            examTips: "掌握常见级数公式",
+            hardPoints: "Method of differences — correctly telescoping sums; standard results for Σr, Σr², Σr³ must be memorised; partial fractions decomposition before summation; recurrence relations — finding the general term from the recursive definition",
+            examTips: "In method of differences, write out the first few and last few terms to see what cancels. For Σ from r=1 to n, always simplify the final expression fully. Verify your summation formula with small values of n (e.g., n=1,2,3) as a quick check.",
             youtube: [
               { title: "Everything you NEED to memorise for A-Level Further Maths (Includes Series)", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=KUA2TUwOAK4" },
               { title: "Edexcel Further maths - Core Pure 1 - Series - Part 1", channel: "Edexcel", url: "https://www.youtube.com/watch?v=KN5o1nyhY8o" },
@@ -6175,12 +6193,17 @@ export const SUBJECTS = {
               "Exam technique: For intersections, check pole separately (r = 0) as it may not appear in algebraic solution"
             ],
             formulas: [
-              { name: "Polar Coordinate Conversion", expr: "x = rcosθ, y = rsinθ" },
-              { name: "Polar Coordinate Area", expr: "A = 1/2∫r²dθ" }
+              { name: "Polar to Cartesian", expr: "x = rcosθ, y = rsinθ" },
+              { name: "Cartesian to Polar", expr: "r = √(x²+y²), θ = tan⁻¹(y/x)" },
+              { name: "Polar Area", expr: "A = ½∫(α to β) r² dθ" },
+              { name: "Area Between Curves", expr: "A = ½∫(α to β) (r₁² - r₂²) dθ" },
+              { name: "Tangent at Pole", expr: "dy/dx = (r'sinθ + rcosθ)/(r'cosθ - rsinθ)" },
+              { name: "Cardioid", expr: "r = a(1 + cosθ)" },
+              { name: "Rose Curve", expr: "r = a sin(nθ) — n petals if n odd, 2n if n even" }
             ],
             difficulty: "Advanced",
-            hardPoints: "理解极坐标几何意义",
-            examTips: "熟练绘制常见极坐标曲线",
+            hardPoints: "Converting between Cartesian and polar coordinates correctly; sketching polar curves (cardioids, limaçons, rose curves) — identifying symmetry and key points; finding area enclosed by polar curves using A = ½∫r²dθ; tangent lines at the pole where r = 0",
+            examTips: "For polar area questions, always identify the correct limits of integration by finding where r = 0. Sketch the curve first to visualise the region. Remember: area between two curves is ½∫(r₁² - r₂²)dθ. For tangent problems, use dy/dx = (r'sinθ + rcosθ)/(r'cosθ - rsinθ).",
             youtube: [
               { title: "A Level Further Maths | Core Pure | Introduction to Polar Coordinates", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=0p0dVsqu_Gs" },
               { title: "1. Polar Coordinates: Further Pure Maths 1 | A Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=GlwJdoKfKYA" },
@@ -6243,12 +6266,18 @@ export const SUBJECTS = {
               "Exam technique: Use fundamental identity cosh²x - sinh²x = 1 to simplify expressions"
             ],
             formulas: [
-              { name: "Hyperbolic Identity", expr: "cosh²x - sinh²x = 1" },
-              { name: "Derivative of sinh", expr: "d/dx(sinh x) = cosh x" }
+              { name: "sinh Definition", expr: "sinh x = (eˣ - e⁻ˣ)/2" },
+              { name: "cosh Definition", expr: "cosh x = (eˣ + e⁻ˣ)/2" },
+              { name: "Fundamental Identity", expr: "cosh²x - sinh²x = 1" },
+              { name: "d/dx sinh x", expr: "d/dx(sinh x) = cosh x" },
+              { name: "d/dx cosh x", expr: "d/dx(cosh x) = sinh x" },
+              { name: "Inverse sinh", expr: "arsinh x = ln(x + √(x²+1))" },
+              { name: "Inverse cosh", expr: "arcosh x = ln(x + √(x²-1)), x ≥ 1" },
+              { name: "Standard Integral", expr: "∫1/√(x²+a²) dx = arsinh(x/a) + C" }
             ],
             difficulty: "Advanced",
-            hardPoints: "双曲函数与三角函数的区别",
-            examTips: "熟练使用双曲恒等式",
+            hardPoints: "Distinguishing hyperbolic identities from trigonometric ones (cosh²x - sinh²x = 1, note the minus sign); domain restrictions for inverse hyperbolic functions (arcosh x requires x ≥ 1); integration using inverse hyperbolics — recognising standard forms ∫1/√(x²+a²)dx and ∫1/√(x²-a²)dx",
+            examTips: "Use Osborn's rule as a quick check: hyperbolic identities mirror trig identities, but negate any product of two sinh terms. For solving equations like cosh x = k, convert to exponentials and solve the resulting quadratic in eˣ. Always state domain restrictions for inverse functions.",
             youtube: [
               { title: "Hyperbolic Functions in 26 minutes - A-Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=xsKIq-zZJ5I" },
               { title: "Hyperbolic Calculus - Integrating with Hyperbolic Functions", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=MZm6sbR4RDI" },
@@ -6306,12 +6335,16 @@ export const SUBJECTS = {
               "Exam technique: For complex roots, remember to use e^(αx)(A cos βx + B sin βx) form"
             ],
             formulas: [
-              { name: "First-Order Linear ODE", expr: "dy/dx + P(x)y = Q(x)" },
-              { name: "Second-Order Homogeneous ODE", expr: "ay'' + by' + cy = 0" }
+              { name: "First-Order Linear ODE", expr: "dy/dx + P(x)y = Q(x), IF = e^(∫P dx)" },
+              { name: "Auxiliary Equation", expr: "aλ² + bλ + c = 0 for ay'' + by' + cy = 0" },
+              { name: "Two Real Roots", expr: "y = Ae^(λ₁x) + Be^(λ₂x)" },
+              { name: "Repeated Root", expr: "y = (A + Bx)e^(λx)" },
+              { name: "Complex Roots α±βi", expr: "y = e^(αx)(A cos βx + B sin βx)" },
+              { name: "General Solution", expr: "y = CF + PI (complementary + particular)" }
             ],
             difficulty: "Advanced",
-            hardPoints: "特解的求法",
-            examTips: "正确使用积分因子",
+            hardPoints: "Choosing the correct form of particular integral (when standard guess duplicates complementary function, multiply by x); finding the integrating factor e^(∫P(x)dx) for first-order linear ODEs; applying boundary/initial conditions to find constants; second-order equations with repeated or complex roots",
+            examTips: "For second-order ODEs, always find the complementary function first, then the particular integral. If your PI guess is already in the CF, multiply by x (or x² if needed). Show the auxiliary equation and its roots clearly. Apply initial conditions only after writing the general solution y = CF + PI.",
             youtube: [
               { title: "Differential Equations in 37 minutes - A-Level Further Maths", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=ytPNQnoctko" },
               { title: "Differential Equations 1 - First Order, Reverse Product", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=c5PlWkg38Zk" },
@@ -6372,11 +6405,14 @@ export const SUBJECTS = {
               "Exam technique: For linear independence, set up matrix and row reduce to check rank"
             ],
             formulas: [
-              { name: "Dimension Formula", expr: "dim(V) = dim(null T) + dim(range T)" }
+              { name: "Rank-Nullity Theorem", expr: "dim(V) = dim(ker T) + dim(im T)" },
+              { name: "Linear Combination", expr: "v = λ₁v₁ + λ₂v₂ + ... + λₙvₙ" },
+              { name: "Subspace Test", expr: "0 ∈ W, u+v ∈ W, λv ∈ W (closure)" },
+              { name: "Dimension", expr: "dim(ℝⁿ) = n (standard basis e₁,...,eₙ)" }
             ],
             difficulty: "Advanced",
-            hardPoints: "理解抽象向量空间",
-            examTips: "掌握线性相关判断",
+            hardPoints: "Testing for linear independence using determinants; understanding the relationship between linear dependence and geometric coplanarity; Gram-Schmidt orthogonalisation process; subspaces, span, and basis — proving a set forms a basis requires both spanning and independence",
+            examTips: "To test linear independence, set up the equation λ₁v₁ + λ₂v₂ + λ₃v₃ = 0 and show the only solution is λ₁ = λ₂ = λ₃ = 0 (or find a non-trivial solution for dependence). For basis questions, always check both conditions: the vectors span the space AND are linearly independent.",
             youtube: [
               { title: "Vectors in 1 hour - A-Level Further Maths, Core Pure Year 1", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=zqAoTdvTL9c" },
               { title: "Systems of Linear Equations - Edexcel A-level Further Maths", channel: "Edexcel", url: "https://www.youtube.com/watch?v=KOQGdtIHps4" },
@@ -6439,12 +6475,16 @@ export const SUBJECTS = {
               "Exam technique: Check answer makes physical sense (e.g., objects shouldn't pass through each other)"
             ],
             formulas: [
-              { name: "Conservation of Momentum", expr: "m1v1 + m2v2 = m1v1' + m2v2'" },
-              { name: "Coefficient of Restitution", expr: "e = (v2' - v1')/(v1 - v2)" }
+              { name: "Momentum", expr: "p = mv (vector quantity, kg·m/s)" },
+              { name: "Impulse", expr: "J = Δp = mv - mu = FΔt" },
+              { name: "Conservation of Momentum", expr: "m₁u₁ + m₂u₂ = m₁v₁ + m₂v₂" },
+              { name: "Newton's Restitution", expr: "e = (v₂-v₁)/(u₁-u₂), 0 ≤ e ≤ 1" },
+              { name: "Energy Loss", expr: "ΔKE = ½(m₁m₂/(m₁+m₂))(u₁-u₂)²(1-e²)" },
+              { name: "Bounce Height", expr: "After n bounces: hₙ = h₀·e^(2n)" }
             ],
             difficulty: "Advanced",
-            hardPoints: "理解弹性碰撞的动能",
-            examTips: "熟练使用恢复系数",
+            hardPoints: "Applying Newton's law of restitution correctly (e = separation speed / approach speed, watch sign convention); energy loss calculations in inelastic collisions; oblique collisions — resolving velocity components parallel and perpendicular to line of impact; successive collisions (e.g., ball bouncing between two walls)",
+            examTips: "Always define positive direction first and stick to it consistently. For oblique impacts, remember the perpendicular component is unchanged. Write out conservation of momentum AND Newton's law of restitution as two simultaneous equations. Check your answer: the separation speed should be ≤ approach speed.",
             youtube: [
               { title: "Momentum & Impulse 1 - Momentum and Impulse in 1D", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=erMZ617QQ94" },
               { title: "1.1 Momentum in one Dimension (FM1 - Chapter 1)", channel: "Edexcel", url: "https://www.youtube.com/watch?v=VUwWWGVZwOg" },
@@ -6503,12 +6543,16 @@ export const SUBJECTS = {
               "Exam technique: For vertical circles, use energy to find speeds, then forces at specific points"
             ],
             formulas: [
+              { name: "Centripetal Acceleration", expr: "a = v²/r = ω²r" },
               { name: "Centripetal Force", expr: "F = mv²/r = mω²r" },
-              { name: "Angular Velocity", expr: "ω = 2π/T = 2πf" }
+              { name: "Angular Velocity", expr: "ω = 2π/T = 2πf, v = rω" },
+              { name: "String at Top", expr: "T + mg = mv²/r (minimum: T = 0 → v² = gr)" },
+              { name: "String at Bottom", expr: "T - mg = mv²/r" },
+              { name: "Complete Circle Condition", expr: "v²(bottom) ≥ 5gr (string), v²(top) ≥ gr (rod)" }
             ],
             difficulty: "Advanced",
-            hardPoints: "垂直圆周运动的分析",
-            examTips: "正确分析向心力来源",
+            hardPoints: "Identifying all forces providing centripetal acceleration (weight, tension, normal reaction); vertical circles — conditions for completing the loop (v² ≥ gr at top for string, v² ≥ 5gr at bottom); distinguishing string (goes slack) vs rod (can push) problems; using energy conservation between positions on the circle",
+            examTips: "For vertical circle problems, always draw a force diagram at the specific point asked about. Apply Newton's second law radially: resultant inward force = mv²/r. Use energy conservation to find speed at different points. At the top of a string circle, T ≥ 0 gives the critical condition.",
             youtube: [
               { title: "Further Mechanics Centripetal Force & Circular Motion", channel: "A-Level Maths", url: "https://www.youtube.com/watch?v=vSDsRGz7gQc" },
               { title: "A Level Physics Revision: All of Circular Motion", channel: "A-Level Physics", url: "https://www.youtube.com/watch?v=9n4xhxYtARg" },
@@ -6576,12 +6620,18 @@ export const SUBJECTS = {
               "Exam technique: For Poisson approximation, verify n large and p small first"
             ],
             formulas: [
-              { name: "Expected Value", expr: "E(X) = Σx·P(X=x)" },
-              { name: "Variance", expr: "Var(X) = E(X²) - [E(X)]²" }
+              { name: "Expectation", expr: "E(X) = Σ x·P(X=x)" },
+              { name: "Variance", expr: "Var(X) = E(X²) - [E(X)]²" },
+              { name: "Binomial Distribution", expr: "X ~ B(n,p): P(X=r) = C(n,r)pʳ(1-p)ⁿ⁻ʳ" },
+              { name: "Binomial Mean/Var", expr: "E(X) = np, Var(X) = np(1-p)" },
+              { name: "Poisson Distribution", expr: "X ~ Po(λ): P(X=r) = e⁻λλʳ/r!" },
+              { name: "Poisson Mean/Var", expr: "E(X) = Var(X) = λ" },
+              { name: "Geometric Distribution", expr: "X ~ Geo(p): P(X=r) = (1-p)ʳ⁻¹p" },
+              { name: "Linear Combination", expr: "E(aX+b) = aE(X)+b, Var(aX+b) = a²Var(X)" }
             ],
             difficulty: "Advanced",
-            hardPoints: "组合期望与方差",
-            examTips: "熟练使用分布公式",
+            hardPoints: "Computing E(X) and Var(X) from probability tables — don't forget Var(X) = E(X²) - [E(X)]²; Poisson approximation to binomial (conditions: n large, p small); recognising which distribution to use from context (Binomial vs Poisson vs Geometric); linear combinations of independent random variables",
+            examTips: "For Var(aX + b), remember the constant b disappears: Var(aX + b) = a²Var(X). When asked 'find the probability distribution table', check that all probabilities sum to 1. For Poisson approximation, state that n is large and p is small so np = λ is moderate. Use cumulative tables efficiently.",
             youtube: [
               { title: "Edexcel A Level Further Maths Further Statistics 1 - Discrete Random Variables", channel: "Edexcel", url: "https://www.youtube.com/watch?v=o71L8JeSBGQ" },
               { title: "A Level Further Maths - Further Stats 1 - Introducing Discrete Random Variables", channel: "Edexcel", url: "https://www.youtube.com/watch?v=YUUdUvlF0sU" },
@@ -6644,11 +6694,16 @@ export const SUBJECTS = {
               "Exam technique: State conclusion in context of the problem, not just 'reject H₀'"
             ],
             formulas: [
-              { name: "Chi-squared", expr: "χ² = Σ(O-E)²/E" }
+              { name: "Chi-squared Statistic", expr: "χ² = Σ(O-E)²/E" },
+              { name: "Expected Frequency", expr: "E = (row total × column total) / grand total" },
+              { name: "Degrees of Freedom", expr: "ν = (rows-1)(columns-1)" },
+              { name: "Z-test Statistic", expr: "Z = (X̄ - μ)/(σ/√n)" },
+              { name: "Type I Error", expr: "P(reject H₀ | H₀ true) = α (significance level)" },
+              { name: "Type II Error", expr: "P(fail to reject H₀ | H₁ true) = β" }
             ],
             difficulty: "Advanced",
-            hardPoints: "理解显著性水平",
-            examTips: "正确建立假设",
+            hardPoints: "Setting up H₀ and H₁ correctly (H₀ always contains '=' sign); choosing one-tailed vs two-tailed test; interpreting the p-value vs significance level α; critical region and critical values; Type I error (rejecting H₀ when true) vs Type II error (not rejecting H₀ when false)",
+            examTips: "Always state H₀ and H₁ in terms of the population parameter (e.g., H₀: μ = 50, H₁: μ > 50). Compare your test statistic with the critical value, or p-value with α. State your conclusion in context: 'There is sufficient/insufficient evidence at the X% level to reject H₀, suggesting that...'",
             youtube: [
               { title: "Edexcel A Level Further Maths Further Statistics 1 - Hypothesis Testing", channel: "Edexcel", url: "https://www.youtube.com/watch?v=sqVH8COWE5I" },
               { title: "A Level Further Maths - Further Stats 1 - Testing a Hypothesis", channel: "Edexcel", url: "https://www.youtube.com/watch?v=fWzwFLHrcC0" },
