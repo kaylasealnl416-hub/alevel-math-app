@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SUBJECTS } from "../../data/subjects.js";
 import { CURRICULUM } from "../../data/curriculum.js";
+import { ALL_SUBJECTS } from "../../data/allSubjects.js";
 import { SUBJECT_RESOURCES } from "../../data/subjectResources.js";
 import { localiseChapter, toEn } from "../../utils/localise.js";
 import { styles } from "../../styles/homeStyles.js";
@@ -36,17 +37,42 @@ export default function ChapterView({ chapter, book, nav, t, lang, subject = "ma
     return m ? m[1] : null;
   };
 
+  const subjectMeta = ALL_SUBJECTS[subject];
+  const subjectName = subjectMeta?.name?.[lang] || subject;
+
   return (
     <div style={styles.pageWrap}>
-      {/* Back */}
-      <button
-        onClick={() => nav("curriculum", book, null, subject)}
-        style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#64748B", padding: "0 0 20px", transition: "color 0.15s" }}
-        onMouseEnter={e => e.currentTarget.style.color = color}
-        onMouseLeave={e => e.currentTarget.style.color = "#64748B"}
-      >
-        ← Back to Curriculum
-      </button>
+      {/* Breadcrumb */}
+      <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 20, fontSize: 13, flexWrap: "wrap" }}>
+        <button
+          onClick={() => nav("subjects")}
+          style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", fontSize: 13, padding: 0, transition: "color 0.15s" }}
+          onMouseEnter={e => e.currentTarget.style.color = color}
+          onMouseLeave={e => e.currentTarget.style.color = "#94A3B8"}
+        >
+          Dashboard
+        </button>
+        <span style={{ color: "#CBD5E1" }}>/</span>
+        <button
+          onClick={() => nav("curriculum", null, null, subject)}
+          style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", fontSize: 13, padding: 0, transition: "color 0.15s" }}
+          onMouseEnter={e => e.currentTarget.style.color = color}
+          onMouseLeave={e => e.currentTarget.style.color = "#94A3B8"}
+        >
+          {subjectName}
+        </button>
+        <span style={{ color: "#CBD5E1" }}>/</span>
+        <button
+          onClick={() => nav("curriculum", book, null, subject)}
+          style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", fontSize: 13, padding: 0, transition: "color 0.15s" }}
+          onMouseEnter={e => e.currentTarget.style.color = color}
+          onMouseLeave={e => e.currentTarget.style.color = "#94A3B8"}
+        >
+          {book}
+        </button>
+        <span style={{ color: "#CBD5E1" }}>/</span>
+        <span style={{ color: color, fontWeight: 600 }}>Ch {ch.num}: {ch.title}</span>
+      </div>
 
       {/* ── Header Card ── */}
       <div style={{ background: "#FFFFFF", borderRadius: 16, border: `1px solid ${color}25`, boxShadow: `0 2px 16px ${color}0D`, padding: "28px 32px", marginBottom: 20, position: "relative", overflow: "hidden" }}>
