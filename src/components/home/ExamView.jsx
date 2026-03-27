@@ -53,6 +53,8 @@ export default function ExamView({ chapter, book, nav, embedded, t, lang, subjec
       chapterTitle: chTitle,
       chapterKeyPoints: chapterInfo.keyPoints || [],
       chapterFormulas: chapterInfo.formulas || [],
+      chapterHardPoints: chapterInfo.hardPoints || '',
+      chapterExamTips: chapterInfo.examTips || '',
     };
 
     try {

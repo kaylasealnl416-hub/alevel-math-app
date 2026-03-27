@@ -70,35 +70,69 @@ async function generateAndSaveQuestions(chapter, count, difficulty, aiOptions = 
   const chTitle = typeof chapter.title === 'object'
     ? (chapter.title.en || chapter.title.zh)
     : chapter.title
-  const keyPoints = Array.isArray(chapter.keyPoints) ? chapter.keyPoints.join('; ') : ''
-  const formulas = Array.isArray(chapter.formulas)
-    ? chapter.formulas.map(f => `${f.name}: ${f.expr}`).join('; ')
-    : ''
+
+  // ── 结构化章节知识库 ──────────────────────────────────────
+  const keyPoints = Array.isArray(chapter.keyPoints) && chapter.keyPoints.length > 0
+    ? chapter.keyPoints.map((p, i) => `${i + 1}. ${p}`).join('\n')
+    : null
+
+  const formulas = Array.isArray(chapter.formulas) && chapter.formulas.length > 0
+    ? chapter.formulas.map(f => `• ${f.name}: ${f.expr}`).join('\n')
+    : null
+
+  const hardPoints = typeof chapter.hardPoints === 'string' && chapter.hardPoints.trim()
+    ? chapter.hardPoints.trim()
+    : null
+
+  const examTips = typeof chapter.examTips === 'string' && chapter.examTips.trim()
+    ? chapter.examTips.trim()
+    : null
 
   const diffLabel = difficulty === 'hard'
-    ? 'challenging A-level exam-style'
+    ? 'challenging (difficulty 4-5)'
     : difficulty === 'easy'
-      ? 'basic introductory'
-      : 'medium difficulty A-level'
+      ? 'accessible (difficulty 1-2)'
+      : 'standard (difficulty 3)'
 
-  const systemPrompt = `You are an expert A-Level teacher creating exam questions for Pearson Edexcel IAL. Generate questions exactly as a real exam would. Always respond in valid JSON only — no markdown, no prose.`
+  // ── 第一层：任务专属 System Prompt ───────────────────────
+  const systemPrompt = `You are an expert Pearson Edexcel IAL question setter with 10+ years of experience writing WMA11/WMA12/WMA13/WMA14 papers.
 
-  const userPrompt = `Generate ${count} ${diffLabel} questions for the topic: "${chTitle}".
+RULES:
+- Questions must strictly follow Edexcel IAL mark scheme conventions
+- Use precise mathematical notation consistent with the Edexcel syllabus
+- Every question must be solvable using ONLY the concepts in the chapter context below
+- Never introduce topics outside the specified chapter scope
+- Difficulty must match real Edexcel past paper distribution
+- Always respond with valid JSON only — no markdown, no prose`
 
-${keyPoints ? `Key concepts: ${keyPoints}` : ''}
-${formulas ? `Key formulas: ${formulas}` : ''}
+  // ── 第二层：章节知识库注入 ────────────────────────────────
+  const chapterContext = [
+    `CHAPTER: ${chTitle}`,
+    keyPoints   ? `\nKEY POINTS:\n${keyPoints}` : '',
+    formulas    ? `\nKEY FORMULAS:\n${formulas}` : '',
+    hardPoints  ? `\nCOMMON MISTAKES (高频失分点):\n${hardPoints}` : '',
+    examTips    ? `\nEXAM TIPS:\n${examTips}` : '',
+  ].filter(Boolean).join('\n')
 
-For each question provide ALL fields:
+  const userPrompt = `${chapterContext}
+
+---
+Generate ${count} ${diffLabel} multiple-choice questions for the chapter above.
+
+Each question must test a DIFFERENT key point from the list above.
+Questions testing "COMMON MISTAKES" topics should appear in proportion to their exam frequency.
+
+For each question return ALL fields:
 - type: "multiple_choice"
-- question: clear question text
+- question: clear question text (use LaTeX notation where needed, e.g. $x^2$)
 - options: {"A": "...", "B": "...", "C": "...", "D": "..."}
 - correct: the correct answer letter
 - solution: step-by-step worked solution (2-4 lines)
-- deepExplanation: thorough 3-5 sentence explanation of WHY the answer is correct
-- keyFormula: the key formula or concept needed
-- commonMistake: most common student error and how to avoid it
-- whyOthersWrong: {"B": "reason", "C": "reason", "D": "reason"} (explain each wrong option)
-- tags: array of topic tags, e.g. ["quadratic equations", "factoring"]
+- deepExplanation: 3-5 sentence explanation of WHY the answer is correct
+- keyFormula: the key formula or concept used
+- commonMistake: the most common student error on this question type
+- whyOthersWrong: {"B": "reason", "C": "reason", "D": "reason"}
+- tags: array of topic tags from the key points above
 - difficulty: number 1-5
 
 Return ONLY a JSON array, no markdown.`

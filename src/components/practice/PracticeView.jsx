@@ -45,6 +45,8 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
         chapterTitle,
         chapterKeyPoints: keyPoints,
         chapterFormulas: formulas,
+        chapterHardPoints: chapter?.hardPoints || '',
+        chapterExamTips: chapter?.examTips || '',
       }
 
       const data = await post('/api/practice/start', body)

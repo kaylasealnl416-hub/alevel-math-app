@@ -17,19 +17,15 @@ const app = new Hono()
  */
 app.post('/start', async (c) => {
   try {
-    const { chapterId, difficulty = 'medium', provider, apiKey, model,
-            chapterTitle, chapterKeyPoints, chapterFormulas } = await c.req.json()
+    const { chapterId, difficulty = 'medium',
+            chapterTitle, chapterKeyPoints, chapterFormulas,
+            chapterHardPoints, chapterExamTips } = await c.req.json()
 
     if (!chapterId) {
       return c.json({ success: false, error: { message: 'chapterId is required' } }, 400)
     }
 
     const aiOptions = {}
-    if (provider && apiKey) {
-      aiOptions.provider = provider
-      aiOptions.apiKey = apiKey
-      if (model) aiOptions.model = model
-    }
 
     // 前端传来的章节信息，作为 AI 生成题目的 fallback
     const chapterFallback = chapterTitle ? {
@@ -37,6 +33,8 @@ app.post('/start', async (c) => {
       title: chapterTitle,
       keyPoints: chapterKeyPoints || [],
       formulas: chapterFormulas || [],
+      hardPoints: chapterHardPoints || '',
+      examTips: chapterExamTips || '',
     } : null
 
     const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback)

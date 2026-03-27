@@ -96,6 +96,8 @@ export default function ExamCreatePage() {
         chapterTitle: getChapterTitle(selectedChapter),
         chapterKeyPoints: selectedChapter.keyPoints || [],
         chapterFormulas: selectedChapter.formulas || [],
+        chapterHardPoints: selectedChapter.hardPoints || '',
+        chapterExamTips: selectedChapter.examTips || '',
       }
 
       const exam = await post('/api/exams/quick-start', body, { timeout: 120000, retry: 0 })
