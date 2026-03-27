@@ -10,6 +10,81 @@ import { callAI } from './aiClient.js'
 
 const DEFAULT_COUNT = 5
 
+// ── 学科专属 System Prompt 生成器 ─────────────────────────────
+const SUBJECT_PROFILES = {
+  mathematics: {
+    name: 'Mathematics',
+    papers: 'WMA11/WMA12/WMA13/WMA14',
+    role: 'expert Pearson Edexcel IAL Mathematics question setter with 10+ years of experience writing A-Level pure and applied maths papers',
+    conventions: [
+      'Use precise mathematical notation (LaTeX where needed, e.g. $x^2$, $\\frac{a}{b}$)',
+      'Questions must be solvable using standard A-Level techniques only',
+      'Include numerical answers that are exact or to 3 significant figures unless stated',
+      'Follow Edexcel mark scheme conventions for method marks (M) and accuracy marks (A)',
+    ],
+  },
+  economics: {
+    name: 'Economics',
+    papers: 'WEC11/WEC12/WEC13/WEC14',
+    role: 'expert Pearson Edexcel IAL Economics question setter specialising in microeconomics and macroeconomics at A-Level',
+    conventions: [
+      'Questions must test understanding of economic concepts, not just recall',
+      'Use real-world contexts where appropriate (markets, government policy, firms)',
+      'Distractors should reflect common misconceptions in economic reasoning',
+      'Align with Edexcel IAL Economics specification terminology',
+    ],
+  },
+  physics: {
+    name: 'Physics',
+    papers: 'WPH11/WPH12/WPH13/WPH14',
+    role: 'expert Pearson Edexcel IAL Physics question setter with deep knowledge of mechanics, electricity, waves, and modern physics',
+    conventions: [
+      'Include units in all numerical answers',
+      'Use SI units throughout unless the question specifies otherwise',
+      'Questions may involve data analysis, graph interpretation, or calculation',
+      'Follow Edexcel IAL Physics specification and data booklet conventions',
+    ],
+  },
+  chemistry: {
+    name: 'Chemistry',
+    papers: 'WCH11/WCH12/WCH13/WCH14',
+    role: 'expert Pearson Edexcel IAL Chemistry question setter covering organic, inorganic, and physical chemistry',
+    conventions: [
+      'Use IUPAC nomenclature for all chemical names',
+      'Include state symbols in equations where relevant',
+      'Questions may involve calculations (moles, concentrations, enthalpy)',
+      'Follow Edexcel IAL Chemistry specification conventions',
+    ],
+  },
+  biology: {
+    name: 'Biology',
+    papers: 'WBI11/WBI12/WBI13/WBI14',
+    role: 'expert Pearson Edexcel IAL Biology question setter covering cell biology, genetics, ecology, and physiology',
+    conventions: [
+      'Use precise biological terminology consistent with the Edexcel specification',
+      'Questions may involve data interpretation, experimental design, or concept application',
+      'Distractors should reflect common misconceptions in biological reasoning',
+      'Follow Edexcel IAL Biology specification conventions',
+    ],
+  },
+}
+
+function buildSystemPrompt(subjectId) {
+  const profile = SUBJECT_PROFILES[subjectId] || SUBJECT_PROFILES.mathematics
+  const conventions = profile.conventions.map(c => `- ${c}`).join('\n')
+
+  return `You are an ${profile.role}.
+You write questions for Pearson Edexcel IAL ${profile.name} (${profile.papers}).
+
+RULES:
+- Questions must strictly follow Edexcel IAL mark scheme conventions
+- Every question must be solvable using ONLY the concepts in the chapter context below
+- Never introduce topics outside the specified chapter scope
+- Difficulty must match real Edexcel past paper distribution
+${conventions}
+- Always respond with valid JSON only — no markdown, no prose`
+}
+
 /**
  * Get questions for practice/exam: from bank first, AI fills gaps
  * @param {number} count - 需要的题目数量（默认5）
@@ -94,16 +169,9 @@ async function generateAndSaveQuestions(chapter, count, difficulty, aiOptions = 
       ? 'accessible (difficulty 1-2)'
       : 'standard (difficulty 3)'
 
-  // ── 第一层：任务专属 System Prompt ───────────────────────
-  const systemPrompt = `You are an expert Pearson Edexcel IAL question setter with 10+ years of experience writing WMA11/WMA12/WMA13/WMA14 papers.
-
-RULES:
-- Questions must strictly follow Edexcel IAL mark scheme conventions
-- Use precise mathematical notation consistent with the Edexcel syllabus
-- Every question must be solvable using ONLY the concepts in the chapter context below
-- Never introduce topics outside the specified chapter scope
-- Difficulty must match real Edexcel past paper distribution
-- Always respond with valid JSON only — no markdown, no prose`
+  // ── 第一层：任务专属 System Prompt（按学科动态生成）────────
+  const subjectId = chapter.subject || 'mathematics'
+  const systemPrompt = buildSystemPrompt(subjectId)
 
   // ── 第二层：章节知识库注入 ────────────────────────────────
   const chapterContext = [

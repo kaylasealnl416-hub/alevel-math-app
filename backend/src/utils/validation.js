@@ -137,6 +137,7 @@ export const quickStartExamSchema = z.object({
   chapterFormulas: z.array(z.any()).optional(),
   chapterHardPoints: z.string().optional(),
   chapterExamTips: z.string().optional(),
+  subject: z.string().optional(),
   provider: z.string().optional(),
   apiKey: z.string().optional(),
   model: z.string().optional(),

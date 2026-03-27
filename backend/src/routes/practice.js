@@ -19,7 +19,7 @@ app.post('/start', async (c) => {
   try {
     const { chapterId, difficulty = 'medium',
             chapterTitle, chapterKeyPoints, chapterFormulas,
-            chapterHardPoints, chapterExamTips } = await c.req.json()
+            chapterHardPoints, chapterExamTips, subject } = await c.req.json()
 
     if (!chapterId) {
       return c.json({ success: false, error: { message: 'chapterId is required' } }, 400)
@@ -35,6 +35,7 @@ app.post('/start', async (c) => {
       formulas: chapterFormulas || [],
       hardPoints: chapterHardPoints || '',
       examTips: chapterExamTips || '',
+      subject: subject || 'mathematics',
     } : null
 
     const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback)

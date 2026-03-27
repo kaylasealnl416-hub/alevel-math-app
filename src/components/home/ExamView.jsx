@@ -55,6 +55,7 @@ export default function ExamView({ chapter, book, nav, embedded, t, lang, subjec
       chapterFormulas: chapterInfo.formulas || [],
       chapterHardPoints: chapterInfo.hardPoints || '',
       chapterExamTips: chapterInfo.examTips || '',
+      subject: subject || 'mathematics',
     };
 
     try {

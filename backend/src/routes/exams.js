@@ -68,7 +68,7 @@ app.post('/quick-start', validate(quickStartExamSchema), async (c) => {
     const userId = c.get('userId')
     const { chapterId, questionCount, difficulty, timeLimit,
             chapterTitle, chapterKeyPoints, chapterFormulas,
-            chapterHardPoints, chapterExamTips } = c.get('validated')
+            chapterHardPoints, chapterExamTips, subject } = c.get('validated')
 
     // 1. 获取题目（题库优先，不够则 AI 生成并存库）
     const aiOptions = {}
@@ -79,6 +79,7 @@ app.post('/quick-start', validate(quickStartExamSchema), async (c) => {
       formulas: chapterFormulas || [],
       hardPoints: chapterHardPoints || '',
       examTips: chapterExamTips || '',
+      subject: subject || 'mathematics',
     }
 
     const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, questionCount)
