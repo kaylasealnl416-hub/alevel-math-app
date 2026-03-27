@@ -276,7 +276,7 @@ function SubjectsView({ nav, lang }) {
               desc: "Timed past paper simulations to prepare for the real Edexcel IAL exam.",
               bg: "linear-gradient(135deg,#FFFBEB,#FEF3C7)", border: "#FDE68A",
               iconBg: "#FEF3C7",
-              action: () => authNav("exam", "mathematics"),
+              action: () => authNav("mock", "mathematics"),
             },
           ].map((item, i) => (
             <div

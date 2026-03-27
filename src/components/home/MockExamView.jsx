@@ -6,6 +6,8 @@ import { styles } from "../../styles/homeStyles.js";
 import MathText from "../practice/MathText";
 import { callAI } from "../../utils/callAI.js";
 import Toast from "../common/Toast";
+import { useAuth } from "../../contexts/AuthContext.jsx";
+import { post } from "../../utils/apiClient.js";
 
 function LoadingSpinner({ message }) {
   return (
@@ -17,6 +19,7 @@ function LoadingSpinner({ message }) {
 }
 
 export default function MockExamView({ nav, onAddError, t, lang, subject = "mathematics" }) {
+  const { user } = useAuth();
   const [phase, setPhase] = useState("select");
   const [selectedPaper, setSelectedPaper] = useState(null);
   const [questions, setQuestions] = useState([]);
@@ -75,18 +78,47 @@ Return ONLY JSON array:
       }, 1000);
     }
     return () => clearInterval(timerRef.current);
-  }, [phase]);
+  }, [phase, submitMock]);
 
-  const submitMock = () => {
+  const submitMock = async () => {
     clearInterval(timerRef.current);
     const currentAnswers = answersRef.current;
     let correct = 0;
     const review = questions.map(q => {
       const isCorrect = currentAnswers[q.id] === q.correct;
       if (isCorrect) correct++;
-      else if (onAddError) onAddError({ ...q, subject, timestamp: Date.now(), userAnswer: currentAnswers[q.id] });
       return { ...q, userAnswer: currentAnswers[q.id], isCorrect };
     });
+
+    // 错题写后端（已登录时）
+    if (user) {
+      const wrongOnes = review.filter(q => !q.isCorrect);
+      for (const q of wrongOnes) {
+        try {
+          await post('/api/wrong-questions', {
+            userId: user.id,
+            questionId: q.id,
+            userAnswer: { value: q.userAnswer },
+            question: {
+              id: q.id,
+              type: 'multiple_choice',
+              difficulty: 3,
+              content: { en: q.question },
+              options: q.options,
+              answer: { value: q.correct },
+              explanation: { en: q.solution || '' },
+              tags: [q.topic || subject],
+            },
+          }, { showErrorToast: false });
+        } catch (_) { /* 静默失败，不影响主流程 */ }
+      }
+    } else if (onAddError) {
+      // 未登录降级：写 localStorage
+      review.filter(q => !q.isCorrect).forEach(q =>
+        onAddError({ ...q, subject, timestamp: Date.now(), userAnswer: currentAnswers[q.id] })
+      );
+    }
+
     setResults({ correct, total: questions.length, review });
     setPhase("results");
   };

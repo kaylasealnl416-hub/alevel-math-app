@@ -46,7 +46,7 @@ export default function ErrorBookView({ errors, onClear, nav, t, lang, subject =
           <div style={styles.emptyIcon}>📗</div>
           <div style={styles.emptyText}>{t.emptyNotebook}</div>
           <div style={styles.emptyDesc}>{t.emptyDesc}</div>
-          <button onClick={() => nav("quiz")} style={styles.btnPrimary}>{t.takeQuizBtn}</button>
+          <button onClick={() => nav("curriculum")} style={styles.btnPrimary}>{t.takeQuizBtn}</button>
         </div>
       </div>
     );

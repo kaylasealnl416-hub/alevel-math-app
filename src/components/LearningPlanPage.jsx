@@ -169,17 +169,30 @@ function LearningPlanPage() {
               <div style={{ fontSize: 48, marginBottom: 12 }}>📚</div>
               <h3 style={{ fontSize: 18, fontWeight: 500, color: '#202124', margin: '0 0 8px' }}>No recommendations yet</h3>
               <p style={{ fontSize: 14, color: '#5f6368', margin: '0 0 24px', lineHeight: 1.6 }}>
-                Complete an exam first, and we'll generate a personalised study plan based on your results.
+                Recommendations are generated after you complete an exam or practice session.<br />
+                Start with a chapter quiz, or take a quick exam to get your personalised study plan.
               </p>
-              <button
-                onClick={() => navigate('/exams')}
-                style={{
-                  padding: '10px 28px', background: '#1a73e8', color: '#fff', border: 'none',
-                  borderRadius: 8, fontSize: 15, fontWeight: 500, cursor: 'pointer',
-                }}
-              >
-                Take an Exam
-              </button>
+              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => navigate('/practice')}
+                  style={{
+                    padding: '10px 24px', background: '#fff', color: '#1a73e8',
+                    border: '1px solid #1a73e8', borderRadius: 8, fontSize: 14,
+                    fontWeight: 500, cursor: 'pointer',
+                  }}
+                >
+                  Start Practice
+                </button>
+                <button
+                  onClick={() => navigate('/exams')}
+                  style={{
+                    padding: '10px 24px', background: '#1a73e8', color: '#fff', border: 'none',
+                    borderRadius: 8, fontSize: 14, fontWeight: 500, cursor: 'pointer',
+                  }}
+                >
+                  Take an Exam
+                </button>
+              </div>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

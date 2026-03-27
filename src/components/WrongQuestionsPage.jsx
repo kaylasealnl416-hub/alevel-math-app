@@ -166,10 +166,13 @@ function WrongQuestionsPage() {
             <h2 style={{ fontSize: 18, fontWeight: 500, color: '#202124', margin: '0 0 8px' }}>No wrong questions found!</h2>
             <p style={{ fontSize: 14, color: '#5f6368', marginBottom: 24 }}>
               {wrongQuestions.length === 0
-                ? "You haven't taken any exams yet, or you got everything right!"
+                ? "No wrong questions yet. Complete a practice session, exam, or mock paper to start tracking mistakes."
                 : "Try adjusting your filters to see more questions."}
             </p>
-            <Button variant="primary" size="md" onClick={() => navigate('/exams')}>Take an Exam</Button>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Button variant="secondary" size="md" onClick={() => navigate('/practice')}>Start Practice</Button>
+              <Button variant="primary" size="md" onClick={() => navigate('/exams')}>Take an Exam</Button>
+            </div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
