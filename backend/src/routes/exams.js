@@ -82,7 +82,7 @@ app.post('/quick-start', validate(quickStartExamSchema), async (c) => {
       subject: subject || 'mathematics',
     }
 
-    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, questionCount)
+    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, questionCount, subject || 'mathematics')
 
     if (!questionList || questionList.length === 0) {
       return c.json({ success: false, error: { message: 'No questions generated' } }, 400)

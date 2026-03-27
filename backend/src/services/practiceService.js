@@ -116,7 +116,7 @@ ${conventions}
  * Get questions for practice/exam: from bank first, AI fills gaps
  * @param {number} count - 需要的题目数量（默认5）
  */
-export async function getQuestions(chapterId, difficulty, aiOptions = {}, chapterFallback = null, count = DEFAULT_COUNT) {
+export async function getQuestions(chapterId, difficulty, aiOptions = {}, chapterFallback = null, count = DEFAULT_COUNT, subject = 'mathematics') {
   const diffRange = {
     easy: [1, 2],
     medium: [2, 3],
@@ -147,7 +147,10 @@ export async function getQuestions(chapterId, difficulty, aiOptions = {}, chapte
   // 3. Need AI to generate more
   const needed = count - bankQuestions.length
   const chapterData = await db.select().from(chapters).where(eq(chapters.id, chapterId)).limit(1)
-  const chapter = chapterData[0] || chapterFallback
+  // 数据库里的 chapter 没有 subject 字段，必须从外部注入
+  const chapter = chapterData[0]
+    ? { ...chapterData[0], subject: chapterFallback?.subject || subject }
+    : chapterFallback
 
   if (!chapter) throw new Error('Chapter not found')
 

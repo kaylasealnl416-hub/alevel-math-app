@@ -27,7 +27,6 @@ app.post('/start', async (c) => {
 
     const aiOptions = {}
 
-    // 前端传来的章节信息，作为 AI 生成题目的 fallback
     const chapterFallback = chapterTitle ? {
       id: chapterId,
       title: chapterTitle,
@@ -38,7 +37,7 @@ app.post('/start', async (c) => {
       subject: subject || 'mathematics',
     } : null
 
-    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback)
+    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, 5, subject || 'mathematics')
 
     // Format for frontend — don't send answers yet
     const formatted = questionList.map(q => ({
