@@ -83,18 +83,36 @@ app.post('/answer', async (c) => {
       return c.json({ success: false, error: { message: 'Question not found' } }, 404)
     }
 
-    // Check correctness (大小写不敏感)
     const correctValue = question.answer?.value
-    const isCorrect = String(answer).trim().toUpperCase() === String(correctValue).trim().toUpperCase()
+    const qType = question.type || 'multiple_choice'
+    let isCorrect = false
 
-    // Save answer
-    await saveAnswer(userId, questionId, answer, isCorrect, timeSpent)
+    if (qType === 'calculation') {
+      // 数值比较：允许 ±2% 误差，也支持精确字符串匹配
+      const userNum = parseFloat(String(answer).replace(/[^0-9.\-eE]/g, ''))
+      const correctNum = parseFloat(String(correctValue).replace(/[^0-9.\-eE]/g, ''))
+      if (!isNaN(userNum) && !isNaN(correctNum) && correctNum !== 0) {
+        isCorrect = Math.abs((userNum - correctNum) / correctNum) <= 0.02
+      } else {
+        isCorrect = String(answer).trim().toUpperCase() === String(correctValue).trim().toUpperCase()
+      }
+    } else if (qType === 'short_answer') {
+      // 简答题：暂时标记为 null（需人工/AI 批改），前端显示 model answer
+      isCorrect = null
+    } else {
+      // MCQ：大小写不敏感字符串匹配
+      isCorrect = String(answer).trim().toUpperCase() === String(correctValue).trim().toUpperCase()
+    }
+
+    // Save answer（isCorrect null 时存 false，不影响统计）
+    await saveAnswer(userId, questionId, answer, isCorrect ?? false, timeSpent)
 
     // Return full feedback
     return c.json({
       success: true,
       data: {
-        isCorrect,
+        isCorrect: isCorrect ?? false,
+        questionType: qType,
         correctAnswer: correctValue,
         solution: question.answer?.explanation || '',
         deepExplanation: question.explanation?.en || '',

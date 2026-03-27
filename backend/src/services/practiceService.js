@@ -69,6 +69,33 @@ const SUBJECT_PROFILES = {
   },
 }
 
+// 按学科决定题型混合比例
+function buildQuestionTypeMix(subjectId, count) {
+  // 各学科的题型比例配置
+  const MIXES = {
+    mathematics: { mcq: 0.4, calculation: 0.6, short_answer: 0 },
+    economics:   { mcq: 0.5, calculation: 0,   short_answer: 0.5 },
+    physics:     { mcq: 0.4, calculation: 0.6, short_answer: 0 },
+    chemistry:   { mcq: 0.4, calculation: 0.6, short_answer: 0 },
+    biology:     { mcq: 0.5, calculation: 0,   short_answer: 0.5 },
+  }
+  const mix = MIXES[subjectId] || MIXES.mathematics
+
+  const mcqCount  = Math.round(count * mix.mcq)
+  const calcCount = Math.round(count * mix.calculation)
+  const saCount   = count - mcqCount - calcCount
+
+  const parts = []
+  if (mcqCount > 0)  parts.push(`${mcqCount} multiple_choice`)
+  if (calcCount > 0) parts.push(`${calcCount} calculation`)
+  if (saCount > 0)   parts.push(`${saCount} short_answer`)
+
+  return {
+    description: parts.join(', '),
+    spec: parts.join(', '),
+  }
+}
+
 function buildSystemPrompt(subjectId) {
   const profile = SUBJECT_PROFILES[subjectId] || SUBJECT_PROFILES.mathematics
   const conventions = profile.conventions.map(c => `- ${c}`).join('\n')
@@ -182,26 +209,60 @@ async function generateAndSaveQuestions(chapter, count, difficulty, aiOptions = 
     examTips    ? `\nEXAM TIPS:\n${examTips}` : '',
   ].filter(Boolean).join('\n')
 
+  // ── 第三层：题型分配（按学科决定混合比例）────────────────
+  const questionTypeMix = buildQuestionTypeMix(subjectId, count)
+
   const userPrompt = `${chapterContext}
 
 ---
-Generate ${count} ${diffLabel} multiple-choice questions for the chapter above.
+Generate ${count} ${diffLabel} questions for the chapter above.
+Question type distribution: ${questionTypeMix.description}
 
 Each question must test a DIFFERENT key point from the list above.
 Questions testing "COMMON MISTAKES" topics should appear in proportion to their exam frequency.
 
-For each question return ALL fields:
+For EACH question return ALL fields below. The "type" field determines the format:
+
+TYPE: "multiple_choice"
 - type: "multiple_choice"
 - question: clear question text (use LaTeX notation where needed, e.g. $x^2$)
 - options: {"A": "...", "B": "...", "C": "...", "D": "..."}
-- correct: the correct answer letter
+- correct: the correct answer letter (e.g. "B")
 - solution: step-by-step worked solution (2-4 lines)
 - deepExplanation: 3-5 sentence explanation of WHY the answer is correct
 - keyFormula: the key formula or concept used
 - commonMistake: the most common student error on this question type
-- whyOthersWrong: {"B": "reason", "C": "reason", "D": "reason"}
-- tags: array of topic tags from the key points above
+- whyOthersWrong: {"B": "reason", "C": "reason", "D": "reason"} (omit the correct letter)
+- tags: array of topic tags
 - difficulty: number 1-5
+
+TYPE: "calculation"
+- type: "calculation"
+- question: question text with all given values (use LaTeX notation)
+- options: null
+- correct: the numerical answer as a string (e.g. "3.14" or "2.5 × 10^3")
+- solution: step-by-step worked solution showing all working
+- deepExplanation: explanation of the method used
+- keyFormula: the formula applied
+- commonMistake: common error students make
+- whyOthersWrong: {}
+- tags: array of topic tags
+- difficulty: number 1-5
+
+TYPE: "short_answer"
+- type: "short_answer"
+- question: question text asking student to explain, describe, or analyse
+- options: null
+- correct: a model answer (2-4 sentences)
+- solution: the model answer with key points highlighted
+- deepExplanation: why this answer earns full marks
+- keyFormula: key concept or term (if applicable, else "")
+- commonMistake: common incomplete or incorrect responses
+- whyOthersWrong: {}
+- tags: array of topic tags
+- difficulty: number 1-5
+
+Generate exactly this distribution: ${questionTypeMix.spec}
 
 Return ONLY a JSON array, no markdown.`
 
@@ -241,23 +302,26 @@ Return ONLY a JSON array, no markdown.`
   const savedQuestions = []
 
   for (const q of parsed) {
+    const qType = q.type || 'multiple_choice'
+    const estimatedTime = qType === 'short_answer' ? 300 : qType === 'calculation' ? 240 : 120
+
     const [saved] = await db.insert(questions).values({
       chapterId: chapter.id,
-      type: q.type || 'multiple_choice',
+      type: qType,
       difficulty: q.difficulty || diffMap[difficulty] || 3,
       content: { en: q.question },
-      options: q.options,
+      options: q.options || null,
       answer: { value: q.correct, explanation: q.solution },
       explanation: {
         en: q.deepExplanation,
-        keyFormula: q.keyFormula,
+        keyFormula: q.keyFormula || '',
         commonMistake: q.commonMistake,
-        whyOthersWrong: q.whyOthersWrong
+        whyOthersWrong: q.whyOthersWrong || {}
       },
       tags: q.tags || [],
       source: 'ai_generated',
       status: 'draft',
-      estimatedTime: 120,
+      estimatedTime,
     }).returning()
 
     savedQuestions.push(saved)
