@@ -4,9 +4,6 @@
 
 import { useState, useCallback, useRef } from 'react'
 import { chatAPI } from '../utils/api.js'
-import { getAISettings } from '../utils/aiProviders.js'
-import { trackFreeAIUsage, shouldRemindAPIKey, dismissAPIKeyReminder } from '../utils/helpers.js'
-import Toast from '../components/common/Toast'
 
 export function useChat(userId) {
   const [sessions, setSessions] = useState([])
@@ -124,17 +121,10 @@ export function useChat(userId) {
     setMessages(prev => [...prev, tempUserMessage])
 
     try {
-      // 注入用户 AI 设置
-      const aiSettings = getAISettings()
-      const aiConfig = (aiSettings?.provider && aiSettings?.apiKey)
-        ? { provider: aiSettings.provider, apiKey: aiSettings.apiKey, model: aiSettings.model }
-        : {}
-
       const result = await chatAPI.sendMessage({
         sessionId: currentSession.id,
         message: content.trim(),
         context,
-        ...aiConfig
       })
 
       if (result.success) {
@@ -151,15 +141,6 @@ export function useChat(userId) {
             ? { ...s, messageCount: s.messageCount + 2, lastMessageAt: new Date().toISOString() }
             : s
         ))
-
-        // 没有自己 key 时计数并提醒
-        if (!aiConfig.provider) {
-          trackFreeAIUsage()
-          if (shouldRemindAPIKey()) {
-            Toast.info('Free AI quota is limited. Click the AI button in the navbar to configure your own API key.')
-            dismissAPIKeyReminder()
-          }
-        }
 
         return result.data
       } else {

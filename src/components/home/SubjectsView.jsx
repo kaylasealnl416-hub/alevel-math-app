@@ -110,7 +110,7 @@ function SubjectsView({ nav, lang }) {
                   boxShadow: `0 0 24px ${BRAND}40`,
                   transition: "background 0.15s",
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = "#B71C1C"}
+                onMouseEnter={e => e.currentTarget.style.background = "#1557b0"}
                 onMouseLeave={e => e.currentTarget.style.background = BRAND}
               >
                 Start Learning →
@@ -139,7 +139,7 @@ function SubjectsView({ nav, lang }) {
               { icon: "📖", title: "Structured Curriculum", desc: "Chapter-by-chapter learning with key points and formulas" },
               { icon: "🧪", title: "Practice Quizzes",     desc: "AI-generated questions to test your understanding" },
               { icon: "📝", title: "Past Papers",          desc: "Edexcel IAL past exam papers with real timing" },
-              { icon: "💬", title: "AI Tutor",             desc: "Instant explanations and step-by-step guidance" },
+              { icon: "📊", title: "Progress Tracking",    desc: "Track your performance and identify weak areas" },
             ].map((f, i) => (
               <div key={i} style={{
                 background: "rgba(255,255,255,0.05)",
@@ -270,13 +270,6 @@ function SubjectsView({ nav, lang }) {
               bg: "linear-gradient(135deg,#EFF6FF,#DBEAFE)", border: "#BFDBFE",
               iconBg: "#DBEAFE",
               action: () => authNav("curriculum", "mathematics"),
-            },
-            {
-              icon: "💬", title: "AI Tutor",
-              desc: "Stuck on a concept? Chat with an AI tutor for instant explanations.",
-              bg: "linear-gradient(135deg,#F0FDF4,#DCFCE7)", border: "#BBF7D0",
-              iconBg: "#DCFCE7",
-              action: () => authNav("chat", "mathematics"),
             },
             {
               icon: "📝", title: "Mock Exams",

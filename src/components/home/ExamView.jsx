@@ -45,10 +45,6 @@ export default function ExamView({ chapter, book, nav, embedded, t, lang, subjec
 
     const chTitle = getTitle();
 
-    // 读取 AI 设置
-    let aiSettings = {};
-    try { aiSettings = JSON.parse(localStorage.getItem('ai_settings')) || {}; } catch {}
-
     const body = {
       chapterId: chapterInfo.id,
       questionCount: NUM_QUESTIONS,
@@ -58,11 +54,6 @@ export default function ExamView({ chapter, book, nav, embedded, t, lang, subjec
       chapterKeyPoints: chapterInfo.keyPoints || [],
       chapterFormulas: chapterInfo.formulas || [],
     };
-    if (aiSettings.provider && aiSettings.apiKey) {
-      body.provider = aiSettings.provider;
-      body.apiKey = aiSettings.apiKey;
-      if (aiSettings.model) body.model = aiSettings.model;
-    }
 
     try {
       const exam = await post('/api/exams/quick-start', body, { timeout: 120000, retry: 0 });

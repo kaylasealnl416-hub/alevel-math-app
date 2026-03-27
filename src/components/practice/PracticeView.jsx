@@ -1,18 +1,10 @@
 import { useState, useRef } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { post } from '../../utils/apiClient'
-import Toast from '../common/Toast'
-import { shouldRemindAPIKey, dismissAPIKeyReminder } from '../../utils/helpers'
 import PracticeSetup from './PracticeSetup'
 import PracticeQuestion from './PracticeQuestion'
 import PracticeFeedback from './PracticeFeedback'
 import PracticeSummary from './PracticeSummary'
-
-function getAISettings() {
-  try {
-    return JSON.parse(localStorage.getItem('ai_settings')) || {}
-  } catch { return {} }
-}
 
 /**
  * PracticeView — 练习流程编排器
@@ -44,26 +36,15 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
     setLoading(true)
     setError(null)
     try {
-      const aiSettings = getAISettings()
-      // 把章节信息传给后端，用于 AI 生成题目时构造 prompt
-      const keyPoints = Array.isArray(chapter?.keyPoints)
-        ? chapter.keyPoints
-        : []
-      const formulas = Array.isArray(chapter?.formulas)
-        ? chapter.formulas
-        : []
+      const keyPoints = Array.isArray(chapter?.keyPoints) ? chapter.keyPoints : []
+      const formulas = Array.isArray(chapter?.formulas) ? chapter.formulas : []
 
       const body = {
         chapterId,
         difficulty,
-        chapterTitle: chapterTitle,
+        chapterTitle,
         chapterKeyPoints: keyPoints,
         chapterFormulas: formulas,
-        ...(aiSettings.provider && aiSettings.apiKey ? {
-          provider: aiSettings.provider,
-          apiKey: aiSettings.apiKey,
-          model: aiSettings.model,
-        } : {})
       }
 
       const data = await post('/api/practice/start', body)
@@ -75,12 +56,6 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
       setCurrentDifficulty(difficulty)
       questionStartTime.current = Date.now()
       setPhase('practicing')
-
-      // 没有自己 key 时，达到阈值提醒
-      if (shouldRemindAPIKey()) {
-        Toast.info('Free AI quota is limited. Click the AI button in the navbar to configure your own API key.')
-        dismissAPIKeyReminder()
-      }
     } catch (e) {
       setError(e.message)
     } finally {

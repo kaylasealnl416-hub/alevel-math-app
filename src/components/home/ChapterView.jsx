@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SUBJECTS } from "../../data/subjects.js";
 import { CURRICULUM } from "../../data/curriculum.js";
 import { ALL_SUBJECTS } from "../../data/allSubjects.js";
@@ -8,9 +9,12 @@ import { styles } from "../../styles/homeStyles.js";
 import MathText from "../practice/MathText";
 import PracticeView from "../practice/PracticeView";
 import ExamView from "./ExamView";
+import { useAuth } from "../../contexts/AuthContext.jsx";
 
 export default function ChapterView({ chapter, book, nav, t, lang, subject = "mathematics" }) {
   const [tab, setTab] = useState("learn");
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [expandedKP, setExpandedKP] = useState(0); // 单开手风琴，默认展开第一条
   const [hoveredKP, setHoveredKP] = useState(null);
   const [activeVideo, setActiveVideo] = useState(0);
@@ -87,14 +91,6 @@ export default function ChapterView({ chapter, book, nav, t, lang, subject = "ma
           <p style={{ margin: "0 0 20px", fontSize: 14, color: "#64748B", lineHeight: 1.7, maxWidth: 700 }}>
             {(ch.overview || "").substring(0, 280)}{(ch.overview || "").length > 280 ? "…" : ""}
           </p>
-          <button
-            onClick={() => nav("chat", undefined, undefined, subject)}
-            style={{ padding: "9px 20px", background: "#185abc", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, boxShadow: "0 2px 8px rgba(30,64,175,0.25)", transition: "background 0.15s" }}
-            onMouseEnter={e => e.currentTarget.style.background = "#1D4ED8"}
-            onMouseLeave={e => e.currentTarget.style.background = "#185abc"}
-          >
-            🤖 Ask AI Tutor
-          </button>
         </div>
       </div>
 
@@ -102,13 +98,21 @@ export default function ChapterView({ chapter, book, nav, t, lang, subject = "ma
       <div style={{ display: "flex", borderBottom: "1px solid #E2E8F0", marginBottom: 20 }}>
         {TABS.map(tabItem => {
           const isActive = tab === tabItem.id;
+          const requiresAuth = tabItem.id === "quiz" || tabItem.id === "exam";
           return (
             <button
               key={tabItem.id}
-              onClick={() => setTab(tabItem.id)}
+              onClick={() => {
+                if (requiresAuth && !isAuthenticated) {
+                  sessionStorage.setItem("pendingView", tabItem.id);
+                  navigate("/login");
+                } else {
+                  setTab(tabItem.id);
+                }
+              }}
               style={{ padding: "10px 22px", border: "none", cursor: "pointer", background: isActive ? color + "08" : "transparent", borderBottom: `2px solid ${isActive ? color : "transparent"}`, color: isActive ? color : "#64748B", fontSize: 13, fontWeight: 600, marginBottom: -1, transition: "all 0.15s" }}
             >
-              {tabItem.icon} {tabItem.label}
+              {tabItem.icon} {tabItem.label}{requiresAuth && !isAuthenticated ? " 🔒" : ""}
             </button>
           );
         })}

@@ -4,6 +4,7 @@
 // ============================================================
 
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useChat } from '../hooks/useChat.js'
 import MessageList from './MessageList.jsx'
@@ -12,6 +13,7 @@ import SessionSidebar from './SessionSidebar.jsx'
 
 export default function ChatPage({ nav, chapter, book, subject }) {
   const { user, loading: authLoading } = useAuth()
+  const navigate = useNavigate()
   const userId = user?.id
 
   const {
@@ -47,8 +49,9 @@ export default function ChatPage({ nav, chapter, book, subject }) {
   }
 
   const handleBack = () => {
-    if (nav) nav('curriculum', book, chapter, subject)
-    else window.history.back()
+    if (nav && chapter) nav('curriculum', book, chapter, subject)
+    else if (nav) nav('curriculum', book, null, subject)
+    else navigate(-1)
   }
 
   return (
@@ -63,7 +66,7 @@ export default function ChatPage({ nav, chapter, book, subject }) {
           onMouseLeave={e => { e.currentTarget.style.color = '#64748B' }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          Back to Chapter
+          {nav && chapter ? 'Back to Chapter' : nav ? 'Back to Curriculum' : 'Back'}
         </button>
 
         <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', gap: 8 }}>

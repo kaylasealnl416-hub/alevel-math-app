@@ -31,7 +31,7 @@ export default function ErrorBookView({ errors, onClear, nav, t, lang, subject =
     setLoadingExp(true);
     setExplanation("");
     const text = await callAI(
-      `You are an A-Level ${subjectName} tutor. Explain the concept clearly and concisely for a student who got this wrong.$""`,
+      `You are an A-Level ${subjectName} tutor. Explain the concept clearly and concisely for a student who got this wrong.`,
       `Student got this wrong:\nQuestion: ${err.question}\nTheir answer: ${err.userAnswer}\nCorrect answer: ${err.correct}\nSolution: ${err.solution}\n\nProvide: 1) Where they went wrong, 2) The key concept, 3) A tip to remember it`
     );
     setExplanation(text);

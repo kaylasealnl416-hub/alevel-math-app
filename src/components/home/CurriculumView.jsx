@@ -291,55 +291,6 @@ export default function CurriculumView({ nav, t, lang, subject = "mathematics", 
         {/* Right: Sticky sidebar */}
         <div style={{ position: "sticky", top: 80 }}>
 
-          {/* AI Tutor card */}
-          <div style={{
-            background: "#FFFFFF", borderRadius: 16,
-            border: `1px solid ${subjectColor}25`,
-            overflow: "hidden", marginBottom: 16,
-            boxShadow: `0 2px 12px ${subjectColor}10`,
-          }}>
-            <div style={{
-              background: `linear-gradient(135deg, ${subjectColor}, ${subjectColor}BB)`,
-              padding: "14px 16px",
-              display: "flex", alignItems: "center", gap: 10,
-            }}>
-              <span style={{ fontSize: 18 }}>🤖</span>
-              <div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>
-                  {subjectMeta?.name?.[lang] || "Subject"} AI Tutor
-                </div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>Powered by Claude</div>
-              </div>
-            </div>
-            <div style={{ padding: "14px 16px", background: "#F8FAFC", minHeight: 80 }}>
-              <div style={{
-                background: "#FFFFFF", border: "1px solid #E2E8F0",
-                borderRadius: 12, borderTopLeftRadius: 4,
-                padding: "10px 12px", fontSize: 12, color: "#475569", lineHeight: 1.6,
-                boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
-                maxWidth: "90%",
-              }}>
-                {aiIntro}
-              </div>
-            </div>
-            <div style={{ padding: "12px 16px", borderTop: "1px solid #F1F5F9" }}>
-              <button
-                onClick={() => nav("chat", undefined, undefined, subject)}
-                style={{
-                  width: "100%", padding: "9px 0",
-                  background: subjectColor + "12",
-                  color: subjectColor, border: `1px solid ${subjectColor}25`,
-                  borderRadius: 8, fontSize: 13, fontWeight: 600,
-                  cursor: "pointer", transition: "background 0.15s",
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = subjectColor + "22"}
-                onMouseLeave={e => e.currentTarget.style.background = subjectColor + "12"}
-              >
-                Open AI Chat →
-              </button>
-            </div>
-          </div>
-
           {/* Quick Resources */}
           <div style={{
             background: "#FFFFFF", borderRadius: 16,

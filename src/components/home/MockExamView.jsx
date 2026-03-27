@@ -38,7 +38,7 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
 
     const subjectName = SUBJECT_NAMES[subject] || "the subject";
     const examBoard = isMath ? "Cambridge" : "Pearson Edexcel";
-    const system = `You are creating realistic ${examBoard} IAL ${subjectName} past paper questions. Sim ${paper.year} ${paper.session} ${paper.paper} paper. JSONulate questions from the only.`;
+    const system = `You are creating realistic ${examBoard} IAL ${subjectName} past paper questions. Simulate the ${paper.year} ${paper.session} ${paper.paper} paper style and difficulty. Return questions as a JSON array only.`;
     const bookData = dataSource[paper.paper.replace(/[12]$/, "")] || dataSource[Object.keys(dataSource)[0]];
     const topics = bookData ? bookData.chapters.map(c => c.title).join(", ") : "Pure Mathematics";
 
