@@ -27,15 +27,15 @@ app.post('/start', async (c) => {
 
     const aiOptions = {}
 
-    const chapterFallback = chapterTitle ? {
+    const chapterFallback = {
       id: chapterId,
-      title: chapterTitle,
+      title: chapterTitle || chapterId,
       keyPoints: chapterKeyPoints || [],
       formulas: chapterFormulas || [],
       hardPoints: chapterHardPoints || '',
       examTips: chapterExamTips || '',
       subject: subject || 'mathematics',
-    } : null
+    }
 
     const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, 5, subject || 'mathematics')
 
