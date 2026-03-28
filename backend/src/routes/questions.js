@@ -95,41 +95,6 @@ app.get('/', async (c) => {
 })
 
 /**
- * GET /api/questions/:id
- * 获取单个题目详情
- */
-app.get('/:id', async (c) => {
-  try {
-    const questionId = parseInt(c.params.id)
-
-    const [question] = await db
-      .select()
-      .from(questions)
-      .where(eq(questions.id, questionId))
-      .limit(1)
-
-    if (!question) {
-      return c.json({
-        success: false,
-        error: { code: 'NOT_FOUND', message: '题目不存在' }
-      }, 404)
-    }
-
-    return c.json({
-      success: true,
-      data: question
-    })
-
-  } catch (error) {
-    console.error('获取题目详情失败:', error)
-    return c.json({
-      success: false,
-      error: { code: 'SERVER_ERROR', message: error.message }
-    }, 500)
-  }
-})
-
-/**
  * GET /api/questions/random
  * 随机获取题目（智能筛选）
  */
@@ -182,6 +147,41 @@ app.get('/random', async (c) => {
 
   } catch (error) {
     console.error('随机获取题目失败:', error)
+    return c.json({
+      success: false,
+      error: { code: 'SERVER_ERROR', message: error.message }
+    }, 500)
+  }
+})
+
+/**
+ * GET /api/questions/:id
+ * 获取单个题目详情
+ */
+app.get('/:id', async (c) => {
+  try {
+    const questionId = parseInt(c.req.param('id'))
+
+    const [question] = await db
+      .select()
+      .from(questions)
+      .where(eq(questions.id, questionId))
+      .limit(1)
+
+    if (!question) {
+      return c.json({
+        success: false,
+        error: { code: 'NOT_FOUND', message: '题目不存在' }
+      }, 404)
+    }
+
+    return c.json({
+      success: true,
+      data: question
+    })
+
+  } catch (error) {
+    console.error('获取题目详情失败:', error)
     return c.json({
       success: false,
       error: { code: 'SERVER_ERROR', message: error.message }
@@ -263,7 +263,7 @@ app.post('/', async (c) => {
  */
 app.put('/:id', async (c) => {
   try {
-    const questionId = parseInt(c.params.id)
+    const questionId = parseInt(c.req.param('id'))
     const body = await c.req.json()
 
     const {
@@ -326,7 +326,7 @@ app.put('/:id', async (c) => {
  */
 app.delete('/:id', async (c) => {
   try {
-    const questionId = parseInt(c.params.id)
+    const questionId = parseInt(c.req.param('id'))
 
     const [deleted] = await db
       .delete(questions)
@@ -360,7 +360,7 @@ app.delete('/:id', async (c) => {
  */
 app.put('/:id/review', async (c) => {
   try {
-    const questionId = parseInt(c.params.id)
+    const questionId = parseInt(c.req.param('id'))
     const userId = c.get('userId')
     const { status, feedback } = await c.req.json()
 

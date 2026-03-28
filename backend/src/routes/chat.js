@@ -59,7 +59,7 @@ app.post('/', async (c) => {
  */
 app.get('/', async (c) => {
   try {
-    const userId = c.req.query('userId')
+    const userId = c.get('userId')
     const status = c.req.query('status') || 'active'
     const limit = parseInt(c.req.query('limit') || '20')
     const offset = parseInt(c.req.query('offset') || '0')
@@ -72,7 +72,7 @@ app.get('/', async (c) => {
     }
 
     // 构建查询条件
-    const conditions = [eq(chatSessions.userId, parseInt(userId))]
+    const conditions = [eq(chatSessions.userId, userId)]
     if (status) {
       conditions.push(eq(chatSessions.status, status))
     }

@@ -111,6 +111,7 @@ app.get('/:id', async (c) => {
 app.put('/:id', async (c) => {
   try {
     const userId = parseInt(c.req.param('id'))
+    const currentUserId = c.get('userId')
     const body = await c.req.json()
 
     if (isNaN(userId)) {
@@ -118,6 +119,13 @@ app.put('/:id', async (c) => {
         success: false,
         error: { code: 'INVALID_USER_ID', message: '无效的用户ID' }
       }, 400)
+    }
+
+    if (currentUserId !== userId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权修改其他用户信息' }
+      }, 403)
     }
 
     // 允许更新的字段

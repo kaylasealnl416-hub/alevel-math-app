@@ -95,7 +95,9 @@ app.post('/register', async (c) => {
 
     // 创建用户（事务内检查是否首个用户，避免竞态条件）
     const newUser = await db.transaction(async (tx) => {
-      const ADMIN_EMAILS = ['108951066@qq.com']
+      const ADMIN_EMAILS = process.env.ADMIN_EMAILS
+        ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim())
+        : []
       const [{ count }] = await tx.select({ count: sql`count(*)`.mapWith(Number) }).from(users)
       const isAdmin = ADMIN_EMAILS.includes(email) || count === 0
       const [user] = await tx.insert(users).values({
@@ -290,7 +292,7 @@ app.post('/refresh', async (c) => {
     setCookie(c, 'auth_token', newToken, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: isProduction ? 'Strict' : 'Lax',
+      sameSite: isProduction ? 'None' : 'Lax',
       maxAge: 7 * 24 * 60 * 60,
       path: '/'
     })

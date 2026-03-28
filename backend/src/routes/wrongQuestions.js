@@ -16,7 +16,7 @@ const app = new Hono()
  */
 app.get('/', async (c) => {
   try {
-    const userId = c.req.query('userId')
+    const userId = c.get('userId')
     const subject = c.req.query('subject')
     const limit = parseInt(c.req.query('limit') || '50')
 
@@ -164,7 +164,7 @@ app.post('/:id/master', async (c) => {
  */
 app.get('/stats', async (c) => {
   try {
-    const userId = c.req.query('userId')
+    const userId = c.get('userId')
 
     if (!userId) {
       return c.json({
