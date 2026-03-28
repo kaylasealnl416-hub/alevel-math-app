@@ -67,17 +67,42 @@ const SUBJECT_PROFILES = {
       'Follow Edexcel IAL Biology specification conventions',
     ],
   },
+  history: {
+    name: 'History',
+    papers: 'WHS11/WHS12/WHS13/WHS14',
+    role: 'expert Pearson Edexcel IAL History question setter specialising in modern world history, causation, and historical analysis',
+    conventions: [
+      'Questions must test historical thinking skills: causation, consequence, change, continuity, significance',
+      'Short-answer questions should require specific factual evidence to support arguments',
+      'MCQ distractors should reflect common misconceptions or partially correct historical interpretations',
+      'Align with Edexcel IAL History specification themes and key questions',
+      'Avoid anachronistic judgements; frame questions within historical context',
+    ],
+  },
+  further_mathematics: {
+    name: 'Further Mathematics',
+    papers: 'WFM11/WFM12/WFM13/WFM14',
+    role: 'expert Pearson Edexcel IAL Further Mathematics question setter with deep knowledge of advanced pure maths, mechanics, and statistics',
+    conventions: [
+      'Use precise mathematical notation (LaTeX where needed)',
+      'Questions extend beyond A-Level Mathematics into proof, complex numbers, matrices, and advanced calculus',
+      'Include exact answers using surds, π, e or standard form where appropriate',
+      'Follow Edexcel IAL Further Mathematics specification conventions',
+    ],
+  },
 }
 
 // 按学科决定题型混合比例
 function buildQuestionTypeMix(subjectId, count) {
   // 各学科的题型比例配置
   const MIXES = {
-    mathematics: { mcq: 0.4, calculation: 0.6, short_answer: 0 },
-    economics:   { mcq: 0.5, calculation: 0,   short_answer: 0.5 },
-    physics:     { mcq: 0.4, calculation: 0.6, short_answer: 0 },
-    chemistry:   { mcq: 0.4, calculation: 0.6, short_answer: 0 },
-    biology:     { mcq: 0.5, calculation: 0,   short_answer: 0.5 },
+    mathematics:         { mcq: 0.4, calculation: 0.6, short_answer: 0 },
+    economics:           { mcq: 0.5, calculation: 0,   short_answer: 0.5 },
+    physics:             { mcq: 0.4, calculation: 0.6, short_answer: 0 },
+    chemistry:           { mcq: 0.4, calculation: 0.6, short_answer: 0 },
+    biology:             { mcq: 0.5, calculation: 0,   short_answer: 0.5 },
+    history:             { mcq: 0.2, calculation: 0,   short_answer: 0.8 },
+    further_mathematics: { mcq: 0.4, calculation: 0.6, short_answer: 0 },
   }
   const mix = MIXES[subjectId] || MIXES.mathematics
 
