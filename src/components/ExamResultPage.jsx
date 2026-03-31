@@ -68,11 +68,15 @@ function ExamResultPage() {
   }
 
   const getQuestionResult = (questionId) => {
-    const userAnswer = exam.answers[questionId]
+    const rawAnswer = exam.answers[questionId]
     const question = questions.find(q => q.id === questionId)
     if (!question) return null
-    const isCorrect = userAnswer?.value === question.answer?.value
-    return { userAnswer, question, isCorrect }
+    const isMCQ = question.type === 'multiple_choice'
+    const userAnswerText = typeof rawAnswer === 'string'
+      ? rawAnswer
+      : (rawAnswer?.value ?? '')
+    const isCorrect = isMCQ ? (userAnswerText === question.answer?.value) : null
+    return { rawAnswer, userAnswerText, question, isCorrect, isMCQ }
   }
 
   if (loading) return <Loading message="Loading exam results..." size="large" fullScreen />
@@ -134,10 +138,10 @@ function ExamResultPage() {
     },
     questionCard: (isCorrect) => ({
       border: '1px solid',
-      borderColor: isCorrect ? '#81c995' : '#f5bcba',
+      borderColor: isCorrect === null ? '#dadce0' : isCorrect ? '#81c995' : '#f5bcba',
       borderRadius: 8, padding: 20, marginBottom: 12,
       borderLeftWidth: 4,
-      borderLeftColor: isCorrect ? '#188038' : '#d93025',
+      borderLeftColor: isCorrect === null ? '#1a73e8' : isCorrect ? '#188038' : '#d93025',
     }),
     questionHeader: {
       display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -186,7 +190,14 @@ function ExamResultPage() {
             <Button variant="secondary" size="sm" onClick={() => navigate('/exams')}>
               ← Back
             </Button>
-            <h1 style={S.title}>Exam Results</h1>
+            <div>
+              <h1 style={{ ...S.title, marginBottom: exam.questionSet?.title ? 2 : 0 }}>Exam Results</h1>
+              {exam.questionSet?.title && (
+                <div style={{ fontSize: 13, color: '#5f6368' }}>
+                  {exam.questionSet.title.replace(/^Quick Exam - /i, '')}
+                </div>
+              )}
+            </div>
           </div>
           <Button variant="text" size="sm" onClick={shareResults}>Share</Button>
         </div>
@@ -264,9 +275,15 @@ function ExamResultPage() {
                   <span style={S.questionNum}>
                     Question {index + 1}
                   </span>
-                  <span style={S.resultBadge(result.isCorrect)}>
-                    {result.isCorrect ? '✓ Correct' : '✗ Incorrect'}
-                  </span>
+                  {result.isMCQ ? (
+                    <span style={S.resultBadge(result.isCorrect)}>
+                      {result.isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                    </span>
+                  ) : (
+                    <span style={{ padding: '3px 10px', borderRadius: 12, fontSize: 12, fontWeight: 600, background: '#e8f0fe', color: '#185abc' }}>
+                      AI Graded
+                    </span>
+                  )}
                 </div>
 
                 {question.tags && question.tags.length > 0 && (
@@ -292,7 +309,7 @@ function ExamResultPage() {
                           key: letter, text: `${letter}. ${text}`, letter
                         }))
                     ).map(({ key, text, letter }) => {
-                      const isUserAnswer = letter === (typeof result.userAnswer === 'string' ? result.userAnswer : result.userAnswer?.value)
+                      const isUserAnswer = letter === result.userAnswerText
                       const isCorrectAnswer = letter === question.answer?.value
                       return (
                         <div key={key} style={S.optionItem(isUserAnswer && !isCorrectAnswer, isCorrectAnswer)}>
@@ -305,12 +322,86 @@ function ExamResultPage() {
                   </div>
                 )}
 
+                {!result.isMCQ && (
+                  <div style={{ marginBottom: 12 }}>
+                    <div style={{ background: '#f8f9fa', borderRadius: 8, padding: '10px 14px', marginBottom: 8, border: '1px solid #e8eaed' }}>
+                      <div style={{ fontSize: 12, fontWeight: 600, color: '#5f6368', marginBottom: 4 }}>YOUR ANSWER</div>
+                      <div style={{ fontSize: 14, color: '#202124', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+                        {result.userAnswerText || <span style={{ color: '#9aa0a6', fontStyle: 'italic' }}>No answer submitted</span>}
+                      </div>
+                    </div>
+                    {question.answer?.value && (
+                      <div style={{ background: '#e6f4ea', borderRadius: 8, padding: '10px 14px', border: '1px solid #81c995' }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: '#0d652d', marginBottom: 4 }}>MODEL ANSWER</div>
+                        <div style={{ fontSize: 14, color: '#202124', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+                          {question.answer.value}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Mark scheme / answer breakdown */}
                 {question.answer?.explanation && (
                   <div style={S.explanation}>
-                    <h4 style={S.explanationTitle}>Explanation</h4>
+                    <h4 style={S.explanationTitle}>Mark Scheme</h4>
                     <p style={S.explanationText}>
-                      {question.answer.explanation?.en || question.answer.explanation}
+                      {typeof question.answer.explanation === 'object'
+                        ? (question.answer.explanation.en || JSON.stringify(question.answer.explanation))
+                        : question.answer.explanation}
                     </p>
+                  </div>
+                )}
+
+                {/* Full solution */}
+                {question.explanation?.en && (
+                  <div style={{ ...S.explanation, background: '#e8f0fe', borderLeft: '3px solid #1a73e8', marginTop: 8 }}>
+                    <h4 style={{ ...S.explanationTitle, color: '#1a73e8' }}>Solution</h4>
+                    <p style={{ ...S.explanationText, whiteSpace: 'pre-line' }}>{question.explanation.en}</p>
+                  </div>
+                )}
+
+                {/* Key formula + Common mistake side by side */}
+                {(question.explanation?.keyFormula || question.explanation?.commonMistake) && (
+                  <div style={{ display: 'grid', gridTemplateColumns: question.explanation.keyFormula && question.explanation.commonMistake ? '1fr 1fr' : '1fr', gap: 8, marginTop: 8 }}>
+                    {question.explanation.keyFormula && (
+                      <div style={{ background: '#fffbeb', borderRadius: 8, padding: '10px 14px', border: '1px solid #fde68a' }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: '#92400e', marginBottom: 4 }}>🔑 KEY FORMULA</div>
+                        <div style={{ fontSize: 13, color: '#5f6368', lineHeight: 1.6 }}>{question.explanation.keyFormula}</div>
+                      </div>
+                    )}
+                    {question.explanation.commonMistake && (
+                      <div style={{ background: '#fef2f2', borderRadius: 8, padding: '10px 14px', border: '1px solid #fecaca' }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: '#991b1b', marginBottom: 4 }}>⚠️ COMMON MISTAKE</div>
+                        <div style={{ fontSize: 13, color: '#5f6368', lineHeight: 1.6 }}>{question.explanation.commonMistake}</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Why other options wrong — MCQ only, when answer is wrong */}
+                {result.isMCQ && !result.isCorrect && question.explanation?.whyOthersWrong &&
+                  Object.keys(question.explanation.whyOthersWrong).length > 0 && (
+                  <div style={{ marginTop: 8, background: '#fff', border: '1px solid #fecaca', borderRadius: 8, overflow: 'hidden' }}>
+                    <div style={{ padding: '8px 14px', background: '#fef2f2', borderBottom: '1px solid #fecaca', fontSize: 12, fontWeight: 700, color: '#991b1b' }}>
+                      🔍 Why Other Options Are Wrong
+                    </div>
+                    <div style={{ padding: '10px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {Object.entries(question.explanation.whyOthersWrong).map(([letter, reason]) => (
+                        <div key={letter} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                          <span style={{
+                            background: letter === result.userAnswerText ? '#fef2f2' : '#f1f3f4',
+                            color: letter === result.userAnswerText ? '#d93025' : '#5f6368',
+                            fontWeight: 700, padding: '2px 7px', borderRadius: 5, fontSize: 12, flexShrink: 0,
+                          }}>
+                            {letter} ✗
+                          </span>
+                          <span style={{ fontSize: 13, color: '#202124', lineHeight: 1.5 }}>
+                            {letter === result.userAnswerText && <strong>Your choice — </strong>}{reason}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

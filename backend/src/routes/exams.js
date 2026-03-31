@@ -152,6 +152,40 @@ app.get('/:id', async (c) => {
 })
 
 // ============================================================
+// 放弃进行中的考试
+// ============================================================
+app.delete('/:id', async (c) => {
+  try {
+    const examId = parseInt(c.req.param('id'))
+    const userId = c.get('userId')
+
+    const [exam] = await db.select().from(exams).where(eq(exams.id, examId))
+
+    if (!exam) {
+      return c.json({ success: false, error: { message: 'Exam not found' } }, 404)
+    }
+    if (exam.userId !== userId) {
+      return c.json({ success: false, error: { message: 'Not authorized' } }, 403)
+    }
+    if (exam.status !== 'in_progress') {
+      return c.json({ success: false, error: { message: 'Only in-progress exams can be abandoned' } }, 400)
+    }
+
+    // 删除 questionSet，exam 会因 CASCADE 被自动删除
+    await db.delete(questionSets).where(eq(questionSets.id, exam.questionSetId))
+
+    return c.json({ success: true })
+
+  } catch (error) {
+    console.error('放弃考试失败：', error)
+    return c.json({
+      success: false,
+      error: { message: '放弃考试失败', details: error.message }
+    }, 500)
+  }
+})
+
+// ============================================================
 // 3. 获取考试列表
 // ============================================================
 app.get('/', async (c) => {
@@ -176,6 +210,20 @@ app.get('/', async (c) => {
       .limit(limit)
       .offset(offset)
 
+    // 补充章节标题（从 questionSets 取）
+    const qsIds = examList.map(e => e.questionSetId).filter(Boolean)
+    const qsRows = qsIds.length > 0
+      ? await db.select({ id: questionSets.id, chapterId: questionSets.chapterId, title: questionSets.title })
+          .from(questionSets)
+          .where(inArray(questionSets.id, qsIds))
+      : []
+    const qsMap = Object.fromEntries(qsRows.map(qs => [qs.id, qs]))
+    const enrichedExams = examList.map(e => ({
+      ...e,
+      chapterId: qsMap[e.questionSetId]?.chapterId ?? null,
+      chapterTitle: qsMap[e.questionSetId]?.title ?? null,
+    }))
+
     // 统计总数
     const [{ count }] = await db.select({ count: sql`count(*)` })
       .from(exams)
@@ -184,7 +232,7 @@ app.get('/', async (c) => {
     return c.json({
       success: true,
       data: {
-        exams: examList,
+        exams: enrichedExams,
         total: parseInt(count),
         limit,
         offset
