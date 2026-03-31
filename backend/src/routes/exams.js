@@ -176,6 +176,20 @@ app.get('/', async (c) => {
       .limit(limit)
       .offset(offset)
 
+    // 补充章节标题（从 questionSets 取）
+    const qsIds = examList.map(e => e.questionSetId).filter(Boolean)
+    const qsRows = qsIds.length > 0
+      ? await db.select({ id: questionSets.id, chapterId: questionSets.chapterId, title: questionSets.title })
+          .from(questionSets)
+          .where(inArray(questionSets.id, qsIds))
+      : []
+    const qsMap = Object.fromEntries(qsRows.map(qs => [qs.id, qs]))
+    const enrichedExams = examList.map(e => ({
+      ...e,
+      chapterId: qsMap[e.questionSetId]?.chapterId ?? null,
+      chapterTitle: qsMap[e.questionSetId]?.title ?? null,
+    }))
+
     // 统计总数
     const [{ count }] = await db.select({ count: sql`count(*)` })
       .from(exams)
@@ -184,7 +198,7 @@ app.get('/', async (c) => {
     return c.json({
       success: true,
       data: {
-        exams: examList,
+        exams: enrichedExams,
         total: parseInt(count),
         limit,
         offset
