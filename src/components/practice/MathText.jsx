@@ -22,13 +22,32 @@ export default function MathText({ text, style, className }) {
 export function renderLatex(text) {
   if (!text) return ''
   try {
-    return text
-      .replace(/\$\$(.+?)\$\$/gs, (_, latex) =>
-        katex.renderToString(latex.trim(), { displayMode: true, throwOnError: false })
-      )
-      .replace(/\$(.+?)\$/g, (_, latex) =>
-        katex.renderToString(latex.trim(), { displayMode: false, throwOnError: false })
-      )
+    // 规范化字面量 \n 为实际换行符
+    const normalized = text.replace(/\\n/g, '\n')
+
+    // 分段处理：LaTeX 块外的换行转 <br>，LaTeX 块内保持原样
+    const segments = []
+    let lastIndex = 0
+    const re = /\$\$(.+?)\$\$|\$(.+?)\$/gs
+    let match
+
+    while ((match = re.exec(normalized)) !== null) {
+      if (match.index > lastIndex) {
+        segments.push(normalized.slice(lastIndex, match.index).replace(/\n/g, '<br>'))
+      }
+      if (match[1] !== undefined) {
+        segments.push(katex.renderToString(match[1].trim(), { displayMode: true, throwOnError: false }))
+      } else {
+        segments.push(katex.renderToString(match[2].trim(), { displayMode: false, throwOnError: false }))
+      }
+      lastIndex = re.lastIndex
+    }
+
+    if (lastIndex < normalized.length) {
+      segments.push(normalized.slice(lastIndex).replace(/\n/g, '<br>'))
+    }
+
+    return segments.join('')
   } catch {
     return text
   }

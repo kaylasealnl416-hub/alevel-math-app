@@ -50,7 +50,7 @@ export default function PracticeFeedback({ isCorrect, userAnswer, feedback, onNe
       {/* Detailed explanation */}
       {feedback.deepExplanation && (
         <Section icon="💡" title="Detailed Explanation" bg="#e8f0fe" borderColor="#d2e3fc" titleColor="#185abc">
-          <MathText text={feedback.deepExplanation} />
+          <div style={{ whiteSpace: 'pre-line' }}><MathText text={feedback.deepExplanation} /></div>
         </Section>
       )}
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ScoreCard from './exam/ScoreCard'
 import AIFeedback from './exam/AIFeedback'
+import MathText from './practice/MathText'
 import Loading from './common/Loading'
 import Toast from './common/Toast'
 import { Button } from './ui'
@@ -294,9 +295,9 @@ function ExamResultPage() {
                   </div>
                 )}
 
-                <p style={S.questionText}>
-                  {question.content?.en || question.content}
-                </p>
+                <div style={S.questionText}>
+                  <MathText text={question.content?.en || (typeof question.content === 'string' ? question.content : '')} />
+                </div>
 
                 {question.type === 'multiple_choice' && question.options && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 12 }}>
@@ -333,8 +334,8 @@ function ExamResultPage() {
                     {question.answer?.value && (
                       <div style={{ background: '#e6f4ea', borderRadius: 8, padding: '10px 14px', border: '1px solid #81c995' }}>
                         <div style={{ fontSize: 12, fontWeight: 600, color: '#0d652d', marginBottom: 4 }}>MODEL ANSWER</div>
-                        <div style={{ fontSize: 14, color: '#202124', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
-                          {question.answer.value}
+                        <div style={{ fontSize: 14, color: '#202124', lineHeight: 1.6 }}>
+                          <MathText text={question.answer.value} />
                         </div>
                       </div>
                     )}
@@ -357,7 +358,9 @@ function ExamResultPage() {
                 {question.explanation?.en && (
                   <div style={{ ...S.explanation, background: '#e8f0fe', borderLeft: '3px solid #1a73e8', marginTop: 8 }}>
                     <h4 style={{ ...S.explanationTitle, color: '#1a73e8' }}>Solution</h4>
-                    <p style={{ ...S.explanationText, whiteSpace: 'pre-line' }}>{question.explanation.en}</p>
+                    <div style={S.explanationText}>
+                      <MathText text={question.explanation.en} />
+                    </div>
                   </div>
                 )}
 
@@ -367,13 +370,13 @@ function ExamResultPage() {
                     {question.explanation.keyFormula && (
                       <div style={{ background: '#fffbeb', borderRadius: 8, padding: '10px 14px', border: '1px solid #fde68a' }}>
                         <div style={{ fontSize: 11, fontWeight: 700, color: '#92400e', marginBottom: 4 }}>🔑 KEY FORMULA</div>
-                        <div style={{ fontSize: 13, color: '#5f6368', lineHeight: 1.6 }}>{question.explanation.keyFormula}</div>
+                        <div style={{ fontSize: 13, color: '#5f6368', lineHeight: 1.6 }}><MathText text={question.explanation.keyFormula} /></div>
                       </div>
                     )}
                     {question.explanation.commonMistake && (
                       <div style={{ background: '#fef2f2', borderRadius: 8, padding: '10px 14px', border: '1px solid #fecaca' }}>
                         <div style={{ fontSize: 11, fontWeight: 700, color: '#991b1b', marginBottom: 4 }}>⚠️ COMMON MISTAKE</div>
-                        <div style={{ fontSize: 13, color: '#5f6368', lineHeight: 1.6 }}>{question.explanation.commonMistake}</div>
+                        <div style={{ fontSize: 13, color: '#5f6368', lineHeight: 1.6 }}><MathText text={question.explanation.commonMistake} /></div>
                       </div>
                     )}
                   </div>

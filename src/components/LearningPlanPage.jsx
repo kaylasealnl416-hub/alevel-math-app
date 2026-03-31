@@ -96,6 +96,28 @@ function LearningPlanPage() {
 
   const getTypeLabel = (type) => ({ chapter: 'Chapter Study', practice: 'Practice', review: 'Wrong Answer Review', video: 'Video Study' })[type] || type
 
+  const formatDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''
+
+  // P6: 去除 weakTopics 中中英文重复标签
+  const TOPIC_ALIASES = {
+    '根式': 'surds', '简化根式': 'simplification', '代数': 'algebra',
+    '方程': 'equations', '不等式': 'inequalities', '函数': 'functions',
+    '微积分': 'calculus', '导数': 'differentiation', '积分': 'integration',
+    '概率': 'probability', '统计': 'statistics', '向量': 'vectors',
+    '三角': 'trigonometry', '数列': 'sequences', '指数': 'exponentials',
+    '对数': 'logarithms', '二项式': 'binomial', '坐标几何': 'coordinate geometry',
+  }
+  const normalizeTopics = (topics) => {
+    if (!topics) return []
+    const seen = new Set()
+    return topics.filter(t => {
+      const key = (TOPIC_ALIASES[t] || t).toLowerCase()
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+  }
+
   const PRIORITY = {
     high: { bg: '#fce8e6', color: '#a50e0e', border: '#d93025', label: 'High priority' },
     mid:  { bg: '#fef7e0', color: '#b06000', border: '#f9ab00', label: 'Medium priority' },
@@ -214,13 +236,20 @@ function LearningPlanPage() {
 
                     <p style={{ fontSize: 14, color: '#5f6368', marginTop: 8, lineHeight: 1.6 }}>{rec.reason}</p>
 
+                    {/* P5: 来源考试信息 */}
+                    {rec.examId && (
+                      <div style={{ fontSize: 12, color: '#80868b', marginTop: 4 }}>
+                        来自考试 #{rec.examId}{rec.createdAt ? ` · ${formatDate(rec.createdAt)}` : ''}
+                      </div>
+                    )}
+
                     {expandedRecs[rec.id] && (
                       <div style={{ marginTop: 12 }}>
-                        {rec.weakTopics?.length > 0 && (
+                        {normalizeTopics(rec.weakTopics).length > 0 && (
                           <div style={{ marginBottom: 12 }}>
                             <span style={{ fontSize: 13, fontWeight: 500, color: '#5f6368' }}>Weak topics:</span>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
-                              {rec.weakTopics.map((topic, i) => (
+                              {normalizeTopics(rec.weakTopics).map((topic, i) => (
                                 <span key={i} style={{ padding: '4px 10px', background: '#f1f3f4', borderRadius: 12, fontSize: 13, color: '#202124' }}>{topic}</span>
                               ))}
                             </div>
@@ -248,7 +277,7 @@ function LearningPlanPage() {
         </div>
 
         {/* Plan Generator */}
-        {recommendations.length > 0 && (
+        {(
           <div style={{ ...S.card, background: '#f8f9fa', border: '1px solid #dadce0' }}>
             <h2 style={{ fontSize: 18, fontWeight: 600, color: '#202124', margin: '0 0 16px' }}>Generate Study Plan</h2>
 

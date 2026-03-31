@@ -189,6 +189,12 @@ function ExamTakingPage() {
       }
 
       await post(`/api/exams/${examId}/submit`, {}, { showErrorToast: false })
+
+      // 异步触发推荐生成，不阻塞页面跳转
+      try {
+        await post('/api/recommendations/generate', { examId: parseInt(examId) }, { showErrorToast: false })
+      } catch (_) { /* 静默处理，推荐生成失败不影响结果页 */ }
+
       navigate(`/exams/${examId}/result`)
     } catch (err) {
       console.error('Failed to submit exam:', err)
