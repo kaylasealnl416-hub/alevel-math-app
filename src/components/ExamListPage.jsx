@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Loading from './common/Loading'
 import { Button } from './ui'
-import { get } from '../utils/apiClient'
+import { get, del } from '../utils/apiClient'
 import { formatDuration } from '../utils/helpers.js'
 
 const EXAM_TYPE_MAP = {
@@ -77,6 +77,17 @@ function ExamListPage() {
   const handleExamClick = (exam) => {
     if (exam.status === 'in_progress') navigate(`/exams/${exam.id}/take`)
     else navigate(`/exams/${exam.id}/result`)
+  }
+
+  const handleAbandon = async (e, examId) => {
+    e.stopPropagation()
+    if (!window.confirm('Abandon this exam? Your progress will not be saved.')) return
+    try {
+      await del(`/api/exams/${examId}`)
+      setExams(prev => prev.filter(ex => ex.id !== examId))
+    } catch {
+      // apiClient already shows Toast.error
+    }
   }
 
   const formatDate = (dateString) => {
@@ -182,11 +193,27 @@ function ExamListPage() {
               return (
                 <div
                   key={exam.id}
-                  style={S.examCard}
+                  style={{ ...S.examCard, position: 'relative' }}
                   onClick={() => handleExamClick(exam)}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = '#1a73e8'; e.currentTarget.style.boxShadow = '0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15)' }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = '#dadce0'; e.currentTarget.style.boxShadow = 'none' }}
                 >
+                  {exam.status === 'in_progress' && (
+                    <button
+                      onClick={(e) => handleAbandon(e, exam.id)}
+                      style={{
+                        position: 'absolute', top: 10, right: 10,
+                        width: 22, height: 22, borderRadius: '50%',
+                        border: 'none', background: '#f1f3f4', color: '#5f6368',
+                        fontSize: 14, lineHeight: '22px', textAlign: 'center',
+                        cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        zIndex: 1,
+                      }}
+                      title="Abandon exam"
+                    >
+                      ×
+                    </button>
+                  )}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                     <span style={{ fontSize: 16, fontWeight: 500, color: '#202124' }}>
                       {EXAM_TYPE_MAP[exam.type] || exam.type}
