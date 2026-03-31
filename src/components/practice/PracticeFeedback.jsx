@@ -30,7 +30,7 @@ export default function PracticeFeedback({ isCorrect, userAnswer, feedback, onNe
               ? (isCorrect ? 'Good answer!' : 'See the model answer below.')
               : isCorrect
                 ? `Your answer "${userAnswer}" is correct.`
-                : `Your answer: "${userAnswer}" — correct answer: ${feedback.correctAnswer}`}
+                : <span>Your answer: "{userAnswer}" — correct answer: <MathText text={String(feedback.correctAnswer)} /></span>}
           </div>
         </div>
       </div>
