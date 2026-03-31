@@ -44,13 +44,14 @@ function ExamListPage() {
   useEffect(() => { fetchExams() }, [filter])
 
   const fetchExams = async () => {
+    let slowTimer
     try {
       setLoading(true)
       setError(null)
       setSlowLoading(false)
 
       // 5秒后提示服务器冷启动
-      const slowTimer = setTimeout(() => setSlowLoading(true), 5000)
+      slowTimer = setTimeout(() => setSlowLoading(true), 5000)
 
       const params = new URLSearchParams({ userId: user.id.toString(), limit: '50' })
       if (filter.type !== 'all') params.append('type', filter.type)

@@ -41,9 +41,10 @@ function LearningPlanPage() {
   }
 
   const fetchRecommendations = async () => {
+    let slowTimer
     try {
       setLoading(true); setError(null); setSlowLoading(false)
-      const slowTimer = setTimeout(() => setSlowLoading(true), 5000)
+      slowTimer = setTimeout(() => setSlowLoading(true), 5000)
       const data = await get('/api/recommendations?status=pending', { timeout: 60000 })
       setRecommendations(Array.isArray(data) ? data : [])
     } catch (err) {
