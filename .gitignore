@@ -42,3 +42,6 @@ temp/
 # ===== Project specific =====
 src/alevel-math-app-backup-*.jsx
 src/alevel-math-app-final-*.jsx
+
+# Git worktrees
+.worktrees/
