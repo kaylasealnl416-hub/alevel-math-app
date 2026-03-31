@@ -96,7 +96,7 @@ const SUBJECT_PROFILES = {
 function buildQuestionTypeMix(subjectId, count) {
   // 各学科的题型比例配置
   const MIXES = {
-    mathematics:         { mcq: 0.4, calculation: 0.6, short_answer: 0 },
+    mathematics:         { mcq: 0,   calculation: 1.0, short_answer: 0 },
     economics:           { mcq: 0.5, calculation: 0,   short_answer: 0.5 },
     physics:             { mcq: 0.4, calculation: 0.6, short_answer: 0 },
     chemistry:           { mcq: 0.4, calculation: 0.6, short_answer: 0 },
