@@ -26,6 +26,11 @@ const EXAM_MODE_MAP = {
   challenge: 'Challenge Mode'
 }
 
+const getChapterName = (chapterTitle) => {
+  if (!chapterTitle) return null
+  return chapterTitle.replace(/^Quick Exam - /i, '')
+}
+
 const STATUS_STYLES = {
   in_progress: { background: '#fef7e0', color: '#e37400' },
   submitted: { background: '#e8f0fe', color: '#185abc' },
@@ -192,8 +197,15 @@ function ExamListPage() {
                   </div>
 
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 13, color: '#5f6368', marginBottom: 12 }}>
-                      {EXAM_MODE_MAP[exam.mode] || exam.mode}
+                    <div style={{ marginBottom: 12 }}>
+                      {getChapterName(exam.chapterTitle) && (
+                        <div style={{ fontSize: 14, fontWeight: 600, color: '#202124', marginBottom: 2 }}>
+                          {getChapterName(exam.chapterTitle)}
+                        </div>
+                      )}
+                      <div style={{ fontSize: 13, color: '#5f6368' }}>
+                        {EXAM_MODE_MAP[exam.mode] || exam.mode}
+                      </div>
                     </div>
 
                     <div style={S.row}>
