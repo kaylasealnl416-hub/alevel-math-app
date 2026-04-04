@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { post } from '../../utils/apiClient'
 import PracticeSetup from './PracticeSetup'
@@ -25,14 +25,47 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [currentDifficulty, setCurrentDifficulty] = useState('medium')
+  const [elapsedSeconds, setElapsedSeconds] = useState(0)
   const questionStartTime = useRef(Date.now())
+  const roundStartTime = useRef(null)
+  const timerRef = useRef(null)
 
   const chapterId = chapter?.id
   const chapterTitle = typeof chapter?.title === 'object'
     ? (chapter.title.en || chapter.title.zh)
     : chapter?.title
 
-  const handleStart = async (difficulty) => {
+  // 计时器：练习中每秒更新
+  useEffect(() => {
+    if (phase === 'practicing' || phase === 'feedback') {
+      timerRef.current = setInterval(() => {
+        setElapsedSeconds(Math.round((Date.now() - roundStartTime.current) / 1000))
+      }, 1000)
+    } else {
+      clearInterval(timerRef.current)
+    }
+    return () => clearInterval(timerRef.current)
+  }, [phase])
+
+  // 离开警告：答题中途导航离开时提示
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (phase === 'practicing' || phase === 'feedback') {
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [phase])
+
+  const formatTime = (secs) => {
+    const m = Math.floor(secs / 60)
+    const s = secs % 60
+    return `${m}:${s.toString().padStart(2, '0')}`
+  }
+
+  const handleStart = async (difficulty, questionCount = 5) => {
     setLoading(true)
     setError(null)
     try {
@@ -42,6 +75,7 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
       const body = {
         chapterId,
         difficulty,
+        count: questionCount,
         chapterTitle,
         chapterKeyPoints: keyPoints,
         chapterFormulas: formulas,
@@ -57,6 +91,8 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
       setRoundResults([])
       setScore({ correct: 0, total: 0 })
       setCurrentDifficulty(difficulty)
+      setElapsedSeconds(0)
+      roundStartTime.current = Date.now()
       questionStartTime.current = Date.now()
       setPhase('practicing')
     } catch (e) {
@@ -80,7 +116,6 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
       setUserAnswer(answer)
       setScore(s => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }))
 
-      // 提取题目文本（兼容 object 和 string 格式）
       const contentObj = q.content
       const questionText = typeof contentObj === 'string'
         ? contentObj
@@ -133,9 +168,9 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
     setQuestions([])
     setFeedback(null)
     setUserAnswer(null)
+    setElapsedSeconds(0)
   }
 
-  // 推荐卡片点击 → 直接按推荐的难度开始新一轮
   const handleRecommendationStart = (rec) => {
     const diff = rec.difficulty || currentDifficulty
     handleStart(diff)
@@ -170,9 +205,15 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
               <div style={{ width: `${((currentIndex + (phase === 'feedback' ? 1 : 0)) / questions.length) * 100}%`, height: '100%', background: 'linear-gradient(90deg, #1a73e8, #1967d2)', borderRadius: 3, transition: 'width 0.3s' }} />
             </div>
           </div>
-          <span style={{ fontSize: 13, color: '#64748B' }}>
-            Score: <strong style={{ color: '#16A34A' }}>{score.correct}</strong>/{score.total}
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            {/* 计时器 */}
+            <span style={{ fontSize: 13, color: '#64748B', fontVariantNumeric: 'tabular-nums' }}>
+              ⏱ {formatTime(elapsedSeconds)}
+            </span>
+            <span style={{ fontSize: 13, color: '#64748B' }}>
+              Score: <strong style={{ color: '#16A34A' }}>{score.correct}</strong>/{score.total}
+            </span>
+          </div>
         </div>
       )}
 

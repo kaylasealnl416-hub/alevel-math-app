@@ -20,10 +20,20 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-    this.setState({
-      error,
-      errorInfo
-    });
+
+    // chunk 加载失败时自动刷新页面（避免用户看到白屏）
+    const isChunkError = error?.message && (
+      error.message.includes('Failed to fetch dynamically imported module') ||
+      error.message.includes('Importing a module script failed') ||
+      error.message.includes('Loading chunk') ||
+      error.message.includes('ChunkLoadError')
+    )
+    if (isChunkError) {
+      window.location.reload()
+      return
+    }
+
+    this.setState({ error, errorInfo });
   }
 
   handleRetry = () => {

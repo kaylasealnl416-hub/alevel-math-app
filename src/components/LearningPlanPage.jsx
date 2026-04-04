@@ -57,10 +57,18 @@ function LearningPlanPage() {
     try {
       setGenerating(true); setError(null)
       const data = await post('/api/learning-plans/generate', { duration: planDuration })
+      if (!data || !data.plan) {
+        setError('No recommendations available yet. Complete an exam or practice session first.')
+        return
+      }
+      if (data.totalTasks === 0) {
+        setError('No pending recommendations to plan. Complete an exam to get personalised recommendations.')
+        return
+      }
       setLearningPlan(data)
     } catch (err) {
       console.error('Failed to generate plan:', err)
-      setError('Failed to generate learning plan')
+      setError('Failed to generate learning plan. Please try again.')
     } finally { setGenerating(false) }
   }
 

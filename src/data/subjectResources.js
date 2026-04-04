@@ -11,9 +11,10 @@ export const SUBJECT_RESOURCES = {
     { name: "Revision Maths", desc: "Past papers & mark schemes", url: "https://revisionmaths.com/level-maths/level-maths-papers/edexcel-level-maths-papers" },
   ],
   economics: [
-    { name: "Physics & Maths Tutor", desc: "Past papers by topic", url: "https://www.physicsandmathstutor.com/a-level-economics-papers/" },
+    { name: "PMT Economics", desc: "Past papers & mark schemes", url: "https://www.physicsandmathstutor.com/a-level-economics-papers/" },
     { name: "Tutor2u", desc: "Revision notes & resources", url: "https://www.tutor2u.net/economics" },
     { name: "Economics Online", desc: "Diagrams & explanations", url: "https://www.economicsonline.co.uk/" },
+    { name: "Edexcel Economics", desc: "Official specification & past papers", url: "https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/economics-2018.html" },
   ],
   history: [
     { name: "Tutor2u", desc: "Revision notes & resources", url: "https://www.tutor2u.net/history" },

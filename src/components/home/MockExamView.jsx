@@ -142,6 +142,33 @@ Return ONLY JSON array:
         <h2 style={styles.pageTitle}>{t.mockTitle}</h2>
         <p style={styles.pageDesc}>{isMath ? t.mockDesc : "Realistic mock exams based on past papers"}</p>
         {loading && <LoadingSpinner message={t.loadingPaper} />}
+
+        {/* Unit-Wide Mock 模式 — #30 */}
+        {isMath && (
+          <div style={{ marginBottom: 24, padding: 16, background: '#e8f0fe', borderRadius: 12, border: '1px solid #c5d8f8' }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#1a73e8', marginBottom: 8 }}>
+              🎓 Unit-Wide Mock (WMA11 / WMA12 / WMA13 / WMA14)
+            </div>
+            <p style={{ fontSize: 12, color: '#475569', margin: '0 0 12px' }}>
+              Simulate a full Edexcel IAL paper with questions spanning all chapters in a unit.
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {['P1','P2','P3','P4'].map(unit => (
+                <button key={unit} onClick={() => startMock({
+                  year: 2024, session: 'Unit Mock', paper: unit,
+                  code: `WMA1${['P1','P2','P3','P4'].indexOf(unit)+1}`,
+                  duration: 90, questions: 10,
+                  desc: `Pure Mathematics ${['P1','P2','P3','P4'].indexOf(unit)+1} — All Chapters`,
+                  unitWide: true,
+                })} disabled={loading}
+                  style={{ padding: '7px 16px', borderRadius: 8, border: 'none', background: '#1a73e8', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                  {unit} Mock
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div style={styles.papersGrid}>
           {papers.map((paper, i) => (
             <div key={i} style={styles.paperCard}>

@@ -218,11 +218,41 @@ app.get('/', async (c) => {
           .where(inArray(questionSets.id, qsIds))
       : []
     const qsMap = Object.fromEntries(qsRows.map(qs => [qs.id, qs]))
+
+    // 自动过期：超过 48 小时未完成的 in_progress 考试标记为 abandoned
+    const EXPIRE_MS = 48 * 60 * 60 * 1000
+    const now = Date.now()
+    const expiredIds = examList
+      .filter(e => e.status === 'in_progress' && e.startedAt && (now - new Date(e.startedAt).getTime()) > EXPIRE_MS)
+      .map(e => e.id)
+    if (expiredIds.length > 0) {
+      await db.update(exams).set({ status: 'abandoned' }).where(inArray(exams.id, expiredIds))
+      expiredIds.forEach(id => {
+        const exam = examList.find(e => e.id === id)
+        if (exam) exam.status = 'abandoned'
+      })
+    }
+
     const enrichedExams = examList.map(e => ({
       ...e,
       chapterId: qsMap[e.questionSetId]?.chapterId ?? null,
       chapterTitle: qsMap[e.questionSetId]?.title ?? null,
     }))
+
+    // 为 in_progress 考试补充已答题数
+    const inProgressIds = enrichedExams.filter(e => e.status === 'in_progress').map(e => e.id)
+    const answeredCountMap = {}
+    if (inProgressIds.length > 0) {
+      const answeredRows = await db
+        .select({ examId: examQuestionResults.examId, count: sql`count(*)` })
+        .from(examQuestionResults)
+        .where(inArray(examQuestionResults.examId, inProgressIds))
+        .groupBy(examQuestionResults.examId)
+      answeredRows.forEach(r => { answeredCountMap[r.examId] = parseInt(r.count) })
+    }
+    enrichedExams.forEach(e => {
+      if (e.status === 'in_progress') e.answeredCount = answeredCountMap[e.id] ?? 0
+    })
 
     // 统计总数
     const [{ count }] = await db.select({ count: sql`count(*)` })

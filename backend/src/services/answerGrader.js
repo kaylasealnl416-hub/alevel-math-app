@@ -104,6 +104,31 @@ function gradeFillBlank(question, userAnswer) {
 }
 
 /**
+ * 规范化数学答案字符串，用于等价比较
+ * 处理：空格、括号变体、乘号变体、负号、分数格式等
+ */
+function normalizeMathAnswer(str) {
+  if (!str && str !== 0) return ''
+  return String(str)
+    .trim()
+    .toLowerCase()
+    // 统一乘号
+    .replace(/×/g, '*').replace(/·/g, '*')
+    // 统一除号
+    .replace(/÷/g, '/')
+    // 去除所有空格
+    .replace(/\s+/g, '')
+    // 统一负号（全角→半角）
+    .replace(/－/g, '-')
+    // 去除末尾多余的 .0（如 "3.0" → "3"）
+    .replace(/\.0+$/, '')
+    // 去除 LaTeX 包裹（$...$）
+    .replace(/^\$+|\$+$/g, '')
+    // 统一括号（全角→半角）
+    .replace(/（/g, '(').replace(/）/g, ')')
+}
+
+/**
  * 批改计算题（半客观题）
  */
 function gradeCalculation(question, userAnswer) {
@@ -114,21 +139,25 @@ function gradeCalculation(question, userAnswer) {
     ? (userAnswer?.answer || userAnswer?.value)
     : userAnswer
 
-  // 尝试数值比较
-  const userNum = parseFloat(userAnswerValue)
-  const correctNum = parseFloat(correctAnswer)
+  // 1. 尝试数值比较（最宽松，允许 ±1% 相对误差或 0.01 绝对误差）
+  const userNum = parseFloat(String(userAnswerValue).replace(/[^0-9.\-eE+]/g, ''))
+  const correctNum = parseFloat(String(correctAnswer).replace(/[^0-9.\-eE+]/g, ''))
 
   let isCorrect = false
 
-  if (!isNaN(userNum) && !isNaN(correctNum)) {
-    // 数值比较（允许小误差）
-    const tolerance = 0.01
-    isCorrect = Math.abs(userNum - correctNum) < tolerance
-  } else {
-    // 字符串比较
-    const normalizedUser = userAnswer?.trim().toLowerCase()
-    const normalizedCorrect = correctAnswer?.trim().toLowerCase()
-    isCorrect = normalizedUser === normalizedCorrect
+  if (!isNaN(userNum) && !isNaN(correctNum) && correctNum !== 0) {
+    const absDiff = Math.abs(userNum - correctNum)
+    const relDiff = absDiff / Math.abs(correctNum)
+    isCorrect = absDiff < 0.01 || relDiff < 0.01
+  } else if (!isNaN(userNum) && !isNaN(correctNum) && correctNum === 0) {
+    isCorrect = Math.abs(userNum) < 0.01
+  }
+
+  // 2. 规范化字符串比较（处理等价表达式，如 "2x" vs "2*x"）
+  if (!isCorrect) {
+    const normUser = normalizeMathAnswer(userAnswerValue)
+    const normCorrect = normalizeMathAnswer(correctAnswer)
+    isCorrect = normUser === normCorrect
   }
 
   return {

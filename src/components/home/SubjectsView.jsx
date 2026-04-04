@@ -1,14 +1,120 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { SUBJECTS } from "../../data/subjects.js";
 import { CURRICULUM } from "../../data/curriculum.js";
-import { PAST_PAPERS } from "../../data/allSubjects.js";
+import { get } from "../../utils/apiClient.js";
+
+// ── 考试倒计时组件 ─────────────────────────────────────────────
+function ExamCountdown() {
+  const EXAM_DATE_KEY = 'exam_target_date'
+  const [examDate, setExamDate] = useState(() => localStorage.getItem(EXAM_DATE_KEY) || '')
+  const [editing, setEditing] = useState(!localStorage.getItem(EXAM_DATE_KEY))
+  const [daysLeft, setDaysLeft] = useState(null)
+
+  useEffect(() => {
+    if (!examDate) { setDaysLeft(null); return }
+    const diff = Math.ceil((new Date(examDate) - new Date()) / (1000 * 60 * 60 * 24))
+    setDaysLeft(diff)
+  }, [examDate])
+
+  const save = (val) => {
+    setExamDate(val)
+    localStorage.setItem(EXAM_DATE_KEY, val)
+    setEditing(false)
+  }
+
+  return (
+    <div style={{ background: 'linear-gradient(135deg,#EFF6FF,#DBEAFE)', border: '1px solid #BFDBFE', borderRadius: 16, padding: 20 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: '#1a73e8', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
+        📅 Exam Countdown
+      </div>
+      {editing ? (
+        <div>
+          <div style={{ fontSize: 13, color: '#475569', marginBottom: 8 }}>Set your exam date:</div>
+          <input type="date" defaultValue={examDate}
+            style={{ padding: '6px 10px', borderRadius: 8, border: '1px solid #BFDBFE', fontSize: 13, marginRight: 8 }}
+            onBlur={e => e.target.value && save(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && save(e.target.value)}
+            autoFocus
+          />
+        </div>
+      ) : daysLeft !== null ? (
+        <div>
+          <div style={{ fontSize: 36, fontWeight: 800, color: daysLeft <= 7 ? '#DC2626' : daysLeft <= 30 ? '#D97706' : '#1a73e8', lineHeight: 1 }}>
+            {daysLeft > 0 ? daysLeft : 0}
+          </div>
+          <div style={{ fontSize: 13, color: '#475569', marginTop: 4 }}>
+            {daysLeft > 0 ? 'days until your exam' : 'Exam day!'}
+          </div>
+          <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 4 }}>
+            {new Date(examDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+            <button onClick={() => setEditing(true)} style={{ marginLeft: 8, fontSize: 11, color: '#1a73e8', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+              Change
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button onClick={() => setEditing(true)} style={{ fontSize: 13, color: '#1a73e8', background: 'none', border: '1px dashed #BFDBFE', borderRadius: 8, padding: '6px 12px', cursor: 'pointer' }}>
+          + Set exam date
+        </button>
+      )}
+    </div>
+  )
+}
+
+// ── 每日打卡组件 ──────────────────────────────────────────────
+function DailyCheckin() {
+  const CHECKIN_KEY = 'daily_checkin'
+  const today = new Date().toISOString().slice(0, 10)
+
+  const [streak, setStreak] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(CHECKIN_KEY) || '{"streak":0,"lastDate":""}') }
+    catch { return { streak: 0, lastDate: '' } }
+  })
+
+  const checkedInToday = streak.lastDate === today
+
+  const handleCheckin = () => {
+    if (checkedInToday) return
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10)
+    const newStreak = streak.lastDate === yesterday ? streak.streak + 1 : 1
+    const updated = { streak: newStreak, lastDate: today }
+    setStreak(updated)
+    localStorage.setItem(CHECKIN_KEY, JSON.stringify(updated))
+  }
+
+  return (
+    <div style={{ background: checkedInToday ? 'linear-gradient(135deg,#F0FDF4,#DCFCE7)' : 'linear-gradient(135deg,#FFFBEB,#FEF3C7)', border: `1px solid ${checkedInToday ? '#BBF7D0' : '#FDE68A'}`, borderRadius: 16, padding: 20 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: checkedInToday ? '#16A34A' : '#D97706', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
+        🔥 Daily Streak
+      </div>
+      <div style={{ fontSize: 36, fontWeight: 800, color: checkedInToday ? '#16A34A' : '#D97706', lineHeight: 1 }}>
+        {streak.streak}
+      </div>
+      <div style={{ fontSize: 13, color: '#475569', marginTop: 4, marginBottom: 12 }}>
+        {streak.streak === 1 ? 'day streak' : 'days streak'}
+      </div>
+      <button
+        onClick={handleCheckin}
+        disabled={checkedInToday}
+        style={{
+          padding: '7px 16px', borderRadius: 8, border: 'none', fontSize: 13, fontWeight: 600, cursor: checkedInToday ? 'default' : 'pointer',
+          background: checkedInToday ? '#BBF7D0' : '#16A34A',
+          color: checkedInToday ? '#166534' : '#fff',
+        }}
+      >
+        {checkedInToday ? '✓ Checked in today' : 'Check in'}
+      </button>
+    </div>
+  )
+}
 
 function SubjectsView({ nav, lang }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [progressMap, setProgressMap] = useState({}); // { subjectId: completedCount }
   const BRAND = "#1a73e8";
 
   const mathSubject = {
@@ -29,12 +135,39 @@ function SubjectsView({ nav, lang }) {
     0
   );
 
+  // 加载用户学习进度
+  useEffect(() => {
+    if (!isAuthenticated || !user?.id) return;
+    get(`/api/progress/${user.id}`)
+      .then(data => {
+        if (!Array.isArray(data)) return;
+        // 统计每个学科已完成的章节数
+        const map = {};
+        data.forEach(p => {
+          if (p.status === 'completed' && p.chapterId) {
+            // chapter ID 前缀对应学科
+            const id = p.chapterId;
+            let subjectId = 'mathematics';
+            if (id.startsWith('pol')) subjectId = 'politics';
+            else if (id.startsWith('psy')) subjectId = 'psychology';
+            else if (id.startsWith('fm') || id.startsWith('fs') || id.startsWith('fmech')) subjectId = 'further-math';
+            else if (id.startsWith('e')) subjectId = 'economics';
+            else if (id.startsWith('h')) subjectId = 'history';
+            map[subjectId] = (map[subjectId] || 0) + 1;
+          }
+        });
+        setProgressMap(map);
+      })
+      .catch(() => {}); // 进度加载失败静默处理
+  }, [isAuthenticated, user?.id]);
+
   const authNav = (view, subject) => {
     if (!isAuthenticated) {
       sessionStorage.setItem("pendingView", view);
       navigate("/login");
     } else {
-      nav(view, undefined, view === "curriculum" ? null : undefined, subject || "mathematics");
+      // 重置 book 和 chapter，确保进入干净状态
+      nav(view, null, null, subject || "mathematics");
     }
   };
 
@@ -116,7 +249,14 @@ function SubjectsView({ nav, lang }) {
                 Start Learning →
               </button>
               <button
-                onClick={() => document.getElementById("subjects-section")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => {
+                  if (!isAuthenticated) {
+                    sessionStorage.setItem("pendingView", "practice");
+                    navigate("/login");
+                  } else {
+                    navigate("/practice");
+                  }
+                }}
                 style={{
                   padding: "11px 24px",
                   background: "rgba(255,255,255,0.07)",
@@ -128,7 +268,7 @@ function SubjectsView({ nav, lang }) {
                 onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.13)"}
                 onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.07)"}
               >
-                Browse Subjects
+                Start Practising
               </button>
             </div>
           </div>
@@ -138,8 +278,8 @@ function SubjectsView({ nav, lang }) {
             {[
               { icon: "📖", title: "Structured Curriculum", desc: "Chapter-by-chapter learning with key points and formulas" },
               { icon: "🧪", title: "Practice Quizzes",     desc: "AI-generated questions to test your understanding" },
-              { icon: "📝", title: "Past Papers",          desc: "Edexcel IAL past exam papers with real timing" },
-              { icon: "📊", title: "Progress Tracking",    desc: "Track your performance and identify weak areas" },
+              { icon: "🎓", title: "Mock Exams",           desc: "Timed chapter tests to prepare for the real Edexcel IAL exam" },
+              { icon: "❌", title: "Wrong Answer Review",  desc: "Track mistakes and focus on your weak areas" },
             ].map((f, i) => (
               <div key={i} style={{
                 background: "rgba(255,255,255,0.05)",
@@ -161,7 +301,7 @@ function SubjectsView({ nav, lang }) {
           {[
             { value: allSubjects.length,    label: "Active Subjects" },
             { value: `${totalChapters}+`,   label: "Chapters" },
-            { value: `${PAST_PAPERS.length}+`, label: "Past Papers" },
+            { value: "AI",                  label: "Powered Quizzes" },
             { value: "IAL",                 label: "Qualification" },
           ].map((s, i) => (
             <div key={i} style={{
@@ -243,20 +383,33 @@ function SubjectsView({ nav, lang }) {
 
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, fontWeight: 500, marginBottom: 6 }}>
-                    <span style={{ color: "#94A3B8" }}>Chapters</span>
-                    <span style={{ color: "#202124", fontWeight: 700 }}>{chapterCount}</span>
+                    <span style={{ color: "#94A3B8" }}>Progress</span>
+                    <span style={{ color: "#202124", fontWeight: 700 }}>
+                      {progressMap[subject.id] || 0}/{chapterCount}
+                    </span>
                   </div>
                   <div style={{ width: "100%", height: 5, background: "#F1F5F9", borderRadius: 3, overflow: "hidden" }}>
                     <div style={{
-                      height: "100%", borderRadius: 3, width: "100%",
-                      background: isHovered ? subject.color : "#CBD5E1",
-                      transition: "background 0.3s",
+                      height: "100%", borderRadius: 3,
+                      width: chapterCount > 0 ? `${Math.round(((progressMap[subject.id] || 0) / chapterCount) * 100)}%` : "0%",
+                      background: subject.color,
+                      transition: "width 0.5s ease, background 0.3s",
                     }} />
                   </div>
                 </div>
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* ── Exam Countdown + Daily Check-in ── */}
+      <section style={{ ...INNER, padding: "0 24px 32px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
+          {/* Exam Countdown */}
+          <ExamCountdown />
+          {/* Daily Check-in */}
+          <DailyCheckin />
         </div>
       </section>
 

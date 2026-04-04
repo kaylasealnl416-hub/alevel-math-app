@@ -17,13 +17,15 @@ const app = new Hono()
  */
 app.post('/start', async (c) => {
   try {
-    const { chapterId, difficulty = 'medium',
+    const { chapterId, difficulty = 'medium', count = 5,
             chapterTitle, chapterKeyPoints, chapterFormulas,
             chapterHardPoints, chapterExamTips, subject } = await c.req.json()
 
     if (!chapterId) {
       return c.json({ success: false, error: { message: 'chapterId is required' } }, 400)
     }
+
+    const questionCount = Math.min(Math.max(parseInt(count) || 5, 1), 20)
 
     const aiOptions = {}
 
@@ -37,7 +39,7 @@ app.post('/start', async (c) => {
       subject: subject || 'mathematics',
     }
 
-    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, 5, subject || 'mathematics')
+    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, questionCount, subject || 'mathematics')
 
     // Format for frontend — don't send answers yet
     const formatted = questionList.map(q => ({

@@ -123,18 +123,35 @@ export default function ChapterView({ chapter, book, nav, t, lang, subject = "ma
         <div style={{ background: "#FFFFFF", borderRadius: 16, border: "1px solid #E2E8F0", padding: "28px 32px" }}>
           <div style={styles.learnContent}>
             <section style={styles.learnSection}>
-              <div style={styles.sectionHeader}>
-                <div style={{ ...styles.sectionIconBox, background: "#FEF9C3" }}>⚡</div>
-                <h3 style={styles.sectionTitle}>{t.secKeyPoints}</h3>
+              <div style={{ ...styles.sectionHeader, justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ ...styles.sectionIconBox, background: "#FEF9C3" }}>⚡</div>
+                  <h3 style={styles.sectionTitle}>{t.secKeyPoints}</h3>
+                </div>
+                <button
+                  onClick={() => {
+                    const allOpen = (ch.keyPoints || []).every((_, i) => expandedKP === i || expandedKP === 'all')
+                    setExpandedKP(expandedKP === 'all' ? null : 'all')
+                  }}
+                  style={{ fontSize: 12, fontWeight: 600, color: color, background: "none", border: `1px solid ${color}30`, borderRadius: 8, padding: "4px 10px", cursor: "pointer" }}
+                >
+                  {expandedKP === 'all' ? 'Collapse All' : 'Expand All'}
+                </button>
               </div>
               <ul style={styles.keyPointsList}>
                 {(ch.keyPoints || []).map((kp, i) => {
-                  const dashIdx = kp.indexOf(' - ');
-                  const rawTerm = dashIdx !== -1 ? kp.slice(0, dashIdx) : kp;
-                  const term = rawTerm.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-                  const desc = dashIdx !== -1 ? kp.slice(dashIdx + 3) : null;
-                  const isOpen = expandedKP === i;
-                  const toggle = () => setExpandedKP(isOpen ? null : i);
+                  // 支持 " - "、"："、": " 三种分隔符
+                  const sepMatch = kp.match(/^(.+?)(?:\s*[：:]\s*|\s+-\s+)(.+)$/)
+                  const hasChinese = (s) => /[\u4e00-\u9fff]/.test(s)
+                  const rawTerm = sepMatch ? sepMatch[1] : kp
+                  // 中文内容不做 Title Case；英文长句（>4词）也保持原样，只对短词组做 Title Case
+                  const wordCount = rawTerm.trim().split(/\s+/).length
+                  const term = hasChinese(rawTerm) || wordCount > 4
+                    ? rawTerm
+                    : rawTerm.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
+                  const desc = sepMatch ? sepMatch[2] : null
+                  const isOpen = expandedKP === 'all' || expandedKP === i;
+                  const toggle = () => setExpandedKP(isOpen && expandedKP !== 'all' ? null : expandedKP === 'all' ? i : i);
                   return (
                     <li key={i} onClick={toggle} onMouseEnter={() => setHoveredKP(i)} onMouseLeave={() => setHoveredKP(null)} style={{ position: "relative", background: "#FFF", borderRadius: 10, overflow: "hidden", cursor: "pointer", border: `1px solid ${isOpen ? color + "40" : "#E5E7EB"}`, boxShadow: isOpen ? `0 2px 12px ${color}15` : "0 1px 3px rgba(0,0,0,0.04)", transition: "border-color 0.2s, box-shadow 0.2s" }}>
                       <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: color, borderRadius: "3px 0 0 3px", opacity: isOpen ? 1 : 0, transition: "opacity 0.25s" }} />

@@ -6,6 +6,15 @@ import Loading from './common/Loading'
 import { Button } from './ui'
 import { put } from '../utils/apiClient'
 
+const ALL_SUBJECTS = [
+  { id: 'mathematics', label: 'Mathematics', icon: '📐' },
+  { id: 'economics', label: 'Economics', icon: '📊' },
+  { id: 'history', label: 'History', icon: '📜' },
+  { id: 'politics', label: 'Politics', icon: '🏛️' },
+  { id: 'psychology', label: 'Psychology', icon: '🧠' },
+  { id: 'further-math', label: 'Further Math', icon: '∑' },
+]
+
 export default function UserProfilePage() {
   const navigate = useNavigate()
   const { user, updateUser, logout } = useAuth()
@@ -13,7 +22,8 @@ export default function UserProfilePage() {
     nickname: '',
     grade: 'AS',
     targetUniversity: '',
-    phone: ''
+    phone: '',
+    selectedSubjects: [],
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -25,11 +35,21 @@ export default function UserProfilePage() {
         nickname: user.nickname || '',
         grade: user.grade || 'AS',
         targetUniversity: user.targetUniversity || '',
-        phone: user.phone || ''
+        phone: user.phone || '',
+        selectedSubjects: user.selectedSubjects || [],
       })
       setInitialLoading(false)
     }
   }, [user])
+
+  const toggleSubject = (id) => {
+    setFormData(prev => ({
+      ...prev,
+      selectedSubjects: prev.selectedSubjects.includes(id)
+        ? prev.selectedSubjects.filter(s => s !== id)
+        : [...prev.selectedSubjects, id],
+    }))
+  }
 
   const validateForm = () => {
     const newErrors = {}
@@ -180,13 +200,41 @@ export default function UserProfilePage() {
             {errors.phone && <span style={S.errorText}>{errors.phone}</span>}
           </div>
 
+          <div style={S.field}>
+            <label style={S.label}>My Subjects</label>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 4 }}>
+              {ALL_SUBJECTS.map(s => {
+                const selected = formData.selectedSubjects.includes(s.id)
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => toggleSubject(s.id)}
+                    style={{
+                      padding: '6px 14px', borderRadius: 20, fontSize: 13, fontWeight: 600,
+                      border: selected ? '2px solid #1a73e8' : '1px solid #dadce0',
+                      background: selected ? '#e8f0fe' : '#fff',
+                      color: selected ? '#1a73e8' : '#5f6368',
+                      cursor: 'pointer', transition: 'all 0.15s',
+                    }}
+                  >
+                    {s.icon} {s.label}
+                  </button>
+                )
+              })}
+            </div>
+            <div style={{ fontSize: 12, color: '#80868b', marginTop: 6 }}>
+              Select the subjects you are studying
+            </div>
+          </div>
+
           <Button variant="primary" size="md" disabled={loading} className="w-full" style={{ marginTop: 4 }}>
             {loading ? 'Saving...' : 'Save Changes'}
           </Button>
         </form>
 
         <div style={S.footer}>
-          <Button variant="danger" size="sm" onClick={handleLogout}>Log Out</Button>
+          <Button variant="secondary" size="sm" onClick={handleLogout}>Log Out</Button>
         </div>
       </div>
     </div>

@@ -129,12 +129,15 @@ function buildSystemPrompt(subjectId) {
 You write questions for Pearson Edexcel IAL ${profile.name} (${profile.papers}).
 
 RULES:
+- You are ONLY allowed to generate ${profile.name} questions. Never generate questions for any other subject.
+- Every question must be strictly within the ${profile.name} subject domain
 - Questions must strictly follow Edexcel IAL mark scheme conventions
 - Every question must be solvable using ONLY the concepts in the chapter context below
 - Never introduce topics outside the specified chapter scope
 - Difficulty must match real Edexcel past paper distribution
 ${conventions}
-- Always respond with valid JSON only — no markdown, no prose`
+- Always respond with valid JSON only — no markdown, no prose
+- ALL text fields (question, solution, deepExplanation, keyFormula, commonMistake, tags) MUST be in English only. Never use Chinese or any other language.`
 }
 
 /**
@@ -219,10 +222,10 @@ async function generateAndSaveQuestions(chapter, count, difficulty, aiOptions = 
     : null
 
   const diffLabel = difficulty === 'hard'
-    ? 'challenging (difficulty 4-5)'
+    ? 'challenging (difficulty 4-5, multi-step, requires combining multiple concepts)'
     : difficulty === 'easy'
-      ? 'accessible (difficulty 1-2)'
-      : 'standard (difficulty 3)'
+      ? 'accessible (difficulty 1-2) — IMPORTANT: "easy" means straightforward application of a single concept, NOT primary school level. Questions must still be A-Level standard, just testing one concept at a time with no tricks'
+      : 'standard (difficulty 3, typical Edexcel IAL exam question)'
 
   // ── 第一层：任务专属 System Prompt（按学科动态生成）────────
   const subjectId = chapter.subject || 'mathematics'
@@ -240,10 +243,13 @@ async function generateAndSaveQuestions(chapter, count, difficulty, aiOptions = 
   // ── 第三层：题型分配（按学科决定混合比例）────────────────
   const questionTypeMix = buildQuestionTypeMix(subjectId, count)
 
+  const subjectName = (SUBJECT_PROFILES[subjectId] || SUBJECT_PROFILES.mathematics).name
+
   const userPrompt = `${chapterContext}
 
 ---
-Generate ${count} ${diffLabel} questions for the chapter above.
+Generate ${count} ${diffLabel} ${subjectName} questions for the chapter above.
+IMPORTANT: All questions must be ${subjectName} questions only. Do NOT generate questions from any other subject.
 Question type distribution: ${questionTypeMix.description}
 
 Each question must test a DIFFERENT key point from the list above.
@@ -281,17 +287,20 @@ TYPE: "short_answer"
 - type: "short_answer"
 - question: question text asking student to explain, describe, or analyse
 - options: null
-- correct: a model answer (2-4 sentences)
+- correct: a FULL model answer written out in complete sentences (2-4 sentences minimum). NEVER write "See solution" or "See worked solution" — always provide the actual answer text.
 - solution: the model answer with key points highlighted
 - deepExplanation: why this answer earns full marks
 - keyFormula: key concept or term (if applicable, else "")
 - commonMistake: common incomplete or incorrect responses
 - whyOthersWrong: {}
-- tags: array of topic tags
+- tags: array of topic tags in English (e.g. ["differentiation", "chain rule"])
 - difficulty: number 1-5
+
+NOTE: For proof-style questions, the "correct" field must contain the complete step-by-step proof, not a placeholder like "See solution".
 
 Generate exactly this distribution: ${questionTypeMix.spec}
 
+CRITICAL: All text must be in English only. Do not use Chinese or any other language in any field.
 Return ONLY a JSON array, no markdown.`
 
   const messages = [{ role: 'user', content: userPrompt }]
@@ -391,7 +400,14 @@ export async function getRecommendations(chapterId, wrongQuestionIds) {
   // 1. If wrong answers exist, recommend redo by tags (最多推荐前3个薄弱标签)
   if (wrongQuestionIds.length > 0) {
     const wrongQs = await db.select().from(questions).where(inArray(questions.id, wrongQuestionIds))
-    const wrongTags = [...new Set(wrongQs.flatMap(q => q.tags || []))]
+
+    // 只保留属于当前章节的错题，过滤掉跨科目污染数据
+    const chapterWrongQs = wrongQs.filter(q => q.chapterId === chapterId)
+    const targetQs = chapterWrongQs.length > 0 ? chapterWrongQs : wrongQs
+
+    // 过滤掉中文 tag（历史脏数据）
+    const isEnglishTag = (tag) => /^[a-zA-Z0-9\s\-_/()]+$/.test(tag)
+    const wrongTags = [...new Set(targetQs.flatMap(q => (q.tags || []).filter(isEnglishTag)))]
     const topTags = wrongTags.slice(0, 3)
     for (const tag of topTags) {
       recs.push({

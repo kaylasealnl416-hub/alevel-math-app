@@ -20,7 +20,7 @@ app.put('/profile', authMiddleware, async (c) => {
     const body = await c.req.json()
 
     // 允许更新的字段
-    const allowedFields = ['nickname', 'avatar', 'phone', 'grade', 'targetUniversity']
+    const allowedFields = ['nickname', 'avatar', 'phone', 'grade', 'targetUniversity', 'selectedSubjects']
     const updateData = {}
 
     for (const field of allowedFields) {

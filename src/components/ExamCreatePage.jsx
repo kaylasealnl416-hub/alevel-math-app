@@ -198,6 +198,27 @@ export default function ExamCreatePage() {
                 </button>
               ))}
             </div>
+            {/* 智能建议：每题约 1.5 分钟 */}
+            {questionCount > 0 && (
+              <div style={{ marginTop: 8, fontSize: 12, color: '#5f6368' }}>
+                💡 Suggested: ~{Math.round(questionCount * 1.5)} min
+                ({difficulty === 'hard' ? '2 min' : difficulty === 'easy' ? '1 min' : '1.5 min'} per question)
+                <button
+                  onClick={() => {
+                    const perQ = difficulty === 'hard' ? 120 : difficulty === 'easy' ? 60 : 90
+                    const suggested = questionCount * perQ
+                    // 找最接近的选项
+                    const closest = TIME_OPTIONS.reduce((prev, curr) =>
+                      curr.value > 0 && Math.abs(curr.value - suggested) < Math.abs(prev.value - suggested) ? curr : prev
+                    )
+                    setTimeLimit(closest.value)
+                  }}
+                  style={{ marginLeft: 8, fontSize: 11, color: '#1a73e8', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  Apply
+                </button>
+              </div>
+            )}
           </ConfigSection>
 
           {/* 考试预览摘要 */}

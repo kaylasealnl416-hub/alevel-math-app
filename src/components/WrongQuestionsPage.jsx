@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import QuestionCard from './QuestionCard'
 import Loading from './common/Loading'
+import Toast from './common/Toast'
 import { Button } from './ui'
-import { get } from '../utils/apiClient'
+import { get, post } from '../utils/apiClient'
 import { formatDate, getDifficultyLabel } from '../utils/helpers.js'
 
 const DIFF_STYLES = {
@@ -23,6 +24,12 @@ function WrongQuestionsPage() {
   const [error, setError] = useState(null)
   const [filter, setFilter] = useState({ topic: 'all', difficulty: 'all', examType: 'all' })
   const [showAnswer, setShowAnswer] = useState({})
+  const [masteredIds, setMasteredIds] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem(`mastered_${userId}`) || '[]')) }
+    catch { return new Set() }
+  })
+  const [toast, setToast] = useState(null)
+  const [hideMastered, setHideMastered] = useState(false)
 
   useEffect(() => { fetchWrongQuestions() }, [])
 
@@ -37,7 +44,8 @@ function WrongQuestionsPage() {
         content: wq.question.content, options: wq.question.options, answer: wq.question.answer,
         explanation: wq.question.explanation, tags: wq.question.tags, chapterId: wq.question.chapterId,
         examId: wq.examId, examType: wq.exam.type, examDate: wq.exam.createdAt,
-        userAnswer: wq.userAnswer, aiFeedback: wq.aiFeedback, chapter: wq.chapter, attemptCount: 1
+        userAnswer: wq.userAnswer, aiFeedback: wq.aiFeedback, chapter: wq.chapter, attemptCount: 1,
+        resultId: wq.id,
       }))
       setWrongQuestions(wrong)
     } catch (err) {
@@ -52,10 +60,26 @@ function WrongQuestionsPage() {
     setShowAnswer(prev => ({ ...prev, [questionId]: !prev[questionId] }))
   }
 
+  const toggleMastered = async (question) => {
+    const newSet = new Set(masteredIds)
+    if (newSet.has(question.id)) {
+      newSet.delete(question.id)
+      setToast({ message: 'Removed from mastered', type: 'info' })
+    } else {
+      newSet.add(question.id)
+      setToast({ message: 'Marked as mastered!', type: 'success' })
+      // 通知后端（stub，不阻塞）
+      post(`/api/wrong-questions/${question.resultId}/master`).catch(() => {})
+    }
+    setMasteredIds(newSet)
+    localStorage.setItem(`mastered_${userId}`, JSON.stringify([...newSet]))
+  }
+
   const topics = ['all', ...new Set(wrongQuestions.flatMap(q => q.tags || []))]
   const examTypes = ['all', ...new Set(wrongQuestions.map(q => q.examType))]
 
   const filteredQuestions = wrongQuestions.filter(q => {
+    if (hideMastered && masteredIds.has(q.id)) return false
     if (filter.topic !== 'all' && !q.tags?.includes(filter.topic)) return false
     if (filter.difficulty !== 'all' && q.difficulty !== parseInt(filter.difficulty)) return false
     if (filter.examType !== 'all' && q.examType !== filter.examType) return false
@@ -108,10 +132,24 @@ function WrongQuestionsPage() {
   return (
     <div style={S.page}>
       <div style={S.inner}>
+        {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
         {/* Header */}
-        <div style={{ marginBottom: 24 }}>
-          <h1 style={{ fontSize: 24, fontWeight: 600, color: '#202124', margin: '0 0 4px' }}>Wrong Questions</h1>
-          <p style={{ fontSize: 14, color: '#5f6368', margin: 0 }}>Review and master your mistakes</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
+          <div>
+            <h1 style={{ fontSize: 24, fontWeight: 600, color: '#202124', margin: '0 0 4px' }}>Wrong Questions</h1>
+            <p style={{ fontSize: 14, color: '#5f6368', margin: 0 }}>Review and master your mistakes</p>
+          </div>
+          <button
+            onClick={() => setHideMastered(v => !v)}
+            style={{
+              padding: '8px 16px', borderRadius: 8, border: '1px solid #dadce0',
+              background: hideMastered ? '#e8f0fe' : '#fff',
+              color: hideMastered ? '#1a73e8' : '#5f6368',
+              fontSize: 13, fontWeight: 500, cursor: 'pointer',
+            }}
+          >
+            {hideMastered ? 'Show All' : `Hide Mastered (${masteredIds.size})`}
+          </button>
         </div>
 
         {/* Statistics */}
@@ -184,8 +222,10 @@ function WrongQuestionsPage() {
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                  {questions.map((question, index) => (
-                    <div key={`${question.id}-${question.examId}`} style={{ border: '1px solid #dadce0', borderRadius: 8, padding: 20, background: '#f8f9fa' }}>
+                  {questions.map((question, index) => {
+                    const isMastered = masteredIds.has(question.id)
+                    return (
+                    <div key={`${question.id}-${question.examId}`} style={{ border: `1px solid ${isMastered ? '#81c995' : '#dadce0'}`, borderRadius: 8, padding: 20, background: isMastered ? '#f0faf3' : '#f8f9fa' }}>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12, alignItems: 'center' }}>
                         <span style={{ fontSize: 14, fontWeight: 600, color: '#1a73e8' }}>#{index + 1}</span>
                         <span style={{ ...S.badge, ...getDiffStyle(question.difficulty) }}>
@@ -194,6 +234,9 @@ function WrongQuestionsPage() {
                         <span style={{ ...S.badge, background: '#e8f0fe', color: '#185abc' }}>
                           {getExamTypeLabel(question.examType)}
                         </span>
+                        {isMastered && (
+                          <span style={{ ...S.badge, background: '#e6f4ea', color: '#0d652d' }}>✓ Mastered</span>
+                        )}
                         <span style={{ fontSize: 13, color: '#80868b', marginLeft: 'auto' }}>
                           {formatDate(question.examDate)}
                         </span>
@@ -215,6 +258,14 @@ function WrongQuestionsPage() {
                           {showAnswer[question.id] ? 'Hide Answer' : 'Show Answer'}
                         </Button>
 
+                        <Button
+                          variant={isMastered ? 'secondary' : 'text'}
+                          size="sm"
+                          onClick={() => toggleMastered(question)}
+                        >
+                          {isMastered ? 'Unmark Mastered' : 'Mark as Mastered'}
+                        </Button>
+
                         {!showAnswer[question.id] && (
                           <div style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '6px 12px', background: '#fff', borderRadius: 8, border: '1px solid #dadce0' }}>
                             <span style={{ fontSize: 13, color: '#5f6368' }}>Your answer:</span>
@@ -223,7 +274,8 @@ function WrongQuestionsPage() {
                         )}
                       </div>
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
             ))}

@@ -93,16 +93,18 @@ export default function PracticeFeedback({ isCorrect, userAnswer, feedback, onNe
         )
       })()}
 
-      {/* Next button */}
-      <button onClick={onNext}
-        style={{
-          width: '100%', padding: 14,
-          background: 'linear-gradient(135deg, #1a73e8, #1967d2)',
-          color: '#fff', border: 'none', borderRadius: 12,
-          fontSize: 15, fontWeight: 700, cursor: 'pointer',
-        }}>
-        Next Question →
-      </button>
+      {/* Next button — sticky at bottom so it's always visible */}
+      <div style={{ position: 'sticky', bottom: 0, background: '#fff', padding: '12px 0 4px', borderTop: '1px solid #E2E8F0', marginTop: 8 }}>
+        <button onClick={onNext}
+          style={{
+            width: '100%', padding: 14,
+            background: 'linear-gradient(135deg, #1a73e8, #1967d2)',
+            color: '#fff', border: 'none', borderRadius: 12,
+            fontSize: 15, fontWeight: 700, cursor: 'pointer',
+          }}>
+          Next Question →
+        </button>
+      </div>
     </div>
   )
 }

@@ -253,6 +253,15 @@ function ExamListPage() {
                       </>
                     )}
 
+                    {exam.status === 'in_progress' && exam.answeredCount != null && (
+                      <div style={S.row}>
+                        <span style={S.rowLabel}>Answered</span>
+                        <span style={{ fontWeight: 600, color: '#1a73e8' }}>
+                          {exam.answeredCount}/{exam.totalCount || '?'}
+                        </span>
+                      </div>
+                    )}
+
                     {exam.timeSpent && (
                       <div style={S.row}>
                         <span style={S.rowLabel}>Time</span>

@@ -77,7 +77,12 @@ function ExamResultPage() {
       ? rawAnswer
       : (rawAnswer?.value ?? '')
     const isCorrect = isMCQ ? (userAnswerText === question.answer?.value) : null
-    return { rawAnswer, userAnswerText, question, isCorrect, isMCQ }
+    // AI grading result from examQuestionResults
+    const aiResult = question.result || null
+    const aiScore = aiResult?.score ?? null
+    const aiMaxScore = aiResult?.maxScore ?? 10
+    const aiFeedback = aiResult?.aiFeedback || null
+    return { rawAnswer, userAnswerText, question, isCorrect, isMCQ, aiScore, aiMaxScore, aiFeedback }
   }
 
   if (loading) return <Loading message="Loading exam results..." size="large" fullScreen />
@@ -200,7 +205,9 @@ function ExamResultPage() {
               )}
             </div>
           </div>
-          <Button variant="text" size="sm" onClick={shareResults}>Share</Button>
+          <Button variant="text" size="sm" onClick={shareResults}>
+            {navigator.share ? 'Share Results' : 'Copy Results'}
+          </Button>
         </div>
 
         {/* Score Card */}
@@ -269,16 +276,26 @@ function ExamResultPage() {
           {questions.map((question, index) => {
             const result = getQuestionResult(question.id)
             if (!result) return null
+            const isMarked = (exam.markedQuestions || []).includes(question.id)
 
             return (
               <div key={question.id} style={S.questionCard(result.isCorrect)}>
                 <div style={S.questionHeader}>
                   <span style={S.questionNum}>
                     Question {index + 1}
+                    {isMarked && <span style={{ marginLeft: 6, fontSize: 14 }} title="You marked this question">⭐</span>}
                   </span>
                   {result.isMCQ ? (
                     <span style={S.resultBadge(result.isCorrect)}>
                       {result.isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                    </span>
+                  ) : result.aiScore != null ? (
+                    <span style={{
+                      padding: '3px 10px', borderRadius: 12, fontSize: 12, fontWeight: 600,
+                      background: result.aiScore >= 6 ? '#e6f4ea' : result.aiScore >= 4 ? '#fef7e0' : '#fce8e6',
+                      color: result.aiScore >= 6 ? '#0d652d' : result.aiScore >= 4 ? '#b06000' : '#a50e0e',
+                    }}>
+                      AI: {result.aiScore}/{result.aiMaxScore}
                     </span>
                   ) : (
                     <span style={{ padding: '3px 10px', borderRadius: 12, fontSize: 12, fontWeight: 600, background: '#e8f0fe', color: '#185abc' }}>
@@ -332,11 +349,40 @@ function ExamResultPage() {
                       </div>
                     </div>
                     {question.answer?.value && (
-                      <div style={{ background: '#e6f4ea', borderRadius: 8, padding: '10px 14px', border: '1px solid #81c995' }}>
+                      <div style={{ background: '#e6f4ea', borderRadius: 8, padding: '10px 14px', border: '1px solid #81c995', marginBottom: 8 }}>
                         <div style={{ fontSize: 12, fontWeight: 600, color: '#0d652d', marginBottom: 4 }}>MODEL ANSWER</div>
                         <div style={{ fontSize: 14, color: '#202124', lineHeight: 1.6 }}>
                           <MathText text={question.answer.value} />
                         </div>
+                      </div>
+                    )}
+                    {/* AI grading feedback — #28 评分透明化 */}
+                    {result.aiFeedback && (
+                      <div style={{ background: '#f0f4ff', borderRadius: 8, padding: '10px 14px', border: '1px solid #c7d7f9' }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: '#185abc', marginBottom: 6 }}>
+                          AI GRADING FEEDBACK {result.aiScore != null ? `— ${result.aiScore}/${result.aiMaxScore} pts` : ''}
+                        </div>
+                        {result.aiFeedback.summary && (
+                          <div style={{ fontSize: 13, color: '#202124', marginBottom: 4 }}>{result.aiFeedback.summary}</div>
+                        )}
+                        {result.aiFeedback.strengths?.length > 0 && (
+                          <div style={{ fontSize: 12, color: '#0d652d', marginBottom: 2 }}>
+                            ✓ {result.aiFeedback.strengths.join(' · ')}
+                          </div>
+                        )}
+                        {result.aiFeedback.weaknesses?.length > 0 && (
+                          <div style={{ fontSize: 12, color: '#a50e0e', marginBottom: 2 }}>
+                            ✗ {result.aiFeedback.weaknesses.join(' · ')}
+                          </div>
+                        )}
+                        {result.aiFeedback.suggestions?.length > 0 && (
+                          <div style={{ fontSize: 12, color: '#5f6368', marginTop: 4 }}>
+                            💡 {result.aiFeedback.suggestions.join(' · ')}
+                          </div>
+                        )}
+                        {result.aiFeedback.message && !result.aiFeedback.summary && (
+                          <div style={{ fontSize: 13, color: '#202124' }}>{result.aiFeedback.message}</div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -346,11 +392,13 @@ function ExamResultPage() {
                 {question.answer?.explanation && (
                   <div style={S.explanation}>
                     <h4 style={S.explanationTitle}>Mark Scheme</h4>
-                    <p style={S.explanationText}>
-                      {typeof question.answer.explanation === 'object'
-                        ? (question.answer.explanation.en || JSON.stringify(question.answer.explanation))
-                        : question.answer.explanation}
-                    </p>
+                    <div style={S.explanationText}>
+                      <MathText text={
+                        typeof question.answer.explanation === 'object'
+                          ? (question.answer.explanation.en || JSON.stringify(question.answer.explanation))
+                          : question.answer.explanation
+                      } />
+                    </div>
                   </div>
                 )}
 

@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { CURRICULUM } from '../data/curriculum.js'
+import { SUBJECTS } from '../data/subjects.js'
 
 const NAV_LINKS = [
   { path: '/', label: 'Home' },
@@ -10,7 +12,103 @@ const NAV_LINKS = [
   { path: '/wrong-questions', label: 'Wrong Answers' },
 ]
 
-export default function Navbar() {
+// 构建全局搜索索引（章节 + 科目）
+function buildSearchIndex() {
+  const items = []
+  // 数学章节
+  for (const [bookId, book] of Object.entries(CURRICULUM)) {
+    for (const ch of book.chapters || []) {
+      const title = typeof ch.title === 'object' ? (ch.title.en || ch.title.zh) : ch.title
+      items.push({ type: 'chapter', subject: 'mathematics', book: bookId, id: ch.id, title, bookTitle: book.title })
+    }
+  }
+  // 其他科目章节
+  for (const [subjId, subj] of Object.entries(SUBJECTS)) {
+    const subjName = typeof subj.name === 'object' ? (subj.name.en || subj.name.zh) : subj.name
+    for (const [bookId, book] of Object.entries(subj.books || {})) {
+      for (const ch of book.chapters || []) {
+        const title = typeof ch.title === 'object' ? (ch.title.en || ch.title.zh) : ch.title
+        items.push({ type: 'chapter', subject: subjId, book: bookId, id: ch.id, title, bookTitle: typeof book.title === 'object' ? (book.title.en || book.title.zh) : book.title, subjName })
+      }
+    }
+  }
+  return items
+}
+
+const SEARCH_INDEX = buildSearchIndex()
+
+function GlobalSearch({ onNavigate }) {
+  const [query, setQuery] = useState('')
+  const [open, setOpen] = useState(false)
+  const [results, setResults] = useState([])
+  const inputRef = useRef(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!query.trim()) { setResults([]); return }
+    const q = query.toLowerCase()
+    const matched = SEARCH_INDEX.filter(item =>
+      item.title.toLowerCase().includes(q) ||
+      (item.subjName || 'mathematics').toLowerCase().includes(q)
+    ).slice(0, 8)
+    setResults(matched)
+  }, [query])
+
+  const handleSelect = (item) => {
+    setQuery('')
+    setOpen(false)
+    // 导航到对应章节
+    if (onNavigate) {
+      onNavigate(item)
+    } else {
+      navigate('/practice')
+    }
+  }
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <div style={{ display: 'flex', alignItems: 'center', background: '#f1f3f4', borderRadius: 20, padding: '5px 12px', gap: 6 }}>
+        <span style={{ fontSize: 14, color: '#80868b' }}>🔍</span>
+        <input
+          ref={inputRef}
+          value={query}
+          onChange={e => { setQuery(e.target.value); setOpen(true) }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+          placeholder="Search chapters..."
+          style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: 13, color: '#202124', width: 160 }}
+        />
+        {query && (
+          <button onClick={() => { setQuery(''); setResults([]) }} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, color: '#80868b', padding: 0 }}>×</button>
+        )}
+      </div>
+      {open && results.length > 0 && (
+        <div style={{
+          position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4,
+          background: '#fff', borderRadius: 12, boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+          border: '1px solid #e8eaed', zIndex: 200, overflow: 'hidden',
+        }}>
+          {results.map((item, i) => (
+            <div key={i} onMouseDown={() => handleSelect(item)} style={{
+              padding: '10px 14px', cursor: 'pointer', borderBottom: i < results.length - 1 ? '1px solid #f1f3f4' : 'none',
+              display: 'flex', flexDirection: 'column', gap: 2,
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = '#f8f9fa'}
+              onMouseLeave={e => e.currentTarget.style.background = '#fff'}
+            >
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#202124' }}>{item.title}</div>
+              <div style={{ fontSize: 11, color: '#80868b' }}>
+                {item.subjName || 'Mathematics'} › {item.bookTitle}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default function Navbar({ onSearchNavigate }) {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, logout } = useAuth()
@@ -90,6 +188,10 @@ export default function Navbar() {
 
           {/* Right side */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
+            {/* Global Search */}
+            <div className="hidden-mobile">
+              <GlobalSearch onNavigate={onSearchNavigate} />
+            </div>
             {user ? (
               <>
                 <Link to="/profile" style={{

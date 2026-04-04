@@ -78,14 +78,23 @@ export default function PracticeQuestion({ question, onSubmit }) {
       {type === 'calculation' && (
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 12, color: '#64748B', marginBottom: 8, fontWeight: 600 }}>
-            Enter your numerical answer (include units if required)
+            Enter your answer (include units if required)
+          </div>
+          {/* Math symbol toolbar */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
+            {['√', 'π', '∞', '²', '³', '½', '¼', '±', '×', '÷', '≤', '≥', '≠'].map(sym => (
+              <button key={sym} onClick={() => setInputVal(v => v + sym)}
+                style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #E2E8F0', background: '#F8FAFC', fontSize: 14, cursor: 'pointer', fontFamily: 'monospace' }}>
+                {sym}
+              </button>
+            ))}
           </div>
           <input
             type="text"
             value={inputVal}
             onChange={e => setInputVal(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-            placeholder="e.g. 3.14 or 2x + 1"
+            placeholder="e.g. 3.14 or 2x + 1 or (15-5√2)/7"
             style={{
               width: '100%', padding: '14px 16px', fontSize: 16,
               border: '2px solid #E2E8F0', borderRadius: 12, outline: 'none',
