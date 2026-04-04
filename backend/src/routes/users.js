@@ -6,6 +6,9 @@ import { authMiddleware } from '../middleware/auth.js'
 
 const app = new Hono()
 
+// 所有路由均需认证
+app.use('/*', authMiddleware)
+
 // ============================================================
 // 用户管理 API
 // ============================================================
@@ -14,7 +17,7 @@ const app = new Hono()
  * PUT /api/users/profile
  * 更新当前登录用户的信息（需要认证）
  */
-app.put('/profile', authMiddleware, async (c) => {
+app.put('/profile', async (c) => {
   try {
     const userId = c.get('userId') // 从 authMiddleware 获取
     const body = await c.req.json()

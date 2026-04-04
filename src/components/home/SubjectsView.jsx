@@ -41,11 +41,11 @@ function ExamCountdown() {
         </div>
       ) : daysLeft !== null ? (
         <div>
-          <div style={{ fontSize: 36, fontWeight: 800, color: daysLeft <= 7 ? '#DC2626' : daysLeft <= 30 ? '#D97706' : '#1a73e8', lineHeight: 1 }}>
-            {daysLeft > 0 ? daysLeft : 0}
+          <div style={{ fontSize: 36, fontWeight: 800, color: daysLeft <= 0 ? '#6B7280' : daysLeft <= 7 ? '#DC2626' : daysLeft <= 30 ? '#D97706' : '#1a73e8', lineHeight: 1 }}>
+            {daysLeft > 0 ? daysLeft : '—'}
           </div>
           <div style={{ fontSize: 13, color: '#475569', marginTop: 4 }}>
-            {daysLeft > 0 ? 'days until your exam' : 'Exam day!'}
+            {daysLeft > 0 ? 'days until your exam' : daysLeft === 0 ? 'Exam day! Good luck!' : 'Exam has passed'}
           </div>
           <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 4 }}>
             {new Date(examDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
@@ -115,6 +115,7 @@ function SubjectsView({ nav, lang }) {
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
   const [progressMap, setProgressMap] = useState({}); // { subjectId: completedCount }
+  const [progressLoaded, setProgressLoaded] = useState(false);
   const BRAND = "#1a73e8";
 
   const mathSubject = {
@@ -157,8 +158,9 @@ function SubjectsView({ nav, lang }) {
           }
         });
         setProgressMap(map);
+        setProgressLoaded(true);
       })
-      .catch(() => {}); // 进度加载失败静默处理
+      .catch(() => { setProgressLoaded(true); }); // 进度加载失败静默处理
   }, [isAuthenticated, user?.id]);
 
   const authNav = (view, subject) => {
@@ -385,7 +387,7 @@ function SubjectsView({ nav, lang }) {
                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, fontWeight: 500, marginBottom: 6 }}>
                     <span style={{ color: "#94A3B8" }}>Progress</span>
                     <span style={{ color: "#202124", fontWeight: 700 }}>
-                      {progressMap[subject.id] || 0}/{chapterCount}
+                      {progressLoaded ? `${progressMap[subject.id] || 0}/${chapterCount}` : '…'}
                     </span>
                   </div>
                   <div style={{ width: "100%", height: 5, background: "#F1F5F9", borderRadius: 3, overflow: "hidden" }}>

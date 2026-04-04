@@ -132,12 +132,17 @@ app.post('/quick-start', validate(quickStartExamSchema), async (c) => {
 app.get('/:id', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    const authenticatedUserId = c.get('userId')
 
-    // 使用 examService 获取考试详情
     const result = await examService.getExamDetail(examId)
 
     if (!result.success) {
       return c.json(result, 404)
+    }
+
+    // 所有权校验：只允许考试本人访问
+    if (result.data.userId !== authenticatedUserId) {
+      return c.json({ success: false, error: { message: 'Not authorized' } }, 403)
     }
 
     return c.json(result)
@@ -171,8 +176,8 @@ app.delete('/:id', async (c) => {
       return c.json({ success: false, error: { message: 'Only in-progress exams can be abandoned' } }, 400)
     }
 
-    // 删除 questionSet，exam 会因 CASCADE 被自动删除
-    await db.delete(questionSets).where(eq(questionSets.id, exam.questionSetId))
+    // 只更新状态为 abandoned，不删除 questionSet（避免级联破坏共享题目数据）
+    await db.update(exams).set({ status: 'abandoned', updatedAt: new Date() }).where(eq(exams.id, examId))
 
     return c.json({ success: true })
 
@@ -341,12 +346,17 @@ app.post('/:id/submit', rateLimit(rateLimitPresets.moderate), async (c) => {
 app.get('/:id/result', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    const authenticatedUserId = c.get('userId')
 
-    // 使用 examGrader 获取详细结果
     const result = await examGrader.getExamResult(examId)
 
     if (!result.success) {
       return c.json(result, 400)
+    }
+
+    // 所有权校验
+    if (result.data.exam.userId !== authenticatedUserId) {
+      return c.json({ success: false, error: { message: 'Not authorized' } }, 403)
     }
 
     return c.json(result)

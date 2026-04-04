@@ -27,6 +27,13 @@ Thumbs.db
 # ===== Testing & Coverage =====
 coverage/
 *.lcov
+test-screenshots/
+playwright-report/
+# E2E test files contain credentials — keep local only
+e2e-test.spec.js
+practice-test.spec.js
+practice-explore.spec.js
+practice-explore2.spec.js
 
 # ===== Temporary files =====
 tmp/
