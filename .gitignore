@@ -28,12 +28,17 @@ Thumbs.db
 coverage/
 *.lcov
 test-screenshots/
+test-results/
 playwright-report/
 # E2E test files contain credentials — keep local only
 e2e-test.spec.js
 practice-test.spec.js
 practice-explore.spec.js
 practice-explore2.spec.js
+practice-full-test.spec.js
+practice-session-test.spec.js
+playwright.config.js
+playwright-*.config.js
 
 # ===== Temporary files =====
 tmp/
@@ -49,6 +54,9 @@ temp/
 # ===== Project specific =====
 src/alevel-math-app-backup-*.jsx
 src/alevel-math-app-final-*.jsx
+pastpapers/
+.superpowers/
+docs/superpowers/
 
 # Git worktrees
 .worktrees/
