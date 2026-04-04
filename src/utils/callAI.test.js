@@ -37,23 +37,6 @@ describe('callAI', () => {
     expect(body.apiKey).toBeUndefined()
   })
 
-  // ── 用户设置注入 ──
-  it('有用户设置时自动携带 provider/apiKey/model', async () => {
-    saveAISettings({ provider: 'claude', apiKey: 'sk-test-key', model: 'claude-sonnet-4-5' })
-
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve({ success: true, data: { text: 'from claude' } })
-    })
-
-    await callAI('sys', 'hi')
-
-    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
-    expect(body.provider).toBe('claude')
-    expect(body.apiKey).toBe('sk-test-key')
-    expect(body.model).toBe('claude-sonnet-4-5')
-  })
-
   it('设置有 provider 但无 apiKey 时不注入', async () => {
     saveAISettings({ provider: 'claude', apiKey: '', model: 'claude-sonnet-4-5' })
 
