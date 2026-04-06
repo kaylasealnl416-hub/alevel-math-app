@@ -5,6 +5,13 @@ import Toast from './common/Toast'
 import { API_BASE, COLORS } from '../utils/constants'
 import { validateEmail, validatePassword } from '../utils/validation'
 
+// 带超时的 fetch，Render 免费实例冷启动可能需要 50 秒以上
+function fetchWithTimeout(url, options, timeoutMs = 60000) {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer))
+}
+
 const BRAND = COLORS.brand
 const DARK = COLORS.text
 
@@ -143,7 +150,7 @@ export default function AuthPage() {
     setLoading(true)
     console.log('LOGIN: submitting to', `${API_BASE}/api/auth/login`)
     try {
-      const res = await fetch(`${API_BASE}/api/auth/login`, {
+      const res = await fetchWithTimeout(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -166,8 +173,10 @@ export default function AuthPage() {
       const redirectPath = localStorage.getItem('redirect_after_login')
       localStorage.removeItem('redirect_after_login')
       setTimeout(() => navigate(redirectPath || '/'), 800)
-    } catch {
-      Toast.error('Network error, please try again later')
+    } catch (err) {
+      Toast.error(err?.name === 'AbortError'
+        ? 'Server is starting up, please try again in a moment'
+        : 'Network error, please try again later')
       setLoading(false)
     }
   }
@@ -184,7 +193,7 @@ export default function AuthPage() {
 
     setLoading(true)
     try {
-      const res = await fetch(`${API_BASE}/api/auth/register`, {
+      const res = await fetchWithTimeout(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -206,8 +215,10 @@ export default function AuthPage() {
       const redirectPath = localStorage.getItem('redirect_after_login')
       localStorage.removeItem('redirect_after_login')
       setTimeout(() => navigate(redirectPath || '/'), 1000)
-    } catch {
-      Toast.error('Network error, please try again later')
+    } catch (err) {
+      Toast.error(err?.name === 'AbortError'
+        ? 'Server is starting up, please try again in a moment'
+        : 'Network error, please try again later')
       setLoading(false)
     }
   }
