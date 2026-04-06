@@ -15,7 +15,7 @@ export default function ChapterView({ chapter, book, nav, t, lang, subject = "ma
   const [tab, setTab] = useState("learn");
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [expandedKP, setExpandedKP] = useState(0); // 单开手风琴，默认展开第一条
+  const [expandedKP, setExpandedKP] = useState(new Set([0])); // 默认展开第一条
   const [hoveredKP, setHoveredKP] = useState(null);
   const [activeVideo, setActiveVideo] = useState(0);
 
@@ -130,12 +130,13 @@ export default function ChapterView({ chapter, book, nav, t, lang, subject = "ma
                 </div>
                 <button
                   onClick={() => {
-                    const allOpen = (ch.keyPoints || []).every((_, i) => expandedKP === i || expandedKP === 'all')
-                    setExpandedKP(expandedKP === 'all' ? null : 'all')
+                    const allIndices = (ch.keyPoints || []).map((_, i) => i)
+                    const allOpen = allIndices.every(i => expandedKP.has(i))
+                    setExpandedKP(allOpen ? new Set() : new Set(allIndices))
                   }}
                   style={{ fontSize: 12, fontWeight: 600, color: color, background: "none", border: `1px solid ${color}30`, borderRadius: 8, padding: "4px 10px", cursor: "pointer" }}
                 >
-                  {expandedKP === 'all' ? 'Collapse All' : 'Expand All'}
+                  {(ch.keyPoints || []).every((_, i) => expandedKP.has(i)) ? 'Collapse All' : 'Expand All'}
                 </button>
               </div>
               <ul style={styles.keyPointsList}>
@@ -150,8 +151,12 @@ export default function ChapterView({ chapter, book, nav, t, lang, subject = "ma
                     ? rawTerm
                     : rawTerm.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
                   const desc = sepMatch ? sepMatch[2] : null
-                  const isOpen = expandedKP === 'all' || expandedKP === i;
-                  const toggle = () => setExpandedKP(isOpen && expandedKP !== 'all' ? null : expandedKP === 'all' ? i : i);
+                  const isOpen = expandedKP.has(i);
+                  const toggle = () => setExpandedKP(prev => {
+                    const next = new Set(prev)
+                    if (next.has(i)) next.delete(i); else next.add(i)
+                    return next
+                  });
                   return (
                     <li key={i} onClick={toggle} onMouseEnter={() => setHoveredKP(i)} onMouseLeave={() => setHoveredKP(null)} style={{ position: "relative", background: "#FFF", borderRadius: 10, overflow: "hidden", cursor: "pointer", border: `1px solid ${isOpen ? color + "40" : "#E5E7EB"}`, boxShadow: isOpen ? `0 2px 12px ${color}15` : "0 1px 3px rgba(0,0,0,0.04)", transition: "border-color 0.2s, box-shadow 0.2s" }}>
                       <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: color, borderRadius: "3px 0 0 3px", opacity: isOpen ? 1 : 0, transition: "opacity 0.25s" }} />

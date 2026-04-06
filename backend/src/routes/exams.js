@@ -16,6 +16,25 @@ const app = new Hono()
 app.use('/*', authMiddleware)
 
 /**
+ * 辅助函数：校验考试所有权，返回考试记录或错误响应
+ * 若校验失败，直接返回 403/404 响应；成功则返回 exam 对象
+ */
+async function requireExamOwner(c, examId) {
+  if (isNaN(examId)) {
+    return { error: c.json({ success: false, error: { message: 'Invalid exam ID' } }, 400) }
+  }
+  const authenticatedUserId = c.get('userId')
+  const [exam] = await db.select().from(exams).where(eq(exams.id, examId))
+  if (!exam) {
+    return { error: c.json({ success: false, error: { message: 'Exam not found' } }, 404) }
+  }
+  if (exam.userId !== authenticatedUserId) {
+    return { error: c.json({ success: false, error: { message: 'Not authorized' } }, 403) }
+  }
+  return { exam }
+}
+
+/**
  * Phase 4: 考试管理 API
  *
  * 端点：
@@ -70,22 +89,11 @@ app.post('/quick-start', validate(quickStartExamSchema), async (c) => {
             chapterTitle, chapterKeyPoints, chapterFormulas,
             chapterHardPoints, chapterExamTips, subject } = c.get('validated')
 
-    // 1. 获取题目（题库优先，不够则 AI 生成并存库）
-    const aiOptions = {}
-    const chapterFallback = {
-      id: chapterId,
-      title: chapterTitle || chapterId,
-      keyPoints: chapterKeyPoints || [],
-      formulas: chapterFormulas || [],
-      hardPoints: chapterHardPoints || '',
-      examTips: chapterExamTips || '',
-      subject: subject || 'mathematics',
-    }
-
-    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, questionCount, subject || 'mathematics')
+    // 从题库获取题目（纯数据库查询）
+    const questionList = await getQuestions(chapterId, difficulty, {}, null, questionCount, subject || 'mathematics')
 
     if (!questionList || questionList.length === 0) {
-      return c.json({ success: false, error: { message: 'No questions generated' } }, 400)
+      return c.json({ success: false, error: { message: '该章节暂无题目，题库正在补充中' } }, 404)
     }
 
     // 2. 创建试卷（questionSet）
@@ -132,6 +140,9 @@ app.post('/quick-start', validate(quickStartExamSchema), async (c) => {
 app.get('/:id', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    if (isNaN(examId)) {
+      return c.json({ success: false, error: { message: 'Invalid exam ID' } }, 400)
+    }
     const authenticatedUserId = c.get('userId')
 
     const result = await examService.getExamDetail(examId)
@@ -162,6 +173,9 @@ app.get('/:id', async (c) => {
 app.delete('/:id', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    if (isNaN(examId)) {
+      return c.json({ success: false, error: { message: 'Invalid exam ID' } }, 400)
+    }
     const userId = c.get('userId')
 
     const [exam] = await db.select().from(exams).where(eq(exams.id, examId))
@@ -289,9 +303,10 @@ app.get('/', async (c) => {
 app.put('/:id/answers', validate(saveAnswerSchema), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
-    const validated = c.get('validated')
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
-    // 使用 examService 保存答案
+    const validated = c.get('validated')
     const result = await examService.saveAnswer(examId, validated.questionId, validated.answer)
 
     if (!result.success) {
@@ -315,8 +330,9 @@ app.put('/:id/answers', validate(saveAnswerSchema), async (c) => {
 app.post('/:id/submit', rateLimit(rateLimitPresets.moderate), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
-    // submitExam 内部已包含批改流程（调用 gradeExam）
     const result = await examService.submitExam(examId)
 
     if (!result.success) {
@@ -346,6 +362,9 @@ app.post('/:id/submit', rateLimit(rateLimitPresets.moderate), async (c) => {
 app.get('/:id/result', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    if (isNaN(examId)) {
+      return c.json({ success: false, error: { message: 'Invalid exam ID' } }, 400)
+    }
     const authenticatedUserId = c.get('userId')
 
     const result = await examGrader.getExamResult(examId)
@@ -376,9 +395,10 @@ app.get('/:id/result', async (c) => {
 app.put('/:id/mark', validate(markQuestionSchema), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
-    const validated = c.get('validated')
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
-    // 使用 examService 标记题目
+    const validated = c.get('validated')
     const result = await examService.markQuestion(examId, validated.questionId, validated.marked)
 
     if (!result.success) {
@@ -402,9 +422,10 @@ app.put('/:id/mark', validate(markQuestionSchema), async (c) => {
 app.post('/:id/focus-lost', validate(focusLostSchema), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
-    const validated = c.get('validated')
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
-    // 使用 examService 记录作弊事件
+    const validated = c.get('validated')
     const result = await examService.recordCheatingEvent(examId, validated.type)
 
     if (!result.success) {
@@ -428,6 +449,8 @@ app.post('/:id/focus-lost', validate(focusLostSchema), async (c) => {
 app.get('/:id/check-timeout', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
     const result = await examService.checkExamTimeout(examId)
 
@@ -452,6 +475,8 @@ app.get('/:id/check-timeout', async (c) => {
 app.get('/:id/stats', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
     const result = await examService.getExamStats(examId)
 
@@ -476,6 +501,8 @@ app.get('/:id/stats', async (c) => {
 app.post('/:id/grade', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
     const result = await examGrader.gradeExam(examId)
 
@@ -500,6 +527,8 @@ app.post('/:id/grade', async (c) => {
 app.get('/:id/wrong-questions', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
     const result = await examGrader.getWrongQuestions(examId)
 
@@ -524,6 +553,8 @@ app.get('/:id/wrong-questions', async (c) => {
 app.get('/:id/weak-topics', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
     const result = await examGrader.analyzeWeakTopics(examId)
 
@@ -548,6 +579,8 @@ app.get('/:id/weak-topics', async (c) => {
 app.get('/:id/report', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
+    const { error } = await requireExamOwner(c, examId)
+    if (error) return error
 
     const result = await examGrader.generateExamReport(examId)
 
@@ -572,19 +605,8 @@ app.get('/:id/report', async (c) => {
 app.post('/:id/analyze', rateLimit(rateLimitPresets.strict), async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
-
-    // Get exam with questions
-    const [exam] = await db
-      .select()
-      .from(exams)
-      .where(eq(exams.id, examId))
-
-    if (!exam) {
-      return c.json({
-        success: false,
-        error: { message: 'Exam not found' }
-      }, 404)
-    }
+    const { error, exam } = await requireExamOwner(c, examId)
+    if (error) return error
 
     // Check if exam is graded
     if (exam.status !== 'graded') {
@@ -637,22 +659,11 @@ app.post('/:id/analyze', rateLimit(rateLimitPresets.strict), async (c) => {
 app.get('/:id/feedback', async (c) => {
   try {
     const examId = parseInt(c.req.param('id'))
-
-    const [exam] = await db
-      .select()
-      .from(exams)
-      .where(eq(exams.id, examId))
-
-    if (!exam) {
-      return c.json({
-        success: false,
-        error: { message: 'Exam not found' }
-      }, 404)
-    }
+    const { error, exam } = await requireExamOwner(c, examId)
+    if (error) return error
 
     // If no feedback exists, generate it
     if (!exam.aiFeedback) {
-      // Get questions
       const [questionSet] = await db
         .select()
         .from(questionSets)
@@ -663,28 +674,17 @@ app.get('/:id/feedback', async (c) => {
         .from(questions)
         .where(inArray(questions.id, questionSet.questionIds))
 
-      // Generate feedback
       const feedback = await examAnalyzer.generateExamAnalysis(exam, examQuestions)
 
-      // Save to database
       await db
         .update(exams)
-        .set({
-          aiFeedback: feedback,
-          updatedAt: new Date()
-        })
+        .set({ aiFeedback: feedback, updatedAt: new Date() })
         .where(eq(exams.id, examId))
 
-      return c.json({
-        success: true,
-        data: feedback
-      })
+      return c.json({ success: true, data: feedback })
     }
 
-    return c.json({
-      success: true,
-      data: exam.aiFeedback
-    })
+    return c.json({ success: true, data: exam.aiFeedback })
 
   } catch (error) {
     console.error('Failed to get AI feedback:', error)

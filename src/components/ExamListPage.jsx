@@ -58,7 +58,7 @@ function ExamListPage() {
       // 5秒后提示服务器冷启动
       slowTimer = setTimeout(() => setSlowLoading(true), 5000)
 
-      const params = new URLSearchParams({ userId: user.id.toString(), limit: '50' })
+      const params = new URLSearchParams({ limit: '50' })
       if (filter.type !== 'all') params.append('type', filter.type)
       if (filter.status !== 'all') params.append('status', filter.status)
 

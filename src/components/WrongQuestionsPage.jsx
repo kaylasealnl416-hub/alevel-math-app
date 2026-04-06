@@ -24,12 +24,18 @@ function WrongQuestionsPage() {
   const [error, setError] = useState(null)
   const [filter, setFilter] = useState({ topic: 'all', difficulty: 'all', examType: 'all' })
   const [showAnswer, setShowAnswer] = useState({})
-  const [masteredIds, setMasteredIds] = useState(() => {
-    try { return new Set(JSON.parse(localStorage.getItem(`mastered_${userId}`) || '[]')) }
-    catch { return new Set() }
-  })
+  const [masteredIds, setMasteredIds] = useState(new Set())
   const [toast, setToast] = useState(null)
   const [hideMastered, setHideMastered] = useState(false)
+
+  // userId 异步加载完成后再从 localStorage 读取 masteredIds
+  useEffect(() => {
+    if (!userId) return
+    try {
+      const stored = JSON.parse(localStorage.getItem(`mastered_${userId}`) || '[]')
+      setMasteredIds(new Set(stored))
+    } catch { /* 忽略解析错误 */ }
+  }, [userId])
 
   useEffect(() => { fetchWrongQuestions() }, [])
 
@@ -37,7 +43,7 @@ function WrongQuestionsPage() {
     try {
       setLoading(true)
       setError(null)
-      const data = await get(`/api/wrong-questions?userId=${userId}&limit=100`)
+      const data = await get(`/api/wrong-questions?limit=100`)
       const list = data?.wrongQuestions || data || []
       const wrong = (Array.isArray(list) ? list : []).map(wq => ({
         id: wq.question.id, type: wq.question.type, difficulty: wq.question.difficulty,

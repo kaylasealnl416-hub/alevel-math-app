@@ -11,17 +11,26 @@ const app = new Hono()
 
 /**
  * GET /api/progress/:userId
- * 获取用户的所有学习进度
+ * 获取用户的所有学习进度（只允许访问自己的数据）
  */
 app.get('/:userId', async (c) => {
   try {
     const userId = parseInt(c.req.param('userId'))
+    const authenticatedUserId = c.get('userId')
 
     if (isNaN(userId)) {
       return c.json({
         success: false,
         error: { code: 'INVALID_USER_ID', message: '无效的用户ID' }
       }, 400)
+    }
+
+    // 所有权校验：只允许访问自己的进度
+    if (userId !== authenticatedUserId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权访问其他用户的学习进度' }
+      }, 403)
     }
 
     const progress = await db
@@ -44,18 +53,26 @@ app.get('/:userId', async (c) => {
 
 /**
  * GET /api/progress/:userId/chapter/:chapterId
- * 获取用户某个章节的学习进度
+ * 获取用户某个章节的学习进度（只允许访问自己的数据）
  */
 app.get('/:userId/chapter/:chapterId', async (c) => {
   try {
     const userId = parseInt(c.req.param('userId'))
     const chapterId = c.req.param('chapterId')
+    const authenticatedUserId = c.get('userId')
 
     if (isNaN(userId)) {
       return c.json({
         success: false,
         error: { code: 'INVALID_USER_ID', message: '无效的用户ID' }
       }, 400)
+    }
+
+    if (userId !== authenticatedUserId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权访问其他用户的学习进度' }
+      }, 403)
     }
 
     const progress = await db
@@ -91,18 +108,20 @@ app.get('/:userId/chapter/:chapterId', async (c) => {
 
 /**
  * POST /api/progress
- * 记录或更新学习进度
+ * 记录或更新学习进度（userId 从 JWT 获取，不信任请求体）
  */
 app.post('/', async (c) => {
   try {
+    // 从认证中间件获取 userId，不信任请求体中的 userId
+    const userId = c.get('userId')
     const body = await c.req.json()
-    const { userId, chapterId, status, masteryLevel, timeSpent } = body
+    const { chapterId, status, masteryLevel, timeSpent } = body
 
     // 验证必填字段
-    if (!userId || !chapterId) {
+    if (!chapterId) {
       return c.json({
         success: false,
-        error: { code: 'MISSING_FIELDS', message: '缺少必填字段：userId 和 chapterId' }
+        error: { code: 'MISSING_FIELDS', message: '缺少必填字段：chapterId' }
       }, 400)
     }
 
@@ -196,17 +215,25 @@ app.post('/', async (c) => {
 
 /**
  * GET /api/progress/:userId/stats
- * 获取用户学习统计
+ * 获取用户学习统计（只允许访问自己的数据）
  */
 app.get('/:userId/stats', async (c) => {
   try {
     const userId = parseInt(c.req.param('userId'))
+    const authenticatedUserId = c.get('userId')
 
     if (isNaN(userId)) {
       return c.json({
         success: false,
         error: { code: 'INVALID_USER_ID', message: '无效的用户ID' }
       }, 400)
+    }
+
+    if (userId !== authenticatedUserId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权访问其他用户的学习统计' }
+      }, 403)
     }
 
     // 获取基础统计
@@ -269,18 +296,26 @@ app.get('/:userId/stats', async (c) => {
 
 /**
  * DELETE /api/progress/:userId/chapter/:chapterId
- * 删除学习进度记录（用于测试）
+ * 删除学习进度记录（只允许删除自己的数据）
  */
 app.delete('/:userId/chapter/:chapterId', async (c) => {
   try {
     const userId = parseInt(c.req.param('userId'))
     const chapterId = c.req.param('chapterId')
+    const authenticatedUserId = c.get('userId')
 
     if (isNaN(userId)) {
       return c.json({
         success: false,
         error: { code: 'INVALID_USER_ID', message: '无效的用户ID' }
       }, 400)
+    }
+
+    if (userId !== authenticatedUserId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权删除其他用户的学习进度' }
+      }, 403)
     }
 
     await db

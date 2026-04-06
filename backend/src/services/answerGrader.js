@@ -7,6 +7,11 @@ import { db } from '../db/index.js'
 import { questions, userAnswers } from '../db/schema.js'
 import { eq, inArray } from 'drizzle-orm'
 import { callAI } from './aiClient.js'
+import {
+  gradeCalculation,
+  gradeFillBlank,
+  gradeMultipleChoice
+} from './answerGraderCore.js'
 
 /**
  * 批改单个答案
@@ -53,127 +58,6 @@ export async function gradeAnswerWithQuestion(question, userAnswer) {
 
 /**
  * 批改选择题（客观题）
- */
-function gradeMultipleChoice(question, userAnswer) {
-  const correctAnswer = question.answer?.value
-
-  // 处理答案格式：可能是字符串 "A" 或对象 { answer: "A" }
-  const userAnswerValue = typeof userAnswer === 'string'
-    ? userAnswer
-    : userAnswer?.answer || userAnswer?.value
-
-  const isCorrect = userAnswerValue?.toUpperCase() === correctAnswer?.toUpperCase()
-
-  return {
-    isCorrect,
-    score: isCorrect ? 10 : 0,
-    feedback: {
-      correctAnswer,
-      explanation: question.answer?.explanation || question.explanation,
-      message: isCorrect ? '回答正确！' : '答案错误，请查看解析。'
-    }
-  }
-}
-
-/**
- * 批改填空题（客观题）
- */
-function gradeFillBlank(question, userAnswer) {
-  const correctAnswer = question.answer?.value
-
-  // 处理答案格式：可能是字符串或对象
-  const userAnswerValue = typeof userAnswer === 'string'
-    ? userAnswer
-    : userAnswer?.answer || userAnswer?.value
-
-  // 标准化答案（去除空格、统一大小写）
-  const normalizedUser = userAnswerValue?.trim().toLowerCase()
-  const normalizedCorrect = correctAnswer?.trim().toLowerCase()
-
-  const isCorrect = normalizedUser === normalizedCorrect
-
-  return {
-    isCorrect,
-    score: isCorrect ? 10 : 0,
-    feedback: {
-      correctAnswer,
-      explanation: question.answer?.explanation || question.explanation,
-      message: isCorrect ? '回答正确！' : '答案错误，请查看正确答案。'
-    }
-  }
-}
-
-/**
- * 规范化数学答案字符串，用于等价比较
- * 处理：空格、括号变体、乘号变体、负号、分数格式等
- */
-function normalizeMathAnswer(str) {
-  if (!str && str !== 0) return ''
-  return String(str)
-    .trim()
-    .toLowerCase()
-    // 统一乘号
-    .replace(/×/g, '*').replace(/·/g, '*')
-    // 统一除号
-    .replace(/÷/g, '/')
-    // 去除所有空格
-    .replace(/\s+/g, '')
-    // 统一负号（全角→半角）
-    .replace(/－/g, '-')
-    // 去除末尾多余的 .0（如 "3.0" → "3"）
-    .replace(/\.0+$/, '')
-    // 去除 LaTeX 包裹（$...$）
-    .replace(/^\$+|\$+$/g, '')
-    // 统一括号（全角→半角）
-    .replace(/（/g, '(').replace(/）/g, ')')
-}
-
-/**
- * 批改计算题（半客观题）
- */
-function gradeCalculation(question, userAnswer) {
-  const correctAnswer = question.answer?.value
-
-  // 处理答案格式：可能是字符串、数字或对象
-  const userAnswerValue = typeof userAnswer === 'object'
-    ? (userAnswer?.answer || userAnswer?.value)
-    : userAnswer
-
-  // 1. 尝试数值比较（最宽松，允许 ±1% 相对误差或 0.01 绝对误差）
-  const userNum = parseFloat(String(userAnswerValue).replace(/[^0-9.\-eE+]/g, ''))
-  const correctNum = parseFloat(String(correctAnswer).replace(/[^0-9.\-eE+]/g, ''))
-
-  let isCorrect = false
-
-  if (!isNaN(userNum) && !isNaN(correctNum) && correctNum !== 0) {
-    const absDiff = Math.abs(userNum - correctNum)
-    const relDiff = absDiff / Math.abs(correctNum)
-    isCorrect = absDiff < 0.01 || relDiff < 0.01
-  } else if (!isNaN(userNum) && !isNaN(correctNum) && correctNum === 0) {
-    isCorrect = Math.abs(userNum) < 0.01
-  }
-
-  // 2. 规范化字符串比较（处理等价表达式，如 "2x" vs "2*x"）
-  if (!isCorrect) {
-    const normUser = normalizeMathAnswer(userAnswerValue)
-    const normCorrect = normalizeMathAnswer(correctAnswer)
-    isCorrect = normUser === normCorrect
-  }
-
-  return {
-    isCorrect,
-    score: isCorrect ? 10 : 0,
-    feedback: {
-      correctAnswer,
-      latex: question.answer?.latex,
-      explanation: question.answer?.explanation || question.explanation,
-      message: isCorrect ? '计算正确！' : '计算结果有误，请查看解析。'
-    }
-  }
-}
-
-/**
- * 批改主观题（AI 批改）
  */
 async function gradeSubjective(question, userAnswer) {
   console.log(`🤖 AI 批改主观题: ${question.id}`)

@@ -1,29 +1,51 @@
 import { db } from './src/db/index.js'
 import { users, questionSets, questions, exams, chapters } from './src/db/schema.js'
-import { eq } from 'drizzle-orm'
+import { inArray } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
 
 async function seedTestData() {
-  console.log('🌱 开始初始化测试数据...\n')
+  console.log('?? ?????????...\n')
 
   try {
-    // 0. 获取一个现有的 chapter ID
-    console.log('📖 查找现有章节...')
+    const seedEmails = ['student1@test.com', 'student2@test.com', 'demo@alevel.com']
+    const seedQuestionSetTitles = ['Mathematics Quick Test', 'Economics Basics']
+
+    console.log('?? ??????...')
     const existingChapters = await db.select().from(chapters).limit(1)
-    
+
     if (existingChapters.length === 0) {
-      console.log('❌ 数据库中没有章节数据，无法创建题目')
-      console.log('💡 提示：请先导入科目和章节数据')
+      console.log('? ?????????????????')
+      console.log('?? ??????????????')
       process.exit(1)
     }
-    
-    const chapterId = existingChapters[0].id
-    console.log(`✅ 使用章节: ${chapterId}`)
 
-    // 1. 创建测试用户
-    console.log('\n👤 创建测试用户...')
+    const chapterId = existingChapters[0].id
+    console.log(`? ????: ${chapterId}`)
+
+    console.log('\n?? ????????...')
+    const existingSeedUsers = await db.select({ id: users.id })
+      .from(users)
+      .where(inArray(users.email, seedEmails))
+    const existingUserIds = existingSeedUsers.map((user) => user.id)
+
+    const existingQuestionSets = await db.select({ id: questionSets.id })
+      .from(questionSets)
+      .where(inArray(questionSets.title, seedQuestionSetTitles))
+    const existingQuestionSetIds = existingQuestionSets.map((item) => item.id)
+
+    if (existingQuestionSetIds.length > 0) {
+      await db.delete(exams).where(inArray(exams.questionSetId, existingQuestionSetIds))
+      await db.delete(questionSets).where(inArray(questionSets.id, existingQuestionSetIds))
+    }
+
+    if (existingUserIds.length > 0) {
+      await db.delete(exams).where(inArray(exams.userId, existingUserIds))
+      await db.delete(users).where(inArray(users.id, existingUserIds))
+    }
+
+    console.log('\n?? ??????...')
     const hashedPassword = await bcrypt.hash('test123', 10)
-    
+
     const testUsers = await db.insert(users).values([
       {
         email: 'student1@test.com',
@@ -45,22 +67,21 @@ async function seedTestData() {
       }
     ]).returning()
 
-    console.log(`✅ 创建了 ${testUsers.length} 个测试用户`)
-    testUsers.forEach(u => console.log(`   - ${u.email} (ID: ${u.id})`))
+    console.log(`? ??? ${testUsers.length} ?????`)
+    testUsers.forEach((user) => console.log(`   - ${user.email} (ID: ${user.id})`))
 
-    // 2. 创建测试题目
-    console.log('\n📝 创建测试题目...')
+    console.log('\n?? ??????...')
     const testQuestions = await db.insert(questions).values([
       {
         chapterId,
         type: 'multiple_choice',
         difficulty: 2,
-        content: { 
+        content: {
           en: 'Solve for x: 2x + 5 = 13',
           latex: '2x + 5 = 13'
         },
         options: ['A. x = 3', 'B. x = 4', 'C. x = 5', 'D. x = 6'],
-        answer: { 
+        answer: {
           value: 'B',
           explanation: '2x = 13 - 5 = 8, so x = 4'
         },
@@ -73,12 +94,12 @@ async function seedTestData() {
         chapterId,
         type: 'multiple_choice',
         difficulty: 3,
-        content: { 
+        content: {
           en: 'Find dy/dx for y = x²',
           latex: 'y = x^2'
         },
         options: ['A. x', 'B. 2x', 'C. x²', 'D. 2'],
-        answer: { 
+        answer: {
           value: 'B',
           explanation: 'Using power rule: d/dx(x²) = 2x'
         },
@@ -91,11 +112,11 @@ async function seedTestData() {
         chapterId,
         type: 'multiple_choice',
         difficulty: 1,
-        content: { 
+        content: {
           en: 'What happens to price when demand increases?'
         },
         options: ['A. Increases', 'B. Decreases', 'C. Stays same', 'D. Unpredictable'],
-        answer: { 
+        answer: {
           value: 'A',
           explanation: 'Higher demand leads to higher equilibrium price'
         },
@@ -106,47 +127,47 @@ async function seedTestData() {
       }
     ]).returning()
 
-    console.log(`✅ 创建了 ${testQuestions.length} 道测试题目`)
+    console.log(`? ??? ${testQuestions.length} ?????`)
 
-    // 3. 创建测试试卷
-    console.log('\n📋 创建测试试卷...')
-    const questionIds = testQuestions.map(q => q.id)
-    
+    console.log('\n?? ??????...')
+    const questionIds = testQuestions.map((question) => question.id)
+
     const testQuestionSets = await db.insert(questionSets).values([
       {
         title: 'Mathematics Quick Test',
         description: 'Basic algebra and calculus questions',
-        subject: 'mathematics',
-        difficulty: 'medium',
+        userId: testUsers[0].id,
+        type: 'exam',
+        chapterId,
         questionIds: questionIds.slice(0, 2),
         totalQuestions: 2,
         totalPoints: 5,
         timeLimit: 600,
-        tags: ['algebra', 'calculus']
+        difficultyDistribution: { 2: 1, 3: 1 },
+        generatedBy: 'manual'
       },
       {
         title: 'Economics Basics',
         description: 'Supply and demand fundamentals',
-        subject: 'economics',
-        difficulty: 'easy',
+        userId: testUsers[0].id,
+        type: 'practice',
+        chapterId,
         questionIds: [questionIds[2]],
         totalQuestions: 1,
         totalPoints: 2,
         timeLimit: 300,
-        tags: ['supply_demand']
+        difficultyDistribution: { 1: 1 },
+        generatedBy: 'manual'
       }
     ]).returning()
 
-    console.log(`✅ 创建了 ${testQuestionSets.length} 套测试试卷`)
-    testQuestionSets.forEach(qs => console.log(`   - ${qs.title} (ID: ${qs.id})`))
+    console.log(`? ??? ${testQuestionSets.length} ?????`)
+    testQuestionSets.forEach((questionSet) => console.log(`   - ${questionSet.title} (ID: ${questionSet.id})`))
 
-    // 4. 创建历史考试记录
-    console.log('\n📊 创建历史考试记录...')
-    const userId = testUsers[0].id
+    console.log('\n?? ????????...')
     const questionSetId = testQuestionSets[0].id
-
     const testExam = await db.insert(exams).values({
-      userId,
+      userId: testUsers[0].id,
       questionSetId,
       type: 'chapter_test',
       mode: 'exam',
@@ -169,23 +190,23 @@ async function seedTestData() {
       focusLostCount: 0
     }).returning()
 
-    console.log(`✅ 创建了 ${testExam.length} 条历史考试记录`)
+    console.log(`? ??? ${testExam.length} ???????`)
 
-    console.log('\n✅ 测试数据初始化完成！')
-    console.log('\n📌 测试账号信息：')
+    console.log('\n? ??????????')
+    console.log('\n?? ???????')
     console.log('   Email: student1@test.com')
     console.log('   Email: student2@test.com')
     console.log('   Email: demo@alevel.com')
     console.log('   Password: test123')
-    console.log('\n📊 数据统计：')
-    console.log(`   - ${testUsers.length} 个用户`)
-    console.log(`   - ${testQuestions.length} 道题目`)
-    console.log(`   - ${testQuestionSets.length} 套试卷`)
-    console.log(`   - ${testExam.length} 条考试记录`)
+    console.log('\n?? ?????')
+    console.log(`   - ${testUsers.length} ???`)
+    console.log(`   - ${testQuestions.length} ???`)
+    console.log(`   - ${testQuestionSets.length} ???`)
+    console.log(`   - ${testExam.length} ?????`)
 
     process.exit(0)
   } catch (error) {
-    console.error('❌ 初始化失败:', error.message)
+    console.error('? ?????:', error.message)
     console.error(error)
     process.exit(1)
   }

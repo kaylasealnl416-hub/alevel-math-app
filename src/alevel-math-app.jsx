@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext.jsx";
-import ChatPage from "./components/ChatPage.jsx";
+// ChatPage 已移除
 import PracticeView from "./components/practice/PracticeView";
 import { T } from "./utils/translations.js";
 import { styles } from "./styles/homeStyles.js";
@@ -101,7 +101,7 @@ export default function ALevelMathApp() {
             lang={lang}
           />
         )}
-        {activeView === "chat" && <ChatPage nav={nav} chapter={selectedChapter} book={selectedBook} subject={selectedSubject} />}
+        {/* chat 视图已移除 */}
       </main>
     </div>
   );

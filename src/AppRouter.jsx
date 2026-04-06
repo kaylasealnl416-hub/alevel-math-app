@@ -23,7 +23,7 @@ const LearningPlanPage = lazy(() => import('./components/LearningPlanPage.jsx'))
 const WrongQuestionsPage = lazy(() => import('./components/WrongQuestionsPage.jsx'))
 const PracticePage = lazy(() => import('./components/PracticePage.jsx'))
 const QuestionUploadPage = lazy(() => import('./components/QuestionUploadPage.jsx'))
-const ChatPage = lazy(() => import('./components/ChatPage.jsx'))
+// ChatPage 已移除（对话辅导功能停用）
 
 // Minimal loading fallback
 const PageLoader = () => (
@@ -101,12 +101,8 @@ export default function AppRouter() {
                   </ProtectedRoute>
                 } />
 
-                {/* AI Chat (requires auth) */}
-                <Route path="/chat" element={
-                  <ProtectedRoute>
-                    <ChatPage />
-                  </ProtectedRoute>
-                } />
+                {/* /chat 已移除，重定向到首页 */}
+                <Route path="/chat" element={<Navigate to="/" replace />} />
 
                 {/* Question bank upload (admin only) */}
                 <Route path="/questions/upload" element={

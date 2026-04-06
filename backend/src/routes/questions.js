@@ -7,7 +7,7 @@ import { Hono } from 'hono'
 import { db } from '../db/index.js'
 import { questions, chapters } from '../db/schema.js'
 import { eq, and, inArray, sql } from 'drizzle-orm'
-import { generateQuestions, previewGenerateQuestions } from '../services/questionGenerator.js'
+// AI 出题已移除，题库通过离线 Skill 批量生产
 
 const app = new Hono()
 
@@ -403,108 +403,12 @@ app.put('/:id/review', async (c) => {
   }
 })
 
-// ============================================================
-// AI 出题 API
-// ============================================================
-
-/**
- * POST /api/questions/generate
- * AI 生成题目
- */
+// AI 出题端点已移除（题库通过离线 Skill 批量生产）
 app.post('/generate', async (c) => {
-  try {
-    const body = await c.req.json()
-    const userId = c.get('userId')
-
-    const {
-      chapterId,
-      count = 5,
-      difficulty = [2, 3, 4],
-      types = ['multiple_choice', 'calculation'],
-      tags = [],
-      language = 'en'
-    } = body
-
-    if (!chapterId) {
-      return c.json({
-        success: false,
-        error: { code: 'MISSING_FIELDS', message: '缺少章节 ID' }
-      }, 400)
-    }
-
-    // 调用 AI 生成题目
-    const generatedQuestions = await generateQuestions(chapterId, {
-      count,
-      difficulty,
-      types,
-      tags,
-      language,
-      userId
-    })
-
-    return c.json({
-      success: true,
-      data: {
-        questions: generatedQuestions,
-        count: generatedQuestions.length,
-        message: '题目已生成，状态为草稿，需要审核后发布'
-      }
-    })
-
-  } catch (error) {
-    console.error('AI 生成题目失败:', error)
-    return c.json({
-      success: false,
-      error: { code: 'AI_GENERATION_ERROR', message: error.message }
-    }, 500)
-  }
+  return c.json({ success: false, error: { message: 'AI 出题功能已停用，请使用离线题库' } }, 410)
 })
-
-/**
- * POST /api/questions/generate/preview
- * 预览 AI 生成结果（不保存）
- */
 app.post('/generate/preview', async (c) => {
-  try {
-    const body = await c.req.json()
-
-    const {
-      chapterId,
-      count = 5,
-      difficulty = [2, 3, 4],
-      types = ['multiple_choice', 'calculation'],
-      tags = [],
-      language = 'en'
-    } = body
-
-    if (!chapterId) {
-      return c.json({
-        success: false,
-        error: { code: 'MISSING_FIELDS', message: '缺少章节 ID' }
-      }, 400)
-    }
-
-    // 预览生成
-    const result = await previewGenerateQuestions(chapterId, {
-      count,
-      difficulty,
-      types,
-      tags,
-      language
-    })
-
-    return c.json({
-      success: true,
-      data: result
-    })
-
-  } catch (error) {
-    console.error('预览生成失败:', error)
-    return c.json({
-      success: false,
-      error: { code: 'AI_GENERATION_ERROR', message: error.message }
-    }, 500)
-  }
+  return c.json({ success: false, error: { message: 'AI 出题功能已停用' } }, 410)
 })
 
 /**

@@ -7,8 +7,7 @@ import subjectsRoutes from './routes/subjects.js'
 import chaptersRoutes from './routes/chapters.js'
 import usersRoutes from './routes/users.js'
 import progressRoutes from './routes/progress.js'
-import chatRoutes from './routes/chat.js'
-import chatMessagesRoutes from './routes/chatMessages.js'
+// chat 模块已移除（对话辅导功能停用）
 import authRoutes from './routes/auth.js'
 import questionsRoutes from './routes/questions.js'
 import questionSetsRoutes from './routes/questionSets.js'
@@ -19,8 +18,7 @@ import learningPlansRoutes from './routes/learningPlans.js'
 import wrongQuestionsRoutes from './routes/wrongQuestions.js'
 import questionUploadRoutes from './routes/questionUpload.js'
 import practiceRoutes from './routes/practice.js'
-// quiz.js 已被 practice.js + practiceService.js 替代，不再注册
-import aiRoutes from './routes/ai.js'
+// AI 通用端点已移除
 import { authMiddleware } from './middleware/auth.js'
 import { cacheMiddleware } from './middleware/cache.js'
 import { securityHeaders, requestSizeLimit } from './middleware/security.js'
@@ -166,22 +164,28 @@ app.use('/api/chapters/*', cacheMiddleware({ ttl: 10 * 60 * 1000 })) // 10分钟
 app.route('/api/chapters', chaptersRoutes)
 
 // 受保护路由（需要认证 + CSRF 保护）
+// 注意：Hono 的 app.use('/path/*') 不匹配精确的 '/path'，
+// 所以每个有基路径处理器的路由需要同时注册精确路径和通配符
+app.use('/api/users', authMiddleware, csrfProtection())
 app.use('/api/users/*', authMiddleware, csrfProtection())
+app.use('/api/progress', authMiddleware, csrfProtection())
 app.use('/api/progress/*', authMiddleware, csrfProtection())
-app.use('/api/chat/*', authMiddleware, csrfProtection())
+// chat 路由已移除
+app.use('/api/questions', authMiddleware, csrfProtection())
 app.use('/api/questions/*', authMiddleware, csrfProtection())
 app.use('/api/question-sets/*', authMiddleware, csrfProtection())
 app.use('/api/user-answers/*', authMiddleware, csrfProtection())
+app.use('/api/exams', authMiddleware, csrfProtection())
 app.use('/api/exams/*', authMiddleware, csrfProtection())
+app.use('/api/recommendations', authMiddleware, csrfProtection())
 app.use('/api/recommendations/*', authMiddleware, csrfProtection())
 app.use('/api/learning-plans/*', authMiddleware, csrfProtection())
 app.use('/api/wrong-questions/*', authMiddleware, csrfProtection())
-// quiz 和 ai 为公开端点（全局速率限制已足够保护）
+// practice 需要认证
 
 app.route('/api/users', usersRoutes)
 app.route('/api/progress', progressRoutes)
-app.route('/api/chat/sessions', chatRoutes)
-app.route('/api/chat/messages', chatMessagesRoutes)
+// chat 路由已移除
 app.route('/api/questions', questionsRoutes)
 app.route('/api/questions', questionUploadRoutes) // /upload, /upload/:id/status, /upload/:id/result
 app.route('/api/question-sets', questionSetsRoutes)
@@ -192,8 +196,7 @@ app.route('/api/learning-plans', learningPlansRoutes)
 app.route('/api/wrong-questions', wrongQuestionsRoutes)
 app.use('/api/practice/*', authMiddleware, csrfProtection())
 app.route('/api/practice', practiceRoutes)
-// /api/quiz 已废弃，统一使用 /api/practice
-app.route('/api/ai', aiRoutes)
+// AI 通用端点已移除
 
 // 404处理
 app.notFound(notFoundHandler())

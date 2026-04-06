@@ -1,41 +1,13 @@
 import { useState } from "react";
 import { styles } from "../../styles/homeStyles.js";
 import MathText from "../practice/MathText";
-import { callAI } from "../../utils/callAI.js";
-
-function LoadingSpinner({ message }) {
-  return (
-    <div style={styles.loading}>
-      <div style={styles.spinner} />
-      <div style={styles.loadingMsg}>{message}</div>
-    </div>
-  );
-}
 
 export default function ErrorBookView({ errors, onClear, nav, t, lang, subject = "mathematics" }) {
   const [selectedError, setSelectedError] = useState(null);
-  const [explanation, setExplanation] = useState("");
-  const [loadingExp, setLoadingExp] = useState(false);
 
-  const subjectName = {
-    mathematics: "Mathematics",
-    economics: "Economics",
-    history: "History",
-    politics: "Politics",
-    psychology: "Psychology",
-    further_math: "Further Mathematics"
-  }[subject] || "A-Level";
-
-  const getAIExplanation = async (err) => {
-    setSelectedError(err);
-    setLoadingExp(true);
-    setExplanation("");
-    const text = await callAI(
-      `You are an A-Level ${subjectName} tutor. Explain the concept clearly and concisely for a student who got this wrong.`,
-      `Student got this wrong:\nQuestion: ${err.question}\nTheir answer: ${err.userAnswer}\nCorrect answer: ${err.correct}\nSolution: ${err.solution}\n\nProvide: 1) Where they went wrong, 2) The key concept, 3) A tip to remember it`
-    );
-    setExplanation(text);
-    setLoadingExp(false);
+  // 点击查看解析：直接显示题目自带的 solution，不调 AI
+  const showSolution = (err) => {
+    setSelectedError(selectedError?.id === err.id ? null : err);
   };
 
   if (errors.length === 0) {
@@ -65,7 +37,9 @@ export default function ErrorBookView({ errors, onClear, nav, t, lang, subject =
                 <div style={styles.errorQuestion}><MathText text={err.question} /></div>
               </div>
               <div style={styles.errorCardBtns}>
-                <button onClick={() => getAIExplanation(err)} style={styles.btnSmall}>{t.aiExplainBtn}</button>
+                <button onClick={() => showSolution(err)} style={styles.btnSmall}>
+                  {selectedError?.id === err.id ? t.hideSolution || "Hide" : t.viewSolution || "Solution"}
+                </button>
                 <button onClick={() => onClear(err.id)} style={styles.btnSmallDanger}>{t.removeBtn}</button>
               </div>
             </div>
@@ -75,9 +49,9 @@ export default function ErrorBookView({ errors, onClear, nav, t, lang, subject =
             </div>
             {selectedError?.id === err.id && (
               <div style={styles.explanationBox}>
-                {loadingExp ? <LoadingSpinner message={t.aiExplainingMsg} /> : (
-                  <div style={styles.explanationText}>{explanation}</div>
-                )}
+                <div style={styles.explanationText}>
+                  <MathText text={err.solution || "No solution available."} />
+                </div>
               </div>
             )}
           </div>
