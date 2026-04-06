@@ -27,21 +27,16 @@ app.post('/start', async (c) => {
 
     const questionCount = Math.min(Math.max(parseInt(count) || 5, 1), 20)
 
-    const aiOptions = {}
+    const questionList = await getQuestions(chapterId, difficulty, {}, null, questionCount, subject || 'mathematics')
 
-    const chapterFallback = {
-      id: chapterId,
-      title: chapterTitle || chapterId,
-      keyPoints: chapterKeyPoints || [],
-      formulas: chapterFormulas || [],
-      hardPoints: chapterHardPoints || '',
-      examTips: chapterExamTips || '',
-      subject: subject || 'mathematics',
+    if (!questionList || questionList.length === 0) {
+      return c.json({
+        success: false,
+        error: { message: '该章节暂无题目，题库正在补充中' }
+      }, 404)
     }
 
-    const questionList = await getQuestions(chapterId, difficulty, aiOptions, chapterFallback, questionCount, subject || 'mathematics')
-
-    // Format for frontend — don't send answers yet
+    // 格式化返回前端（不暴露答案）
     const formatted = questionList.map(q => ({
       id: q.id,
       type: q.type,
@@ -54,7 +49,13 @@ app.post('/start', async (c) => {
 
     return c.json({
       success: true,
-      data: { questions: formatted, roundSize: formatted.length }
+      data: {
+        questions: formatted,
+        roundSize: formatted.length,
+        // 告知前端实际返回数量是否少于请求数量
+        requested: questionCount,
+        insufficient: formatted.length < questionCount,
+      }
     })
   } catch (error) {
     console.error('Practice start error:', error)
@@ -89,11 +90,17 @@ app.post('/answer', async (c) => {
     let isCorrect = false
 
     if (qType === 'calculation') {
-      // 数值比较：允许 ±2% 误差，也支持精确字符串匹配
-      const userNum = parseFloat(String(answer).replace(/[^0-9.\-eE]/g, ''))
-      const correctNum = parseFloat(String(correctValue).replace(/[^0-9.\-eE]/g, ''))
-      if (!isNaN(userNum) && !isNaN(correctNum) && correctNum !== 0) {
-        isCorrect = Math.abs((userNum - correctNum) / correctNum) <= 0.02
+      // 使用与 answerGraderCore 一致的判分规则：绝对误差 0.01 或相对误差 1%
+      const userNum = parseFloat(String(answer).trim())
+      const correctNum = parseFloat(String(correctValue).trim())
+      if (!isNaN(userNum) && !isNaN(correctNum)) {
+        if (correctNum !== 0) {
+          const absDiff = Math.abs(userNum - correctNum)
+          const relDiff = absDiff / Math.abs(correctNum)
+          isCorrect = absDiff < 0.01 || relDiff < 0.01
+        } else {
+          isCorrect = Math.abs(userNum) < 0.01
+        }
       } else {
         isCorrect = String(answer).trim().toUpperCase() === String(correctValue).trim().toUpperCase()
       }
@@ -105,14 +112,15 @@ app.post('/answer', async (c) => {
       isCorrect = String(answer).trim().toUpperCase() === String(correctValue).trim().toUpperCase()
     }
 
-    // Save answer（isCorrect null 时存 false，不影响统计）
-    await saveAnswer(userId, questionId, answer, isCorrect ?? false, timeSpent)
+    // Save answer（主观题 isCorrect 保留 null，不强制设为 false）
+    await saveAnswer(userId, questionId, answer, isCorrect, timeSpent)
 
     // Return full feedback
     return c.json({
       success: true,
       data: {
-        isCorrect: isCorrect ?? false,
+        isCorrect,
+        needsReview: isCorrect === null,
         questionType: qType,
         correctAnswer: correctValue,
         solution: question.answer?.explanation || '',

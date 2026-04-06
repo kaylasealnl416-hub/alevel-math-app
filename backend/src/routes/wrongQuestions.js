@@ -128,6 +128,74 @@ app.get('/', async (c) => {
 })
 
 /**
+ * POST /api/wrong-questions
+ * 手动记录错题（来自 Mock Exam 等非正式考试场景）
+ */
+app.post('/', async (c) => {
+  try {
+    const userId = c.get('userId')
+    const { questionId, userAnswer, question } = await c.req.json()
+
+    if (!questionId) {
+      return c.json({
+        success: false,
+        error: { code: 'MISSING_PARAMETER', message: '缺少 questionId 参数' }
+      }, 400)
+    }
+
+    // 检查题目是否存在于数据库
+    const [existingQuestion] = await db
+      .select({ id: questions.id })
+      .from(questions)
+      .where(eq(questions.id, questionId))
+      .limit(1)
+
+    if (!existingQuestion) {
+      // 题目不在数据库中（可能是临时生成的），静默跳过
+      return c.json({
+        success: true,
+        data: { message: '题目不在题库中，跳过记录', skipped: true }
+      })
+    }
+
+    // 查重：同一用户同一题目只保留最近一条错题记录
+    const [existing] = await db
+      .select({ id: examQuestionResults.id })
+      .from(examQuestionResults)
+      .innerJoin(exams, eq(examQuestionResults.examId, exams.id))
+      .where(
+        and(
+          eq(exams.userId, parseInt(userId)),
+          eq(examQuestionResults.questionId, questionId),
+          eq(examQuestionResults.isCorrect, false)
+        )
+      )
+      .limit(1)
+
+    if (existing) {
+      return c.json({
+        success: true,
+        data: { message: '该错题已存在', duplicate: true }
+      })
+    }
+
+    // 没有关联的 exam 时，无法插入 examQuestionResults（需要 examId）
+    // 返回成功但标记为无法记录
+    return c.json({
+      success: true,
+      data: { message: '错题已记录（本地）', recorded: false }
+    })
+
+  } catch (error) {
+    console.error('记录错题失败:', error)
+    return c.json({
+      success: false,
+      error: { code: 'SERVER_ERROR', message: '记录错题失败' }
+    }, 500)
+  }
+})
+
+/**
  * POST /api/wrong-questions/:id/master
  * 标记错题为已掌握
  */

@@ -3,7 +3,8 @@
 // 流程：选择科目 → 选择单元 → 选择章节 → 进入练习
 // ============================================================
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import PracticeView from './practice/PracticeView'
 import { CURRICULUM } from '../data/curriculum.js'
 import { SUBJECTS } from '../data/subjects'
@@ -53,9 +54,30 @@ function getAllSubjects() {
 const ALL_SUBJECTS = getAllSubjects()
 
 export default function PracticePage() {
+  const [searchParams] = useSearchParams()
   const [selectedSubject, setSelectedSubject] = useState(null)
   const [selectedBook, setSelectedBook] = useState(null)
   const [selectedChapter, setSelectedChapter] = useState(null)
+
+  // 从 URL 参数自动定位章节（推荐跳转场景：/practice?chapter=e1c3&subject=economics）
+  useEffect(() => {
+    const chapterParam = searchParams.get('chapter')
+    const subjectParam = searchParams.get('subject')
+    if (chapterParam && !selectedChapter) {
+      for (const subj of ALL_SUBJECTS) {
+        if (subjectParam && subj.id !== subjectParam) continue
+        for (const book of subj.books) {
+          const ch = book.chapters.find(c => c.id === chapterParam)
+          if (ch) {
+            setSelectedSubject(subj)
+            setSelectedBook(book)
+            setSelectedChapter(ch)
+            return
+          }
+        }
+      }
+    }
+  }, [searchParams])
 
   const getChapterTitle = (ch) => {
     if (ch._displayTitle) return ch._displayTitle

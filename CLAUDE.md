@@ -340,7 +340,7 @@ Toast.error('操作失败')
 | Politics chapter ID | 前缀是 `pol`，不是 `p`（与 Math Pure 冲突已修复） |
 | apiClient 返回值 | 直接是 data，不是 `{success, data}` 包装 |
 | subjects/chapters 缓存 | 后端有10分钟缓存，修改数据库后不会立即反映 |
-| 题库几乎为空 | 大多数章节无预存题目，练习依赖实时 AI 生成（有延迟） |
+| 题库几乎为空 | 大多数章节无预存题目，练习为纯题库模式（无AI补题），需加速题库预生成 |
 | ChatPage 入口隐藏 | `/chat` 路由存在但 Navbar 未显示入口 |
 | KaTeX 渲染 | 数学公式用 `$...$` 内联或 `$$...$$` 块级，后端 AI prompt 要求输出 LaTeX |
 

@@ -162,7 +162,10 @@ export default function AuthPage() {
       }
       Toast.success('Login successful!')
       login(data.data.user)
-      setTimeout(() => navigate('/'), 800)
+      // 登录后跳回原页面（如果有 redirect 记录）
+      const redirectPath = localStorage.getItem('redirect_after_login')
+      localStorage.removeItem('redirect_after_login')
+      setTimeout(() => navigate(redirectPath || '/'), 800)
     } catch {
       Toast.error('Network error, please try again later')
       setLoading(false)
@@ -200,7 +203,9 @@ export default function AuthPage() {
       }
       Toast.success('Registration successful! Welcome aboard.')
       login(data.data.user)
-      setTimeout(() => navigate('/'), 1000)
+      const redirectPath = localStorage.getItem('redirect_after_login')
+      localStorage.removeItem('redirect_after_login')
+      setTimeout(() => navigate(redirectPath || '/'), 1000)
     } catch {
       Toast.error('Network error, please try again later')
       setLoading(false)

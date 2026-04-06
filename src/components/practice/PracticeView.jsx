@@ -86,6 +86,12 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
 
       const data = await post('/api/practice/start', body)
 
+      // 提示用户题量不足
+      if (data.insufficient) {
+        const { default: Toast } = await import('../common/Toast')
+        Toast.info(`题库暂时只有 ${data.roundSize} 道题，不足 ${questionCount} 道`)
+      }
+
       setQuestions(data.questions || data)
       setCurrentIndex(0)
       setRoundResults([])
@@ -112,9 +118,13 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
       })
 
       const isCorrect = data.isCorrect
+      const needsReview = data.needsReview || false
       setFeedback(data)
       setUserAnswer(answer)
-      setScore(s => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }))
+      // 主观题（isCorrect === null）不计入正确/错误/总数统计
+      if (isCorrect !== null) {
+        setScore(s => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }))
+      }
 
       const contentObj = q.content
       const questionText = typeof contentObj === 'string'
@@ -173,7 +183,21 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
 
   const handleRecommendationStart = (rec) => {
     const diff = rec.difficulty || currentDifficulty
-    handleStart(diff)
+    const count = rec.count || 5
+
+    // 如果推荐的是不同章节，通过 URL 导航（PracticePage 从 URL 参数初始化）
+    if (rec.chapterId && rec.chapterId !== chapterId) {
+      const params = new URLSearchParams({
+        chapter: rec.chapterId,
+        difficulty: diff,
+        count: String(count),
+        subject: subject || 'mathematics',
+      })
+      window.location.href = `/practice?${params.toString()}`
+      return
+    }
+
+    handleStart(diff, count)
   }
 
   if (error) {

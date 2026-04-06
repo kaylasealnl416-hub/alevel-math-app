@@ -22,44 +22,72 @@ app.put('/profile', async (c) => {
     const userId = c.get('userId') // 从 authMiddleware 获取
     const body = await c.req.json()
 
-    // 允许更新的字段
-    const allowedFields = ['nickname', 'avatar', 'phone', 'grade', 'targetUniversity', 'selectedSubjects']
-    const updateData = {}
+    // users 表字段
+    const userFields = ['nickname', 'avatar', 'phone', 'grade', 'targetUniversity']
+    // userProfiles 表字段
+    const profileFields = ['selectedSubjects']
 
-    for (const field of allowedFields) {
+    const userUpdateData = {}
+    const profileUpdateData = {}
+
+    for (const field of userFields) {
       if (body[field] !== undefined) {
-        updateData[field] = body[field]
+        userUpdateData[field] = body[field]
+      }
+    }
+    for (const field of profileFields) {
+      if (body[field] !== undefined) {
+        profileUpdateData[field] = body[field]
       }
     }
 
-    if (Object.keys(updateData).length === 0) {
+    if (Object.keys(userUpdateData).length === 0 && Object.keys(profileUpdateData).length === 0) {
       return c.json({
         success: false,
         error: { code: 'NO_UPDATE_DATA', message: '没有需要更新的数据' }
       }, 400)
     }
 
-    updateData.updatedAt = new Date()
+    let userResult = null
 
-    const result = await db
-      .update(users)
-      .set(updateData)
-      .where(eq(users.id, userId))
-      .returning()
-
-    if (result.length === 0) {
-      return c.json({
-        success: false,
-        error: { code: 'USER_NOT_FOUND', message: '用户不存在' }
-      }, 404)
+    // 更新 users 表
+    if (Object.keys(userUpdateData).length > 0) {
+      userUpdateData.updatedAt = new Date()
+      const result = await db
+        .update(users)
+        .set(userUpdateData)
+        .where(eq(users.id, userId))
+        .returning()
+      if (result.length === 0) {
+        return c.json({
+          success: false,
+          error: { code: 'USER_NOT_FOUND', message: '用户不存在' }
+        }, 404)
+      }
+      userResult = result[0]
+    } else {
+      const result = await db.select().from(users).where(eq(users.id, userId)).limit(1)
+      userResult = result[0]
     }
 
-    // 移除敏感信息
-    const { password, ...userWithoutPassword } = result[0]
+    // 更新 userProfiles 表（selectedSubjects 等）
+    if (Object.keys(profileUpdateData).length > 0) {
+      profileUpdateData.updatedAt = new Date()
+      await db
+        .update(userProfiles)
+        .set(profileUpdateData)
+        .where(eq(userProfiles.userId, userId))
+    }
+
+    // 合并返回结果
+    const { password, ...userWithoutPassword } = userResult
+    // 读取最新的 profile 数据合并返回
+    const [profile] = await db.select().from(userProfiles).where(eq(userProfiles.userId, userId)).limit(1)
+    const merged = { ...userWithoutPassword, selectedSubjects: profile?.selectedSubjects || [] }
 
     return c.json({
       success: true,
-      data: userWithoutPassword
+      data: merged
     })
   } catch (error) {
     console.error('更新用户信息失败:', error)
@@ -72,17 +100,25 @@ app.put('/profile', async (c) => {
 
 /**
  * GET /api/users/:id
- * 获取用户信息
+ * 获取用户信息（只允许访问自己的数据）
  */
 app.get('/:id', async (c) => {
   try {
     const userId = parseInt(c.req.param('id'))
+    const authenticatedUserId = c.get('userId')
 
     if (isNaN(userId)) {
       return c.json({
         success: false,
         error: { code: 'INVALID_USER_ID', message: '无效的用户ID' }
       }, 400)
+    }
+
+    if (userId !== authenticatedUserId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权访问其他用户信息' }
+      }, 403)
     }
 
     const user = await db.select().from(users).where(eq(users.id, userId)).limit(1)
@@ -94,9 +130,12 @@ app.get('/:id', async (c) => {
       }, 404)
     }
 
+    // 移除密码字段
+    const { password, ...userWithoutPassword } = user[0]
+
     return c.json({
       success: true,
-      data: user[0]
+      data: userWithoutPassword
     })
   } catch (error) {
     console.error('获取用户信息失败:', error)
@@ -223,17 +262,25 @@ app.post('/', async (c) => {
 
 /**
  * GET /api/users/:id/profile
- * 获取用户画像
+ * 获取用户画像（只允许访问自己的数据）
  */
 app.get('/:id/profile', async (c) => {
   try {
     const userId = parseInt(c.req.param('id'))
+    const authenticatedUserId = c.get('userId')
 
     if (isNaN(userId)) {
       return c.json({
         success: false,
         error: { code: 'INVALID_USER_ID', message: '无效的用户ID' }
       }, 400)
+    }
+
+    if (userId !== authenticatedUserId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权访问其他用户画像' }
+      }, 403)
     }
 
     const profile = await db
@@ -264,11 +311,12 @@ app.get('/:id/profile', async (c) => {
 
 /**
  * PUT /api/users/:id/profile
- * 更新用户画像
+ * 更新用户画像（只允许修改自己的数据）
  */
 app.put('/:id/profile', async (c) => {
   try {
     const userId = parseInt(c.req.param('id'))
+    const authenticatedUserId = c.get('userId')
     const body = await c.req.json()
 
     if (isNaN(userId)) {
@@ -276,6 +324,13 @@ app.put('/:id/profile', async (c) => {
         success: false,
         error: { code: 'INVALID_USER_ID', message: '无效的用户ID' }
       }, 400)
+    }
+
+    if (userId !== authenticatedUserId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权修改其他用户画像' }
+      }, 403)
     }
 
     // 允许更新的字段
@@ -325,17 +380,25 @@ app.put('/:id/profile', async (c) => {
 
 /**
  * GET /api/users/:id/stats
- * 获取用户学习统计
+ * 获取用户学习统计（只允许访问自己的数据）
  */
 app.get('/:id/stats', async (c) => {
   try {
     const userId = parseInt(c.req.param('id'))
+    const authenticatedUserId = c.get('userId')
 
     if (isNaN(userId)) {
       return c.json({
         success: false,
         error: { code: 'INVALID_USER_ID', message: '无效的用户ID' }
       }, 400)
+    }
+
+    if (userId !== authenticatedUserId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权访问其他用户的学习统计' }
+      }, 403)
     }
 
     const stats = await db

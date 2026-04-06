@@ -239,6 +239,19 @@ export async function autoSubmitExam(examId, reason = 'auto') {
 
     console.log(`考试 ${examId} 自动提交，原因：${reason}，用时：${timeSpent}秒`)
 
+    // 自动提交也需要批改（与手动提交行为一致）
+    try {
+      const { gradeExam } = await import('./examGrader.js')
+      const gradeResult = await gradeExam(examId)
+      if (!gradeResult.success) {
+        console.error(`考试 ${examId} 自动批改失败:`, gradeResult.error)
+      } else {
+        console.log(`考试 ${examId} 自动批改完成`)
+      }
+    } catch (gradeError) {
+      console.error(`考试 ${examId} 自动批改异常:`, gradeError)
+    }
+
     return {
       success: true,
       data: { examId, timeSpent, reason }

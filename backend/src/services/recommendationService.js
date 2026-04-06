@@ -42,7 +42,9 @@ export async function generateRecommendations(userId, examId) {
     for (const weakTopic of weakTopics) {
       if (weakTopic.correctRate < 60) {
         // Find chapters related to this topic
-        const relatedChapters = await findChaptersForTopic(weakTopic.topic)
+        // 从 topicStats 的 tag 尝试推断学科
+        const examSubject = inferSubjectFromTopics(Object.keys(exam.topicStats || {}))
+        const relatedChapters = await findChaptersForTopic(weakTopic.topic, examSubject)
 
         for (const chapter of relatedChapters) {
           recommendations.push({
@@ -351,15 +353,32 @@ function getPriorityFromCorrectRate(correctRate) {
 }
 
 /**
+ * 从 topic 标签列表推断学科
+ */
+function inferSubjectFromTopics(topics) {
+  const mathKeywords = ['algebra', 'calculus', 'trigonometry', 'differentiation', 'integration', 'vectors', 'pure', 'statistics', 'mechanics']
+  const econKeywords = ['demand', 'supply', 'market', 'GDP', 'inflation', 'fiscal', 'monetary', 'trade', 'microeconomics', 'macroeconomics']
+
+  const topicStr = topics.join(' ').toLowerCase()
+  const mathScore = mathKeywords.filter(k => topicStr.includes(k)).length
+  const econScore = econKeywords.filter(k => topicStr.includes(k)).length
+
+  if (mathScore > econScore) return 'mathematics'
+  if (econScore > mathScore) return 'economics'
+  return 'economics' // 默认
+}
+
+/**
  * Find chapters related to a topic
  */
-async function findChaptersForTopic(topic) {
+async function findChaptersForTopic(topic, subject) {
   try {
     // Import topic-chapter mapping
     const { getChaptersForTopic } = await import('../config/topicChapterMap.js')
 
-    // Get chapter IDs for this topic (default to economics)
-    const chapterIds = getChaptersForTopic(topic, 'economics')
+    // Get chapter IDs for this topic — 动态检测学科而非硬编码
+    // 从 topic 内容尝试推断学科，默认使用 economics
+    const chapterIds = getChaptersForTopic(topic, subject || 'economics')
 
     if (chapterIds.length === 0) {
       return []

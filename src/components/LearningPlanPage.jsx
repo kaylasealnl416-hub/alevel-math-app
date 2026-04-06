@@ -66,6 +66,8 @@ function LearningPlanPage() {
         return
       }
       setLearningPlan(data)
+      // 新计划生成后清除旧的完成状态，避免状态污染
+      saveCompletedTasks({})
     } catch (err) {
       console.error('Failed to generate plan:', err)
       setError('Failed to generate learning plan. Please try again.')

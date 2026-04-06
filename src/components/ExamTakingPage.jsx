@@ -213,6 +213,10 @@ function ExamTakingPage() {
     } catch (err) {
       console.error('Auto-submit failed:', err)
     }
+    // 自动交卷也触发推荐生成（与手动交卷一致）
+    try {
+      await post('/api/recommendations/generate', { examId: parseInt(examId) }, { showErrorToast: false })
+    } catch (_) { /* 静默处理 */ }
     // 无论提交是否成功，时间到了都跳结果页
     Toast.info('Time is up. Exam has been automatically submitted.')
     navigate(`/exams/${examId}/result`)

@@ -29,7 +29,8 @@ ${text}
     {
       "type": "multiple_choice",
       "content": {
-        "text": "题目内容（保持原始语言）",
+        "en": "Question text in English (keep original language)",
+        "zh": "题目中文内容（如果是中文题目）",
         "latex": "LaTeX 公式（如果有，例如：$2x + 5 = 13$）"
       },
       "options": ["A. 选项1", "B. 选项2", "C. 选项3", "D. 选项4"],
@@ -68,9 +69,22 @@ ${text}
       return []
     }
 
-    console.log(`✅ 成功提取 ${result.questions.length} 个题目`)
+    // 标准化 content 结构：将 content.text 映射到 content.en（兼容 AI 返回旧格式）
+    const normalized = result.questions.map(q => {
+      if (q.content?.text && !q.content?.en) {
+        q.content.en = q.content.text
+        delete q.content.text
+      }
+      // 标准化题型名：fill_in_blank → fill_blank
+      if (q.type === 'fill_in_blank') {
+        q.type = 'fill_blank'
+      }
+      return q
+    })
 
-    return result.questions
+    console.log(`✅ 成功提取 ${normalized.length} 个题目`)
+
+    return normalized
   } catch (error) {
     console.error('❌ AI 提取题目失败:', error)
     throw new Error(`AI 提取题目失败: ${error.message}`)

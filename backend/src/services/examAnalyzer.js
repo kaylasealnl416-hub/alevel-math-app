@@ -59,8 +59,13 @@ function buildAnalysisPrompt(exam, questions) {
     ? Math.round((exam.correctCount / exam.totalCount) * 100)
     : 0
 
-  // Collect wrong questions
+  // Collect wrong questions — 优先使用真实批改结果，回退到字符串比较
   const wrongQuestions = questions.filter(q => {
+    // 如果有批改结果，使用批改结果
+    if (exam.questionResults && exam.questionResults[q.id] !== undefined) {
+      return !exam.questionResults[q.id].isCorrect
+    }
+    // 回退：字符串比较
     const userAnswer = exam.answers[q.id]
     return userAnswer?.value !== q.answer?.value
   })

@@ -26,12 +26,29 @@ function ExamResultPage() {
     if (exam && exam.status === 'graded') fetchAIFeedback()
   }, [exam])
 
+  // submitted 但未 graded：轮询等待批改完成
+  useEffect(() => {
+    if (!exam || exam.status !== 'submitted') return
+    const pollInterval = setInterval(async () => {
+      try {
+        const data = await get(`/api/exams/${examId}/result`)
+        const latestExam = data.exam || data
+        if (latestExam.status === 'graded') {
+          setExam(latestExam)
+          setQuestions(data.questions || data.exam?.questionSet?.questions || [])
+          clearInterval(pollInterval)
+        }
+      } catch (_) {}
+    }, 2000)
+    return () => clearInterval(pollInterval)
+  }, [exam?.status, examId])
+
   const fetchExamResult = async () => {
     try {
       setLoading(true); setError(null)
-      const data = await get(`/api/exams/${examId}`)
-      setExam(data)
-      setQuestions(data.questionSet?.questions || [])
+      const data = await get(`/api/exams/${examId}/result`)
+      setExam(data.exam || data)
+      setQuestions(data.questions || data.exam?.questionSet?.questions || [])
     } catch (err) {
       console.error('Failed to fetch exam result:', err)
       setError('Failed to load exam result. Please try again later.')
@@ -104,6 +121,19 @@ function ExamResultPage() {
         <div style={{ background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 32, textAlign: 'center', maxWidth: 400 }}>
           <p style={{ color: '#5f6368', fontSize: 14, marginBottom: 16 }}>This exam has not been submitted yet.</p>
           <Button variant="primary" size="md" onClick={() => navigate(`/exams/${examId}/take`)}>Continue Exam</Button>
+        </div>
+      </div>
+    )
+  }
+
+  if (exam.status === 'submitted') {
+    return (
+      <div style={{ minHeight: '100vh', background: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+        <div style={{ background: '#fff', border: '1px solid #dadce0', borderRadius: 8, padding: 32, textAlign: 'center', maxWidth: 400 }}>
+          <Loading message="Grading your exam..." size="medium" />
+          <p style={{ color: '#5f6368', fontSize: 13, marginTop: 12 }}>
+            Your exam has been submitted and is being graded. This usually takes a few seconds.
+          </p>
         </div>
       </div>
     )
