@@ -58,5 +58,8 @@ pastpapers/
 .superpowers/
 docs/superpowers/
 
+# ===== 大文件：真题 PDF 只保留本地，不纳入 Git =====
+docs/exam-specs/raw/*.pdf
+
 # Git worktrees
 .worktrees/
