@@ -129,8 +129,17 @@ app.get('/', async (c) => {
 app.get('/:id', async (c) => {
   try {
     const questionSetId = parseInt(c.req.param('id'))
+    const userId = c.get('userId')
 
     const result = await getQuestionSetWithQuestions(questionSetId)
+
+    // 所有权校验：只允许题卷所有者访问
+    if (result.questionSet.userId && result.questionSet.userId !== userId) {
+      return c.json({
+        success: false,
+        error: { code: 'FORBIDDEN', message: '无权访问此试卷' }
+      }, 403)
+    }
 
     return c.json({
       success: true,

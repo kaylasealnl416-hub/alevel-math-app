@@ -99,7 +99,24 @@ export async function generateRecommendations(userId, examId) {
       })
     }
 
-    // 4. Save recommendations to database
+    // 4. 幂等保护：检查该考试是否已生成过推荐，避免重复插入
+    const existing = await db.select({ id: learningRecommendations.id })
+      .from(learningRecommendations)
+      .where(and(
+        eq(learningRecommendations.userId, userId),
+        eq(learningRecommendations.examId, examId)
+      ))
+      .limit(1)
+
+    if (existing.length > 0) {
+      console.log(`⏭️ 考试 ${examId} 已有推荐，跳过重复生成`)
+      return {
+        success: true,
+        data: { count: 0, recommendations: [], skipped: true }
+      }
+    }
+
+    // 5. Save recommendations to database
     if (recommendations.length > 0) {
       await db.insert(learningRecommendations).values(recommendations)
     }

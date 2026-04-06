@@ -21,7 +21,7 @@ export async function gradeExam(examId) {
     console.log(`开始批改考试 ${examId}...`)
 
     // 使用事务确保数据一致性
-    return await db.transaction(async (tx) => {
+    const result = await db.transaction(async (tx) => {
       // 1. 查询考试
       const [exam] = await tx.select()
         .from(exams)
@@ -148,6 +148,7 @@ export async function gradeExam(examId) {
 
       return {
         success: true,
+        userId: exam.userId,
         data: {
           examId,
           totalScore,
@@ -159,6 +160,18 @@ export async function gradeExam(examId) {
         }
       }
     })
+
+    // 批改完成后自动生成学习推荐（事务外，非关键操作）
+    if (result.success && result.userId) {
+      try {
+        const { generateRecommendations } = await import('./recommendationService.js')
+        await generateRecommendations(result.userId, examId)
+      } catch (recError) {
+        console.error(`考试 ${examId} 推荐生成失败（不影响批改结果）:`, recError)
+      }
+    }
+
+    return result
 
   } catch (error) {
     console.error('批改考试失败：', error)

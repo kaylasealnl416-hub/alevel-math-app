@@ -117,6 +117,13 @@ export async function getExamDetail(examId) {
       remainingTime = Math.max(0, exam.timeLimit - elapsedTime)
     }
 
+    // 考试进行中且非练习模式时隐藏标准答案和解析，防止前端泄露
+    // 练习模式（ExamMode.PRACTICE）允许查看答案
+    const shouldHideAnswers = exam.status === ExamStatus.IN_PROGRESS && exam.mode !== ExamMode.PRACTICE
+    const safeQuestions = shouldHideAnswers
+      ? questionList.map(({ answer, explanation, ...rest }) => rest)
+      : questionList
+
     return {
       success: true,
       data: {
@@ -124,7 +131,7 @@ export async function getExamDetail(examId) {
         remainingTime,
         questionSet: {
           ...questionSet,
-          questions: questionList
+          questions: safeQuestions
         }
       }
     }
