@@ -24,48 +24,16 @@ export const SUBJECTS = {
             title: { zh: "经济学本质与基本概念", en: "The Nature of Economics & Basic Concepts" },
             overview: { zh: "介绍经济学的本质，理解稀缺性、选择与机会成本的关系，学习正理经济学与规范经济学的区别。", en: "Introduces the nature of economics, understanding scarcity, choice, and opportunity cost, learning the difference between positive and normative economics." },
             keyPoints: [
-              "Economics is the social science that studies how people, firms, governments and societies make choices about how to allocate scarce resources to satisfy unlimited wants",
-              "Scarcity is the fundamental economic problem - resources are limited while human wants are unlimited",
-              "Resources (factors of production): Land (natural resources), labor (human effort), capital (machinery, buildings), enterprise (entrepreneurship and risk-taking)",
-              "Opportunity cost is the cost of the next best alternative foregone when making a choice",
-              "Opportunity cost examples: Student choosing university (foregoes 3 years of wages), government spending on healthcare (foregoes defense spending), firm investing in new factory (foregoes dividend payments)",
-              "Positive economics deals with facts, cause-and-effect relationships, and can be tested (e.g., 'Unemployment is rising', 'Inflation is 2%')",
-              "Normative economics involves value judgments, opinions, and what 'ought to be' (e.g., 'The government should reduce unemployment', 'Income inequality is too high')",
-              "Distinguishing positive and normative: Positive statements can be tested with evidence, normative statements contain words like 'should', 'ought', 'fair', 'too much'",
-              "Economic methodology: Scientific method (observe, hypothesize, test, conclude), use of models and assumptions, ceteris paribus (all other things being equal)",
-              "Ceteris paribus assumption: Allows economists to isolate effect of one variable by assuming all other factors remain constant, e.g., 'If price rises, quantity demanded falls, ceteris paribus'",
-              "Economic models: Simplified representations of reality (e.g., supply and demand model, circular flow model), use assumptions to make predictions, not perfectly accurate but useful",
-              "Production Possibility Frontier (PPF): Shows the maximum combinations of two goods that can be produced given available resources and technology",
-              "Points ON the PPF: Efficient production (all resources fully utilized), productively efficient",
-              "Points INSIDE the PPF: Inefficient production (resources underutilized, unemployment, idle factories)",
-              "Points OUTSIDE the PPF: Unattainable production (requires more resources than currently available)",
-              "PPF shape: Concave (bowed outward) due to increasing opportunity cost - as we produce more of one good, we sacrifice increasing amounts of the other",
-              "Increasing opportunity cost: Resources are not equally suited to producing all goods, e.g., land good for wheat may be poor for factories, so switching production becomes increasingly costly",
-              "PPF shifts outward: Economic growth (more resources or better technology), e.g., discovery of oil, population growth, technological innovation, improved education",
-              "PPF shifts inward: Economic decline (loss of resources), e.g., natural disaster, war, emigration, depletion of natural resources",
-              "PPF applications: Shows trade-offs (guns vs butter), opportunity cost (slope of PPF), efficiency (on vs inside PPF), economic growth (outward shift)",
-              "Specialisation: When individuals, firms or countries concentrate on producing a limited range of goods in which they have advantage",
-              "Division of labor: Breaking production into separate tasks, each performed by different workers, increases productivity (Adam Smith's pin factory example)",
-              "Adam Smith's pin factory: One worker making pins alone produces 20 per day, 10 workers specializing in different tasks produce 48,000 per day (2,400x increase)",
-              "Advantages of specialisation: Higher productivity (workers become skilled), economies of scale (mass production reduces unit costs), innovation (focus leads to improvements), higher quality",
-              "Disadvantages of specialisation: Boredom and alienation (repetitive work), over-dependence (vulnerable to disruptions), structural unemployment (skills become obsolete), loss of self-sufficiency",
-              "Exchange and markets: Specialisation requires exchange, markets facilitate trade, money acts as medium of exchange (avoids barter), enables consumption beyond PPF",
-              "Comparative advantage: A country has comparative advantage in producing a good if it has a lower opportunity cost of production than another country",
-              "Absolute advantage: Being able to produce more output with the same inputs, or same output with fewer inputs",
-              "Comparative advantage vs absolute advantage: Country can have comparative advantage without absolute advantage, trade benefits both countries if they specialize according to comparative advantage",
-              "Gains from trade: Specialization according to comparative advantage allows countries to consume beyond their PPF, total world output increases, both countries benefit",
-              "Trade example: UK opportunity cost of 1 car = 2 computers, China opportunity cost of 1 car = 0.5 computers. China has comparative advantage in cars (lower OC), UK in computers. Both benefit from trade.",
-              "Economic systems: Different ways societies organize production and distribution - free market, command economy, mixed economy",
-              "Free market economy: Private ownership, price mechanism allocates resources, profit motive, consumer sovereignty, minimal government intervention, e.g., Hong Kong, Singapore (closest to pure free market)",
-              "Free market advantages: Efficiency (competition drives down costs), innovation (profit incentive), consumer choice, freedom, automatic adjustment to changes in demand",
-              "Free market disadvantages: Inequality (rich get richer), market failures (externalities, public goods, monopolies), instability (boom and bust cycles), ignores merit goods",
-              "Command economy: State ownership, central planning allocates resources, government decides what, how, and for whom to produce, e.g., Soviet Union (historical), North Korea, Cuba",
-              "Command economy advantages: Equality (income redistribution), provision of public goods and merit goods, long-term planning, no unemployment (everyone assigned job)",
-              "Command economy disadvantages: Inefficiency (no profit motive, bureaucracy), shortages and surpluses (planners lack information), poor quality (no competition), lack of freedom and choice",
-              "Mixed economy: Combination of free market and government intervention, most modern economies are mixed, e.g., UK, US, Germany, China (increasingly mixed)",
-              "Mixed economy rationale: Harness efficiency of markets while correcting market failures through government intervention, balance freedom with equality",
-              "Role of government in mixed economy: Provide public goods (defense, law and order), correct externalities (pollution taxes), redistribute income (progressive taxation, welfare), stabilize economy (fiscal and monetary policy)",
-              "Economic problem summary: Scarcity → choice → opportunity cost → need for allocation mechanism (markets, planning, or mixed)"
+              "Scarcity: Resources are finite but human wants are infinite, forcing economic agents to make choices",
+              "Opportunity Cost: The value of the next best alternative forgone when a decision is made",
+              "Production Possibility Frontier (PPF): Shows the maximum combinations of two goods an economy can produce given current resources (downward-sloping curve)",
+              "Economic Growth on PPF: Shown by an outward shift of the PPF, indicating an increase in the productive capacity of the economy",
+              "Positive Statements: Objective, factual statements that can be tested against evidence to be proven true or false",
+              "Normative Statements: Subjective statements carrying value judgements, often containing words like 'should' or 'ought'",
+              "Factors of Production: Land (reward: rent), Labour (reward: wages), Capital (reward: interest), and Enterprise (reward: profit)",
+              "Division of Labour: Breaking down production into specialized tasks, increasing productivity but risking worker alienation and structural unemployment",
+              "Free Market Economy: Resource allocation is determined entirely by the price mechanism without government intervention (efficiency vs. inequality risk)",
+              "Command Economy: The state allocates resources, which can ensure basic provision but often risks severe bureaucratic inefficiency"
             ],
             formulas: [
               { name: "Opportunity Cost", expr: "OC = Value of next best alternative foregone" },
@@ -99,53 +67,16 @@ export const SUBJECTS = {
             title: { zh: "需求与消费者行为", en: "Demand & Consumer Behaviour" },
             overview: { zh: "学习需求曲线、需求法则、需求弹性以及消费者剩余的概念。", en: "Learn about demand curves, law of demand, demand elasticities, and consumer surplus." },
             keyPoints: [
-              "Law of demand: There is an inverse (negative) relationship between price and quantity demanded, ceteris paribus",
-              "Individual demand: The demand schedule for a single consumer",
-              "Market demand: The sum of all individual demands at each price",
-              "Movement along the demand curve: Caused by change in price of the good itself",
-              "Shift of the demand curve: Caused by change in other factors (income, preferences, prices of related goods, expectations, number of buyers)",
-              "Substitutes: Goods that can replace each other (price of one rises, demand for other rises)",
-              "Complements: Goods used together (price of one rises, demand for other falls)",
-              "Normal goods: Demand increases as income increases",
-              "Inferior goods: Demand decreases as income increases",
-              "DEMAND CURVE ANALYSIS - Shape: Downward sloping from left to right, showing inverse relationship between price and quantity demanded",
-              "DEMAND CURVE ANALYSIS - Slope: Steeper slope = more inelastic demand (necessities like insulin), flatter slope = more elastic demand (luxuries like designer clothes)",
-              "DEMAND CURVE ANALYSIS - Consumer Surplus: The area below the demand curve and above the market price, representing the benefit consumers receive from paying less than their maximum willingness to pay",
-              "DEMAND CURVE ANALYSIS - Consumer Surplus Calculation: For each unit, CS = Maximum willing to pay - Actual price. Total CS = triangular area between demand curve and price line",
-              "DEMAND CURVE ANALYSIS - Consumer Surplus Example: If a consumer is willing to pay £20 for a product but buys it at market price £12, consumer surplus = £8. If 100 consumers buy, total CS depends on demand curve shape",
-              "REAL-WORLD EXAMPLE - iPhone Demand: Apple's iPhone has relatively inelastic demand (PED ≈ 0.5) due to brand loyalty, lack of close substitutes, and ecosystem lock-in. When iPhone prices increased from $999 to $1,199 (20% rise), sales fell only 10%, demonstrating inelastic demand",
-              "REAL-WORLD EXAMPLE - Petrol/Gasoline Demand: Short-run PED ≈ 0.2-0.3 (inelastic) because people need to drive to work, few substitutes exist. Long-run PED ≈ 0.7-0.8 (more elastic) as people can switch to electric cars, move closer to work, or use public transport",
-              "REAL-WORLD EXAMPLE - Luxury Goods During Recession: 2008 financial crisis caused income to fall → demand for luxury cars (Mercedes, BMW) fell 30-40% (YED > 1, luxury goods), while demand for budget supermarkets (Aldi, Lidl) increased (inferior goods, YED < 0)",
-              "UTILITY THEORY - Total Utility (TU): The total satisfaction gained from consuming a certain quantity of a good",
-              "UTILITY THEORY - Marginal Utility (MU): The additional satisfaction gained from consuming one more unit of a good. MU = Change in TU / Change in Quantity",
-              "UTILITY THEORY - Law of Diminishing Marginal Utility: As consumption of a good increases, the marginal utility from each additional unit decreases (e.g., 1st slice of pizza gives high satisfaction, 5th slice gives low satisfaction)",
-              "UTILITY THEORY - Relationship to Demand Curve: Diminishing marginal utility explains why demand curves slope downward - consumers are willing to pay less for additional units because they derive less satisfaction",
-              "UTILITY THEORY - Rational Consumer: Maximizes total utility by allocating income so that MU per £ spent is equal across all goods (MU₁/P₁ = MU₂/P₂)",
-              "Price Elasticity of Demand (PED) measures how responsive quantity demanded is to a change in price",
-              "PED > 1: Elastic (demand sensitive to price change)",
-              "PED < 1: Inelastic (demand insensitive to price change)",
-              "PED = 1: Unit elastic",
-              "PED = 0: Perfectly inelastic (vertical demand curve)",
-              "PED = ∞: Perfectly elastic (horizontal demand curve)",
-              "Factors affecting PED - Necessity vs Luxury: Necessities (bread, medicine) have inelastic demand (PED < 1), luxuries (holidays, jewelry) have elastic demand (PED > 1)",
-              "Factors affecting PED - Availability of Substitutes: More substitutes → more elastic demand (e.g., Coca-Cola has many substitutes, so PED is high). Fewer substitutes → more inelastic (e.g., insulin has no substitutes)",
-              "Factors affecting PED - Proportion of Income: Goods that take up large proportion of income (cars, houses) have more elastic demand. Small purchases (salt, matches) have inelastic demand",
-              "Factors affecting PED - Time Period: Short-run demand is more inelastic (habits, contracts). Long-run demand is more elastic (can find alternatives, change habits)",
-              "Factors affecting PED - Addictiveness: Addictive goods (cigarettes, alcohol) have inelastic demand because consumers find it hard to reduce consumption even when prices rise",
-              "PED and Total Revenue: If PED > 1 (elastic), price increase → revenue falls. If PED < 1 (inelastic), price increase → revenue rises. If PED = 1, revenue unchanged",
-              "PED and Indirect Taxes: If demand is inelastic, consumers bear most of the tax burden (can't easily reduce consumption). If demand is elastic, producers bear most of the tax burden",
-              "Income Elasticity of Demand (YED): Measures responsiveness of demand to changes in income",
-              "YED > 0: Normal goods; YED < 0: Inferior goods; YED > 1: Luxury goods",
-              "YED and Business Cycle: During economic growth (income rises), demand for luxury goods (YED > 1) rises fastest, demand for inferior goods (YED < 0) falls. During recession, opposite occurs",
-              "Cross Elasticity of Demand (XED): Measures how demand for one good responds to price changes in another good",
-              "XED > 0: Substitutes (e.g., Coca-Cola and Pepsi, XED ≈ +0.8); XED < 0: Complements (e.g., cars and petrol, XED ≈ -0.5)",
-              "XED and Competition: High positive XED indicates strong competition between products (close substitutes). Firms monitor XED to understand competitive threats",
-              "BEHAVIOURAL ECONOMICS - Rational Consumer Assumption: Traditional economics assumes consumers are rational, have perfect information, and maximize utility. Behavioural economics challenges this",
-              "BEHAVIOURAL ECONOMICS - Bounded Rationality: Consumers have limited information, limited time, and limited cognitive ability to process information, so they use mental shortcuts (heuristics)",
-              "BEHAVIOURAL ECONOMICS - Anchoring: Consumers rely heavily on the first piece of information (anchor) when making decisions. E.g., seeing a £100 price tag makes £50 seem cheap, even if true value is £30",
-              "BEHAVIOURAL ECONOMICS - Default Bias: Consumers tend to stick with default options. E.g., organ donation rates are 90% in opt-out countries vs 10% in opt-in countries",
-              "BEHAVIOURAL ECONOMICS - Framing: How information is presented affects decisions. E.g., '90% fat-free' sounds better than '10% fat', even though they're identical",
-              "BEHAVIOURAL ECONOMICS - Loss Aversion: Consumers feel the pain of losing £10 more strongly than the pleasure of gaining £10. This explains why people hold onto losing stocks too long"
+              "Law of Demand: Inverse relationship between price and quantity demanded (downward-sloping demand curve)",
+              "Shifts in Demand: Caused by changes in income, prices of substitutes/complements, tastes, or population (factors other than the good's own price)",
+              "Diminishing Marginal Utility: As consumption increases, the satisfaction derived from each additional unit declines, explaining the downward-sloping demand curve",
+              "Price Elasticity of Demand (PED): %ΔQD / %ΔP; measures the responsiveness of quantity demanded to a change in price",
+              "Elastic Demand: PED > 1; a price cut will increase total revenue (represented by a flatter demand curve)",
+              "Inelastic Demand: PED < 1; a price rise will increase total revenue (represented by a steeper demand curve)",
+              "Income Elasticity of Demand (YED): %ΔQD / %ΔY; positive for normal goods and negative for inferior goods",
+              "Cross Elasticity of Demand (XED): %ΔQD of Good A / %ΔP of Good B; positive for substitutes and negative for complements",
+              "Consumer Surplus: The difference between what consumers are willing to pay and the market price they actually pay (area above price, below demand curve)",
+              "Evaluation of Elasticities: Estimates are based on historical data which may not hold true in dynamic, real-world markets"
             ],
             formulas: [
               { name: "Price Elasticity of Demand (PED)", expr: "PED = (%ΔQd) / (%ΔP)" },
@@ -206,32 +137,16 @@ export const SUBJECTS = {
             title: { zh: "供给与生产者行为", en: "Supply & Producer Behaviour" },
             overview: { zh: "学习供给曲线、供给法则、供给弹性以及生产者剩余的概念。", en: "Learn about supply curves, law of supply, supply elasticity, producer surplus, and detailed supply curve analysis." },
             keyPoints: [
-              "Law of supply: There is a direct (positive) relationship between price and quantity supplied, ceteris paribus - as price rises, quantity supplied increases",
-              "Reason for upward-sloping supply: Higher prices increase profit margins, making production more attractive and covering higher marginal costs of additional production",
-              "Individual supply: The supply schedule for a single producer showing quantities they are willing to supply at different prices",
-              "Market supply: The horizontal sum of all individual supply curves at each price level",
-              "Movement along the supply curve: Caused ONLY by change in price of the good itself (expansion when price rises, contraction when price falls)",
-              "Shift of the supply curve: Caused by changes in non-price factors affecting production costs or conditions",
-              "SUPPLY CURVE SHIFTS - Rightward shift (increase in supply): Lower production costs (cheaper raw materials, wages), improved technology, government subsidies, increase in number of producers, favorable weather (agriculture), lower indirect taxes",
-              "SUPPLY CURVE SHIFTS - Leftward shift (decrease in supply): Higher production costs (expensive inputs), natural disasters, government taxes, decrease in number of producers, unfavorable weather",
-              "SUPPLY CURVE ANALYSIS - Shape: Upward sloping from left to right, showing positive relationship between price and quantity supplied",
-              "SUPPLY CURVE ANALYSIS - Producer Surplus: The area above the supply curve and below the market price, representing the benefit producers receive from selling at market price rather than their minimum acceptable price",
-              "SUPPLY CURVE ANALYSIS - Producer Surplus Calculation: For each unit, PS = Market Price - Minimum Price willing to accept. Total PS = triangular area between supply curve and price line",
-              "SUPPLY CURVE ANALYSIS - Producer Surplus Example: If a producer is willing to supply at £5 but sells at market price £10, producer surplus = £5 per unit. If 100 units sold, total PS depends on supply curve shape",
-              "REAL-WORLD EXAMPLE - 2020-2022 Global Chip Shortage: COVID-19 disrupted supply chains → chip production costs increased and capacity reduced → leftward shift in supply → chip prices rose 300% → car and electronics production constrained. Demonstrated low PES in short-run for complex manufacturing",
-              "REAL-WORLD EXAMPLE - OPEC Oil Production Cuts: OPEC controls 40% of global oil supply. When OPEC reduces production quotas → leftward shift in supply curve → oil prices rise. Example: 2022 production cuts pushed oil from $70 to $120 per barrel, demonstrating market power of suppliers",
-              "REAL-WORLD EXAMPLE - Agricultural Supply Shocks: 2022 Ukraine war disrupted wheat supply (Ukraine = 10% of global wheat exports) → leftward shift in wheat supply → global wheat prices rose 50% → food inflation. Shows how supply shocks affect prices, especially for goods with inelastic demand",
-              "Price Elasticity of Supply (PES): Measures responsiveness of quantity supplied to a change in price. PES = (% change in Qs) / (% change in P)",
-              "PES > 1: Elastic supply - quantity supplied changes proportionally more than price (e.g., manufactured goods with spare capacity)",
-              "PES < 1: Inelastic supply - quantity supplied changes proportionally less than price (e.g., agricultural products in short-run, skilled labor)",
-              "PES = 1: Unit elastic supply - quantity supplied changes proportionally equal to price",
-              "PES = 0: Perfectly inelastic supply (vertical supply curve) - quantity supplied cannot change regardless of price (e.g., original Picasso paintings, land in fixed location, concert tickets after venue is full)",
-              "PES = ∞: Perfectly elastic supply (horizontal supply curve) - any price decrease causes quantity supplied to fall to zero (theoretical, rarely exists)",
-              "Factors affecting PES - Time Period: Short-run supply is more inelastic (fixed capacity, contracts), long-run supply is more elastic (can build new factories, train workers, adjust all inputs)",
-              "Factors affecting PES - Spare Capacity: Firms with spare capacity have more elastic supply (can quickly increase output), firms at full capacity have inelastic supply",
-              "Factors affecting PES - Stocks/Inventory: Goods that can be stored (canned food, electronics) have more elastic supply, perishable goods (fresh fish, flowers) have inelastic supply",
-              "Factors affecting PES - Mobility of Factors: If labor and capital can easily move between industries, supply is more elastic. Specialized factors (skilled surgeons, specialized machinery) make supply inelastic",
-              "Factors affecting PES - Production Lag: Goods with short production time (t-shirts) have elastic supply, goods with long production time (ships, buildings) have inelastic supply"
+              "Law of Supply: Direct relationship between price and quantity supplied (upward-sloping supply curve) driven by the profit motive",
+              "Shifts in Supply: Caused by changes in production costs, technology, indirect taxes, or subsidies",
+              "Price Elasticity of Supply (PES): %ΔQS / %ΔP; measures the responsiveness of quantity supplied to a change in price",
+              "Elastic Supply: PES > 1; firms can easily increase output without significant cost increases (flatter supply curve)",
+              "Inelastic Supply: PES < 1; output is restricted by capacity limits, time lags, or lack of factor mobility (steeper supply curve)",
+              "Determinants of PES: Time period, availability of spare capacity, level of raw material stocks, and mobility of factors of production",
+              "Producer Surplus: The difference between the price producers are willing to accept and the market price they receive (area below price, above supply curve)",
+              "Joint Supply: When the production of one good automatically leads to the production of a by-product (e.g., beef and leather)",
+              "Competitive Supply: When two alternative goods compete for the same resources (e.g., land for wheat versus biofuels)",
+              "Evaluation of PES: Supply is almost always inelastic in the immediate short run, but becomes far more elastic in the long run as capacity expands"
             ],
             formulas: [
               { name: "Price Elasticity of Supply (PES)", expr: "PES = (%ΔQs) / (%ΔP)" },
@@ -263,42 +178,16 @@ export const SUBJECTS = {
             title: { zh: "市场均衡", en: "Market Equilibrium" },
             overview: { zh: "学习市场均衡的形成、价格机制的功能以及供需变化对均衡的影响。", en: "Learn about market equilibrium formation, functions of price mechanism, and effects of supply and demand changes on equilibrium." },
             keyPoints: [
-              "Market equilibrium: The point where supply and demand intersect, where Qd = Qs",
-              "Equilibrium price: The price at which quantity demanded equals quantity supplied (also called market-clearing price)",
-              "Equilibrium quantity: The quantity traded at equilibrium price",
-              "Excess supply (surplus): When Qs > Qd at current price, price tends to fall",
-              "Excess demand (shortage): When Qd > Qs at current price, price tends to rise",
-              "EQUILIBRIUM ADJUSTMENT PROCESS - Surplus: When price is above equilibrium → surplus → sellers compete by lowering prices → quantity demanded rises, quantity supplied falls → moves toward equilibrium",
-              "EQUILIBRIUM ADJUSTMENT PROCESS - Shortage: When price is below equilibrium → shortage → buyers compete by bidding up prices → quantity demanded falls, quantity supplied rises → moves toward equilibrium",
-              "EQUILIBRIUM ADJUSTMENT PROCESS - Speed: Adjustment speed depends on market type. Financial markets (stocks) adjust instantly, housing markets adjust slowly (months/years)",
-              "Price mechanism automatically adjusts to restore equilibrium through changes in price",
-              "FUNCTIONS OF PRICE MECHANISM - Signalling: Prices signal information about scarcity. High prices signal scarcity (low supply/high demand), low prices signal abundance (high supply/low demand)",
-              "FUNCTIONS OF PRICE MECHANISM - Incentivising: High prices incentivise producers to increase supply and consumers to reduce demand. Low prices incentivise opposite behavior",
-              "FUNCTIONS OF PRICE MECHANISM - Rationing: Prices ration scarce resources to those willing and able to pay. Only consumers with willingness to pay ≥ market price will buy",
-              "FUNCTIONS OF PRICE MECHANISM - Allocating: Prices allocate resources to their most valued uses. Resources flow to industries where prices (and profits) are highest",
-              "DEMAND SHIFTS - Increase in demand: Demand curve shifts right → equilibrium price rises, equilibrium quantity rises. Example: Income rises → demand for normal goods increases",
-              "DEMAND SHIFTS - Decrease in demand: Demand curve shifts left → equilibrium price falls, equilibrium quantity falls. Example: Preferences change → demand for product decreases",
-              "SUPPLY SHIFTS - Increase in supply: Supply curve shifts right → equilibrium price falls, equilibrium quantity rises. Example: Technology improves → production costs fall → supply increases",
-              "SUPPLY SHIFTS - Decrease in supply: Supply curve shifts left → equilibrium price rises, equilibrium quantity falls. Example: Natural disaster → production capacity destroyed → supply decreases",
-              "JOINT SHIFTS - Demand ↑ + Supply ↑: Quantity definitely increases, price effect ambiguous (depends on relative magnitude of shifts)",
-              "JOINT SHIFTS - Demand ↓ + Supply ↓: Quantity definitely decreases, price effect ambiguous",
-              "JOINT SHIFTS - Demand ↑ + Supply ↓: Price definitely rises, quantity effect ambiguous",
-              "JOINT SHIFTS - Demand ↓ + Supply ↑: Price definitely falls, quantity effect ambiguous",
-              "REAL-WORLD EXAMPLE - Housing Market Equilibrium: UK housing shortage (demand > supply at current prices) → house prices rise 300% from 2000-2020. Government policies (planning restrictions) limit supply → persistent shortage → prices remain high",
-              "REAL-WORLD EXAMPLE - Oil Market 2020 COVID Crash: COVID lockdowns → demand for oil collapsed (demand shifts left) → oil prices fell from $60 to -$37 per barrel (negative prices!) → producers paid buyers to take oil because storage was full",
-              "REAL-WORLD EXAMPLE - 2020 Face Mask Shortage: COVID pandemic → demand for masks surged (demand shifts right) → shortage at original prices → prices rose 500% → incentivised producers to increase supply → new equilibrium at higher price and quantity",
-              "REAL-WORLD EXAMPLE - Agricultural Markets: Good harvest → supply increases (supply shifts right) → prices fall → farmers' revenue may fall if demand is inelastic (PED < 1). This is the 'farm problem' - good harvests can hurt farmers",
-              "PRICE CONTROLS - Price Ceiling (Maximum Price): Government sets maximum legal price below equilibrium. Creates shortage (Qd > Qs), black markets, queuing, rationing",
-              "PRICE CONTROLS - Price Ceiling Example: Rent controls in New York limit rent to below market equilibrium → housing shortage → long waiting lists, deteriorating quality, black market subletting",
-              "PRICE CONTROLS - Price Floor (Minimum Price): Government sets minimum legal price above equilibrium. Creates surplus (Qs > Qd), wasted resources, government intervention needed",
-              "PRICE CONTROLS - Price Floor Example: Minimum wage above equilibrium wage → unemployment (surplus of labor). EU agricultural price floors → food surpluses → government buys and stores excess (butter mountains, wine lakes)",
-              "PRICE CONTROLS - Evaluation: Price controls create inefficiency (deadweight loss), misallocation of resources, unintended consequences (black markets, quality deterioration). However, may achieve equity goals (affordable housing, living wage)",
-              "CONSUMER AND PRODUCER SURPLUS AT EQUILIBRIUM - Total Welfare: At equilibrium, total welfare (consumer surplus + producer surplus) is maximized. Any quantity other than equilibrium reduces total welfare",
-              "CONSUMER AND PRODUCER SURPLUS AT EQUILIBRIUM - Deadweight Loss: When quantity traded is below equilibrium (due to price controls, taxes, or other interventions), deadweight loss occurs - potential gains from trade are lost",
-              "MARKET EFFICIENCY - Allocative Efficiency: Free markets achieve allocative efficiency at equilibrium where P = MC (price equals marginal cost). Resources are allocated to their most valued uses",
-              "MARKET EFFICIENCY - Pareto Efficiency: At equilibrium, it's impossible to make someone better off without making someone else worse off (assuming no externalities or market failures)",
-              "MARKET DISEQUILIBRIUM - Causes: Price controls, time lags in adjustment, external shocks, government intervention, market power (monopoly)",
-              "MARKET DISEQUILIBRIUM - Consequences: Shortages or surpluses, queuing, black markets, rationing, inefficient allocation, deadweight loss"
+              "Equilibrium Price: The market-clearing price where quantity demanded exactly equals quantity supplied (intersection of D and S curves)",
+              "Excess Demand (Shortage): Occurs when the price is below equilibrium, forcing prices up as consumers bid for scarce goods",
+              "Excess Supply (Surplus): Occurs when the price is above equilibrium, forcing prices down as firms try to clear unsold stock",
+              "Signalling Function: Prices signal information to consumers and producers about resource scarcity and surpluses",
+              "Incentive Function: Higher prices act as an incentive to producers to allocate more resources to a market for higher profits",
+              "Rationing Function: Prices ration scarce resources strictly to those consumers who are willing and able to pay the most",
+              "Specific Tax: A fixed amount of tax per unit, shifting the supply curve vertically upwards by a parallel amount",
+              "Ad Valorem Tax: A percentage tax (e.g., VAT), shifting the supply curve vertically upwards by a diverging amount (steeper slope)",
+              "Subsidies: A government grant to producers, shifting the supply curve vertically downwards, lowering price and increasing quantity",
+              "Tax Incidence (Evaluation): The burden of a tax falls more heavily on consumers if PED is more inelastic relative to PES"
             ],
             formulas: [
               { name: "Equilibrium Condition", expr: "Qd = Qs" },
@@ -354,57 +243,16 @@ export const SUBJECTS = {
             title: { zh: "市场失灵", en: "Market Failure" },
             overview: { zh: "学习市场失灵的原因：外部性、公共物品、信息不对称等问题。", en: "Learn about market failure causes: externalities, public goods, information asymmetry, with detailed graphical analysis and policy solutions." },
             keyPoints: [
-              "Market failure occurs when the free market fails to allocate resources efficiently, resulting in welfare loss and deadweight loss to society",
-              "NEGATIVE EXTERNALITIES - Definition: Costs imposed on third parties from production or consumption, not reflected in market price",
-              "NEGATIVE EXTERNALITIES - Examples: Air pollution from factories, noise from airports, passive smoking, traffic congestion, carbon emissions",
-              "NEGATIVE EXTERNALITIES - Graph Analysis: MPC (Marginal Private Cost) curve represents supply, MSC (Marginal Social Cost) = MPC + MEC (Marginal External Cost). MSC curve lies ABOVE MPC curve",
-              "NEGATIVE EXTERNALITIES - Market Outcome: Free market equilibrium where MPB = MPC produces quantity Q1 at price P1. This is OVERPRODUCTION because private costs < social costs",
-              "NEGATIVE EXTERNALITIES - Socially Optimal Outcome: Where MSB = MSC, producing lower quantity Q* at higher price P*. Q* < Q1 because society wants less production when external costs are considered",
-              "NEGATIVE EXTERNALITIES - Deadweight Loss: Triangular area between Q* and Q1, bounded by MSC and MPB curves. Represents welfare loss to society from overproduction",
-              "NEGATIVE EXTERNALITIES - Real Example: Carbon Emissions from Coal Power Plants. Private cost = fuel + labor + capital. External cost = climate change, health problems, environmental damage. Society bears these costs, not the power company",
-              "POSITIVE EXTERNALITIES - Definition: Benefits to third parties from production or consumption, not captured in market price",
-              "POSITIVE EXTERNALITIES - Examples: Education (informed citizens, higher productivity), vaccination (herd immunity), R&D (knowledge spillovers), bee-keeping (pollination for nearby farms)",
-              "POSITIVE EXTERNALITIES - Graph Analysis: MPB (Marginal Private Benefit) curve represents demand, MSB (Marginal Social Benefit) = MPB + MEB (Marginal External Benefit). MSB curve lies ABOVE MPB curve",
-              "POSITIVE EXTERNALITIES - Market Outcome: Free market equilibrium where MPB = MPC produces quantity Q1 at price P1. This is UNDERPRODUCTION because private benefits < social benefits",
-              "POSITIVE EXTERNALITIES - Socially Optimal Outcome: Where MSB = MSC, producing higher quantity Q* at price P*. Q* > Q1 because society wants more production when external benefits are considered",
-              "POSITIVE EXTERNALITIES - Deadweight Loss: Triangular area between Q1 and Q*, bounded by MSB and MPC curves. Represents welfare loss to society from underproduction",
-              "POSITIVE EXTERNALITIES - Real Example: COVID-19 Vaccination. Private benefit = personal protection. External benefit = herd immunity protects others, reduces healthcare burden, enables economic reopening. Society benefits more than individual",
-              "POLICY SOLUTION 1 - Pigouvian Tax (for negative externalities): Tax equal to marginal external cost at socially optimal output. Shifts MPC curve up to MSC, internalizing the externality",
-              "POLICY SOLUTION 1 - Pigouvian Tax Example: Sweden Carbon Tax (1991-present). Started at $27/ton CO2, now $137/ton (world's highest). Result: GDP grew 78% while emissions fell 29% (1990-2020). Transport sector: biofuel use rose from 0% to 30%",
-              "POLICY SOLUTION 1 - Pigouvian Tax Advantages: Creates revenue for government, maintains market mechanism, incentivizes innovation (firms seek cleaner technology), efficient (firms with lowest abatement costs reduce most)",
-              "POLICY SOLUTION 1 - Pigouvian Tax Disadvantages: Difficult to measure external cost accurately, may be regressive (hurts poor more), firms may relocate to countries without tax (carbon leakage), politically unpopular",
-              "POLICY SOLUTION 2 - Subsidies (for positive externalities): Payment equal to marginal external benefit at socially optimal output. Shifts MPC curve down or MPB curve up",
-              "POLICY SOLUTION 2 - Subsidy Example: UK University Tuition Subsidies. Government pays ~£7,000 per student per year, students pay ~£9,250. Without subsidy, fewer would attend university, losing social benefits (innovation, productivity, tax revenue)",
-              "POLICY SOLUTION 2 - Subsidy Advantages: Increases consumption/production of merit goods, politically popular, can target specific groups (low-income students)",
-              "POLICY SOLUTION 2 - Subsidy Disadvantages: Opportunity cost (government spending), may lead to overconsumption, difficult to remove once established (vested interests), may be inefficient if poorly targeted",
-              "POLICY SOLUTION 3 - Regulation: Direct rules limiting harmful activities or mandating beneficial ones. Examples: emission limits, safety standards, mandatory education",
-              "POLICY SOLUTION 3 - Regulation Advantages: Certainty of outcome (quantity controlled), simple to understand and enforce, can ban extremely harmful activities",
-              "POLICY SOLUTION 3 - Regulation Disadvantages: Inflexible (same rule for all firms), no incentive to exceed standard, high monitoring costs, may stifle innovation",
-              "POLICY SOLUTION 4 - Tradable Pollution Permits (Cap and Trade): Government sets total pollution limit (cap), issues permits, firms can trade permits",
-              "POLICY SOLUTION 4 - Permits Example: EU Emissions Trading System (ETS). Covers 40% of EU emissions. Firms exceeding limit must buy permits, firms below limit can sell. Permit price ~€80/ton (2023)",
-              "POLICY SOLUTION 4 - Permits Advantages: Certainty of total pollution, cost-effective (firms with low abatement costs reduce more), creates market for permits, incentivizes innovation",
-              "POLICY SOLUTION 4 - Permits Disadvantages: Initial allocation controversial (free vs auction), price volatility, monitoring costs, may allow rich firms to keep polluting",
-              "POLICY SOLUTION 5 - Property Rights (Coase Theorem): Clearly define property rights, allow parties to negotiate. If transaction costs are low, efficient outcome achieved regardless of initial allocation",
-              "POLICY SOLUTION 5 - Property Rights Example: Fishing quotas. Assign tradable quotas to fishermen, preventing overfishing. New Zealand's quota system (1986) stabilized fish stocks",
-              "POLICY SOLUTION 5 - Property Rights Advantages: Market-based solution, no government intervention needed, efficient allocation",
-              "POLICY SOLUTION 5 - Property Rights Disadvantages: High transaction costs (negotiation, legal fees), difficult for diffuse externalities (air pollution affects millions), assumes rational negotiation",
-              "POLICY SOLUTION 6 - Information Provision: Educate consumers/producers about external costs/benefits. Examples: health warnings on cigarettes, energy efficiency labels, nutrition information",
-              "POLICY SOLUTION 6 - Information Advantages: Low cost, preserves consumer choice, addresses information failure",
-              "POLICY SOLUTION 6 - Information Disadvantages: Assumes rational behavior (people may ignore information), slow to change behavior, ineffective for addictive goods",
-              "PUBLIC GOODS - Definition: Non-excludable (cannot prevent non-payers from using) AND non-rivalrous (one person's use doesn't reduce availability for others)",
-              "PUBLIC GOODS - Examples: National defense, street lighting, lighthouses, flood defenses, public fireworks displays",
-              "PUBLIC GOODS - Free-Rider Problem: People can benefit without paying, so private firms won't provide (no profit). Leads to market failure - zero or insufficient provision",
-              "PUBLIC GOODS - Solution: Government provision funded by taxation. Everyone pays through taxes, everyone benefits",
-              "MERIT GOODS - Definition: Goods with positive externalities that are under-consumed in free market. Society believes people consume too little",
-              "MERIT GOODS - Examples: Education, healthcare, museums, libraries, sports facilities",
-              "MERIT GOODS - Information Failure: Consumers undervalue long-term benefits (myopia), leading to under-consumption",
-              "DEMERIT GOODS - Definition: Goods with negative externalities that are over-consumed in free market. Society believes people consume too much",
-              "DEMERIT GOODS - Examples: Cigarettes, alcohol, gambling, sugary drinks, drugs",
-              "DEMERIT GOODS - Information Failure: Consumers underestimate long-term costs (addiction, health problems), leading to over-consumption",
-              "INFORMATION ASYMMETRY - Definition: One party has more/better information than another, leading to market failure",
-              "INFORMATION ASYMMETRY - Adverse Selection: Hidden characteristics before transaction. Example: Used car market (sellers know defects, buyers don't), leading to 'market for lemons'",
-              "INFORMATION ASYMMETRY - Moral Hazard: Hidden actions after transaction. Example: Insurance (people take more risks after insuring), bank bailouts (banks take excessive risks knowing government will rescue)",
-              "INFORMATION ASYMMETRY - Solutions: Regulation (mandatory disclosure), warranties/guarantees, reputation mechanisms (reviews, ratings), government inspection/certification"
+              "Market Failure: When the free market price mechanism fails to allocate resources efficiently, leading to a net welfare loss",
+              "Externalities: Third-party spillover effects arising from the production or consumption of a good",
+              "Negative Production Externalities: Marginal Social Cost (MSC) > Marginal Private Cost (MPC), leading to overproduction (deadweight welfare loss triangle pointing to social optimum)",
+              "Positive Consumption Externalities: Marginal Social Benefit (MSB) > Marginal Private Benefit (MPB), leading to underconsumption",
+              "Public Goods: Characterised by being non-rival and non-excludable, leading to the free-rider problem and missing markets",
+              "Information Gaps: Asymmetric information where buyers or sellers have unequal knowledge, causing a misallocation of resources",
+              "Merit Goods: Goods that are under-consumed by the free market due to information gaps and positive externalities (e.g., education)",
+              "Demerit Goods: Goods that are over-consumed by the free market due to information gaps and negative externalities (e.g., tobacco)",
+              "Moral Hazard: When economic agents take greater risks because they know they are protected (e.g., bailed-out banks)",
+              "Tragedy of the Commons: The rapid depletion of shared, open-access resources (like ocean fisheries) due to rational self-interest"
             ],
             formulas: [
               { name: "Marginal Social Cost (MSC)", expr: "MSC = MPC + MEC" },
@@ -437,57 +285,16 @@ export const SUBJECTS = {
             title: { zh: "政府干预", en: "Government Intervention" },
             overview: { zh: "学习政府干预市场的各种手段及其效果。", en: "Learn about various government interventions in markets and their effects, with detailed graphical analysis and real-world examples." },
             keyPoints: [
-              "INDIRECT TAXES - Definition: Taxes on goods and services (expenditure taxes), not on income or wealth",
-              "INDIRECT TAXES - Types: (1) Specific tax (fixed amount per unit, e.g., £2 per pack of cigarettes), (2) Ad valorem tax (percentage of price, e.g., 20% VAT)",
-              "INDIRECT TAXES - Graphical Analysis: Tax shifts supply curve vertically upward (leftward) by tax amount. New equilibrium: higher price (P1), lower quantity (Q1)",
-              "INDIRECT TAXES - Price Changes: Consumer price rises from P0 to P1 (consumer burden). Producer price falls from P0 to P2 (producer burden). Tax = P1 - P2",
-              "INDIRECT TAXES - Tax Incidence: Distribution of tax burden between consumers and producers depends on relative elasticities",
-              "INDIRECT TAXES - Incidence Rule 1: If demand is more inelastic than supply (PED < PES), consumers bear larger burden. Example: Cigarettes (addictive, inelastic demand) - consumers pay most of tax",
-              "INDIRECT TAXES - Incidence Rule 2: If supply is more inelastic than demand (PES < PED), producers bear larger burden. Example: Fresh fish (perishable, inelastic supply) - producers absorb most of tax",
-              "INDIRECT TAXES - Tax Revenue: Government revenue = Tax per unit × Quantity sold after tax. Shown as rectangle on graph (tax × Q1)",
-              "INDIRECT TAXES - Deadweight Loss: Welfare loss from reduced quantity traded (Q0 → Q1). Triangular area between supply and demand curves",
-              "INDIRECT TAXES - Real Example: UK Sugar Tax (2018): 18p per liter for drinks with 5-8g sugar/100ml, 24p for >8g. Result: 50% of drinks reformulated to avoid tax, childhood obesity decline",
-              "SUBSIDIES - Definition: Government payments to producers (or consumers) to encourage production/consumption of merit goods or support industries",
-              "SUBSIDIES - Graphical Analysis: Subsidy shifts supply curve vertically downward (rightward) by subsidy amount. New equilibrium: lower price (P1), higher quantity (Q1)",
-              "SUBSIDIES - Price Changes: Consumer price falls from P0 to P1 (consumer benefit). Producer receives P2 = P1 + subsidy (producer benefit)",
-              "SUBSIDIES - Subsidy Distribution: Like tax incidence, benefit distribution depends on elasticities. More inelastic side receives larger benefit",
-              "SUBSIDIES - Government Cost: Total subsidy cost = Subsidy per unit × Quantity produced. Shown as rectangle (subsidy × Q1). Opportunity cost: could spend on healthcare, education",
-              "SUBSIDIES - Real Example: EU Common Agricultural Policy (CAP): €55 billion/year subsidies to farmers. Benefits: Food security, rural employment. Costs: Overproduction, environmental damage, trade distortions",
-              "SUBSIDIES - Real Example: Electric Vehicle Subsidies: UK offered £2,500-£3,000 per EV (2011-2022). Result: EV sales rose from 3,500 (2013) to 267,000 (2022). Ended due to budget constraints",
-              "MAXIMUM PRICE (Price Ceiling) - Definition: Legal maximum price set below equilibrium, intended to make goods affordable (e.g., rent controls, food price caps)",
-              "MAXIMUM PRICE - Graphical Analysis: Price ceiling below equilibrium creates excess demand (shortage). Qd > Qs at ceiling price. Shortage = Qd - Qs",
-              "MAXIMUM PRICE - Consequences: (1) Shortages and queuing, (2) Black markets emerge (illegal higher prices), (3) Quality deterioration (suppliers cut costs), (4) Rationing needed, (5) Reduced supply in long-run",
-              "MAXIMUM PRICE - Real Example: Venezuela Price Controls (2003-2018): Government set maximum prices on food, medicine. Result: Severe shortages, black markets, hyperinflation, economic collapse. Lesson: Price controls don't address underlying supply problems",
-              "MAXIMUM PRICE - Real Example: New York Rent Control (1943-present): Limits rent increases. Benefits: Affordable housing for existing tenants. Costs: Housing shortage, deteriorating quality, black market, reduced new construction",
-              "MINIMUM PRICE (Price Floor) - Definition: Legal minimum price set above equilibrium, intended to protect producers or workers (e.g., minimum wage, agricultural price supports)",
-              "MINIMUM PRICE - Graphical Analysis: Price floor above equilibrium creates excess supply (surplus). Qs > Qd at floor price. Surplus = Qs - Qd",
-              "MINIMUM PRICE - Consequences: (1) Unsold surplus, (2) Government must buy surplus (storage costs), (3) Inefficient resource allocation, (4) Higher prices for consumers, (5) Potential unemployment (if minimum wage)",
-              "MINIMUM PRICE - Real Example: EU Butter Mountain (1970s-1980s): CAP set minimum prices for dairy. Result: Massive butter surplus (1.4 million tons stored), huge storage costs, eventually sold cheaply to USSR or destroyed",
-              "MINIMUM WAGE - Definition: Price floor in labor market, legal minimum hourly wage. UK: £10.42/hour (2023, age 23+)",
-              "MINIMUM WAGE - Arguments For: (1) Reduces poverty, (2) Increases worker motivation, (3) Reduces inequality, (4) Stimulates demand (workers spend more)",
-              "MINIMUM WAGE - Arguments Against: (1) May cause unemployment (especially for young/low-skilled), (2) Firms may cut hours or benefits, (3) May accelerate automation, (4) Regional differences ignored (London vs rural areas)",
-              "MINIMUM WAGE - Evidence: UK National Living Wage (2016): Raised from £7.20 to £10.42 (2023). Studies show minimal unemployment effect, but some hour reductions. Debate continues",
-              "REGULATION - Definition: Government rules and laws controlling business behavior to correct market failures or protect consumers",
-              "REGULATION - Types: (1) Health and safety standards, (2) Environmental regulations (emission limits), (3) Consumer protection (product safety), (4) Financial regulation (banking rules), (5) Competition law (anti-monopoly)",
-              "REGULATION - Advantages: (1) Directly addresses market failures, (2) Certainty of outcome, (3) Can ban harmful activities, (4) Protects vulnerable groups",
-              "REGULATION - Disadvantages: (1) Compliance costs for firms, (2) Reduced flexibility and innovation, (3) Enforcement costs, (4) May be captured by industry (regulatory capture), (5) One-size-fits-all approach",
-              "REGULATION - Real Example: EU GDPR (2018): Data protection regulation, fines up to €20m or 4% of revenue. Result: Improved privacy, but compliance costs €1.3 billion for UK firms alone",
-              "TRADEABLE POLLUTION PERMITS (Cap and Trade) - Definition: Government sets total pollution limit (cap), issues permits, firms can trade permits in market",
-              "TRADEABLE PERMITS - Mechanism: (1) Government sets cap (total allowed pollution), (2) Issues/auctions permits, (3) Firms exceeding limit must buy permits, (4) Firms below limit can sell permits, (5) Permit price determined by market",
-              "TRADEABLE PERMITS - Advantages: (1) Certainty of total pollution (cap), (2) Cost-effective (low-cost reducers do more), (3) Incentivizes innovation (reduce pollution to sell permits), (4) Market-based (efficient allocation), (5) Government revenue (if auctioned)",
-              "TRADEABLE PERMITS - Disadvantages: (1) Initial allocation controversial (free vs auction), (2) Permit price volatility, (3) Monitoring and enforcement costs, (4) May allow rich firms to keep polluting, (5) International coordination difficult",
-              "TRADEABLE PERMITS - Real Example: EU Emissions Trading System (ETS, 2005-present): Covers 40% of EU emissions, 10,000+ installations. Permit price: €5 (2013) → €80 (2023). Result: 35% emission reduction (2005-2020), but criticized for initial over-allocation",
-              "GOVERNMENT FAILURE - Definition: When government intervention makes the situation worse or creates new problems, resulting in net welfare loss",
-              "GOVERNMENT FAILURE - Cause 1: Imperfect Information: Government lacks complete information about costs, benefits, and market conditions. Example: Subsidizing biofuels increased food prices (didn't anticipate impact)",
-              "GOVERNMENT FAILURE - Cause 2: Unintended Consequences: Policies have unexpected side effects. Example: Rent controls reduce housing supply, worsening shortage",
-              "GOVERNMENT FAILURE - Cause 3: Political Pressures: Politicians prioritize votes over efficiency. Example: Agricultural subsidies continue despite inefficiency due to farmer lobby",
-              "GOVERNMENT FAILURE - Cause 4: Regulatory Capture: Regulators influenced by industries they regulate. Example: Financial regulators too close to banks before 2008 crisis",
-              "GOVERNMENT FAILURE - Cause 5: Bureaucratic Inefficiency: Government agencies less efficient than private sector due to lack of profit motive. Example: State-owned enterprises often loss-making",
-              "GOVERNMENT FAILURE - Cause 6: Time Lags: Policy takes time to implement and have effect. Example: Infrastructure projects take years, by which time economic conditions changed",
-              "GOVERNMENT FAILURE - Cause 7: Excessive Costs: Intervention costs exceed benefits. Example: Monitoring and enforcement costs of regulations may outweigh benefits",
-              "GOVERNMENT FAILURE - Real Example: US Prohibition (1920-1933): Banned alcohol to reduce crime and health problems. Result: Organized crime flourished, illegal speakeasies, government lost tax revenue, eventually repealed. Classic government failure",
-              "GOVERNMENT FAILURE - Real Example: EU Biofuel Mandate (2003): Required 10% biofuel in transport fuel to reduce emissions. Unintended consequence: Rainforest cleared for palm oil, food prices rose, net emissions increased. Policy revised 2015",
-              "EVALUATION - Choosing Intervention: Consider (1) Severity of market failure, (2) Costs vs benefits of intervention, (3) Risk of government failure, (4) Equity vs efficiency trade-off, (5) Short-run vs long-run effects, (6) Political feasibility"
+              "Indirect Taxes: Used to internalize negative externalities by making the polluter pay (shifts MPC leftwards towards MSC)",
+              "Evaluation of Taxes: Difficult to accurately assign a monetary value to the externality; highly regressive nature harms lower-income groups",
+              "Subsidies: Used to encourage consumption/production of goods with positive externalities (shifts MPB rightwards towards MSB)",
+              "Evaluation of Subsidies: Significant opportunity cost to the government budget; risk of firms becoming reliant and 'X-inefficient'",
+              "Maximum Prices (Price Ceilings): Set legally below the equilibrium to protect consumers, causing excess demand, queues, and black markets",
+              "Minimum Prices (Price Floors): Set legally above the equilibrium to protect producers or discourage demerit goods, causing excess supply",
+              "Tradable Pollution Permits: A market-based solution capping total industry emissions and allowing firms to buy/sell permits",
+              "Evaluation of Permits: Achieves efficient allocation of pollution reduction, but governments struggle to set the optimal cap and enforce compliance",
+              "State Provision: Direct government funding of public or merit goods to overcome missing markets, ensuring universal access",
+              "Government Failure: When government intervention leads to a net welfare loss (e.g., due to regulatory capture, admin costs, or unintended consequences)"
             ],
             formulas: [
               { name: "Tax Incidence", expr: "Tax burden depends on PED and PES elasticity" },
@@ -526,58 +333,16 @@ export const SUBJECTS = {
             title: { zh: "经济表现衡量", en: "Economic Performance Measures" },
             overview: { zh: "学习衡量经济表现的四大指标：经济增长、通胀、失业、国际收支。", en: "Learn the four main indicators of economic performance: economic growth, inflation, unemployment, balance of payments." },
             keyPoints: [
-              "Economic growth: Increase in real GDP over time, measured as percentage change. Indicates rising living standards and productive capacity",
-              "GDP (Gross Domestic Product): Total value of final goods and services produced within a country's borders in a given period (usually one year)",
-              "GNI (Gross National Income): GDP + Net income from abroad (income earned by nationals abroad - income earned by foreigners domestically)",
-              "Nominal GDP: Measured at current prices, affected by inflation. Can increase even if actual output doesn't change",
-              "Real GDP: Adjusted for inflation using base year prices, measures actual output change. Better indicator of economic growth",
-              "GDP per capita: GDP divided by population. Better measure of living standards than total GDP",
-              "GDP CALCULATION METHODS - Expenditure Approach: GDP = C + I + G + (X - M). Sum of all spending on final goods and services",
-              "GDP CALCULATION METHODS - Income Approach: Sum of all incomes earned (wages + rent + interest + profit). Should equal expenditure approach",
-              "GDP CALCULATION METHODS - Output/Production Approach: Sum of value added at each stage of production. Avoids double counting",
-              "GDP LIMITATIONS - Excludes non-market activities: Unpaid work (housework, childcare, volunteering) not counted, underestimates true output",
-              "GDP LIMITATIONS - Excludes informal economy: Black market, cash-in-hand work not recorded. Significant in developing countries (up to 40% of economy)",
-              "GDP LIMITATIONS - Ignores distribution: High GDP doesn't mean everyone is wealthy. Income inequality can be severe (e.g., high GDP but most wealth concentrated in top 1%)",
-              "GDP LIMITATIONS - Ignores quality of life: Doesn't measure happiness, health, education quality, environmental quality, leisure time, crime rates",
-              "GDP LIMITATIONS - Includes 'bads': Pollution cleanup, crime prevention, natural disaster repairs increase GDP but don't improve welfare",
-              "GDP LIMITATIONS - Doesn't account for sustainability: Resource depletion and environmental damage not subtracted. GDP can rise while natural capital falls",
-              "ALTERNATIVE MEASURES - HDI (Human Development Index): Combines GDP per capita, life expectancy, and education. Range 0-1, developed countries >0.8",
-              "ALTERNATIVE MEASURES - Genuine Progress Indicator (GPI): Adjusts GDP for income distribution, environmental costs, unpaid work. Often shows slower growth than GDP",
-              "ALTERNATIVE MEASURES - Happiness Index: Bhutan's Gross National Happiness. Measures psychological wellbeing, health, education, culture, environment, governance",
-              "INFLATION - Definition: Sustained increase in general price level over time. Reduces purchasing power of money",
-              "INFLATION - CPI (Consumer Price Index): Measures cost of representative basket of ~700 consumer goods and services. Updated monthly. UK target: 2%",
-              "INFLATION - RPI (Retail Price Index): Similar to CPI but includes housing costs (mortgage interest, council tax). Usually higher than CPI by ~1%",
-              "INFLATION - GDP Deflator: Broader measure covering all domestically produced goods and services, not just consumer goods. GDP Deflator = (Nominal GDP / Real GDP) × 100",
-              "INFLATION - Inflation Rate Calculation: [(Price Index Year 2 - Price Index Year 1) / Price Index Year 1] × 100%",
-              "INFLATION - Demand-Pull Inflation: 'Too much money chasing too few goods'. Caused by excess aggregate demand (AD > AS). Example: Economic boom, loose monetary policy",
-              "INFLATION - Cost-Push Inflation: Rising production costs push prices up. Causes: Higher wages, oil price shocks, import price increases, indirect taxes. Shifts AS left",
-              "INFLATION - Real-World Example: 1970s Oil Crisis: OPEC oil embargo → oil prices quadrupled → cost-push inflation in Western economies → stagflation (high inflation + high unemployment)",
-              "INFLATION - Real-World Example: Zimbabwe Hyperinflation (2007-2008): Government printed money to finance spending → demand-pull inflation → prices doubled every 24 hours → inflation rate 89.7 sextillion % → currency abandoned",
-              "INFLATION - Effects on Consumers: Reduces purchasing power, erodes savings (if interest rate < inflation), uncertainty about future prices, menu costs (cost of changing prices)",
-              "INFLATION - Effects on Firms: Uncertainty reduces investment, international competitiveness falls (if inflation higher than competitors), shoe-leather costs (frequent bank trips)",
-              "INFLATION - Effects on Government: Fiscal drag (people pushed into higher tax brackets), reduces real value of government debt (benefits government), may require interest rate increases",
-              "DEFLATION - Definition: Sustained decrease in general price level (negative inflation). Can be more harmful than moderate inflation",
-              "DEFLATION - Causes: Weak aggregate demand (recession), technological improvements (supply increases), tight monetary policy",
-              "DEFLATION - Dangers: Consumers delay purchases (expecting lower prices) → demand falls further → firms cut production → unemployment rises → vicious cycle. Japan 1990s-2000s",
-              "UNEMPLOYMENT - Definition: People of working age actively seeking work but unable to find it. Excludes students, retirees, homemakers (not in labor force)",
-              "UNEMPLOYMENT - Labour Force: Employed + Unemployed (those actively seeking work)",
-              "UNEMPLOYMENT - Unemployment Rate: (Unemployed / Labour force) × 100%. UK: ~4% (2023), considered low",
-              "UNEMPLOYMENT - Frictional Unemployment: People between jobs, searching for better match. Short-term, voluntary. Always exists in dynamic economy (~2-3%)",
-              "UNEMPLOYMENT - Structural Unemployment: Skills mismatch between workers and available jobs. Caused by technological change, globalization, decline of industries. Long-term, serious problem",
-              "UNEMPLOYMENT - Structural Example: UK Coal Mining: 1980s pit closures → 200,000 miners unemployed → skills not transferable → long-term unemployment in mining communities",
-              "UNEMPLOYMENT - Seasonal Unemployment: Regular fluctuations due to seasonal demand. Examples: Tourism (winter), agriculture (harvest), retail (post-Christmas)",
-              "UNEMPLOYMENT - Cyclical (Demand-Deficient) Unemployment: Caused by recession, insufficient aggregate demand. Rises in downturns, falls in booms. Most serious type",
-              "UNEMPLOYMENT - Costs to Individuals: Lost income, poverty, loss of skills, mental health problems, family breakdown, reduced self-esteem",
-              "UNEMPLOYMENT - Costs to Government: Lost tax revenue (income tax, VAT), higher benefit payments (unemployment benefits), increased healthcare costs (mental health)",
-              "UNEMPLOYMENT - Costs to Economy: Lost output (GDP below potential), wasted resources (idle labor), hysteresis (long-term unemployment → permanent loss of skills)",
-              "BALANCE OF PAYMENTS - Definition: Record of all economic transactions between residents of a country and rest of world over a period (usually one year)",
-              "BALANCE OF PAYMENTS - Current Account: Trade in goods (visible trade), services (invisible trade), income (investment income, wages), current transfers (foreign aid, remittances)",
-              "BALANCE OF PAYMENTS - Trade in Goods: Exports - Imports of physical goods. UK typically has deficit (imports > exports) of ~£100 billion",
-              "BALANCE OF PAYMENTS - Trade in Services: Exports - Imports of services (finance, tourism, education, consulting). UK typically has surplus of ~£100 billion (strong financial services)",
-              "BALANCE OF PAYMENTS - Current Account Deficit: When imports > exports + net income + transfers. Means country spending more abroad than earning. UK: ~3% of GDP",
-              "BALANCE OF PAYMENTS - Current Account Surplus: When exports > imports + net income + transfers. Means country earning more abroad than spending. Germany, China: large surpluses",
-              "BALANCE OF PAYMENTS - Causes of Deficit: Strong currency (makes exports expensive), high consumer spending (imports rise), low competitiveness, recession in trading partners",
-              "BALANCE OF PAYMENTS - Consequences of Deficit: Downward pressure on currency, foreign debt accumulation, may require higher interest rates, can be sustainable if financed by investment"
+              "Gross Domestic Product (GDP): The total value of all goods and services produced within a country's borders in a given year",
+              "Real vs. Nominal GDP: Real GDP is adjusted for inflation (measured in constant prices); Nominal GDP is not adjusted (measured in current prices)",
+              "Inflation: The sustained increase in the general price level of an economy, typically measured by the Consumer Prices Index (CPI)",
+              "Deflation vs. Disinflation: Deflation is a falling general price level (negative inflation); Disinflation is a falling rate of inflation (prices rising slower)",
+              "Unemployment Rate: The percentage of the economically active population (workforce) who are without a job but actively seeking one",
+              "Measures of Unemployment: The Claimant Count measures those receiving out-of-work benefits; the ILO measure surveys those actively seeking work (internationally comparable)",
+              "Current Account on the Balance of Payments: A record of a country's trade in goods, trade in services, primary income, and secondary income",
+              "Current Account Deficit: When the total value of imports (withdrawals) exceeds the total value of exports (injections)",
+              "Human Development Index (HDI): A composite indicator of living standards measuring health (life expectancy), education (mean/expected years), and income (GNI per capita)",
+              "Evaluation of GDP: Often a flawed measure of living standards as it ignores the shadow economy, income inequality, environmental degradation, and unpaid work"
             ],
             formulas: [
               { name: "GDP Growth Rate", expr: "(Real GDP₂ - Real GDP₁) / Real GDP₁ × 100%" },
@@ -632,57 +397,16 @@ export const SUBJECTS = {
             title: { zh: "总需求", en: "Aggregate Demand" },
             overview: { zh: "学习总需求的构成要素及其影响因素。", en: "Learn the components of aggregate demand and factors affecting them, including detailed AD curve analysis." },
             keyPoints: [
-              "Aggregate Demand (AD): Total planned expenditure on final goods and services at each price level in an economy",
-              "AD = C + I + G + (X - M) where C = Consumption, I = Investment, G = Government spending, X = Exports, M = Imports",
-              "CONSUMPTION (C) - Definition: Household spending on goods and services, typically 60-70% of AD, largest and most stable component",
-              "CONSUMPTION - Factors Affecting: (1) Disposable income (Y) - most important factor, (2) Wealth (assets like houses, stocks), (3) Interest rates (cost of borrowing), (4) Consumer confidence (expectations about future), (5) Availability of credit (bank lending), (6) Age distribution (young and old consume more relative to income)",
-              "CONSUMPTION - Disposable Income: Income after taxes. As disposable income rises, consumption rises but by less than income (MPC < 1). Relationship shown by consumption function",
-              "CONSUMPTION - Consumption Function: C = a + bY, where a = autonomous consumption (consumption when income = 0, financed by borrowing/savings), b = MPC (marginal propensity to consume), Y = disposable income",
-              "CONSUMPTION - Autonomous Consumption: Minimum consumption needed for survival (food, shelter), occurs even at zero income. Financed by borrowing, dissaving, or government transfers",
-              "CONSUMPTION - Marginal Propensity to Consume (MPC): Fraction of additional income spent on consumption. MPC = ΔC / ΔY. Typically 0.6-0.8 in developed countries. Higher for low-income households",
-              "CONSUMPTION - Average Propensity to Consume (APC): Proportion of total income spent on consumption. APC = C / Y. Falls as income rises (rich save higher proportion)",
-              "CONSUMPTION - Wealth Effect: When asset prices (houses, stocks) rise → households feel wealthier → consumption increases even if income unchanged. Example: UK house price boom (2000-2007) → consumption rose 3% of GDP",
-              "CONSUMPTION - Interest Rate Effect: Lower interest rates → (1) Cheaper to borrow for consumption (cars, furniture), (2) Lower returns on savings → less incentive to save → more consumption. Example: US 2008-2015 near-zero rates boosted car sales",
-              "CONSUMPTION - Consumer Confidence: Optimism about future income and job security → higher consumption. Pessimism → precautionary saving increases. Measured by confidence indices (University of Michigan, GfK)",
-              "CONSUMPTION - Real Example: 2008 Financial Crisis: Consumer confidence collapsed → households increased savings from 2% to 8% of income (precautionary saving) → consumption fell → deepened recession",
-              "CONSUMPTION - Real Example: COVID-19 Pandemic (2020-2021): Lockdowns prevented spending + uncertainty → savings rate surged to 25% (UK) → 'forced saving'. Post-lockdown: Pent-up demand + excess savings → consumption boom → inflation",
-              "SAVINGS (S) - Definition: Income not spent on consumption. S = Y - C. Savings provide funds for investment",
-              "SAVINGS - Savings Function: S = -a + (1-b)Y, where -a = dissaving at zero income, (1-b) = MPS (marginal propensity to save)",
-              "SAVINGS - Marginal Propensity to Save (MPS): Fraction of additional income saved. MPS = ΔS / ΔY = 1 - MPC. If MPC = 0.8, then MPS = 0.2",
-              "SAVINGS - Factors Affecting: (1) Interest rates (higher rates → more saving), (2) Consumer confidence (uncertainty → more precautionary saving), (3) Age (middle-aged save most, young and old save less), (4) Cultural factors (Asian countries have higher savings rates)",
-              "INVESTMENT (I) - Definition: Spending by firms on capital goods (machinery, buildings, equipment) and changes in inventories. Typically 15-20% of AD, most volatile component",
-              "INVESTMENT - Types: (1) Fixed investment (machinery, buildings, infrastructure), (2) Inventory investment (stocks of raw materials, work-in-progress, finished goods), (3) Residential investment (new housing construction)",
-              "INVESTMENT - Factors Affecting: (1) Interest rates (cost of borrowing) - most important, (2) Expected rate of return (profitability expectations), (3) Business confidence (animal spirits - Keynes), (4) Level of technology (new technology creates investment opportunities), (5) Corporate taxes (lower taxes → higher after-tax profits → more investment), (6) Accelerator effect (relationship between output growth and investment)",
-              "INVESTMENT - Interest Rate Effect: Lower interest rates → (1) Cheaper to borrow for investment projects, (2) More projects become profitable (NPV positive), (3) Opportunity cost of investment falls. Example: US 2009-2015 near-zero rates → corporate investment rose 50%",
-              "INVESTMENT - Expected Rate of Return: Firms invest if expected return > interest rate. Return depends on: (1) Expected future demand, (2) Expected future costs, (3) Expected future prices. Highly uncertain → investment volatile",
-              "INVESTMENT - Business Confidence (Animal Spirits): Keynes argued investment driven by 'animal spirits' - optimism/pessimism not based on rational calculation. Confidence can change rapidly → investment swings wildly",
-              "INVESTMENT - Accelerator Effect: Theory that investment depends on rate of change of output (GDP growth), not level of output. If GDP growth accelerates → investment rises sharply. If growth slows → investment falls sharply",
-              "INVESTMENT - Accelerator Formula: I = k × ΔY, where k = capital-output ratio (capital needed per unit of output), ΔY = change in output. Example: If k = 3 and GDP rises by £100m, investment rises by £300m",
-              "INVESTMENT - Accelerator Example: Economy growing at 2% → firms invest to maintain capacity. Growth accelerates to 4% → firms must invest much more to expand capacity. Growth slows to 1% → investment collapses (don't need new capacity)",
-              "INVESTMENT - Real Example: 2008 Financial Crisis: Credit freeze → firms couldn't borrow → investment collapsed 20% (US) → unemployment rose → consumption fell → further investment decline. Negative accelerator amplified recession",
-              "INVESTMENT - Real Example: China Investment Boom (2000-2010): GDP growth 10% annually → massive investment in infrastructure, factories, housing. Investment reached 45% of GDP (highest in world). Accelerator effect in action",
-              "GOVERNMENT EXPENDITURE (G) - Definition: Spending on goods and services by government (healthcare, education, defense, infrastructure). Typically 15-25% of AD. Excludes transfer payments (pensions, benefits)",
-              "GOVERNMENT EXPENDITURE - Factors Affecting: (1) Political priorities (defense vs welfare), (2) Economic conditions (recession → more spending), (3) Budget constraints (debt levels), (4) Automatic stabilizers (unemployment benefits rise in recession)",
-              "GOVERNMENT EXPENDITURE - Fiscal Policy Tool: Government can adjust G to influence AD. Increase G → AD rises (expansionary). Decrease G → AD falls (contractionary). Example: 2008 stimulus packages increased G globally",
-              "GOVERNMENT EXPENDITURE - Real Example: US Infrastructure Investment (2021): $1.2 trillion Infrastructure Investment and Jobs Act. Spending on roads, bridges, broadband, clean energy. Goal: Boost AD and increase LRAS (supply-side benefits)",
-              "NET EXPORTS (X - M) - Definition: Exports minus imports. Can be positive (trade surplus) or negative (trade deficit). UK typically has deficit (imports > exports)",
-              "NET EXPORTS - Factors Affecting: (1) Exchange rates (depreciation → exports cheaper, imports expensive → X-M rises), (2) Relative inflation rates (lower domestic inflation → more competitive → X-M rises), (3) Foreign income levels (higher foreign income → more demand for exports), (4) Trade policies (tariffs, quotas affect trade), (5) Competitiveness (quality, productivity, innovation)",
-              "NET EXPORTS - Exchange Rate Effect: Pound depreciates (£1 = $1.20 → £1 = $1.10) → UK exports cheaper in dollars → US buyers buy more UK goods → UK exports rise. UK imports more expensive in pounds → UK buyers buy fewer imports → UK imports fall. Net exports (X-M) rise",
-              "NET EXPORTS - Real Example: Brexit Pound Depreciation (2016): Pound fell 15% after Brexit vote → UK exports became more competitive → export volumes rose 5% → helped offset Brexit uncertainty impact on investment",
-              "NET EXPORTS - Real Example: China Trade Surplus (2000-2020): Undervalued yuan + low costs → massive export growth → trade surplus reached $500 billion (2015). Contributed significantly to China's AD and growth",
-              "AD CURVE ANALYSIS - Shape: The AD curve slopes downward from left to right, showing inverse relationship between price level and real GDP",
-              "AD CURVE ANALYSIS - Wealth Effect (Real Balance Effect): When price level falls → real value of money holdings increases → consumers feel wealthier → consumption increases → AD increases. Example: If prices fall 10%, your £10,000 savings can now buy more goods, so you spend more",
-              "AD CURVE ANALYSIS - Interest Rate Effect: When price level falls → less money needed for transactions → money demand decreases → interest rates fall → investment and consumption (on credit) increase → AD increases. Example: Lower prices mean firms need less money to buy inputs, reducing demand for loans, lowering interest rates, encouraging investment",
-              "AD CURVE ANALYSIS - International Trade Effect (Net Export Effect): When domestic price level falls → domestic goods become relatively cheaper compared to foreign goods → exports increase and imports decrease → net exports (X-M) increase → AD increases. Example: If UK prices fall relative to EU prices, UK exports become more competitive, increasing demand for UK goods",
-              "AD CURVE ANALYSIS - Movement Along vs Shift: Movement along AD curve is caused by changes in price level only. Shifts in AD curve are caused by changes in non-price factors affecting C, I, G, or (X-M)",
-              "AD CURVE SHIFTS - Rightward Shift (Increase in AD): Caused by increases in C (higher consumer confidence, tax cuts, wealth increase), I (lower interest rates, improved business confidence), G (expansionary fiscal policy), or (X-M) (depreciation of currency, higher foreign income)",
-              "AD CURVE SHIFTS - Leftward Shift (Decrease in AD): Caused by decreases in C (recession fears, tax increases), I (higher interest rates, pessimistic expectations), G (austerity measures), or (X-M) (appreciation of currency, recession in trading partners)",
-              "AD SHIFTS - Real Example: 2008 Financial Crisis: Collapse in consumer and business confidence → sharp fall in C and I → leftward shift in AD → recession. Governments responded with fiscal stimulus (increase G) and central banks cut interest rates to boost AD",
-              "AD SHIFTS - Real Example: COVID-19 Pandemic (2020): Lockdowns → collapse in C and I → massive leftward shift in AD. Governments implemented unprecedented fiscal stimulus (furlough schemes, direct payments) to support AD",
-              "MULTIPLIER EFFECT - Definition: Initial change in any component of AD (especially I or G) leads to larger final change in national income through rounds of spending",
-              "MULTIPLIER EFFECT - Formula: Multiplier = 1/(1-MPC) = 1/MPS = 1/(MPS+MPT+MPM), where MPT = marginal propensity to tax, MPM = marginal propensity to import",
-              "MULTIPLIER EFFECT - Example: Government spends £100m on infrastructure (MPC = 0.8). Round 1: £100m income to construction workers. Round 2: Workers spend £80m, save £20m. Round 3: Recipients spend £64m. Total effect: £100m × 5 = £500m",
-              "MULTIPLIER EFFECT - Factors Affecting Size: (1) MPC (higher → larger multiplier), (2) Tax rates (higher → smaller multiplier), (3) Import propensity (higher → smaller multiplier), (4) Spare capacity (if at full employment, multiplier mainly causes inflation)"
+              "Aggregate Demand (AD): Total planned spending on domestic goods and services at various price levels; AD = C + I + G + (X - M)",
+              "Consumption (C): Spending by households on consumer goods/services; heavily influenced by interest rates, consumer confidence, and the wealth effect",
+              "The Wealth Effect: When rising asset prices (e.g., housing, shares) increase consumer confidence and borrowing, shifting AD right",
+              "Investment (I): Planned spending by firms on capital goods; determined by interest rates, business expectations ('animal spirits'), and corporation tax",
+              "Government Spending (G): Expenditure by the state on public services and infrastructure (an autonomous injection into the circular flow)",
+              "Net Exports (X - M): Export revenues minus import expenditure; determined by exchange rates, relative inflation, and foreign income levels",
+              "Downward-sloping AD Curve: Explained by the wealth effect, the interest rate effect, and the international trade effect as the general price level falls",
+              "The Multiplier Effect: An initial injection into the circular flow leads to a much greater final increase in real GDP (Formula: k = 1/MPW)",
+              "Marginal Propensity to Consume (MPC): The proportion of an increase in income that is spent on consumption; directly determines the size of the multiplier",
+              "Evaluation of AD: Shifting AD is heavily dependent on consumer and business confidence; rate cuts won't work if 'animal spirits' are low"
             ],
             formulas: [
               { name: "Aggregate Demand (AD)", expr: "AD = C + I + G + (X - M)" },
@@ -737,45 +461,16 @@ export const SUBJECTS = {
             title: { zh: "总供给", en: "Aggregate Supply" },
             overview: { zh: "学习短期与长期总供给曲线的区别。", en: "Learn about short-run and long-run aggregate supply curves." },
             keyPoints: [
-              "Aggregate Supply (AS): Total quantity of final goods and services that firms are willing and able to produce at each price level in an economy",
-              "Short-run Aggregate Supply (SRAS): Upward sloping curve showing positive relationship between price level and output in short-run when some input costs are fixed (especially wages)",
-              "SRAS - Why Upward Sloping: Higher prices → higher profit margins (since wages/input costs fixed in short-run) → firms increase output. Also, money illusion: workers don't immediately demand higher wages when prices rise",
-              "SRAS SHIFTS - Rightward Shift (Increase in SRAS): Lower input costs (oil, raw materials, wages), improved productivity, lower business taxes, subsidies, favorable weather (agriculture), currency depreciation (cheaper imports)",
-              "SRAS SHIFTS - Leftward Shift (Decrease in SRAS): Higher input costs (oil price shock, wage increases), natural disasters, higher business taxes, currency appreciation (expensive imports), supply chain disruptions",
-              "SRAS SHIFTS - Real Example: 1973 Oil Crisis: OPEC oil embargo → oil prices quadrupled → SRAS shifted left → stagflation (rising prices + falling output + rising unemployment). Demonstrated cost-push inflation",
-              "SRAS SHIFTS - Real Example: 2021-2022 Supply Chain Crisis: COVID disruptions + Ukraine war → shipping costs rose 500%, chip shortage, energy crisis → SRAS shifted left → inflation rose to 10% in UK/US",
-              "Long-run Aggregate Supply (LRAS): Shows economy's potential output when all resources are fully employed. Represents productive capacity of economy",
-              "CLASSICAL LRAS - Shape: Vertical line at full employment output (Yfe). Price level doesn't affect long-run output because all prices and wages are flexible",
-              "CLASSICAL LRAS - Assumption: Markets clear quickly, wages and prices flexible, economy self-corrects to full employment. Associated with free-market economists (Friedman, Hayek)",
-              "CLASSICAL LRAS - Implication: Demand-side policies (fiscal/monetary) only affect price level in long-run, not output. Supply-side policies needed for growth",
-              "KEYNESIAN LRAS - Shape: Horizontal (deep recession), then upward sloping (approaching capacity), then vertical (full capacity). Three distinct sections",
-              "KEYNESIAN LRAS - Section 1 (Horizontal): Deep recession, high unemployment, spare capacity. Output can increase without price rises. AD increase → output rises, prices stable",
-              "KEYNESIAN LRAS - Section 2 (Upward Sloping): Economy approaching full capacity, some bottlenecks emerge. AD increase → both output and prices rise",
-              "KEYNESIAN LRAS - Section 3 (Vertical): Full capacity reached, no spare resources. AD increase → only prices rise (pure inflation), output cannot increase",
-              "KEYNESIAN LRAS - Assumption: Wages and prices sticky (especially downward), markets don't clear quickly, economy can be stuck in recession. Associated with Keynes",
-              "KEYNESIAN LRAS - Implication: Demand-side policies effective in recession (section 1), can increase output without inflation. Government intervention needed",
-              "Potential GDP (Yfe): Maximum sustainable output economy can produce when all resources fully employed without accelerating inflation. Determined by quantity and quality of factors of production",
-              "Actual GDP: Current level of output, can be above or below potential GDP depending on economic conditions",
-              "OUTPUT GAP - Definition: Difference between actual GDP and potential GDP. Measures spare capacity or overheating in economy",
-              "OUTPUT GAP - Negative Gap (Deflationary/Recessionary Gap): Actual GDP < Potential GDP. Indicates recession, high unemployment, spare capacity, downward pressure on prices",
-              "OUTPUT GAP - Negative Gap Example: 2008-2009 Financial Crisis: UK output gap reached -4% (actual GDP 4% below potential). Unemployment rose to 8%, deflation risk",
-              "OUTPUT GAP - Positive Gap (Inflationary Gap): Actual GDP > Potential GDP. Indicates overheating, unsustainable growth, labor shortages, upward pressure on prices/wages",
-              "OUTPUT GAP - Positive Gap Example: 2021-2022 Post-COVID Boom: Strong demand recovery + supply constraints → positive output gap in US/UK → inflation surged to 9-10%",
-              "OUTPUT GAP - Measurement Difficulty: Potential GDP unobservable, must be estimated. Different methods give different results. Policy mistakes possible if estimates wrong",
-              "LRAS SHIFTS - Rightward Shift (Economic Growth): Increases potential output. Caused by: (1) More factors of production (labor, capital, land), (2) Better quality factors (education, training, technology), (3) Improved efficiency (better institutions, competition)",
-              "LRAS SHIFTS - Factors: Technological progress (automation, AI, internet), capital accumulation (investment in machinery, infrastructure), labor force growth (immigration, higher participation), education and training (human capital), discovery of natural resources (oil, minerals)",
-              "LRAS SHIFTS - Institutional Factors: Property rights protection, rule of law, low corruption, competitive markets, efficient regulations, political stability, trade openness",
-              "LRAS SHIFTS - Real Example: China 1980-2020: LRAS shifted right dramatically. GDP grew 10% annually for 40 years. Causes: Market reforms, capital investment, technology adoption, education expansion, infrastructure",
-              "LRAS SHIFTS - Real Example: UK Industrial Revolution (1760-1840): Steam engine, mechanization, railways → productivity surged → LRAS shifted right → living standards rose",
-              "LRAS SHIFTS - Leftward Shift (Rare): Natural disasters (earthquake destroying capital), war (destruction of infrastructure), brain drain (skilled workers emigrate), deindustrialization without replacement",
-              "SUPPLY SHOCKS - Positive Supply Shock: Unexpected event that increases AS. Examples: Technology breakthrough, oil price collapse, good harvest. SRAS/LRAS shifts right → output rises, prices fall",
-              "SUPPLY SHOCKS - Negative Supply Shock: Unexpected event that decreases AS. Examples: Oil crisis, natural disaster, pandemic, war. SRAS shifts left → output falls, prices rise (stagflation)",
-              "SUPPLY SHOCKS - Real Example: COVID-19 Pandemic (2020): Lockdowns → factories closed, supply chains disrupted → negative supply shock → SRAS shifted left. Combined with demand shock → severe recession",
-              "SUPPLY SHOCKS - Real Example: Fracking Revolution (2010s): US shale oil production → oil prices fell from $100 to $50 → positive supply shock for oil-importing countries → SRAS shifted right",
-              "NATURAL RATE OF UNEMPLOYMENT: Unemployment rate when economy at full employment (on LRAS). Includes frictional and structural unemployment, excludes cyclical. UK: ~4-5%",
-              "FULL EMPLOYMENT: Doesn't mean zero unemployment. Means economy at natural rate of unemployment, no cyclical unemployment. Frictional and structural unemployment still exist",
-              "LONG-RUN EQUILIBRIUM: Where AD intersects LRAS. Economy at full employment, actual GDP = potential GDP, unemployment at natural rate, no inflationary/deflationary pressure",
-              "SHORT-RUN vs LONG-RUN: Short-run: wages/prices sticky, economy can deviate from full employment. Long-run: wages/prices flexible, economy returns to full employment (Classical view) or may stay in recession (Keynesian view)"
+              "Aggregate Supply (AS): The total planned output of goods and services that producers are willing to supply at various price levels",
+              "Short-Run AS (SRAS): Upward-sloping curve; assumes wage rates and prices of other factors of production are fixed in the short run",
+              "Shifts in SRAS: Caused entirely by changes in the costs of production (e.g., wage rates, raw material prices, exchange rates, business taxes)",
+              "Long-Run AS (LRAS): Represents the maximum productive capacity of the economy (the full employment level of output)",
+              "Classical LRAS: A perfectly vertical curve at the natural rate of unemployment; assumes all markets clear and wages are perfectly flexible in the long run",
+              "Keynesian AS: A reverse-L shaped curve showing mass unemployment (horizontal), bottleneck (curved), and full capacity (vertical) sections",
+              "Shifts in LRAS: Caused by changes in the quantity or quality of factors of production (e.g., education, technology, net migration)",
+              "Productivity: Output per worker or per unit of capital; increasing productivity is the main driver of an outward shift in LRAS",
+              "Supply Shocks: Sudden, unexpected changes in SRAS, such as an oil price spike causing cost-push inflation and lower growth (stagflation)",
+              "Evaluation of AS Models: Keynesians argue economies can remain stuck in demand-deficient unemployment forever; Classicists argue self-correction occurs via falling real wages"
             ],
             formulas: [
               { name: "Output Gap", expr: "Output gap = Actual GDP - Potential GDP" },
@@ -825,33 +520,16 @@ export const SUBJECTS = {
             title: { zh: "国民收入", en: "National Income" },
             overview: { zh: "学习国民收入的决定与乘数效应。", en: "Learn about national income determination and the multiplier effect, with real-world examples from the 2008 financial crisis." },
             keyPoints: [
-              "Equilibrium national income: Where AD = AS (or planned spending = actual output), representing the level of income where there is no tendency to change",
-              "Injections: Additions to circular flow of income - Investment (I), Government spending (G), Exports (X)",
-              "Withdrawals (Leakages): Removals from circular flow - Savings (S), Taxes (T), Imports (M)",
-              "Equilibrium condition: Injections = Withdrawals (I + G + X = S + T + M). When injections > withdrawals, income rises; when withdrawals > injections, income falls",
-              "Multiplier effect: Initial change in any injection or withdrawal leads to larger final change in national income through successive rounds of spending",
-              "Marginal Propensity to Consume (MPC): Fraction of additional income that households spend on consumption. MPC = ΔC / ΔY",
-              "Marginal Propensity to Save (MPS): Fraction of additional income that households save. MPS = ΔS / ΔY",
-              "MPC + MPS = 1 (additional income is either spent or saved)",
-              "Multiplier (k): Ratio of final change in equilibrium income to initial change in spending. k = ΔY / ΔInjection",
-              "Multiplier formula (simple): k = 1 / (1 - MPC) = 1 / MPS",
-              "Multiplier formula (with tax and imports): k = 1 / (MPS + MPT + MPM) where MPT = marginal propensity to tax, MPM = marginal propensity to import",
-              "Higher MPC → Larger multiplier → Greater impact on income. Example: MPC = 0.8 gives k = 5; MPC = 0.5 gives k = 2",
-              "Leakages (withdrawals) reduce the multiplier effect by removing spending from the circular flow at each round",
-              "MULTIPLIER PROCESS EXAMPLE: Government spends £100m on infrastructure (MPC = 0.8). Round 1: £100m income to construction workers. Round 2: Workers spend £80m (0.8 × £100m), save £20m. Round 3: Recipients spend £64m (0.8 × £80m), save £16m. Total effect: £100m × 5 = £500m increase in national income",
-              "REAL-WORLD CASE STUDY - 2008 Financial Crisis and Multiplier Effect: US housing bubble burst → banks collapsed → credit freeze → sharp fall in investment and consumption",
-              "2008 CRISIS - Initial Shock: Investment fell by approximately $1 trillion (2007-2009) as businesses cut spending and banks stopped lending",
-              "2008 CRISIS - Multiplier Effect in Action: Investment decline → construction workers lose jobs → they cut consumption → retailers lose sales → retail workers lose jobs → further consumption cuts. Negative multiplier amplified the initial shock",
-              "2008 CRISIS - Multiplier Calculation: Assuming MPC = 0.8, multiplier k = 1/(1-0.8) = 5. Initial investment fall of $1 trillion → Total GDP decline = $1 trillion × 5 = $5 trillion (theoretical). Actual US GDP fell 2.5% in 2009",
-              "2008 CRISIS - Government Response: US implemented $787 billion stimulus package (American Recovery and Reinvestment Act 2009) to boost AD through positive multiplier effect",
-              "2008 CRISIS - Stimulus Multiplier: Government spending increase → income to recipients → they spend (MPC × income) → further income increases. Goal: Offset negative multiplier from investment collapse",
-              "2008 CRISIS - Outcome: GDP contracted 2.5% in 2009 but recovered to positive growth in 2010. Unemployment peaked at 10% (2009), took 6 years to return to pre-crisis levels. Demonstrated importance of fiscal policy in severe recessions",
-              "2008 CRISIS - Lessons: (1) Multiplier works in both directions (positive and negative), (2) Financial sector shocks can trigger large multiplier effects, (3) Government intervention can stabilize economy through multiplier, (4) Recovery takes time even with stimulus",
-              "Deflationary gap (Recessionary gap): When equilibrium income is below full employment level. AD is insufficient, causing unemployment. Solution: Increase injections (G, I, X) or reduce withdrawals (cut taxes)",
-              "Inflationary gap: When equilibrium income exceeds full employment level. Excess AD causes inflation. Solution: Decrease injections or increase withdrawals (raise taxes)",
-              "Factors affecting multiplier size: MPC (higher = larger multiplier), tax rates (higher = smaller multiplier), import propensity (higher = smaller multiplier), time lags (longer = weaker effect)",
-              "Multiplier in open economy: Smaller than closed economy because imports are a leakage. Money spent on imports doesn't circulate domestically",
-              "Multiplier limitations: Assumes spare capacity (if economy at full employment, multiplier mainly causes inflation), time lags (effect takes months/years), crowding out (government borrowing may reduce private investment)"
+              "Circular Flow of Income: A macroeconomic model showing the continuous flow of money, goods, and services between households and firms",
+              "Injections: Additions to the circular flow that increase aggregate demand (Investment, Government Spending, Exports)",
+              "Withdrawals (Leakages): Reductions from the circular flow that decrease aggregate demand (Savings, Taxes, Imports)",
+              "Macroeconomic Equilibrium: Occurs exactly where AD = AS, or alternatively where total Injections = total Withdrawals",
+              "Output Gap: The difference between actual real GDP and potential real GDP (the trend rate of growth)",
+              "Positive Output Gap: Actual GDP is above potential LRAS; indicates severe inflationary pressure and over-utilization of resources",
+              "Negative Output Gap: Actual GDP is below potential LRAS; indicates spare capacity and high cyclical unemployment",
+              "Marginal Propensity to Withdraw (MPW): The sum of Marginal Propensity to Save (MPS), Tax (MPT), and Import (MPM)",
+              "The Multiplier Formula: k = 1 / (1 - MPC) or k = 1 / MPW; highlights how high leakages significantly dampen the multiplier effect",
+              "Paradox of Thrift: If all households try to save more (increasing leakages), AD falls, leading to lower overall national income and potentially lower total savings"
             ],
             formulas: [
               { name: "Multiplier", expr: "k = 1 / (1 - MPC)" },
@@ -878,51 +556,16 @@ export const SUBJECTS = {
             title: { zh: "经济增长", en: "Economic Growth" },
             overview: { zh: "学习经济增长的衡量、来源及其政策。", en: "Comprehensive study of economic growth measurement, sources, theories, and policies, including growth models and real-world case studies." },
             keyPoints: [
-              "Economic growth: Sustained increase in productive capacity of an economy over time, measured by real GDP growth rate",
-              "GDP growth rate: Annual percentage change in real GDP, formula: [(GDP₂ - GDP₁) / GDP₁] × 100%",
-              "Actual economic growth: Short-run increase in real GDP, movement towards full capacity (closing output gap), shown as movement along PPF or towards LRAS",
-              "Potential economic growth: Long-run increase in productive capacity (LRAS shift right), expansion of PPF outward, determined by quantity and quality of factors of production",
-              "Sustainable growth: Long-term growth that can be maintained without depleting resources or harming future generations, balances economic, environmental, and social objectives",
-
-              "GRAPHICAL ANALYSIS - Production Possibility Frontier (PPF): Shows maximum output combinations an economy can produce with given resources. Actual growth = movement from inside PPF towards the frontier (using spare capacity). Potential growth = outward shift of entire PPF (increased productive capacity)",
-              "GRAPHICAL ANALYSIS - LRAS Shift: Potential growth shown as rightward shift of Long-Run Aggregate Supply curve. Caused by: increased quantity of factors (labour force growth, capital accumulation), improved quality of factors (education, technology, efficiency)",
-
-              "Benefits of growth: (1) Higher living standards - increased real incomes and consumption, (2) Reduced poverty - more employment opportunities, (3) More tax revenue - funds public services without raising tax rates, (4) Improved welfare - better healthcare, education, infrastructure, (5) Increased business confidence - encourages investment",
-              "Costs of growth: (1) Environmental damage - pollution, climate change, resource depletion, (2) Inequality - benefits may not be evenly distributed, (3) Opportunity cost - resources used for investment cannot be consumed now, (4) Cultural impacts - traditional lifestyles disrupted, (5) Stress and work-life balance issues",
-
-              "Sources of growth - Capital accumulation: Investment in physical capital (machinery, factories, infrastructure) increases productive capacity. Requires saving and sacrifice of current consumption. Example: China's investment rate 40-45% of GDP (2000-2020) fueled rapid growth",
-              "Sources of growth - Labour force growth: Increase in quantity of workers through population growth, immigration, higher participation rates. Quality matters more than quantity - skilled workers contribute more to output",
-              "Sources of growth - Productivity improvements: Technological progress, innovation, better education and training. Most important source of long-run sustainable growth as it doesn't rely on resource depletion",
-
-              "Investment: Spending on capital goods (machinery, equipment, buildings) that increases productive capacity. Gross investment = total spending. Net investment = gross investment - depreciation. Only net investment increases capital stock",
-              "Human capital: Skills, knowledge, and health of workforce acquired through education, training, and experience. Higher human capital → higher productivity → higher wages and output. Example: South Korea invested 5% of GDP in education (1960-2000), became high-income country",
-              "Technology: New methods of production, innovation, research and development (R&D). Includes process innovation (producing more efficiently) and product innovation (new goods/services). Example: Internet, smartphones, AI transformed productivity",
-
-              "Capital widening: Adding more capital but maintaining capital per worker ratio (K/L constant). Supports growing labour force but doesn't increase labour productivity. Example: Building more factories as population grows",
-              "Capital deepening: Increasing capital per worker (K/L rises), leading to higher labour productivity. Workers have more/better equipment to work with. Example: Automation in manufacturing - robots increase output per worker",
-
-              "Productivity: Output per unit of input, key determinant of living standards",
-              "Labour productivity: Output per worker or per hour worked, formula: Real GDP / Total labour hours. UK labour productivity: £37 per hour (2022)",
-              "Multi-factor productivity (Total Factor Productivity): Growth not explained by capital or labour inputs alone. Captures technological progress, efficiency improvements, better management. Accounts for 50-70% of long-run growth in developed economies",
-
-              "SOLOW GROWTH MODEL - Key Assumptions: (1) Diminishing returns to capital - each additional unit of capital adds less output, (2) Constant returns to scale, (3) Exogenous technological progress, (4) Savings rate determines investment",
-              "SOLOW GROWTH MODEL - Steady State: Economy reaches equilibrium where investment exactly offsets depreciation. Output per worker stops growing unless technology improves. Explains why poor countries can grow faster (catch-up effect) but rich countries need innovation",
-              "SOLOW GROWTH MODEL - Implications: (1) Capital accumulation alone cannot sustain long-run growth due to diminishing returns, (2) Technological progress is essential for sustained growth, (3) Higher savings rate increases steady-state capital and output but not long-run growth rate, (4) Convergence hypothesis - poor countries should grow faster than rich countries",
-
-              "ENDOGENOUS GROWTH THEORY - Key Difference from Solow: Technology is endogenous (determined within model) not exogenous. Investment in human capital, R&D, and knowledge creates positive externalities and spillover effects that prevent diminishing returns",
-              "ENDOGENOUS GROWTH THEORY - Policy Implications: (1) Government can influence long-run growth rate through education, R&D subsidies, patent protection, (2) Knowledge spillovers justify government intervention, (3) Increasing returns to scale possible in knowledge production, (4) No automatic convergence - poor countries may stay poor without right policies",
-
-              "Growth strategies - Education and training: Increases human capital, productivity, and innovation capacity. Returns to education: each additional year of schooling raises wages by 8-10% on average",
-              "Growth strategies - Investment incentives: Tax breaks, subsidies, stable macroeconomic environment to encourage private investment. Example: Singapore's low corporate tax (17%) attracted FDI",
-              "Growth strategies - Infrastructure development: Transport, energy, telecommunications networks reduce costs and increase efficiency. Example: China's high-speed rail network (40,000km) connected cities and boosted trade",
-              "Growth strategies - Trade openness: Access to larger markets, technology transfer, competitive pressure drives efficiency. Example: South Korea's export-led growth strategy",
-              "Growth strategies - Technology transfer: Adopting technologies from advanced countries. Example: Japan's post-WWII strategy of importing and improving Western technology",
-              "Growth strategies - Institutional quality: Property rights, rule of law, low corruption, political stability. Strong institutions attract investment and encourage entrepreneurship",
-
-              "REAL EXAMPLE - China's Growth Miracle (1978-2020): GDP growth averaged 9.5% per year for 40 years, lifting 800 million out of poverty. Key factors: (1) Economic reforms - shift from central planning to market economy (1978), (2) High investment rate - 40-45% of GDP, (3) Export-led growth - 'factory of the world', (4) Technology transfer - joint ventures with foreign firms, (5) Infrastructure investment - massive spending on roads, railways, ports, (6) Urbanization - 300 million moved from rural to urban areas. Result: GDP per capita rose from $156 (1978) to $10,500 (2020), became world's 2nd largest economy",
-              "REAL EXAMPLE - Japan's Lost Decades (1991-2010): After rapid growth (1950-1990), Japan experienced 20 years of stagnation. Causes: (1) Asset price bubble burst (1991) - stock market fell 60%, property prices fell 70%, (2) Banking crisis - bad loans, credit crunch, (3) Deflation - prices fell, consumers delayed spending, (4) Aging population - shrinking workforce, high dependency ratio, (5) Zombie companies - inefficient firms kept alive by banks. Policy responses failed: (1) Zero interest rates couldn't stimulate demand (liquidity trap), (2) Fiscal stimulus increased debt to 250% of GDP but limited growth impact. Lesson: Demographic decline and deflation are hard to overcome",
-              "REAL EXAMPLE - Asian Tigers (1960-1990): South Korea, Taiwan, Hong Kong, Singapore achieved rapid growth (8-10% per year). Common factors: (1) Export-oriented industrialization, (2) High savings and investment rates (30-40% of GDP), (3) Investment in education - universal primary and secondary education, (4) Stable macroeconomic policies - low inflation, balanced budgets, (5) Openness to trade and FDI, (6) Strong work ethic and social cohesion. Result: Transformed from low-income to high-income economies in one generation. South Korea GDP per capita: $1,200 (1960) → $32,000 (2020)",
-              "REAL EXAMPLE - Botswana's Success (1966-2020): Africa's fastest-growing economy, GDP per capita rose from $400 (1966) to $7,600 (2020). Key factors: (1) Diamond wealth - managed prudently, revenues invested in infrastructure and education, (2) Good governance - low corruption, stable democracy, rule of law, (3) Prudent fiscal policy - budget surpluses, sovereign wealth fund, (4) Investment in education and healthcare. Lesson: Natural resources can fuel growth if well-managed with strong institutions"
+              "Short-Run Economic Growth: An increase in actual real GDP, caused by an outward shift in AD using up existing spare capacity",
+              "Long-Run Economic Growth: An increase in the productive potential of the economy, shown by an outward shift of the LRAS curve or the PPF",
+              "Determinants of Growth: Investment in physical capital, technological progress, education/training, and an increase in the size of the labor force",
+              "Benefits of Growth: Higher living standards, lower cyclical unemployment, a fiscal dividend (higher tax revenues), and a potential 'virtuous cycle' of investment",
+              "Costs of Growth: Severe environmental degradation, widening income inequality, demand-pull inflation risk, and depletion of non-renewable resources",
+              "Sustainable Growth: Economic growth that meets the needs of the present without compromising the ability of future generations to meet their own needs",
+              "Recessions: Two consecutive quarters of negative real GDP growth, characterized by falling AD and rising cyclical unemployment",
+              "Hysteresis: When a prolonged recession permanently damages the economy's LRAS (e.g., workers permanently losing skills or firms scrapping machinery)",
+              "The Economic Cycle: The natural fluctuation of the economy between periods of expansion (boom) and contraction (slump/recession)",
+              "Evaluation of Growth: To be beneficial long-term, growth must be balanced (AD and AS shifting together) to avoid unsustainable high inflation"
             ],
             formulas: [
               { name: "Economic Growth Rate", expr: "Growth rate = (Real GDP₂ - Real GDP₁) / Real GDP₁ × 100%" },
@@ -950,51 +593,16 @@ export const SUBJECTS = {
             title: { zh: "宏观经济政策", en: "Macroeconomic Policy" },
             overview: { zh: "学习宏观经济政策的目标与工具。", en: "Learn about macroeconomic policy objectives and instruments, with detailed analysis of fiscal, monetary, and supply-side policies." },
             keyPoints: [
-              "MACROECONOMIC OBJECTIVES - The Four Main Goals: (1) Sustainable economic growth (2-3% annually), (2) Low and stable inflation (2% target), (3) Low unemployment (near natural rate), (4) Balance of payments equilibrium",
-              "MACROECONOMIC OBJECTIVES - Trade-offs: Policies often conflict. Phillips Curve shows inverse relationship between unemployment and inflation. Growth may worsen current account. Must prioritize objectives",
-              "FISCAL POLICY - Definition: Government decisions about spending (G) and taxation (T) to influence aggregate demand and achieve macroeconomic objectives",
-              "FISCAL POLICY - Expansionary (Loose): Increase G or decrease T → AD shifts right → Higher output and employment. Used during recession. Example: 2008 stimulus packages",
-              "FISCAL POLICY - Contractionary (Tight): Decrease G or increase T → AD shifts left → Lower inflation. Used when economy overheating. Example: Austerity measures",
-              "FISCAL POLICY - Budget Positions: (1) Budget surplus (T > G): Government saves, reduces national debt, (2) Budget deficit (G > T): Government borrows, increases debt, (3) Balanced budget (T = G): Neutral stance",
-              "FISCAL POLICY - Automatic Stabilizers: Built-in mechanisms that automatically reduce economic fluctuations without policy changes",
-              "FISCAL POLICY - Automatic Stabilizer 1: Progressive income tax. Recession → Incomes fall → Tax revenue falls automatically → Disposable income cushioned. Boom → Incomes rise → Tax revenue rises → Dampens spending",
-              "FISCAL POLICY - Automatic Stabilizer 2: Unemployment benefits. Recession → Unemployment rises → Benefit payments rise automatically → Supports consumption. Boom → Unemployment falls → Payments fall",
-              "FISCAL POLICY - Advantages: (1) Direct impact on AD, (2) Can target specific sectors, (3) Automatic stabilizers work immediately, (4) Multiplier effect amplifies impact",
-              "FISCAL POLICY - Disadvantages: (1) Time lags (recognition, decision, implementation), (2) Political constraints (unpopular tax rises), (3) Crowding out (government borrowing raises interest rates, reduces private investment), (4) Budget deficit increases national debt",
-              "FISCAL POLICY - Real Example: UK Austerity (2010-2016): Government cut spending by £30 billion to reduce deficit from 10% to 3% of GDP. Result: Slow growth (1.5% average), public service cuts, poverty increased. Debate: Was it necessary or did it prolong recession?",
-              "FISCAL POLICY - Real Example: US CARES Act (2020): $2.2 trillion stimulus during COVID-19. Direct payments ($1,200 per adult), unemployment benefits (+$600/week), business loans. Result: GDP recovered quickly, but inflation rose to 9% (2022)",
-              "MONETARY POLICY - Definition: Central bank control of money supply and interest rates to influence aggregate demand and achieve price stability",
-              "MONETARY POLICY - Expansionary (Loose): Lower interest rates or increase money supply → Cheaper borrowing → Investment and consumption increase → AD shifts right. Used during recession",
-              "MONETARY POLICY - Contractionary (Tight): Raise interest rates or decrease money supply → Expensive borrowing → Investment and consumption decrease → AD shifts left. Used to control inflation",
-              "MONETARY POLICY - Transmission Mechanism: Interest rate change → (1) Cost of borrowing changes → Investment and consumption change, (2) Exchange rate changes → Net exports change, (3) Asset prices change → Wealth effect on consumption, (4) Expectations change → Spending decisions change",
-              "MONETARY POLICY - Interest Rate Effects: Lower rates → (1) Cheaper mortgages → More housing demand, (2) Cheaper business loans → More investment, (3) Lower savings returns → More consumption, (4) Currency depreciates → Exports increase",
-              "MONETARY POLICY - Quantitative Easing (QE): Central bank creates money electronically to buy government bonds and other assets. Increases money supply, lowers long-term interest rates, boosts asset prices",
-              "MONETARY POLICY - QE Example: Bank of England (2009-2021): Purchased £895 billion of assets during financial crisis and COVID-19. Result: Prevented deflation, supported recovery, but increased inequality (asset owners benefited most)",
-              "MONETARY POLICY - Advantages: (1) Quick to implement (central bank decides), (2) Flexible (can adjust rates frequently), (3) Independent from politics, (4) Affects whole economy",
-              "MONETARY POLICY - Disadvantages: (1) Time lags (6-18 months for full effect), (2) Liquidity trap (rates can't go below zero, or negative rates ineffective), (3) Depends on consumer/business confidence, (4) May cause asset bubbles (low rates → speculation)",
-              "MONETARY POLICY - Real Example: US Federal Reserve (2008-2015): Cut rates from 5.25% to 0.25% during financial crisis. Implemented QE ($4.5 trillion asset purchases). Result: Prevented depression, but slow recovery, inequality increased",
-              "MONETARY POLICY - Real Example: Japan Negative Interest Rates (2016-present): Bank of Japan set rate at -0.1% to fight deflation. Result: Limited success, banks reluctant to pass negative rates to depositors, yen weakened",
-              "SUPPLY-SIDE POLICIES - Definition: Policies to increase aggregate supply (LRAS) by improving productivity and efficiency, shifting LRAS curve right",
-              "SUPPLY-SIDE POLICIES - Market-Based Approach: Reduce government intervention, let markets work efficiently",
-              "SUPPLY-SIDE POLICY 1 - Tax Cuts: Lower income tax → Incentive to work harder. Lower corporation tax → Incentive to invest. Example: US Tax Cuts and Jobs Act (2017) cut corporate tax from 35% to 21%",
-              "SUPPLY-SIDE POLICY 2 - Deregulation: Remove unnecessary regulations → Lower business costs → More competition. Example: UK airline deregulation (1980s) → Budget airlines emerged, prices fell 40%",
-              "SUPPLY-SIDE POLICY 3 - Privatization: Sell state-owned enterprises to private sector → Profit motive → Greater efficiency. Example: British Telecom privatization (1984) → Service improved, prices fell",
-              "SUPPLY-SIDE POLICY 4 - Flexible Labour Markets: Reduce minimum wage, weaken unions, easier hiring/firing → Lower unemployment. Example: Germany Hartz reforms (2003-2005) → Unemployment fell from 11% to 5%",
-              "SUPPLY-SIDE POLICIES - Interventionist Approach: Government actively improves supply-side through investment",
-              "SUPPLY-SIDE POLICY 5 - Education and Training: Improve human capital → Higher productivity. Example: South Korea invested 5% of GDP in education (1960s-1990s) → Became developed economy",
-              "SUPPLY-SIDE POLICY 6 - Infrastructure Investment: Build roads, railways, broadband → Lower transport costs → Productivity increases. Example: China high-speed rail (2008-present) → 40,000km network, economic integration",
-              "SUPPLY-SIDE POLICY 7 - R&D Subsidies: Support innovation and technology → New products and processes. Example: US government funded internet, GPS, touchscreens → Tech boom",
-              "SUPPLY-SIDE POLICY 8 - Industrial Policy: Support strategic industries → Competitive advantage. Example: South Korea supported Samsung, Hyundai → Global leaders",
-              "SUPPLY-SIDE POLICIES - Advantages: (1) Increases potential output (no inflation), (2) Improves competitiveness, (3) Sustainable long-term growth, (4) Can reduce unemployment and inflation simultaneously",
-              "SUPPLY-SIDE POLICIES - Disadvantages: (1) Long time lags (years to see results), (2) Expensive (education, infrastructure), (3) Uncertain outcomes (may not work), (4) Equity concerns (tax cuts benefit rich, deregulation may harm workers)",
-              "POLICY CONFLICTS - Phillips Curve Trade-off: Short-run inverse relationship between unemployment and inflation. Lower unemployment → Higher inflation (demand-pull). Lower inflation → Higher unemployment (reduced AD)",
-              "POLICY CONFLICTS - Growth vs Inflation: Rapid growth → Demand-pull inflation. To control inflation, must slow growth (raise interest rates). Example: UK 1980s boom → 10% inflation → Recession to control it",
-              "POLICY CONFLICTS - Growth vs Current Account: Rapid growth → Higher imports (marginal propensity to import) → Current account deficit worsens. Example: UK chronic current account deficit due to high import demand",
-              "POLICY CONFLICTS - Unemployment vs Current Account: Reducing unemployment (expansionary policy) → Higher imports → Worse current account. Improving current account (contractionary policy) → Higher unemployment",
-              "POLICY MIX - Combining Policies: Use fiscal, monetary, and supply-side policies together for better outcomes. Example: Expansionary fiscal + Tight monetary = Growth without inflation",
-              "POLICY EVALUATION - Time Lags: (1) Recognition lag (identify problem), (2) Decision lag (agree on policy), (3) Implementation lag (put policy in place), (4) Impact lag (policy takes effect). Total: 6-24 months",
-              "POLICY EVALUATION - Effectiveness Factors: (1) Size of multiplier (higher MPC = more effective fiscal policy), (2) Consumer confidence (low confidence = monetary policy less effective), (3) Spare capacity (supply-side policies need time), (4) Global conditions (recession abroad limits export growth)",
-              "REAL-WORLD CASE - UK COVID-19 Response (2020-2021): Combined policy approach. Fiscal: Furlough scheme (£70bn), business grants. Monetary: Interest rates cut to 0.1%, QE £450bn. Result: GDP fell 11% (2020) but recovered to pre-pandemic level by 2022. Inflation rose to 11% (2022) - policy too loose?"
+              "Demand-Side Policies: Fiscal and Monetary policies aimed at shifting AD to manage inflation, unemployment, and economic growth",
+              "Monetary Policy: Central bank manipulation of base interest rates, the money supply, and exchange rates to achieve macroeconomic targets (e.g., 2% inflation)",
+              "Expansionary Monetary Policy: Cutting base interest rates to lower borrowing costs, boosting Consumption (C) and Investment (I), shifting AD right",
+              "Quantitative Easing (QE): Central banks creating electronic money to buy government bonds, lowering long-term interest rates and injecting liquidity into banks",
+              "Fiscal Policy: Government manipulation of taxation and public spending to influence AD and the overall budget balance",
+              "Expansionary Fiscal Policy: Increasing government spending (G) or cutting taxes to boost AD, often leading to a larger budget deficit and higher national debt",
+              "Supply-Side Policies: Interventions specifically designed to increase the productive capacity of the economy (shifting LRAS to the right)",
+              "Market-based Supply-Side Policies: Deregulation, privatization, cutting income/corporation taxes, and reducing union power to improve free-market incentives",
+              "Interventionist Supply-Side Policies: Government investment in education, infrastructure, and R&D to deliberately correct market failures in provision",
+              "Policy Conflicts (Evaluation): Unavoidable trade-offs between macroeconomic objectives, such as the Phillips Curve trade-off between unemployment and inflation"
             ],
             formulas: [
               { name: "Budget Surplus", expr: "Budget surplus = T - G" },
@@ -1031,69 +639,15 @@ export const SUBJECTS = {
             title: { zh: "企业类型与规模", en: "Business Types & Size" },
             overview: { zh: "学习不同类型企业的特点、优势与劣势，以及规模经济。", en: "Learn about different types of businesses, their characteristics, advantages and disadvantages, and economies of scale." },
             keyPoints: [
-              "BUSINESS TYPES - Sole Proprietorships: (1) Single owner (one person owns and runs business), (2) Unlimited liability (owner personally liable for all debts), (3) Easy to set up (minimal legal requirements), (4) All profits kept (no sharing), (5) Difficulty raising capital (limited to personal savings and bank loans). Examples: Local shops, freelancers, plumbers, hairdressers. Advantages: Full control, keep all profits, simple tax. Disadvantages: Unlimited liability, limited capital, long hours, lack of continuity (business dies with owner)",
-
-              "BUSINESS TYPES - Partnerships: (1) 2-20 partners (shared ownership), (2) Joint liability (all partners liable for debts, or limited liability for LLP - Limited Liability Partnership), (3) Combines skills (partners bring different expertise), (4) Shared profits (according to partnership agreement), (5) Easier to raise capital than sole proprietorship. Examples: Law firms, accounting firms, medical practices, architecture firms. Advantages: Shared workload, more capital, combined expertise. Disadvantages: Shared profits, potential conflicts, joint liability (except LLP)",
-
-              "BUSINESS TYPES - Corporations/Companies: (1) Separate legal entity (company exists independently of owners), (2) Limited liability (shareholders only lose investment, not personal assets), (3) Can raise capital through shares (equity) and bonds (debt), (4) Double taxation (company pays corporation tax, shareholders pay dividend tax), (5) Separation of ownership and management (shareholders own, directors manage). Types: Private limited (Ltd) - shares not publicly traded. Public limited (PLC) - shares traded on stock exchange. Examples: Tesco PLC, Microsoft Corporation, Apple Inc. Advantages: Limited liability, easier to raise capital, continuity (company survives owner changes). Disadvantages: Complex to set up, double taxation, agency problem (managers may not act in shareholders' interest)",
-
-              "BUSINESS TYPES - Public Sector: (1) Government-owned (state controls), (2) Aims to provide services rather than profit (public interest), (3) Funded by taxation, (4) Examples: NHS (healthcare), state schools, police, fire service, BBC (until 1980s privatizations). Advantages: Provides merit goods, serves public interest, no profit motive. Disadvantages: Inefficiency (no competition), bureaucracy, political interference, taxpayer burden",
-
-              "BUSINESS TYPES - Private Sector: (1) Privately owned (individuals or companies), (2) Aims to maximize profit, (3) Funded by private capital (shares, loans, retained profit), (4) Examples: Tesco, Amazon, local shops. Advantages: Efficiency (competition), innovation, consumer choice. Disadvantages: May ignore externalities, profit over public interest, inequality",
-
-              "BUSINESS TYPES - Multinational Corporations (MNCs): (1) Operate in multiple countries (production, sales, or both), (2) Benefit from economies of scale (global production), (3) Can exploit differences in costs (labor, tax, regulations), (4) Transfer pricing (shift profits to low-tax countries), (5) Examples: Apple (designs in US, manufactures in China), McDonald's (operates in 100+ countries), Shell (oil production worldwide). Advantages: Economies of scale, risk diversification, access to resources and markets. Disadvantages: Tax avoidance, exploitation of workers, environmental damage, cultural homogenization",
-
-              "BUSINESS TYPES - Small and Medium Enterprises (SMEs): (1) Defined by size: Small (0-49 employees), Medium (50-249 employees), (2) Significant employer (60% of UK private sector jobs), (3) Flexible (can adapt quickly to market changes), (4) Local market focus, (5) Limited access to finance (banks reluctant to lend, no stock market access). Examples: Local restaurants, independent retailers, small manufacturers. Advantages: Flexibility, personal service, niche markets. Disadvantages: Limited capital, economies of scale disadvantage, high failure rate (50% fail within 5 years)",
-
-              "BUSINESS OBJECTIVES - Profit Maximization: (1) Traditional assumption (MR = MC), (2) Maximizes shareholder wealth, (3) May conflict with other objectives (e.g., market share, ethics). Reality: Short-term profit max may harm long-term growth (underinvestment in R&D, brand damage)",
-
-              "BUSINESS OBJECTIVES - Revenue Maximization: (1) Maximize total revenue (MR = 0), (2) Managers may prefer this (larger firm, higher salaries, prestige), (3) Requires market share growth. Example: Amazon prioritized revenue growth over profit (1994-2015), now dominates e-commerce",
-
-              "BUSINESS OBJECTIVES - Sales Maximization: (1) Maximize output subject to normal profit constraint (AR = AC), (2) Larger market share, (3) Economies of scale. Example: Supermarkets use loss leaders (sell below cost) to attract customers",
-
-              "BUSINESS OBJECTIVES - Survival: (1) Priority during recession or crisis, (2) Accept losses in short run, (3) Cut costs, reduce prices. Example: Airlines during COVID-19 (2020-2021) focused on survival, not profit",
-
-              "BUSINESS OBJECTIVES - Satisficing: (1) Achieve satisfactory profit (not maximum), (2) Balances stakeholder interests (shareholders, workers, customers, community), (3) Avoids conflict. Example: John Lewis (UK retailer) is worker-owned, prioritizes employee welfare alongside profit",
-
-              "ECONOMIES OF SCALE - Definition: Unit costs (average costs) fall as output increases. Reason: Fixed costs spread over more units, bulk buying, specialization. Result: Larger firms have cost advantage over smaller firms. Graphically: Long-run average cost (LRAC) curve slopes downward. Minimum Efficient Scale (MES): Lowest output where LRAC is minimized (lowest cost per unit)",
-
-              "INTERNAL ECONOMIES OF SCALE - Technical Economies: (1) Larger machines more efficient (e.g., large blast furnace produces steel at lower cost per ton than small furnace), (2) Specialization of labor (workers focus on specific tasks, increase productivity - Adam Smith's pin factory), (3) Indivisibilities (some equipment only viable at large scale - e.g., car assembly line), (4) By-products (large firms can sell waste - oil refineries sell petroleum by-products). Example: Car manufacturing - Ford's assembly line (1913) reduced Model T production time from 12 hours to 90 minutes, cut price from $850 to $300",
-
-              "INTERNAL ECONOMIES OF SCALE - Managerial Economies: (1) Specialized management (large firms hire expert managers for finance, marketing, HR - more efficient than generalist), (2) Better monitoring systems (IT systems track performance, reduce waste), (3) Division of labor in management. Example: Amazon uses data analytics to optimize inventory, pricing, and logistics (reduces costs by 10-15%)",
-
-              "INTERNAL ECONOMIES OF SCALE - Financial Economies: (1) Lower interest rates (banks view large firms as lower risk, charge lower rates), (2) Easier access to capital (can issue bonds, shares on stock market), (3) Better credit terms from suppliers. Example: Apple borrows at 2-3% interest, while small firms pay 8-10%. Apple issued $17bn bond in 2013 at record-low rates",
-
-              "INTERNAL ECONOMIES OF SCALE - Marketing Economies: (1) Bulk buying (large firms negotiate discounts from suppliers - Tesco buys in bulk, pays 20-30% less than small shops), (2) Advertising spread over larger output (£1m TV ad costs same whether firm sells 1m or 10m units - cost per unit falls), (3) Brand recognition (large firms benefit from established brand). Example: Coca-Cola spends $4bn/year on advertising, but sells 1.9bn servings/day - ad cost per serving is tiny",
-
-              "INTERNAL ECONOMIES OF SCALE - Risk-Bearing Economies: (1) Diversification across products (if one product fails, others compensate - reduces risk), (2) Diversification across markets (if one country's economy slows, others may grow), (3) Large firms can afford R&D failures. Example: Unilever owns 400+ brands (Dove, Knorr, Ben & Jerry's) - if one brand struggles, others compensate. Geographic diversification: 190 countries",
-
-              "EXTERNAL ECONOMIES OF SCALE - Definition: Cost advantages from industry growth (not individual firm growth). Benefits all firms in industry. Types: (1) Infrastructure development (government builds roads, ports, airports to support industry), (2) Skilled labor pool (universities train workers, firms benefit without paying training costs), (3) Support services (specialized suppliers, maintenance, logistics firms emerge), (4) Knowledge spillovers (firms learn from each other, share best practices). Example: Silicon Valley (California) - tech firms benefit from skilled engineers (Stanford, Berkeley graduates), venture capital, supplier networks, knowledge sharing. Result: Tech startups have lower costs in Silicon Valley than elsewhere",
-
-              "EXTERNAL ECONOMIES OF SCALE - Real-World Example: UK Financial Services (London): (1) Infrastructure: London Stock Exchange, Bank of England, (2) Skilled labor: Universities produce finance graduates, (3) Support services: Law firms, accountants, IT specialists, (4) Knowledge spillovers: Firms learn from competitors. Result: London is global financial center - firms locate there despite high rents because external economies outweigh costs",
-
-              "DISECONOMIES OF SCALE - Definition: Unit costs rise at very high output levels. Reason: Coordination problems, communication breakdown, reduced motivation. Result: LRAC curve slopes upward beyond certain output. Optimal firm size: Where LRAC is minimized (MES)",
-
-              "DISECONOMIES OF SCALE - Communication Problems: (1) Large firms have many layers of management (information distorted as it passes through layers), (2) Slow decision-making (requires approval from multiple managers), (3) Misunderstandings (instructions misinterpreted). Example: Nokia (2000s) - slow communication between divisions, failed to respond to iPhone threat, lost market leadership",
-
-              "DISECONOMIES OF SCALE - Bureaucracy: (1) Excessive rules and procedures (slows decision-making), (2) Red tape (requires multiple approvals for simple decisions), (3) Inflexibility (difficult to adapt to market changes). Example: Large banks (pre-2008) - bureaucracy prevented quick response to financial crisis",
-
-              "DISECONOMIES OF SCALE - Reduced Motivation: (1) Workers feel alienated in large firms (small cog in big machine), (2) Lack of recognition (individual effort not noticed), (3) Principal-agent problem (managers don't own firm, may not maximize profit). Example: Government departments - workers less motivated than private sector (no profit incentive)",
-
-              "DISECONOMIES OF SCALE - Coordination Difficulties: (1) Difficult to coordinate activities across divisions, (2) Duplication of effort (different departments do same work), (3) Conflicts between departments. Example: General Motors (2000s) - poor coordination between divisions, produced too many similar car models, filed for bankruptcy (2009)",
-
-              "MINIMUM EFFICIENT SCALE (MES) - Definition: Lowest output where LRAC is minimized (lowest cost per unit). Significance: (1) Determines optimal firm size, (2) Affects market structure (if MES is large relative to market demand, only few firms can survive - oligopoly or natural monopoly), (3) Barrier to entry (new firms must produce at MES to compete, requires large capital investment). Example: Car manufacturing - MES is 2-4 million cars/year. Only large firms (Toyota, VW, GM) can achieve this. Result: Oligopoly market structure",
-
-              "MES AND MARKET STRUCTURE - High MES Industries: (1) Car manufacturing (MES = 2-4m cars/year) - oligopoly (few large firms), (2) Aircraft manufacturing (MES = 50-100 planes/year) - duopoly (Boeing, Airbus), (3) Steel production (MES = 5-10m tons/year) - oligopoly. Result: High barriers to entry, few firms",
-
-              "MES AND MARKET STRUCTURE - Low MES Industries: (1) Restaurants (MES = 1 restaurant) - monopolistic competition (many small firms), (2) Hairdressers (MES = 1 salon) - monopolistic competition, (3) Plumbing (MES = 1 plumber) - perfect competition. Result: Low barriers to entry, many firms",
-
-              "REAL-WORLD EXAMPLE 1 - Amazon Economies of Scale: (1) Technical: Automated warehouses (robots pick items, reduce labor costs by 20%), (2) Purchasing: Bulk buying from suppliers (negotiates 30-40% discounts), (3) Financial: Borrows at low rates (2-3% vs 8-10% for small retailers), (4) Marketing: $11bn advertising spread over 300m customers (low cost per customer), (5) Risk-bearing: Diversified (e-commerce, cloud computing AWS, streaming Prime Video). Result: Amazon's cost per order is 50% lower than traditional retailers. Market dominance: 40% of US e-commerce (2023)",
-
-              "REAL-WORLD EXAMPLE 2 - UK Small Business Survival: (1) 5.5 million SMEs in UK (99.9% of all businesses), (2) Employ 16.3 million (60% of private sector jobs), (3) High failure rate: 50% fail within 5 years. Reasons: (1) Lack of economies of scale (higher costs than large firms), (2) Limited access to finance (banks reluctant to lend), (3) Cash flow problems (customers delay payment), (4) Competition from large firms (supermarkets undercut local shops). Survival strategies: (1) Niche markets (specialize in products large firms ignore), (2) Personal service (build customer loyalty), (3) Flexibility (adapt quickly to trends), (4) Online sales (reduce overhead costs)",
-
-              "REAL-WORLD EXAMPLE 3 - Walmart Diseconomies of Scale: (1) Bureaucracy: 2.3 million employees, slow decision-making (requires approval from headquarters in Arkansas), (2) Communication problems: Information distorted across management layers, (3) Reduced motivation: Workers feel alienated (high turnover rate 44%/year), (4) Coordination difficulties: 11,000 stores in 27 countries, difficult to coordinate. Result: Walmart's profit margin (2.4%) lower than smaller retailers (5-8%). Response: Decentralization (give store managers more autonomy), technology (use AI to improve communication)",
-
-              "REAL-WORLD EXAMPLE 4 - UK Supermarket Oligopoly and MES: (1) MES in supermarkets: 500-1000 stores (to achieve purchasing, distribution, marketing economies), (2) Top 4 firms: Tesco (27% market share, 3,400 stores), Sainsbury's (15%, 1,400 stores), Asda (15%, 600 stores), Morrisons (10%, 500 stores), (3) Barriers to entry: New entrant needs £5-10bn to build 500 stores, negotiate supplier contracts, build distribution network. Result: Oligopoly - only 4 large firms dominate. Small shops (corner stores) survive in niche markets (convenience, local) but cannot compete on price"
+              "Sole traders have unlimited liability, whereas public limited companies (PLCs) offer limited liability and can raise capital via stock markets.",
+              "Profit maximisation occurs where Marginal Cost equals Marginal Revenue (MC=MR), satisfying shareholders with high dividend payouts.",
+              "Revenue maximisation occurs where Marginal Revenue is zero (MR=0), often used by managers to increase market share or justify higher salaries.",
+              "Sales maximisation occurs where Average Cost equals Average Revenue (AC=AR), allowing the firm to expand as much as possible without making a loss.",
+              "Satisficing happens when managers make enough profit to satisfy shareholders while pursuing other goals like improving working conditions or environmental standards.",
+              "Economies of scale are falls in long-run average costs (LRAC) as output increases, including purchasing, managerial, and technical economies.",
+              "Minimum Efficient Scale (MES) is the lowest level of output at which long-run average costs are fully minimised.",
+              "Diseconomies of scale occur when LRAC rises due to control, coordination, and communication problems in overly large organisations.",
+              "Evaluation: Small and Medium Enterprises (SMEs) survive against large firms by offering bespoke products, exploiting niche markets, and providing superior customer service."
             ],
             formulas: [
               { name: "Economies of Scale", expr: "AC falls as Q increases" },
@@ -1121,61 +675,15 @@ export const SUBJECTS = {
             title: { zh: "收益、成本与利润", en: "Revenue, Costs & Profit" },
             overview: { zh: "学习企业的收益结构、成本分类与利润最大化条件。", en: "Learn about business revenue structure, cost classification, and profit maximisation conditions." },
             keyPoints: [
-              "REVENUE CONCEPTS - Total Revenue (TR): Total income from sales = Price × Quantity. Example: If firm sells 100 units at £10 each, TR = £1,000. TR curve: Linear in perfect competition (straight line), curved in imperfect competition (inverted U-shape - rises then falls as price falls to sell more)",
-
-              "REVENUE CONCEPTS - Average Revenue (AR): Revenue per unit = TR / Q. In all market structures: AR = Price (the price received per unit). AR curve is the demand curve. Perfect competition: AR is horizontal (constant price). Imperfect competition: AR slopes downward (must lower price to sell more)",
-
-              "REVENUE CONCEPTS - Marginal Revenue (MR): Additional revenue from selling one more unit = ΔTR / ΔQ. Perfect competition: MR = AR = P (firm can sell any quantity at market price, so extra unit brings full price). Imperfect competition: MR < AR (to sell extra unit, must lower price on all units, so MR is less than price). Example: If firm sells 10 units at £10 (TR = £100), then sells 11 units at £9 (TR = £99), MR = £99 - £100 = -£1 (negative!)",
-
-              "REVENUE RELATIONSHIPS - Perfect Competition: (1) AR = MR = P (horizontal demand curve at market price), (2) TR increases linearly with Q (TR = P × Q, straight line), (3) Firm is price taker (cannot influence price). Graphically: AR and MR are same horizontal line at market price",
-
-              "REVENUE RELATIONSHIPS - Imperfect Competition (Monopoly, Oligopoly, Monopolistic Competition): (1) AR slopes downward (demand curve), (2) MR below AR (MR curve has twice the slope of AR curve), (3) MR can be negative (if demand is inelastic, lowering price reduces TR). Graphically: MR curve starts at same point as AR on vertical axis, but falls twice as fast. Example: If AR = 100 - 2Q, then MR = 100 - 4Q",
-
-              "COST CONCEPTS - Fixed Costs (FC): Costs that don't change with output in short run. Must be paid even if output is zero. Examples: (1) Rent (factory lease), (2) Salaries (managers, admin staff), (3) Insurance, (4) Loan interest, (5) Depreciation of machinery. Graphically: FC is horizontal line (constant at all output levels). In long run: All costs are variable (can change factory size, fire managers)",
-
-              "COST CONCEPTS - Variable Costs (VC): Costs that change with output. Zero if output is zero. Examples: (1) Raw materials (more output needs more materials), (2) Wages (production workers paid per hour or per unit), (3) Electricity (machines use more power at higher output), (4) Packaging. Graphically: VC curve starts at origin, slopes upward (steeper at high output due to diminishing returns)",
-
-              "COST CONCEPTS - Total Costs (TC): Sum of fixed and variable costs = FC + VC. At zero output: TC = FC (still pay fixed costs). As output increases: TC rises (due to VC). Graphically: TC curve is parallel to VC curve, but shifted up by FC amount. Shape: Starts at FC, then curves upward (steeper at high output)",
-
-              "COST CONCEPTS - Average Fixed Cost (AFC): Fixed cost per unit = FC / Q. As output increases, AFC falls (fixed costs spread over more units). Example: If FC = £1,000, then AFC at Q=10 is £100, at Q=100 is £10, at Q=1,000 is £1. Graphically: AFC curve slopes downward continuously (rectangular hyperbola). Never reaches zero (FC always positive)",
-
-              "COST CONCEPTS - Average Variable Cost (AVC): Variable cost per unit = VC / Q. Shape: U-shaped. Initially falls (specialization, efficiency gains), then rises (diminishing returns - need more workers per unit as output increases). Graphically: U-shaped curve. Minimum AVC is shutdown point (if price falls below, firm shuts down)",
-
-              "COST CONCEPTS - Average Total Cost (AC or ATC): Total cost per unit = TC / Q = AFC + AVC. Shape: U-shaped (same as AVC, but higher). Initially falls (AFC falls, AVC falls), then rises (AVC rises faster than AFC falls). Graphically: U-shaped curve above AVC. Gap between AC and AVC is AFC (gap narrows as Q increases). Minimum AC is productive efficiency point",
-
-              "COST CONCEPTS - Marginal Cost (MC): Additional cost of producing one more unit = ΔTC / ΔQ = ΔVC / ΔQ (since FC doesn't change). Shape: U-shaped. Initially falls (increasing marginal returns), then rises (diminishing marginal returns - each extra worker adds less output, so cost per unit rises). Graphically: U-shaped curve. MC intersects AVC and AC at their minimum points",
-
-              "GRAPHICAL ANALYSIS - Cost Curves Relationships: (1) MC intersects AVC at minimum AVC (when MC < AVC, AVC falls; when MC > AVC, AVC rises), (2) MC intersects AC at minimum AC (when MC < AC, AC falls; when MC > AC, AC rises), (3) AC is above AVC (gap = AFC), (4) All curves are U-shaped except AFC (continuously falling). Key insight: If marginal is below average, average falls. If marginal is above average, average rises. Example: If your exam score (marginal) is below your average, your average falls",
-
-              "GRAPHICAL ANALYSIS - Short Run vs Long Run Costs: Short run: At least one factor is fixed (usually capital - factory size). FC exists. Firm moves along short-run AC curve (SRAC). Long run: All factors variable (can change factory size). No FC (all costs variable). Firm can choose optimal factory size. Long-run AC curve (LRAC) is envelope of SRAC curves (lowest points of all possible SRAC curves). LRAC shape: U-shaped due to economies of scale (falling) then diseconomies of scale (rising)",
-
-              "GRAPHICAL ANALYSIS - LRAC Curve: Shows lowest cost per unit at each output level (choosing optimal factory size). Three sections: (1) Economies of scale (LRAC falling) - larger factory reduces cost per unit, (2) Constant returns to scale (LRAC flat) - cost per unit constant, (3) Diseconomies of scale (LRAC rising) - too large, coordination problems increase costs. Minimum point of LRAC: Minimum Efficient Scale (MES) - optimal firm size",
-
-              "PROFIT CONCEPTS - Normal Profit: Minimum return needed to keep resources in current use (opportunity cost of capital and entrepreneur's time). Included in costs (economic costs). Zero economic profit means normal profit is earned. Example: If entrepreneur could earn £50,000 as employee, normal profit is £50,000 (must earn at least this to stay in business)",
-
-              "PROFIT CONCEPTS - Supernormal Profit (Abnormal Profit, Economic Profit): Revenue exceeds all costs including normal profit. π = TR - TC > 0 (where TC includes normal profit). Signals: (1) Attracts new firms (in competitive markets), (2) Funds investment in R&D, expansion. Example: If TR = £200,000, TC = £150,000 (including £50,000 normal profit), supernormal profit = £50,000",
-
-              "PROFIT CONCEPTS - Loss (Negative Profit): Revenue less than total costs. π = TR - TC < 0. Short run: Firm may continue operating if TR > TVC (covers variable costs and some fixed costs). Long run: Firm exits if losses persist (cannot cover all costs including normal profit). Example: If TR = £120,000, TC = £150,000, loss = -£30,000",
-
-              "PROFIT MAXIMIZATION RULE - MR = MC: Firm maximizes profit where marginal revenue equals marginal cost. Logic: (1) If MR > MC, producing extra unit adds more revenue than cost → increase output (profit rises), (2) If MR < MC, producing extra unit adds more cost than revenue → decrease output (profit rises), (3) If MR = MC, cannot increase profit by changing output → profit maximized. Applies to all market structures (perfect competition, monopoly, oligopoly, monopolistic competition)",
-
-              "GRAPHICAL ANALYSIS - Profit Maximization: (1) Find MR = MC point (intersection of MR and MC curves), (2) Read quantity Q* from horizontal axis, (3) Read price P* from demand curve (AR curve) at Q*, (4) Read average cost AC* from AC curve at Q*, (5) Profit per unit = P* - AC*, (6) Total profit = (P* - AC*) × Q* (shaded rectangle). If P* > AC*: Supernormal profit (rectangle above AC). If P* = AC*: Normal profit (zero economic profit). If P* < AC*: Loss (rectangle below AC)",
-
-              "GRAPHICAL ANALYSIS - Shutdown Decision (Short Run): Firm should shut down if cannot cover variable costs. Shutdown point: P = AVC (price equals minimum average variable cost). Logic: (1) If P > AVC, firm covers variable costs and contributes to fixed costs → continue operating (minimize loss), (2) If P < AVC, firm doesn't cover variable costs → shut down (loss = FC, better than operating). Example: If P = £8, AVC = £10, firm loses £2 per unit on variable costs alone → shut down. If P = £8, AVC = £6, AC = £10, firm loses £2 per unit overall but covers VC and contributes £2 to FC → continue operating",
-
-              "GRAPHICAL ANALYSIS - Exit Decision (Long Run): Firm should exit if cannot cover all costs including normal profit. Exit point: P = AC (price equals average cost). Logic: In long run, all costs are variable. If P < AC, firm makes loss → exit. If P ≥ AC, firm makes at least normal profit → stay. Example: If P = £8, AC = £10, firm loses £2 per unit → exit in long run",
-
-              "SHORT RUN VS LONG RUN - Short Run Definition: Period where at least one factor of production is fixed (usually capital - factory size, machinery). Firm cannot change factory size, but can vary labor, raw materials. Fixed costs exist. Firm can make supernormal profit or loss. Typical duration: Few months to 2 years (depends on industry)",
-
-              "SHORT RUN VS LONG RUN - Long Run Definition: Period where all factors of production are variable. Firm can change factory size, machinery, location. No fixed costs (all costs variable). In competitive markets: Only normal profit in long run (supernormal profit attracts entry, losses cause exit). Typical duration: 2+ years (time to build new factory)",
-
-              "REAL-WORLD EXAMPLE 1 - Amazon Cost Structure: (1) Fixed costs: £20bn/year (warehouses, technology infrastructure, salaries), (2) Variable costs: £200bn/year (products purchased, shipping, packaging), (3) Total costs: £220bn/year, (4) Revenue: £400bn/year (2022), (5) Profit: £180bn - £220bn = -£40bn operating costs + £20bn AWS profit = -£20bn retail, +£20bn AWS. Insight: Retail has low margins (high VC), but AWS (cloud computing) has high margins (low VC, high FC). Amazon uses AWS profit to subsidize retail expansion",
-
-              "REAL-WORLD EXAMPLE 2 - UK Airline Profit Maximization: British Airways (2019): (1) MR = MC at 45 million passengers/year, (2) Price: £150/ticket (average), (3) AC: £120/ticket, (4) Profit per passenger: £30, (5) Total profit: £30 × 45m = £1.35bn. Decision: If BA increases flights, MR falls (must lower prices to fill seats), MC rises (need more crew, fuel). At 45m passengers, MR = MC (profit maximized). COVID-19 (2020): Demand collapsed, MR < MC at all output levels → shut down most flights (minimize losses)",
-
-              "REAL-WORLD EXAMPLE 3 - Restaurant Shutdown Decision: Local restaurant: (1) Revenue: £5,000/week, (2) Variable costs: £4,000/week (food, hourly wages), (3) Fixed costs: £2,000/week (rent, manager salary), (4) Total costs: £6,000/week, (5) Loss: -£1,000/week. Decision: Continue operating (TR > TVC, contributes £1,000 to FC). If shut down, loss = £2,000/week (still pay rent). By operating, loss reduced to £1,000/week. Long run: If losses persist, exit (cannot cover all costs including normal profit)",
-
-              "REAL-WORLD EXAMPLE 4 - Tesla Economies of Scale (Cost Curves): (1) 2010: Produced 1,000 cars, AC = £80,000/car (high FC spread over few units), (2) 2015: Produced 50,000 cars, AC = £50,000/car (economies of scale - FC spread over more units, bulk buying), (3) 2020: Produced 500,000 cars, AC = £35,000/car (further economies of scale), (4) 2023: Produced 1.8 million cars, AC = £30,000/car (approaching MES). LRAC curve: Falling from 2010-2023 (economies of scale). MES: ~2 million cars/year (similar to Toyota, VW). If Tesla grows beyond 5 million cars/year, may face diseconomies of scale (coordination problems)"
+              "Total Revenue (TR) is Price multiplied by Quantity (P×Q), while Average Revenue (AR) equals price in a single-price market.",
+              "Marginal Revenue (MR) is the addition to total revenue gained from selling one extra unit of output.",
+              "Fixed Costs (FC) do not vary with output, whereas Variable Costs (VC) change directly with the level of production.",
+              "Average Total Cost (ATC) is Total Cost divided by Quantity, typically U-shaped in the short run due to the law of diminishing marginal returns.",
+              "Marginal Cost (MC) is the cost of producing one additional unit, mathematically intersecting both AC and AVC at their lowest minimum points.",
+              "Normal profit is the minimum reward required to keep factors of production in their current use, occurring where AR equals AC.",
+              "Supernormal profit is any profit earned in excess of normal profit, occurring when Average Revenue is greater than Average Cost (AR > AC).",
+              "The short-run shutdown point occurs when price falls below Average Variable Cost (AR < AVC), meaning day-to-day running costs aren't covered.",
+              "Evaluation: Accurately calculating MC and MR in reality is extremely difficult, meaning many real-world firms rely on simple cost-plus pricing instead."
             ],
             formulas: [
               { name: "Total Revenue (TR)", expr: "TR = P × Q" },
@@ -1206,69 +714,15 @@ export const SUBJECTS = {
             title: { zh: "市场结构", en: "Market Structure" },
             overview: { zh: "学习不同市场结构的特点与企业行为，包括博弈论分析。", en: "Comprehensive study of market structures (perfect competition, monopoly, monopolistic competition, oligopoly) with graphical analysis, efficiency evaluation, game theory, and real-world examples." },
             keyPoints: [
-              "PERFECT COMPETITION - Characteristics: (1) Many buyers and sellers (no single firm can influence price), (2) Homogeneous product (identical goods, perfect substitutes), (3) Perfect information (all know prices and quality), (4) No barriers to entry/exit (free entry and exit), (5) Price takers (firms accept market price). Examples: Agricultural markets (wheat, corn), stock markets, foreign exchange markets",
-
-              "GRAPHICAL ANALYSIS - Perfect Competition Short Run: Firm faces horizontal demand curve at market price (perfectly elastic). Profit maximization: MC = MR = P. Three scenarios: (1) Supernormal profit if P > AC (shaded area = (P - AC) × Q), (2) Normal profit if P = AC (zero economic profit), (3) Loss if P < AC but P > AVC (firm continues operating to cover some fixed costs). Shutdown point: P = AVC (if price falls below, firm shuts down)",
-
-              "GRAPHICAL ANALYSIS - Perfect Competition Long Run: If supernormal profits exist → new firms enter → supply increases → price falls → profits eliminated. If losses exist → firms exit → supply decreases → price rises → losses eliminated. Long-run equilibrium: P = MC = AC at minimum point. Result: Only normal profit, productive efficiency (lowest cost), allocative efficiency (P = MC)",
-
-              "PERFECT COMPETITION - Efficiency: (1) Productive efficiency: Producing at minimum AC (lowest cost per unit), (2) Allocative efficiency: P = MC (resources allocated to what consumers value most), (3) Dynamic efficiency: Low (no supernormal profit to invest in R&D), (4) X-efficiency: High (competition forces firms to minimize costs). Overall: Static efficiency high, but limited innovation",
-
-              "MONOPOLY - Characteristics: (1) Single seller (one firm dominates market), (2) Unique product (no close substitutes), (3) High barriers to entry (prevents competition), (4) Price maker (firm sets price), (5) Can earn supernormal profit in long run. Examples: Local utilities (water, electricity before deregulation), Microsoft Windows (1990s), De Beers diamonds (historically)",
-
-              "MONOPOLY - Barriers to Entry: (1) Economies of scale (natural monopoly - one firm has lowest costs), (2) Legal barriers (patents, licenses, government franchise), (3) Control of resources (De Beers controlled 90% of diamond mines), (4) Brand loyalty (strong brand makes entry difficult), (5) Predatory pricing (incumbent cuts prices to drive out entrants), (6) Network effects (value increases with users - Facebook, eBay)",
-
-              "GRAPHICAL ANALYSIS - Monopoly Equilibrium: Firm faces downward-sloping demand curve (market demand). MR curve below demand (to sell more, must lower price on all units). Profit maximization: MC = MR, then read price from demand curve. Output: Q_monopoly < Q_competitive. Price: P_monopoly > P_competitive. Supernormal profit: Shaded area = (P - AC) × Q. Deadweight loss: Triangle between demand and MC curves (allocative inefficiency)",
-
-              "MONOPOLY - Efficiency: (1) Productive efficiency: NO - not producing at minimum AC, (2) Allocative efficiency: NO - P > MC (underproduction, deadweight loss), (3) Dynamic efficiency: MAYBE - supernormal profits can fund R&D (Schumpeter hypothesis), (4) X-efficiency: LOW - lack of competition allows slack. Overall: Static inefficiency but potential for innovation",
-
-              "MONOPOLY - Price Discrimination: Charging different prices to different consumers for same product. Types: (1) First-degree (perfect): Different price for each consumer (rare, e.g., haggling), (2) Second-degree: Different prices based on quantity (bulk discounts), (3) Third-degree: Different prices for different groups (student discounts, senior discounts). Conditions: (1) Price-making power, (2) Market segmentation (can identify groups), (3) No resale (prevent arbitrage). Effect: Increases profit, reduces consumer surplus, can reduce deadweight loss (more output sold)",
-
-              "MONOPOLISTIC COMPETITION - Characteristics: (1) Many sellers (like perfect competition), (2) Differentiated products (branding, quality, location), (3) Low barriers to entry/exit, (4) Some price-making power (downward-sloping demand), (5) Non-price competition (advertising, branding). Examples: Restaurants, hairdressers, clothing stores, coffee shops (Starbucks vs local cafes)",
-
-              "GRAPHICAL ANALYSIS - Monopolistic Competition Short Run: Similar to monopoly - downward-sloping demand, MR below demand, MC = MR for profit max. Can earn supernormal profit if P > AC",
-
-              "GRAPHICAL ANALYSIS - Monopolistic Competition Long Run: If supernormal profits → new firms enter with similar products → demand for each firm falls (shifts left) → profits eliminated. Long-run equilibrium: Demand curve tangent to AC curve (P = AC, normal profit only). But P > MC (allocative inefficiency), and not at minimum AC (productive inefficiency). Excess capacity: Producing below minimum efficient scale",
-
-              "MONOPOLISTIC COMPETITION - Efficiency: (1) Productive efficiency: NO - not at minimum AC (excess capacity), (2) Allocative efficiency: NO - P > MC, (3) Dynamic efficiency: LOW - limited profits for R&D, (4) Consumer choice: HIGH - variety and differentiation benefit consumers. Trade-off: Inefficiency vs consumer choice",
-
-              "OLIGOPOLY - Characteristics: (1) Few large firms (typically 3-5 dominant firms), (2) High concentration ratio (top firms control large market share), (3) High barriers to entry (economies of scale, brand loyalty, capital requirements), (4) Interdependence (each firm's decision affects others), (5) Strategic behavior (game theory applies). Examples: Supermarkets (Tesco, Sainsbury's, Asda, Morrisons), Mobile networks (Vodafone, EE, O2, Three), Airlines (British Airways, easyJet, Ryanair), Soft drinks (Coca-Cola, Pepsi)",
-
-              "OLIGOPOLY - Concentration Ratios: Measure market dominance. CR4 = Market share of top 4 firms. CR5 = Top 5 firms. Example: UK supermarkets CR4 = 70% (Tesco 27%, Sainsbury's 15%, Asda 15%, Morrisons 10%). Herfindahl-Hirschman Index (HHI) = Sum of squared market shares. HHI < 1000 = competitive, 1000-2500 = moderate concentration, >2500 = high concentration",
-
-              "OLIGOPOLY - Kinked Demand Curve Model: Explains price rigidity in oligopoly. Assumption: If firm raises price → rivals don't follow → firm loses customers (elastic demand above kink). If firm cuts price → rivals match → firm doesn't gain much (inelastic demand below kink). Result: Demand curve kinked at current price, MR curve discontinuous (vertical gap). Firms reluctant to change price (price stability). Criticism: Doesn't explain how initial price determined",
-
-              "OLIGOPOLY - Collusion: Firms cooperate to act like monopoly (maximize joint profits). Types: (1) Overt collusion (cartel) - formal agreement to fix prices/output (usually illegal), (2) Tacit collusion - informal cooperation without explicit agreement (price leadership, parallel pricing). Benefits: Higher prices and profits (like monopoly). Problems: (1) Incentive to cheat (undercut price to gain market share), (2) Difficult to agree (different costs, objectives), (3) Illegal in most countries (antitrust laws), (4) New entry if profits too high",
-
-              "OLIGOPOLY - Non-Price Competition: Firms compete through methods other than price. Types: (1) Advertising and branding (Coca-Cola vs Pepsi spend billions), (2) Product differentiation (features, quality, design), (3) Customer service (loyalty programs, warranties), (4) Innovation (new products, technology). Reason: Price wars hurt all firms, non-price competition less risky",
-
-              "GAME THEORY - Prisoners' Dilemma: Classic game showing why cooperation is difficult. Setup: Two firms choose to collude (high price) or compete (low price). Payoff matrix shows profits for each combination. Dominant strategy: Compete (best choice regardless of rival's action). Nash equilibrium: Both compete (even though both colluding would give higher joint profit). Result: Individual rationality leads to worse collective outcome. Example: Airlines - if both keep prices high, both profit. But each has incentive to undercut, leading to price war",
-
-              "GAME THEORY - Payoff Matrix Example: Firm A and Firm B choose High Price or Low Price. If both High: Each earns £10m. If both Low: Each earns £5m. If one High, one Low: Low-price firm earns £12m, high-price firm earns £2m. Dominant strategy: Low price (£12m or £5m beats £10m or £2m). Nash equilibrium: (Low, Low) with £5m each. Collusion outcome: (High, High) with £10m each (but unstable - incentive to cheat)",
-
-              "GAME THEORY - Repeated Games: If game played multiple times, cooperation more likely. Tit-for-tat strategy: Start with cooperation, then copy opponent's last move. If rival cooperates, you cooperate. If rival cheats, you punish by competing. Result: Encourages cooperation (threat of punishment). Example: OPEC oil cartel - members cooperate most of the time, but occasionally cheat (Saudi Arabia increased production in 2014 to punish US shale producers)",
-
-              "GAME THEORY - Nash Equilibrium: Situation where no firm can improve profit by changing strategy (given rivals' strategies). Each firm's strategy is best response to others. Can be multiple Nash equilibria. Example: In prisoners' dilemma, (Compete, Compete) is Nash equilibrium. Neither firm wants to switch to Collude (would reduce profit from £5m to £2m)",
-
-              "CONTESTABILITY THEORY - Definition: Market is contestable if entry and exit are free (no sunk costs). Even with few firms, threat of entry forces competitive behavior. Hit-and-run competition: New firm enters if incumbents earn supernormal profit, takes profit, then exits. Result: Incumbents keep prices low to deter entry (limit pricing). Example: Airline routes - low sunk costs (planes can be redeployed) makes routes contestable even with few airlines",
-
-              "CONTESTABILITY - Sunk Costs: Costs that cannot be recovered on exit. High sunk costs reduce contestability. Examples: (1) High sunk costs: Specialized equipment (steel mill), R&D (pharmaceuticals), advertising (brand building), (2) Low sunk costs: Rented equipment, generic machinery, online businesses. Perfectly contestable market: Zero sunk costs, perfect information, no predatory pricing",
-
-              "EFFICIENCY CONCEPTS - Productive Efficiency: Producing at lowest possible cost per unit. Occurs where MC = AC at minimum point. Perfect competition achieves this in long run. Monopoly and monopolistic competition do not (produce at higher cost)",
-
-              "EFFICIENCY CONCEPTS - Allocative Efficiency: Producing quantity where P = MC (marginal benefit = marginal cost). Resources allocated to what consumers value most. Perfect competition achieves this. Monopoly does not (P > MC, underproduction, deadweight loss)",
-
-              "EFFICIENCY CONCEPTS - Dynamic Efficiency: Innovation and technological progress over time. Requires investment in R&D. Monopoly may have advantage (supernormal profits to fund R&D, Schumpeter hypothesis). But lack of competition may reduce incentive. Oligopoly often most dynamically efficient (profits + competition)",
-
-              "EFFICIENCY CONCEPTS - X-Inefficiency: Costs above minimum due to lack of competitive pressure. Organizational slack, waste, overstaffing. Common in monopolies and protected industries. Competition forces firms to minimize costs (X-efficiency)",
-
-              "REAL EXAMPLE 1 - Microsoft Antitrust Case (1998-2001): US government sued Microsoft for monopoly abuse. Allegations: (1) Bundling Internet Explorer with Windows (tying), (2) Exclusive contracts with PC manufacturers, (3) Predatory pricing against Netscape. Microsoft market share: 95% of PC operating systems. Ruling: Microsoft guilty of monopolization. Remedy: Behavioral restrictions (no exclusive contracts), nearly broken up. Impact: Microsoft became more cautious, allowed competitors (Google, Apple) to grow. Lesson: Even dominant firms face antitrust scrutiny",
-
-              "REAL EXAMPLE 2 - OPEC Oil Cartel (1960-present): Organization of Petroleum Exporting Countries - 13 members controlling 40% of global oil production. Objective: Coordinate production to maintain high prices. Success: 1973 oil embargo (price quadrupled), 1979 Iranian revolution (price doubled). Failures: 1980s overproduction (price collapsed), 2014 Saudi Arabia increased production (price fell 50%), members frequently cheat on quotas. Lesson: Cartels unstable due to incentive to cheat, especially when demand falls or new competitors emerge (US shale oil)",
-
-              "REAL EXAMPLE 3 - UK Supermarket Oligopoly (2000-present): Four firms dominate - Tesco (27%), Sainsbury's (15%), Asda (15%), Morrisons (10%). CR4 = 67%. Behavior: (1) Price leadership (Tesco sets prices, others follow), (2) Non-price competition (loyalty cards, online delivery, premium ranges), (3) Tacit collusion (prices similar across stores). Competition Commission investigations: 2000 (found complex monopoly), 2008 (found land banking to block entry). Recent disruption: Discount chains (Aldi, Lidl) gained 15% market share (2010-2020) by undercutting prices. Lesson: Oligopolies can maintain high prices through tacit collusion, but vulnerable to disruptive entry",
-
-              "REAL EXAMPLE 4 - Airline Industry Deregulation (US 1978, EU 1990s): Before: Government-controlled routes, prices, entry (regulated monopolies/oligopolies). After deregulation: Free entry, price competition, new low-cost carriers (Southwest, Ryanair, easyJet). Results: (1) Prices fell 40-50% in real terms, (2) Passenger numbers tripled, (3) Hub-and-spoke networks developed, (4) Frequent flyer programs (non-price competition), (5) Some bankruptcies (Pan Am, TWA). Market structure: Oligopoly but contestable (low sunk costs - planes redeployable). Lesson: Deregulation increased competition and consumer welfare, but also instability"
+              "Perfect competition features infinite buyers and sellers, homogeneous products, perfect information, and absolutely no barriers to entry or exit.",
+              "Monopolistic competition involves many firms selling slightly differentiated products, resulting in downward-sloping AR curves and normal long-run profit.",
+              "Oligopoly is dominated by a few large interdependent firms, characterised by price rigidity, intense non-price competition, and high entry barriers.",
+              "Game theory analyses oligopoly interdependence; the Nash equilibrium occurs when no player can benefit by changing their strategy unilaterally.",
+              "A pure monopoly holds 100% market share, but legal working monopolies have greater than 25%, allowing them to act as dominant price makers.",
+              "Productive efficiency occurs at the lowest point on the AC curve, while allocative efficiency occurs where Price equals Marginal Cost (P=MC).",
+              "Dynamic efficiency involves reinvesting supernormal profits into R&D to lower long-run costs and improve product quality over time.",
+              "Price discrimination charges different prices to different consumer groups for the exact same product, requiring distinct PEDs and prevention of market seepage.",
+              "Evaluation: Monopolies cause deadweight welfare loss and allocative inefficiency, but can achieve massive economies of scale and fund dynamic efficiency, ultimately benefiting consumers."
             ],
             formulas: [
               { name: "Monopoly Pricing", expr: "MR = MC for profit maximisation" },
@@ -1302,59 +756,15 @@ export const SUBJECTS = {
             title: { zh: "劳动力市场", en: "Labour Market" },
             overview: { zh: "学习劳动力需求、供给与工资决定。", en: "Comprehensive study of labour demand, supply, wage determination, trade unions, monopsony, minimum wage, and labour market imperfections with graphical analysis and real-world examples." },
             keyPoints: [
-              "DERIVED DEMAND - Definition: Demand for labour depends on demand for the product it produces. Labour is not wanted for itself, but for what it can produce. If product demand increases → labour demand increases. If product demand falls → labour demand falls. Example: Demand for car workers depends on demand for cars. If car sales rise → car manufacturers hire more workers",
-
-              "MARGINAL REVENUE PRODUCT OF LABOUR (MRPL) - Definition: Additional revenue generated by employing one more worker. MRPL = Marginal Physical Product of Labour (MPL) × Marginal Revenue (MR). In perfect competition: MR = Price, so MRPL = MPL × P. Example: If worker produces 10 extra units, price = £5, then MRPL = 10 × £5 = £50. Firm hires workers up to point where MRPL = Wage",
-
-              "GRAPHICAL ANALYSIS - Labour Demand Curve: MRPL curve is labour demand curve (downward sloping). As more workers hired → diminishing marginal returns → MPL falls → MRPL falls. Firm maximizes profit where MRPL = Wage. If wage = £50, hire workers until MRPL = £50. If wage falls to £40 → hire more workers (move down demand curve)",
-
-              "FACTORS SHIFTING LABOUR DEMAND: (1) Product demand - higher product demand → higher product price → MRPL increases → demand shifts right. Example: Streaming boom → demand for software engineers increased, (2) Labour productivity - better training/technology → MPL increases → MRPL increases → demand shifts right, (3) Price of capital - if capital becomes cheaper → firms substitute capital for labour → demand shifts left (or right if capital and labour are complements), (4) Number of firms - more firms enter industry → industry labour demand increases",
-
-              "LABOUR SUPPLY - Individual: Trade-off between work and leisure. As wage rises → two effects: (1) Substitution effect - work becomes more attractive relative to leisure → work more, (2) Income effect - higher income allows more leisure → work less. At low wages: Substitution effect dominates → supply curve upward sloping. At very high wages: Income effect may dominate → backward-bending supply curve. Example: Doctors may work fewer hours when earning £200/hour than £100/hour",
-
-              "LABOUR SUPPLY - Market: Sum of individual supplies. Generally upward sloping (higher wage → more people willing to work). Factors shifting labour supply: (1) Population size (immigration increases supply), (2) Participation rate (more women working → supply increases), (3) Wages in other occupations (if accountant wages rise → fewer people become teachers), (4) Non-wage benefits (pensions, healthcare), (5) Education and training (more qualified workers → supply increases), (6) Trade union restrictions (closed shop reduces supply)",
-
-              "GRAPHICAL ANALYSIS - Competitive Labour Market Equilibrium: Demand (MRPL) intersects supply → equilibrium wage and employment. If wage above equilibrium → excess supply (unemployment). If wage below equilibrium → excess demand (labour shortage). Market clears at equilibrium. Example: If equilibrium wage = £15/hour, 1 million workers employed. If minimum wage set at £20 → unemployment (demand falls to 800,000, supply rises to 1.2 million → 400,000 unemployed)",
-
-              "WAGE DIFFERENTIALS - Definition: Differences in wages between occupations or workers. Causes: (1) Marginal productivity - more productive workers paid more (doctors vs cleaners), (2) Skills and qualifications - higher skills command premium (university graduates earn 50% more), (3) Compensating differentials - unpleasant/dangerous jobs pay more (oil rig workers, soldiers), (4) Barriers to entry - professional qualifications restrict supply (doctors, lawyers), (5) Discrimination - gender/race pay gaps (women earn 15% less than men in UK), (6) Geographical immobility - workers can't move to high-wage areas (housing costs), (7) Trade unions - collective bargaining raises wages for members",
-
-              "TRADE UNIONS - Definition: Organizations representing workers in negotiations with employers. Objectives: (1) Higher wages, (2) Better working conditions (safety, hours), (3) Job security (resist redundancies), (4) Influence over work practices. Membership: UK union membership fell from 13 million (50% of workers, 1979) to 6.5 million (23%, 2023) due to deindustrialization, anti-union laws, shift to services",
-
-              "TRADE UNIONS - Methods to Raise Wages: (1) Restrict labour supply - closed shop (only union members can work), limit apprenticeships, restrict immigration, (2) Increase labour demand - productivity deals (work more efficiently in exchange for higher pay), support for industry (lobbying for subsidies), (3) Collective bargaining - negotiate with employers (threat of strike), (4) Minimum wage - lobby government for wage floor",
-
-              "GRAPHICAL ANALYSIS - Trade Union Impact: Union negotiates wage above equilibrium (e.g., £20 vs £15 equilibrium). Result: (1) Higher wages for employed members (£15 → £20), (2) Lower employment (demand falls from 1 million to 800,000 → 200,000 job losses), (3) Unemployment (excess supply at £20). Trade-off: Higher wages vs fewer jobs. Evaluation: Depends on elasticity of labour demand - if inelastic (few substitutes), small job losses. If elastic (easy to automate), large job losses",
-
-              "TRADE UNIONS - Evaluation: Benefits: (1) Higher wages for members, (2) Better working conditions (health and safety), (3) Voice for workers (grievance procedures), (4) Reduced inequality (compress wage distribution), (5) Productivity gains (lower turnover, better morale). Costs: (1) Unemployment (wages above equilibrium), (2) Inflation (wage-price spiral), (3) Reduced competitiveness (higher costs), (4) Strikes (lost output), (5) Insider-outsider problem (employed members benefit, unemployed excluded)",
-
-              "MONOPSONY - Definition: Single buyer of labour (one employer dominates local labour market). Characteristics: (1) Wage maker (sets wage), (2) Faces upward-sloping labour supply (to hire more, must raise wage), (3) Marginal cost of labour (MCL) > wage (raising wage for new worker means raising it for all workers). Examples: NHS (dominant employer of nurses in UK), Amazon (dominant employer in some towns), mining companies (single employer in mining towns)",
-
-              "GRAPHICAL ANALYSIS - Monopsony Equilibrium: Monopsonist maximizes profit where MCL = MRPL. Reads wage from supply curve (below MRPL). Result: (1) Lower wage than competitive market (W_monopsony < W_competitive), (2) Lower employment (Q_monopsony < Q_competitive), (3) Exploitation (workers paid less than MRPL). Example: Competitive wage = £15, monopsony wage = £10. Workers produce £15 of value but paid only £10 → £5 exploitation",
-
-              "MONOPSONY - Minimum Wage Effect: In competitive market, minimum wage causes unemployment. In monopsony, minimum wage can INCREASE employment (up to competitive level). Reason: Minimum wage removes monopsonist's ability to suppress wages → must pay competitive wage → hires more workers (up to point where minimum wage = MRPL). Example: If monopsony pays £10, employs 800,000. Minimum wage £15 → employs 1 million (competitive level). But if minimum wage too high (£20) → unemployment",
-
-              "MINIMUM WAGE - Definition: Legal minimum hourly wage. UK National Living Wage = £10.42 (2023, age 23+). Objectives: (1) Reduce poverty (raise incomes of low-paid), (2) Reduce inequality, (3) Incentivize work (make work pay vs benefits). Coverage: Affects 7% of UK workers (mostly retail, hospitality, care)",
-
-              "MINIMUM WAGE - Effects in Competitive Market: If set above equilibrium → unemployment (demand falls, supply rises). Size of unemployment depends on elasticity: (1) Elastic demand (easy to substitute capital/automation) → large job losses, (2) Inelastic demand (labour essential, no substitutes) → small job losses. Example: Fast food (elastic) → self-service kiosks replace workers. Care homes (inelastic) → can't easily replace carers → minimal job losses",
-
-              "MINIMUM WAGE - Evaluation: Benefits: (1) Higher incomes for low-paid (poverty reduction), (2) Reduced inequality, (3) Increased consumer spending (low-paid have high MPC), (4) Incentive to work (vs benefits), (5) Reduced exploitation (especially in monopsony). Costs: (1) Unemployment (if set too high), (2) Higher prices (firms pass on costs), (3) Reduced competitiveness (especially for labor-intensive industries), (4) Regional differences (£10.42 appropriate for London but high for rural areas). Evidence: UK minimum wage introduced 1999 - minimal unemployment effect (demand more inelastic than expected)",
-
-              "LABOUR MARKET DISCRIMINATION - Definition: Unequal treatment based on characteristics unrelated to productivity (race, gender, age, disability). Types: (1) Wage discrimination - paying less for same work (gender pay gap 15% in UK), (2) Employment discrimination - refusing to hire certain groups, (3) Occupational segregation - certain groups concentrated in low-paid jobs (women in care, men in construction)",
-
-              "LABOUR MARKET DISCRIMINATION - Gender Pay Gap: UK women earn 15% less than men on average (2023). Causes: (1) Occupational segregation (women in lower-paid sectors - care, retail vs men in higher-paid - finance, engineering), (2) Career breaks (maternity leave → lost experience and promotion opportunities), (3) Part-time work (women more likely to work part-time → lower hourly pay), (4) Discrimination (bias in hiring and promotion), (5) Negotiation (women less likely to negotiate salary). Policies: (1) Equal pay legislation, (2) Transparency (require firms to publish pay gaps), (3) Parental leave (shared between parents), (4) Flexible working, (5) Quotas (require % of women in senior roles)",
-
-              "EFFICIENCY WAGE THEORY - Definition: Firms voluntarily pay above equilibrium wage to increase productivity. Reasons: (1) Reduce turnover (higher wage → workers less likely to quit → lower recruitment/training costs), (2) Increase effort (higher wage → workers work harder to avoid being fired), (3) Attract better workers (higher wage → larger applicant pool → select best), (4) Improve morale (workers feel valued → higher productivity). Example: Henry Ford paid $5/day (1914) - double the market wage → productivity increased 50%, turnover fell 90%. Modern example: Google, Facebook pay above-market wages",
-
-              "LABOUR MARKET IMPERFECTIONS - Geographical Immobility: Workers unable to move to areas with jobs. Causes: (1) Housing costs (can't afford to move to London), (2) Family ties (children in school, elderly parents), (3) Information (don't know about job opportunities elsewhere). Result: Unemployment in some regions, labour shortages in others. Example: North-South divide in UK - unemployment higher in North, labour shortages in South",
-
-              "LABOUR MARKET IMPERFECTIONS - Occupational Immobility: Workers unable to switch to different occupations. Causes: (1) Lack of skills (coal miner can't become software engineer without retraining), (2) Age (older workers harder to retrain), (3) Qualifications (need degree for many jobs). Result: Structural unemployment (skills mismatch). Policies: (1) Education and training, (2) Apprenticeships, (3) Retraining programs for displaced workers",
-
-              "REAL EXAMPLE 1 - UK Minimum Wage Introduction (1999): National Minimum Wage introduced at £3.60/hour (age 22+). Opponents predicted mass unemployment (1-2 million jobs lost). Actual result: Minimal unemployment effect - employment continued rising. Reasons: (1) Labour demand more inelastic than expected (hard to substitute workers), (2) Monopsony power in low-wage sectors (minimum wage increased employment), (3) Productivity gains (efficiency wages), (4) Set at moderate level (50% of median wage). Increased over time: £3.60 (1999) → £10.42 (2023). Now affects 7% of workers. Lesson: Moderate minimum wage can raise incomes without significant job losses",
-
-              "REAL EXAMPLE 2 - Amazon Warehouse Workers (2018-present): Amazon dominant employer in many towns (monopsony power). Wages: Initially £8-9/hour (near minimum wage). Working conditions: Intense monitoring (productivity targets), limited breaks, high injury rates. Union pressure: GMB union campaigned for better pay and conditions. Result: Amazon raised wage to £10.50-11.45/hour (2021), improved conditions. But still criticized for anti-union tactics. Lesson: Monopsony power allows firms to suppress wages, but public pressure and unions can force improvements",
-
-              "REAL EXAMPLE 3 - Gender Pay Gap in UK (1970-present): Equal Pay Act 1970 made it illegal to pay women less for same work. But gender pay gap persists: 28% (1970) → 15% (2023). Causes: Occupational segregation (women in lower-paid sectors), career breaks (maternity), part-time work. Policies: (2017) Large firms required to publish pay gaps. Results: Increased transparency, some firms took action (mentoring, flexible working). But progress slow. Example: BBC pay gap scandal (2017) - male presenters paid far more than female for similar roles → forced to equalize. Lesson: Legislation alone insufficient, need transparency and cultural change",
-
-              "REAL EXAMPLE 4 - Decline of UK Trade Unions (1979-present): Union membership: 13 million (50% of workers, 1979) → 6.5 million (23%, 2023). Causes: (1) Deindustrialization (manufacturing jobs fell from 7 million to 2.5 million - unions strongest in manufacturing), (2) Anti-union laws (Thatcher government restricted strikes, banned closed shops), (3) Shift to services (harder to unionize - small workplaces, part-time workers), (4) Globalization (threat of offshoring weakens union bargaining power). Impact: (1) Wage inequality increased (unions compress wage distribution), (2) Wage share of GDP fell (labor's share vs capital), (3) Working conditions worsened in some sectors (zero-hours contracts, gig economy). Lesson: Union decline contributed to rising inequality"
+              "Demand for labour is a derived demand, determined by Marginal Revenue Product (MRP = Marginal Physical Product × Marginal Revenue).",
+              "Supply of labour shifts due to changes in net migration, education levels, working conditions, and the demographic makeup of the population.",
+              "The backward-bending supply curve of labour shows the substitution effect dominating initially, then the income effect dominating at high wage rates.",
+              "In perfectly competitive labour markets, wages are determined by the intersection of industry supply and demand, making individual firms strict wage takers.",
+              "A monopsony is a single dominant buyer of labour, enabling them to suppress wages below the competitive market equilibrium and restrict employment.",
+              "Trade unions aim to negotiate higher wages and better conditions, effectively acting as a monopoly supplier of labour to counter monopsonist employers.",
+              "A National Minimum Wage (NMW) legally prevents worker exploitation but may cause classical unemployment if set above the free market equilibrium wage.",
+              "Wage differentials exist due to varying marginal productivity, compensating differentials for dangerous work, and significant differences in trade union power.",
+              "Evaluation: The unemployment impact of a minimum wage depends on the elasticity of labour demand; highly inelastic demand means minimal job losses."
             ],
             formulas: [
               { name: "Marginal Revenue Product of Labour (MRPL)", expr: "MRPL = MPₗ × MR" },
@@ -1383,55 +793,15 @@ export const SUBJECTS = {
             title: { zh: "政府干预与竞争政策", en: "Government Intervention & Competition Policy" },
             overview: { zh: "学习政府对企业行为的管制政策。", en: "Comprehensive study of competition policy, merger regulation, natural monopoly regulation, privatization, nationalization, and deregulation with real-world examples and policy evaluation." },
             keyPoints: [
-              "COMPETITION POLICY - Definition: Government actions to promote competition and prevent abuse of market power. Objectives: (1) Efficiency - ensure resources allocated efficiently, (2) Consumer welfare - lower prices, better quality, more choice, (3) Fair competition - prevent anti-competitive practices, (4) Innovation - encourage R&D and dynamic efficiency. Authorities: UK Competition and Markets Authority (CMA), EU European Commission, US Federal Trade Commission (FTC) and Department of Justice",
-
-              "COMPETITION POLICY - Anti-Competitive Practices: (1) Cartels - firms collude to fix prices/output (illegal in most countries), (2) Price-fixing - agreement to set minimum prices, (3) Market sharing - agreement to divide markets geographically or by customer, (4) Bid-rigging - coordination in tenders/auctions, (5) Abuse of dominance - predatory pricing, exclusive contracts, refusal to supply, (6) Resale price maintenance - manufacturer dictates retail price. Penalties: Fines (up to 10% of global turnover in EU), director disqualification, prison sentences",
-
-              "MERGERS AND ACQUISITIONS - Types: (1) Horizontal merger - firms in same industry at same stage (Tesco + Sainsbury's), (2) Vertical merger - firms at different stages of production (car manufacturer + parts supplier), (3) Conglomerate merger - firms in unrelated industries (diversification). Reasons: (1) Economies of scale (lower average costs), (2) Market power (reduce competition, raise prices), (3) Synergies (1+1=3, complementary strengths), (4) Diversification (reduce risk), (5) Asset stripping (buy undervalued firm, sell assets)",
-
-              "MERGER REGULATION - Process: (1) Notification - firms notify competition authority of proposed merger, (2) Phase 1 investigation - quick assessment (4-6 weeks), (3) Phase 2 investigation - detailed analysis if concerns (6-12 months), (4) Decision - approve, approve with conditions (remedies), or block. Criteria: Does merger substantially lessen competition? Will it harm consumers? Example: UK CMA blocked Sainsbury's-Asda merger (2019) - would create market share 31%, reduce competition, raise prices",
-
-              "MERGER REGULATION - Concentration Measures: (1) Concentration ratio (CR4, CR5) - market share of top 4 or 5 firms. Example: UK supermarkets CR4 = 67%, (2) Herfindahl-Hirschman Index (HHI) - sum of squared market shares. HHI < 1000 = competitive, 1000-2500 = moderate, >2500 = highly concentrated. Example: If 4 firms have 25% each, HHI = 25² + 25² + 25² + 25² = 2500. If merger increases HHI by >200 points → detailed investigation",
-
-              "MERGER REGULATION - Remedies: If merger raises concerns but has benefits, authority may approve with conditions: (1) Structural remedies - divest (sell) some stores/assets to maintain competition. Example: Tesco-Booker merger (2018) - required to sell some stores, (2) Behavioral remedies - restrictions on conduct (e.g., must supply competitors, price caps). Less effective than structural (hard to monitor)",
-
-              "MERGER REGULATION - Evaluation: Benefits: (1) Prevents excessive market power, (2) Protects consumers from higher prices, (3) Maintains competitive pressure for efficiency. Costs: (1) Blocks beneficial mergers (economies of scale, synergies), (2) Lengthy process (uncertainty, costs), (3) Difficult to predict effects (counterfactual problem - what would happen without merger?), (4) May protect inefficient competitors. Example: EU blocked GE-Honeywell merger (2001) - US approved but EU blocked, GE argued EU protecting European competitors",
-
-              "NATURAL MONOPOLY - Definition: Industry where single firm can supply market at lower cost than multiple firms (due to economies of scale). Characteristics: (1) High fixed costs, low marginal costs, (2) Declining average costs over relevant output range, (3) Duplication wasteful (e.g., two water pipe networks). Examples: Water, electricity/gas networks (not generation), railways (track infrastructure), postal services (universal service obligation)",
-
-              "NATURAL MONOPOLY - Problem: If unregulated, monopolist charges high price (P > MC), produces low output, earns supernormal profit, allocative inefficiency (deadweight loss). But if force P = MC (allocative efficiency) → price below AC → losses → firm exits. Dilemma: Efficiency vs sustainability",
-
-              "NATURAL MONOPOLY REGULATION - Price Cap (RPI-X): Price can rise by inflation (RPI) minus X% (efficiency target). Example: RPI = 3%, X = 2% → prices can rise 1%. Regulator sets X based on expected efficiency gains. Used in UK for water, energy, telecoms. Advantages: (1) Incentive for efficiency (firm keeps savings if costs fall more than X), (2) Simple to implement, (3) Protects consumers (prices don't rise faster than inflation). Disadvantages: (1) Difficult to set X (information asymmetry - firm knows costs better than regulator), (2) May underinvest (cut costs by reducing quality/investment), (3) Regulatory capture (regulator influenced by industry)",
-
-              "NATURAL MONOPOLY REGULATION - Rate of Return (Cost-Plus): Regulator allows firm to charge price that covers costs plus reasonable profit (e.g., 8% return on capital). Used in US for utilities. Advantages: (1) Ensures firm covers costs (no exit), (2) Encourages investment (return guaranteed). Disadvantages: (1) No incentive for efficiency (higher costs → higher prices), (2) Gold-plating (overinvestment in capital to increase profit base), (3) Information asymmetry (firm can inflate costs)",
-
-              "NATURAL MONOPOLY REGULATION - Nationalization: Government ownership and operation. Used in UK for water (1945-1989), electricity (1947-1990), railways (1948-1994, then 1997-present for track). Advantages: (1) No profit motive (can set P = MC for efficiency), (2) Can cross-subsidize (profitable routes subsidize unprofitable), (3) Coordination (integrated network). Disadvantages: (1) X-inefficiency (no competitive pressure), (2) Political interference (investment decisions based on votes not economics), (3) Soft budget constraint (losses covered by taxpayers), (4) Lack of innovation",
-
-              "PRIVATIZATION - Definition: Transfer of state-owned enterprises to private sector. UK privatizations: British Telecom (1984), British Gas (1986), British Airways (1987), Water (1989), Electricity (1990), Railways (1994-1997). Methods: (1) Share sale (public offering), (2) Trade sale (sell to another company), (3) Management buyout",
-
-              "PRIVATIZATION - Arguments For: (1) Efficiency - profit motive and competition drive cost reduction, (2) Investment - private firms can raise capital more easily, (3) Reduced government borrowing - sale proceeds reduce debt, (4) Wider share ownership - 'popular capitalism', (5) Reduced political interference - commercial decisions not political. Evidence: UK privatized firms improved productivity 2-3% per year faster than state-owned",
-
-              "PRIVATIZATION - Arguments Against: (1) Natural monopolies - private monopoly worse than public (high prices, low investment), (2) Asset stripping - short-term profit at expense of long-term investment, (3) Inequality - profits to shareholders not taxpayers, (4) Job losses - private firms cut staff to reduce costs, (5) Cherry-picking - private firms serve profitable areas, neglect unprofitable (rural areas). Example: UK rail privatization - fragmented, high fares, poor service → track renationalized (2002)",
-
-              "PRIVATIZATION - Evaluation: Success depends on: (1) Competition - if competitive market, privatization works well (telecoms, airlines). If natural monopoly, need strong regulation (water, electricity networks), (2) Regulation - effective regulator prevents abuse (price caps, quality standards), (3) Market structure - avoid creating private monopoly (should break up before privatization). Example: British Telecom privatization successful (competition from mobile, internet). Water privatization mixed (investment increased but prices rose, profits to shareholders)",
-
-              "NATIONALIZATION - Definition: Transfer of private assets to government ownership. Reasons: (1) Market failure - natural monopoly, externalities, public goods, (2) Strategic importance - national security, essential services, (3) Rescue failing firms - prevent unemployment (e.g., banks in 2008 crisis), (4) Ideology - socialist belief in public ownership. Recent examples: UK railways (track nationalized 2002, some franchises 2020-2021), UK banks (RBS, Lloyds partially nationalized 2008)",
-
-              "DEREGULATION - Definition: Removal of government rules and restrictions on business. Examples: (1) Airline deregulation (US 1978, EU 1990s) - removed controls on routes, prices, entry, (2) Financial deregulation (1980s-2000s) - removed restrictions on banks (Glass-Steagall repeal 1999), (3) Telecoms deregulation (1980s-1990s) - allowed competition in phone services. Objectives: (1) Increase competition, (2) Lower prices, (3) Increase choice, (4) Encourage innovation",
-
-              "DEREGULATION - Evaluation: Benefits: (1) Lower prices (airline fares fell 40-50% after deregulation), (2) More choice (new entrants, new products), (3) Innovation (new business models - low-cost airlines, online banking). Costs: (1) Market failure - if natural monopoly or externalities, deregulation harmful, (2) Instability - financial deregulation contributed to 2008 crisis, (3) Safety concerns - pressure to cut costs may compromise safety, (4) Inequality - unprofitable services cut (rural routes). Example: Airline deregulation successful (lower prices, more passengers) but some bankruptcies (Pan Am, TWA)",
-
-              "REGULATORY CAPTURE - Definition: Regulator acts in interest of industry rather than consumers. Causes: (1) Information asymmetry - industry has more information than regulator, (2) Revolving door - regulators move to industry jobs (incentive to be lenient), (3) Lobbying - industry influences regulator through political pressure, (4) Complexity - technical issues favor industry experts. Example: Financial regulators failed to prevent 2008 crisis (too close to banks). Solution: (1) Independent regulator, (2) Transparency, (3) Cooling-off period before moving to industry",
-
-              "CONTESTABLE MARKETS - Policy Implication: If markets contestable (low barriers to entry/exit), even few firms behave competitively (threat of entry). Policy: (1) Reduce barriers to entry (remove licenses, reduce regulations), (2) Prevent incumbent advantages (access to infrastructure, data), (3) Ensure exit easy (no sunk costs). Example: Airline routes contestable (planes redeployable) → even duopoly routes have competitive prices. But airports not contestable (high sunk costs) → need regulation",
-
-              "REAL EXAMPLE 1 - UK Water Privatization (1989): 10 regional water companies privatized. Regulation: Ofwat sets price caps (RPI-X). Results: (1) Investment increased £150bn (1989-2020) - improved water quality, reduced leaks, (2) Prices rose 40% in real terms (1989-2020), (3) Profits £57bn (1989-2019) - mostly paid as dividends to shareholders (many foreign-owned), (4) Debt increased £50bn (firms borrowed to pay dividends), (5) CEO pay £1-3 million (vs £100,000 for public sector). Criticism: Profiteering, underinvestment (sewage spills), high prices. Calls for renationalization. Lesson: Natural monopoly privatization requires strong regulation, but regulatory capture risk",
-
-              "REAL EXAMPLE 2 - Microsoft Antitrust Cases (1998-2013): US case (1998-2001): Bundling Internet Explorer with Windows (tying), exclusive contracts with PC manufacturers. Ruling: Guilty of monopolization. Remedy: Behavioral restrictions (no exclusive contracts), nearly broken up. EU case (2004-2013): Bundling Windows Media Player, refusing to share interoperability information. Fines: €2.2 billion total. Remedy: Offer browser choice screen, share technical information. Impact: Microsoft became more cautious, allowed competitors (Google Chrome, Firefox) to grow. Lesson: Even dominant firms face antitrust scrutiny, behavioral remedies difficult to enforce",
-
-              "REAL EXAMPLE 3 - Airline Deregulation (US 1978, EU 1990s): Before: Government controlled routes, prices, entry (Civil Aeronautics Board in US). Only established carriers could fly (Pan Am, TWA, British Airways). After: Free entry, price competition, new low-cost carriers (Southwest, Ryanair, easyJet). Results: (1) Prices fell 40-50% in real terms, (2) Passenger numbers tripled (US: 250 million → 750 million), (3) Hub-and-spoke networks (efficiency), (4) Frequent flyer programs (non-price competition), (5) Some bankruptcies (Pan Am, TWA, Swissair). Evaluation: Huge consumer benefit (lower prices, more choice), but instability (bankruptcies, consolidation). Lesson: Deregulation works well in contestable markets",
-
-              "REAL EXAMPLE 4 - UK Rail Privatization (1994-1997): British Rail split into 100+ companies: Track (Railtrack), Train operators (25 franchises), Rolling stock (3 leasing companies). Regulation: Office of Rail Regulation (safety, access), Strategic Rail Authority (franchises). Results: (1) Passenger numbers doubled (1995-2020), (2) Fares rose 20% in real terms (highest in Europe), (3) Fragmentation (coordination problems), (4) Railtrack collapsed (2001) - underinvestment in track → accidents (Hatfield 2000) → renationalized as Network Rail (2002), (5) Franchises failed (East Coast, Northern) → government takeover. Evaluation: Passenger growth but high fares, poor service, fragmentation. Lesson: Vertical separation (track vs trains) creates coordination problems, natural monopoly (track) should remain public"
+              "Competition policy aims to prevent anti-competitive practices, regulate mergers, and protect consumer welfare from monopoly exploitation.",
+              "The Competition and Markets Authority (CMA) investigates corporate mergers that would result in a combined market share exceeding 25%.",
+              "Natural monopolies have continuously falling long-run average costs, making it more productively efficient for one firm to supply the entire market.",
+              "RPI-X regulation caps price increases at inflation minus expected efficiency gains, forcing natural monopolies to cut internal costs to maintain profit.",
+              "Privatisation transfers public sector assets to the private sector, theoretically increasing efficiency and innovation through profit-motivated competition.",
+              "Nationalisation involves the government purchasing private firms, allowing the state to prioritise social welfare and allocative efficiency over profit maximisation.",
+              "Deregulation removes statutory barriers to entry, increasing market contestability and forcing incumbent firms to operate more efficiently to survive.",
+              "Regulatory capture occurs when industry regulators act in the commercial interest of the firms they supervise rather than protecting consumers.",
+              "Evaluation: Government intervention can lead to government failure due to asymmetric information, massive administrative costs, and unintended consequences like regulatory capture."
             ],
             formulas: [
               { name: "Herfindahl-Hirschman Index (HHI)", expr: "HHI = Σ(Market share)², >2500 = high concentration" },
@@ -1465,37 +835,14 @@ export const SUBJECTS = {
             title: { zh: "全球化", en: "Globalisation" },
             overview: { zh: "学习全球化的原因、表现及其影响。", en: "Learn about the causes, manifestations and impacts of globalisation, with detailed case study of China's WTO accession." },
             keyPoints: [
-              "Globalisation: Increasing interconnectedness and integration of world economies through trade, investment, technology, and cultural exchange",
-              "Causes of globalisation - Technology: Improvements in transport (containerization, air freight), communication (internet, mobile phones), information technology (e-commerce, digital platforms)",
-              "Causes of globalisation - Trade Liberalisation: Reduction in tariffs and trade barriers through WTO, regional trade agreements (EU, NAFTA, ASEAN), removal of capital controls",
-              "Causes of globalisation - Capital Mobility: Free movement of finance across borders, growth of multinational corporations (MNCs), foreign direct investment (FDI)",
-              "Causes of globalisation - Political Changes: Collapse of communism (1989-1991), market-oriented reforms in China and India, deregulation and privatization",
-              "Global value chains (GVCs): Production process fragmented and spread across multiple countries. Example: iPhone designed in USA, components from Japan/Korea/Taiwan, assembled in China, sold globally",
-              "Multinational corporations (MNCs): Firms operating in multiple countries through subsidiaries, branches, or joint ventures. Examples: Apple, Toyota, Unilever, McDonald's",
-              "REAL-WORLD CASE STUDY - China's WTO Accession (2001): After 15 years of negotiations, China joined World Trade Organization on December 11, 2001, marking a watershed moment in globalisation",
-              "CHINA WTO - Background: China began market reforms in 1978 under Deng Xiaoping, but remained outside global trading system. Applied to join GATT/WTO in 1986",
-              "CHINA WTO - Commitments: Reduce average tariff from 15.3% to 9.8%, open services sector (banking, insurance, telecoms), eliminate export subsidies, strengthen intellectual property protection, allow foreign investment in more sectors",
-              "CHINA WTO - Impact on Trade: China's exports exploded from $266 billion (2001) to $3.36 trillion (2022), becoming world's largest exporter. Share of global exports rose from 4% to 15%",
-              "CHINA WTO - Impact on FDI: Foreign direct investment surged from $47 billion (2001) to $189 billion (2022). MNCs established manufacturing bases in China to access cheap labor and huge market",
-              "CHINA WTO - Impact on Employment: Manufacturing employment increased by 50 million jobs (2001-2010). Hundreds of millions lifted out of poverty. Rural-urban migration accelerated",
-              "CHINA WTO - Impact on Global Economy: Lower prices for consumers worldwide (clothing, electronics, toys). Global inflation reduced by 2-3% due to cheap Chinese goods. Supply chains restructured around China",
-              "CHINA WTO - Winners in Developed Countries: Consumers (lower prices, more choice), MNCs (access to Chinese market and cheap production), importers and retailers (Walmart, Amazon)",
-              "CHINA WTO - Losers in Developed Countries: Manufacturing workers (job losses, wage stagnation), industrial regions (Rust Belt in USA, Northern England), traditional industries (textiles, steel)",
-              "CHINA WTO - Trade Tensions: US-China trade deficit grew from $83 billion (2001) to $382 billion (2022). Accusations of unfair practices (currency manipulation, IP theft, state subsidies). Led to Trump tariffs (2018-2019)",
-              "CHINA WTO - Environmental Impact: China became world's largest CO2 emitter (2006), producing 30% of global emissions. Severe air and water pollution. But also became leader in renewable energy",
-              "CHINA WTO - Lessons: (1) Trade integration can drive rapid economic growth, (2) Globalisation creates winners and losers within countries, (3) Need for adjustment policies to help displaced workers, (4) Trade tensions arise when benefits are unequally distributed",
-              "Benefits of globalisation - Economic Growth: Access to larger markets, economies of scale, increased competition drives efficiency, technology and knowledge transfer",
-              "Benefits of globalisation - Consumers: Lower prices due to competition and cheaper production, greater variety and choice, access to foreign goods and services",
-              "Benefits of globalisation - Developing Countries: Employment opportunities in export industries, FDI brings capital and technology, integration into global value chains, poverty reduction",
-              "Benefits of globalisation - Innovation: Competition drives innovation, knowledge spillovers across borders, R&D collaboration, faster diffusion of new technologies",
-              "Costs of globalisation - Inequality: Between countries (some benefit more than others), within countries (skilled workers gain, unskilled lose), wealth concentration in MNCs",
-              "Costs of globalisation - Job Losses: Deindustrialization in developed countries, structural unemployment, wage stagnation for low-skilled workers, decline of manufacturing communities",
-              "Costs of globalisation - Cultural: Homogenisation (spread of Western culture), loss of local traditions and languages, dominance of global brands, erosion of cultural diversity",
-              "Costs of globalisation - Environmental: Increased carbon emissions from transport, pollution from manufacturing, resource depletion, race to the bottom (countries lower environmental standards to attract investment)",
-              "Costs of globalisation - Economic Instability: Financial contagion (2008 crisis spread globally), vulnerability to external shocks, loss of policy autonomy, dependence on global supply chains (COVID-19 disruptions)",
-              "Anti-globalisation movement: Protests against WTO, IMF, World Bank (Seattle 1999, Genoa 2001). Concerns about corporate power, inequality, environmental damage, loss of sovereignty",
-              "Fair trade movement: Ensures better prices, working conditions, and terms of trade for producers in developing countries. Certification schemes (Fairtrade, Rainforest Alliance). Focus on coffee, cocoa, bananas",
-              "Measuring globalisation: Trade openness = (Exports + Imports) / GDP × 100%. FDI flows as % of GDP. Number of MNCs. Internet connectivity. Migration flows"
+              "Globalisation is the increasing integration and interdependence of the world's economies, driven by reduced transport costs and sweeping trade liberalisation.",
+              "Multinational Corporations (MNCs) drive globalisation by locating production globally to exploit comparative advantages and significantly lower wage costs.",
+              "Foreign Direct Investment (FDI) involves investing capital into foreign countries, boosting the host nation's economic growth and accelerating technological transfer.",
+              "Benefits of globalisation include greater consumer choice, international economies of scale, lower prices, and rapid export-led growth for emerging economies.",
+              "Costs of globalisation include severe environmental degradation, structural unemployment in deindustrialised developed nations, and increased vulnerability to global economic shocks.",
+              "Emerging economies, like the BRICS nations, have experienced rapid industrialisation, pulling millions out of absolute poverty but often widening domestic income inequality.",
+              "Trade liberalisation involves removing tariffs and quotas, expanding global markets and allowing countries to specialise efficiently according to comparative advantage.",
+              "Evaluation: Globalisation disproportionately benefits high-skilled workers and capital owners, directly contributing to rising relative poverty in previously industrialised regions."
             ],
             formulas: [
               { name: "Globalisation Index", expr: "Trade openness = (X+M)/GDP × 100%" },
@@ -1520,49 +867,15 @@ export const SUBJECTS = {
             title: { zh: "国际贸易", en: "International Trade" },
             overview: { zh: "学习国际贸易理论与政策。", en: "Comprehensive study of international trade theory, policy instruments, and real-world trade disputes, including graphical analysis and case studies." },
             keyPoints: [
-              "Absolute advantage: Ability to produce more output with the same inputs, or produce same output with fewer inputs. Country has absolute advantage if it is more productive. Example: If UK produces 10 cars/hour and France produces 6 cars/hour, UK has absolute advantage in cars",
-              "Comparative advantage: Lower opportunity cost of production, basis for mutually beneficial trade. Even if one country has absolute advantage in all goods, both can gain from trade by specializing in goods with lowest opportunity cost. Discovered by David Ricardo (1817)",
-
-              "COMPARATIVE ADVANTAGE - Calculation Method: (1) Calculate opportunity cost for each good in each country, (2) Country with lower opportunity cost has comparative advantage in that good, (3) Each country should specialize in good where it has comparative advantage, (4) Trade at any exchange rate between the two opportunity costs",
-              "COMPARATIVE ADVANTAGE - Numerical Example: Country A: 1 wheat costs 2 cloth (opportunity cost). Country B: 1 wheat costs 0.5 cloth. Country B has comparative advantage in wheat (lower opportunity cost 0.5 < 2). Country A has comparative advantage in cloth. Both gain by specializing and trading",
-              "COMPARATIVE ADVANTAGE - Assumptions: (1) Two countries, two goods, (2) Constant opportunity costs (straight-line PPF), (3) No transport costs, (4) Perfect factor mobility within countries, (5) No barriers to trade. In reality, these assumptions don't fully hold but principle still applies",
-
-              "Gains from trade: Both countries can consume beyond their PPF through specialization and trade. Total world output increases. Consumers benefit from lower prices and greater variety. Example: If UK specializes in services and imports manufactured goods, UK consumers access cheaper goods than if produced domestically",
-              "Terms of trade (ToT): Ratio of export prices to import prices, formula: ToT = (Index of export prices / Index of import prices) × 100. Improvement in ToT means exports buy more imports. Example: If oil prices rise and a country exports oil, its ToT improves",
-              "Factors affecting terms of trade: (1) Changes in global demand/supply for exports/imports, (2) Exchange rate changes, (3) Inflation differentials, (4) Productivity changes, (5) Trade policies",
-
-              "GRAPHICAL ANALYSIS - Tariff Effects: Supply-demand diagram shows: (1) World price below domestic equilibrium, (2) Tariff shifts world supply up by tariff amount, (3) Domestic price rises, (4) Quantity demanded falls, quantity supplied domestically rises, (5) Imports fall (gap between Qd and Qs narrows), (6) Consumer surplus falls (area under demand curve), (7) Producer surplus rises (area above supply curve), (8) Government revenue = tariff × quantity imported (rectangle), (9) Deadweight loss = two triangles (production inefficiency + consumption loss)",
-              "GRAPHICAL ANALYSIS - Quota Effects: Similar to tariff but: (1) No government revenue (quota rent goes to importers or foreign exporters), (2) Fixed quantity limit regardless of demand changes, (3) Creates artificial scarcity, (4) Import licenses become valuable and may lead to corruption",
-
-              "Trade protectionism: Government policies restricting imports to protect domestic industries. Methods include tariffs, quotas, subsidies, regulations, voluntary export restraints (VERs)",
-              "Tariffs: Taxes on imported goods. Effects: (1) Raises domestic price, (2) Reduces quantity imported, (3) Increases domestic production, (4) Reduces consumer surplus, (5) Increases producer surplus, (6) Creates government revenue, (7) Creates deadweight loss. Example: US steel tariffs (2018) - 25% tariff raised prices, helped US steel producers but hurt car manufacturers",
-              "Quotas: Quantity limits on imports. Effects: (1) Creates scarcity and higher prices, (2) Import licenses become valuable, (3) No government revenue (unless licenses auctioned), (4) More restrictive than tariffs if demand grows, (5) Prone to corruption. Example: EU sugar quotas protected inefficient European producers for decades",
-              "Subsidies: Government payments to domestic producers, lowers their costs and allows them to compete with imports. Effects: (1) Increases domestic production, (2) May lead to overproduction and waste, (3) Costs government budget, (4) Can trigger WTO disputes. Example: EU Common Agricultural Policy (CAP) - €55bn/year subsidies led to butter mountains and wine lakes",
-              "Non-tariff barriers: (1) Regulations and standards (safety, environmental, health), (2) Administrative barriers (customs delays, paperwork), (3) Government procurement preferences (buy domestic), (4) Voluntary export restraints (VERs). Often more restrictive than tariffs and harder to measure",
-
-              "Arguments for protection - Infant industry: New industries need temporary protection to develop economies of scale and compete internationally. Once mature, protection removed. Criticism: Industries may never become competitive, protection becomes permanent. Example: South Korea protected car industry (1960s-1980s), now globally competitive (Hyundai, Kia)",
-              "Arguments for protection - National security: Strategic industries (defense, food, energy) should not depend on imports. Criticism: Difficult to define 'strategic', can be abused. Example: US protects steel industry citing national security",
-              "Arguments for protection - Anti-dumping: Prevent foreign firms selling below cost to drive out domestic competitors. WTO allows anti-dumping duties if dumping proven. Criticism: Hard to prove, often used as disguised protectionism. Example: EU anti-dumping duties on Chinese solar panels (2013)",
-              "Arguments for protection - Protection of domestic jobs: Save jobs in import-competing industries. Criticism: Costs jobs in export industries and raises prices for consumers. Example: US tire tariffs (2009) saved 1,200 jobs but cost consumers $1.1bn ($900,000 per job saved)",
-              "Arguments for protection - Prevent unfair competition: Counter low wages, poor working conditions, lax environmental standards abroad. Criticism: Developing countries argue this denies them their comparative advantage",
-              "Arguments for protection - Raise government revenue: Tariffs provide revenue, especially in developing countries with weak tax systems. Criticism: Inefficient way to raise revenue, distorts trade",
-
-              "Arguments against protection - Higher prices for consumers: Protection raises domestic prices, reduces consumer surplus, regressive effect (hurts poor more). Example: EU sugar quotas raised prices 300% above world level",
-              "Arguments against protection - Reduced competition: Domestic firms become complacent without foreign competition, less innovation, lower quality. Example: British car industry declined behind tariff walls (1960s-1970s)",
-              "Arguments against protection - Retaliation: Trading partners impose retaliatory tariffs, trade war escalates, everyone loses. Example: US-China trade war (2018-2020) - tit-for-tat tariffs hurt both economies",
-              "Arguments against protection - Inefficient resource allocation: Resources trapped in uncompetitive industries instead of moving to efficient sectors. Opportunity cost of protection",
-              "Arguments against protection - Deadweight loss: Protection creates economic inefficiency (production and consumption losses) with no offsetting gain",
-
-              "World Trade Organization (WTO): Established 1995, 164 members (2023). Functions: (1) Administers trade agreements, (2) Forum for trade negotiations, (3) Settles trade disputes, (4) Monitors trade policies, (5) Provides technical assistance to developing countries. Principles: Non-discrimination (MFN, national treatment), reciprocity, transparency",
-              "WTO dispute settlement: Countries can challenge trade barriers. Panel of experts investigates, makes ruling. If violation found, country must remove barrier or face authorized retaliation. Example: US-EU banana dispute (1990s), Boeing-Airbus subsidies dispute (2004-2020)",
-              "Trade agreements - Multilateral: WTO agreements apply to all members. Most-favored-nation (MFN) principle - tariff cuts extended to all. Doha Round (2001-) stalled over agriculture",
-              "Trade agreements - Regional: Free trade areas (NAFTA/USMCA, ASEAN), customs unions (EU), common markets. Deeper integration than WTO. Criticism: Trade diversion (inefficient partner replaces efficient non-member)",
-              "Trade agreements - Bilateral: Between two countries. Faster to negotiate than multilateral. Example: UK-Australia FTA (2021), US-South Korea FTA (2012)",
-
-              "REAL EXAMPLE - US-China Trade War (2018-2020): Largest trade war in history. Timeline: (1) March 2018 - US imposes 25% tariff on steel, 10% on aluminum, (2) July 2018 - US tariffs on $34bn Chinese goods, China retaliates, (3) September 2018 - US tariffs on $200bn more goods, (4) May 2019 - US raises tariffs to 25%, China retaliates, (5) January 2020 - Phase One deal, partial de-escalation. Impact: (1) US imports from China fell 16% (2019), (2) US exports to China fell 11%, (3) US consumers paid $46bn more due to tariffs, (4) US manufacturing employment unchanged (tariffs didn't bring jobs back), (5) Trade diverted to Vietnam, Mexico. Lesson: Trade wars have no winners",
-              "REAL EXAMPLE - Brexit Trade Impact (2016-2023): UK left EU single market and customs union (January 2021). Effects: (1) UK-EU trade fell 25% (2021), (2) New customs checks caused delays and costs, (3) Services trade barriers (financial services lost passporting rights), (4) Northern Ireland Protocol created internal UK border, (5) UK signed new trade deals (Australia, Japan) but smaller than EU market. UK-EU Trade and Cooperation Agreement (TCA) avoided tariffs but created non-tariff barriers. Lesson: Leaving trade bloc has significant costs even with FTA",
-              "REAL EXAMPLE - WTO Banana Dispute (1993-2012): EU gave preferential access to bananas from former colonies (Africa, Caribbean), discriminating against Latin American producers (Chiquita, Dole). US challenged on behalf of companies. WTO ruled against EU multiple times. EU finally reformed system (2012). Lesson: WTO can enforce rules even against powerful blocs, but takes many years",
-              "REAL EXAMPLE - Japan's Rice Protection: Japan protects rice farmers with 778% tariff (world's highest). Rice prices 5x world level. Costs consumers $6bn/year. Reason: Cultural importance, rural votes, food security. Criticism: Inefficient, regressive (hurts poor), prevents developing countries from exporting. Lesson: Political factors often override economic logic in trade policy"
+              "Absolute advantage occurs when a country can produce a specific good using fewer resources than another country.",
+              "Comparative advantage states countries should specialise in producing goods where they have a lower opportunity cost, thereby maximising global output.",
+              "Free trade promotes allocative efficiency, global economies of scale, and reduces domestic monopoly power by increasing intense international competition.",
+              "Tariffs are taxes on imported goods that raise domestic prices, protect local producers, and generate government revenue but severely harm consumers.",
+              "Quotas place a strict physical limit on the volume of imports, restricting supply and raising prices without directly generating tax revenue.",
+              "Export subsidies lower production costs for domestic firms, making them more competitive internationally but carrying a high opportunity cost for taxpayers.",
+              "The World Trade Organization (WTO) promotes free trade by organising multilateral negotiation rounds and settling international trade disputes between member nations.",
+              "A customs union is a trading bloc with completely free internal trade and a common external tariff applied universally to all non-members.",
+              "Evaluation: The infant industry argument justifies short-term protectionism, allowing new domestic industries to grow and achieve economies of scale before facing global competition."
             ],
             formulas: [
               { name: "Comparative Advantage", expr: "Country should specialize in goods with lowest opportunity cost" },
@@ -1589,49 +902,14 @@ export const SUBJECTS = {
             title: { zh: "国际收支", en: "Balance of Payments" },
             overview: { zh: "学习国际收支账户的构成与平衡。", en: "Comprehensive study of balance of payments accounts, BOP components, imbalances, and adjustment mechanisms with real-world case studies." },
             keyPoints: [
-              "Balance of Payments (BOP): Systematic record of all economic transactions between residents of a country and the rest of the world over a period (usually one year). Uses double-entry bookkeeping - every transaction recorded twice (credit and debit). Credits (+) represent inflows of foreign currency, debits (-) represent outflows",
-
-              "CURRENT ACCOUNT - Definition: Records trade in goods and services, plus income flows and transfers. Most important component of BOP. Deficit means country spending more abroad than earning from abroad",
-              "CURRENT ACCOUNT - Trade in Goods (Visible Trade): Physical products exported and imported. Examples: Cars, machinery, food, oil, electronics. UK typically runs deficit (imports > exports) because manufacturing declined",
-              "CURRENT ACCOUNT - Trade in Services (Invisible Trade): Non-physical products. Examples: Financial services (banking, insurance), Tourism, Transport (shipping, airlines), Business services (consulting, legal), Royalties (patents, copyrights). UK typically runs surplus due to strong financial services sector",
-              "CURRENT ACCOUNT - Primary Income: Investment income flows. Includes: Profits from foreign direct investment (FDI), Interest on loans, Dividends from shares. Example: If UK company owns factory in China, profits sent back to UK = credit in UK BOP",
-              "CURRENT ACCOUNT - Secondary Income: Transfers with no quid pro quo (nothing received in return). Includes: Foreign aid, Remittances (migrants sending money home), EU budget contributions. Example: Polish worker in UK sending money to family in Poland = debit in UK BOP",
-              "Balance of Trade: Exports of goods - Imports of goods. Trade deficit: Imports > Exports (negative balance). Trade surplus: Exports > Imports (positive balance). Example: China runs large trade surplus ($500bn+), US runs large trade deficit ($800bn+)",
-
-              "CAPITAL ACCOUNT - Definition: Records capital transfers and acquisition/disposal of non-produced, non-financial assets. Usually very small component of BOP (less than 1%)",
-              "CAPITAL ACCOUNT - Components: (1) Capital transfers - debt forgiveness, migrants' transfers of assets, (2) Non-produced, non-financial assets - patents, copyrights, trademarks, franchises, leases",
-
-              "FINANCIAL ACCOUNT - Definition: Records investment flows (buying/selling of assets). Includes both long-term and short-term capital flows. Surplus means net capital inflow (foreigners investing more in your country than you invest abroad)",
-              "FINANCIAL ACCOUNT - Foreign Direct Investment (FDI): Long-term investment with significant control (usually >10% ownership). Includes: Building factories abroad, Acquiring foreign companies, Expanding foreign subsidiaries. Example: Toyota building car plant in UK = FDI inflow for UK",
-              "FINANCIAL ACCOUNT - Portfolio Investment: Short-term investment without control. Includes: Buying foreign stocks and bonds, 'Hot money' flows seeking higher returns. More volatile than FDI. Example: US investor buying UK government bonds = portfolio inflow for UK",
-              "FINANCIAL ACCOUNT - Other Investment: Bank loans, trade credits, currency deposits. Example: UK bank lending to foreign company",
-              "FINANCIAL ACCOUNT - Reserve Assets: Central bank's holdings of foreign currency, gold, SDRs (Special Drawing Rights). Used to intervene in forex markets. Example: China holds $3 trillion in reserves (mostly US Treasury bonds)",
-
-              "BOP IDENTITY - Accounting Rule: Current Account + Capital Account + Financial Account = 0 (in theory). In practice, statistical discrepancy exists due to measurement errors, unrecorded transactions (e.g., money laundering), timing differences",
-              "BOP IDENTITY - Interpretation: Current account deficit must be financed by capital/financial account surplus (net borrowing or selling assets). Current account surplus means lending to rest of world or accumulating foreign assets. Example: US current account deficit ($800bn) financed by foreigners buying US assets (Treasury bonds, stocks, real estate)",
-
-              "CURRENT ACCOUNT DEFICIT - Causes: (1) Strong currency making exports expensive, (2) High consumer spending on imports, (3) Low competitiveness (high costs, poor quality), (4) Rapid economic growth increasing import demand, (5) Recession in trading partners reducing export demand",
-              "CURRENT ACCOUNT DEFICIT - Is it a problem? Depends on: (1) Size relative to GDP (>5% concerning), (2) Sustainability (can it be financed?), (3) Cause (investment-driven deficit good, consumption-driven bad), (4) Financing method (FDI stable, hot money volatile). Example: US runs persistent deficit (3% GDP) but sustainable because dollar is reserve currency",
-              "CURRENT ACCOUNT DEFICIT - Risks: (1) Debt accumulation (borrowing to finance deficit), (2) Currency depreciation pressure, (3) Vulnerability to capital flight (sudden stop of inflows), (4) Loss of competitiveness, (5) Dependence on foreign creditors",
-
-              "CURRENT ACCOUNT SURPLUS - Causes: (1) Weak currency making exports cheap, (2) High savings rate (low consumption), (3) Strong competitiveness, (4) Undervalued currency (deliberate policy), (5) Strong export industries",
-              "CURRENT ACCOUNT SURPLUS - Is it a problem? Can indicate: (1) Insufficient domestic demand (economy not using resources fully), (2) Currency manipulation (artificially keeping currency weak), (3) Global imbalances (surplus countries need deficit countries). Example: Germany runs persistent surplus (7% GDP) criticized by EU partners for insufficient domestic demand",
-
-              "GRAPHICAL ANALYSIS - BOP Structure Diagram: Hierarchical chart showing Current Account (Trade in Goods, Trade in Services, Primary Income, Secondary Income) + Capital Account + Financial Account (FDI, Portfolio, Other, Reserves) = 0. Visualizes how components relate and must balance",
-
-              "MEASURES TO CORRECT CURRENT ACCOUNT DEFICIT - Expenditure-Reducing Policies: Reduce aggregate demand to reduce import spending. Methods: (1) Fiscal contraction (cut government spending, raise taxes), (2) Monetary contraction (raise interest rates). Problem: Causes recession, unemployment. Example: UK austerity (2010-2016) reduced deficit but slowed growth",
-              "MEASURES TO CORRECT CURRENT ACCOUNT DEFICIT - Expenditure-Switching Policies: Switch spending from imports to domestic goods. Methods: (1) Currency depreciation/devaluation (makes imports expensive, exports cheap), (2) Protectionism (tariffs, quotas). Problem: J-curve effect (deficit worsens before improving), inflation from expensive imports, retaliation. Example: UK Brexit depreciation (2016) improved trade balance but raised inflation",
-              "MEASURES TO CORRECT CURRENT ACCOUNT DEFICIT - Supply-Side Policies: Improve competitiveness to boost exports. Methods: (1) Education and training, (2) Infrastructure investment, (3) R&D subsidies, (4) Deregulation. Advantage: No negative side effects. Problem: Takes many years to work. Example: Germany's vocational training system supports export competitiveness",
-
-              "REAL EXAMPLE 1 - US Current Account Deficit (1980-present): US runs persistent deficit ($800bn in 2023, 3% GDP). Causes: Strong dollar (reserve currency status), high consumer spending, deindustrialization, cheap imports from China. Financed by: Foreigners buying US Treasury bonds, stocks, real estate. Sustainable because: Dollar is global reserve currency, deep financial markets, safe haven status. Debate: Some economists worry about debt accumulation, others argue it reflects US attractiveness for investment",
-
-              "REAL EXAMPLE 2 - China Current Account Surplus (2000-present): China ran large surplus (peak $420bn in 2008, 10% GDP). Causes: Undervalued yuan (managed float), high savings rate (50% GDP), export-oriented growth model, low labor costs, massive manufacturing capacity. Used surplus to: Accumulate $3 trillion foreign reserves (mostly US Treasury bonds), fund Belt and Road Initiative. Recent trend: Surplus shrinking (2% GDP in 2023) due to rising wages, stronger yuan, shift to domestic consumption",
-
-              "REAL EXAMPLE 3 - Germany Current Account Surplus (2000-present): Germany runs persistent surplus (€250bn in 2023, 7% GDP, largest in world). Causes: Strong manufacturing exports (cars, machinery, chemicals), weak euro (benefits from southern Europe's weakness), high savings rate, wage restraint (Hartz reforms). Criticism: IMF and EU partners argue Germany should boost domestic demand (infrastructure, wages) to reduce global imbalances. Germany argues: Surplus reflects competitiveness, not currency manipulation",
-
-              "REAL EXAMPLE 4 - UK Current Account Deficit (1980-present): UK runs persistent deficit (£80bn in 2023, 3% GDP). Causes: Deindustrialization (manufacturing fell from 25% to 10% GDP), strong pound (financial center status), high consumer spending, North Sea oil depletion. Partially offset by: Services surplus (£150bn, especially financial services), primary income surplus (returns on foreign investments). Brexit impact: Pound depreciation (2016) improved goods balance but worsened services balance (lost EU passporting rights)",
-
-              "REAL EXAMPLE 5 - Asian Financial Crisis (1997-1998): Thailand, Indonesia, South Korea ran large current account deficits (5-8% GDP) financed by short-term capital inflows ('hot money'). When investors lost confidence → sudden capital flight → currencies collapsed (50-80% depreciation) → debt crisis (foreign-currency debt became unpayable). IMF bailouts required: Fiscal austerity, high interest rates, structural reforms. Lesson: Large deficits financed by volatile capital flows are dangerous. Countries now hold large reserves as insurance"
+              "The current account records trade in goods, trade in services, primary income (investment returns), and secondary income (international transfers).",
+              "A current account deficit means the total monetary value of imports and outflows exceeds the value of exports and inflows.",
+              "Causes of a deficit include high domestic inflation, an overvalued exchange rate, low labour productivity, and a high marginal propensity to import.",
+              "Primary income includes remittances from workers abroad and profits, dividends, or interest returning from foreign portfolio and direct investments.",
+              "Expenditure-reducing policies, such as higher interest rates, reduce domestic aggregate demand to lower overall spending on imported goods.",
+              "Expenditure-switching policies, such as tariffs or currency devaluation, aim to make domestic goods relatively cheaper and more attractive than foreign imports.",
+              "Persistent deficits may indicate deep structural uncompetitiveness and require financing through foreign borrowing, increasing the national debt burden.",
+              "Evaluation: A current account deficit isn't always bad if it's driven by importing capital goods that will boost future export capacity and LRAS."
             ],
             formulas: [
               { name: "Current Account", expr: "CA = X - M + NI + NT" },
@@ -1658,52 +936,14 @@ export const SUBJECTS = {
             title: { zh: "汇率", en: "Exchange Rates" },
             overview: { zh: "学习汇率制度与汇率决定因素。", en: "Comprehensive study of exchange rate systems, determinants, and effects, including graphical analysis and major currency crises." },
             keyPoints: [
-              "Exchange rate: Price of one currency in terms of another, expressed as units of domestic currency per unit of foreign currency. Example: £1 = $1.30 means 1 pound buys 1.30 dollars",
-              "Appreciation: Currency becomes more valuable (fewer units needed to buy foreign currency). Example: £1 = $1.30 → $1.40 means pound appreciated (stronger)",
-              "Depreciation: Currency becomes less valuable (more units needed to buy foreign currency). Example: £1 = $1.30 → $1.20 means pound depreciated (weaker)",
-              "Revaluation: Government increases fixed exchange rate value. Devaluation: Government decreases fixed exchange rate value",
-
-              "GRAPHICAL ANALYSIS - Foreign Exchange Market: Supply and demand diagram with exchange rate on vertical axis, quantity of currency on horizontal axis. Demand for pounds comes from: (1) Foreign buyers of UK exports, (2) Foreign investors buying UK assets, (3) Speculators expecting pound to rise. Supply of pounds comes from: (1) UK buyers of imports, (2) UK investors buying foreign assets, (3) Speculators expecting pound to fall. Equilibrium where demand = supply determines exchange rate",
-              "GRAPHICAL ANALYSIS - Appreciation: Demand curve shifts right (or supply shifts left) → exchange rate rises. Example: If UK interest rates rise → foreign investors demand more pounds to buy UK bonds → demand curve shifts right → pound appreciates",
-              "GRAPHICAL ANALYSIS - Depreciation: Supply curve shifts right (or demand shifts left) → exchange rate falls. Example: If UK imports rise → more pounds supplied to buy foreign currency → supply curve shifts right → pound depreciates",
-
-              "FLOATING EXCHANGE RATE SYSTEM - Definition: Exchange rate determined by market forces (supply and demand) without government intervention. Also called 'free float' or 'clean float'. Examples: US dollar, British pound, Japanese yen, Euro (all float against each other)",
-              "FLOATING EXCHANGE RATE - Advantages: (1) Automatic adjustment - trade imbalances self-correct (deficit → depreciation → exports cheaper → deficit reduces), (2) Monetary policy independence - central bank can set interest rates for domestic objectives without worrying about exchange rate, (3) No need for foreign exchange reserves, (4) No speculative attacks on currency peg",
-              "FLOATING EXCHANGE RATE - Disadvantages: (1) Uncertainty - volatile exchange rates make trade and investment risky, (2) Inflation risk - depreciation raises import prices, (3) Speculation - can cause excessive volatility, (4) May not self-correct if Marshall-Lerner condition not met",
-
-              "FIXED EXCHANGE RATE SYSTEM - Definition: Exchange rate pegged to another currency (usually US dollar) or basket of currencies. Central bank intervenes to maintain peg by buying/selling foreign currency. Examples: Hong Kong dollar (pegged to USD since 1983), Saudi riyal (pegged to USD), Danish krone (pegged to Euro)",
-              "FIXED EXCHANGE RATE - How it works: If currency under pressure to depreciate → central bank buys domestic currency (sells foreign reserves) to increase demand and maintain peg. If currency under pressure to appreciate → central bank sells domestic currency (buys foreign reserves) to increase supply",
-              "FIXED EXCHANGE RATE - Advantages: (1) Certainty - stable exchange rate encourages trade and investment, (2) Discipline - prevents government from pursuing inflationary policies, (3) Anchor for inflation - importing low inflation from anchor country",
-              "FIXED EXCHANGE RATE - Disadvantages: (1) Loss of monetary policy independence - interest rates must match anchor country to maintain peg, (2) Requires large foreign exchange reserves, (3) Vulnerable to speculative attacks if peg seen as unsustainable, (4) No automatic adjustment for trade imbalances",
-
-              "MANAGED FLOAT (DIRTY FLOAT) - Definition: Mostly floating but central bank intervenes occasionally to smooth excessive volatility or achieve policy objectives. Most common system in practice. Examples: China (managed float since 2005), India, Singapore",
-              "MANAGED FLOAT - Intervention methods: (1) Direct intervention - buying/selling currency in forex market, (2) Interest rate changes - raise rates to attract capital inflows and appreciate currency, (3) Capital controls - restrict currency flows, (4) Verbal intervention - central bank statements to influence expectations",
-
-              "Factors affecting exchange rates - Interest rates: Higher interest rates attract foreign capital (hot money flows) seeking higher returns → increased demand for currency → appreciation. Example: If Bank of England raises rates from 0.5% to 5% while Fed keeps rates at 2%, investors buy pounds to earn higher returns → pound appreciates",
-              "Factors affecting exchange rates - Inflation rates: Higher inflation reduces competitiveness → exports fall, imports rise → currency depreciates. Purchasing Power Parity (PPP) theory: exchange rates adjust to equalize prices across countries. Example: If UK inflation 10%, US inflation 2%, pound should depreciate 8% to maintain PPP",
-              "Factors affecting exchange rates - Current account balance: Trade deficit (imports > exports) → more currency supplied than demanded → depreciation. Trade surplus → appreciation. Example: Germany's persistent trade surplus → Euro pressure to appreciate",
-              "Factors affecting exchange rates - Economic performance: Strong growth attracts investment → currency appreciates. Recession → capital outflows → depreciation. Example: US tech boom (1990s) → dollar appreciated as investors bought US stocks",
-              "Factors affecting exchange rates - Speculation: If speculators expect currency to rise → buy now → self-fulfilling prophecy (demand increases → currency rises). Herd behavior can cause overshooting. Example: George Soros bet against pound (1992) → other speculators followed → forced UK out of ERM",
-              "Factors affecting exchange rates - Government intervention: Central bank buying currency → appreciation. Selling currency → depreciation. Effectiveness depends on reserves and credibility",
-              "Factors affecting exchange rates - Political stability: Political uncertainty → capital flight → depreciation. Example: Brexit referendum (2016) → pound fell 10% overnight due to uncertainty",
-
-              "Effects of appreciation - On trade: Imports cheaper (SPICED: Strong Pound Imports Cheaper Exports Dearer) → import volume rises. Exports more expensive → export volume falls. Current account worsens (assuming Marshall-Lerner condition holds)",
-              "Effects of appreciation - On inflation: Import prices fall → lower cost-push inflation. Reduced AD → lower demand-pull inflation. Good for controlling inflation. Example: Strong dollar (2014-2016) helped keep US inflation low",
-              "Effects of appreciation - On growth: Exports fall → AD falls → GDP growth slows. Import-competing industries suffer. But cheaper imports increase real incomes and consumption. Net effect depends on trade elasticities",
-              "Effects of appreciation - On employment: Export industries and import-competing industries lose jobs. But consumers benefit from cheaper imports. Manufacturing typically hurt more than services",
-
-              "Effects of depreciation - On trade: Exports cheaper → export volume rises. Imports more expensive → import volume falls. Current account improves (but J-curve effect means short-run worsening before improvement)",
-              "Effects of depreciation - On inflation: Import prices rise → cost-push inflation. If economy near full capacity, increased AD → demand-pull inflation. Bad for inflation control. Example: UK post-Brexit depreciation (2016) → inflation rose from 0.5% to 3%",
-              "Effects of depreciation - On growth: Exports rise → AD rises → GDP growth increases. Expenditure-switching effect (consumers buy domestic instead of expensive imports). Good for growth if spare capacity exists",
-              "Effects of depreciation - On employment: Export industries and import-competing industries gain jobs. Manufacturing benefits. But real wages fall due to higher import prices",
-
-              "J-CURVE EFFECT - Definition: Currency depreciation initially worsens trade balance before improving. Short-run: Existing contracts already agreed at old prices, quantities don't adjust immediately, but import prices rise → trade balance worsens. Long-run: Quantities adjust (exports rise, imports fall) → trade balance improves. Time lag typically 6-18 months",
-              "J-CURVE EFFECT - Marshall-Lerner Condition: For depreciation to improve trade balance in long run, sum of price elasticities of demand for exports and imports must exceed 1. If demand inelastic, depreciation worsens trade balance even in long run. Example: Oil-importing countries - oil demand inelastic, so depreciation worsens trade balance",
-
-              "REAL EXAMPLE - 1997 Asian Financial Crisis: Currency crisis that devastated East Asian economies. Timeline: (1) Thai baht under speculative attack (July 1997) → Thailand abandoned peg → baht collapsed 50%, (2) Contagion spread to Indonesia, South Korea, Malaysia, Philippines, (3) Indonesian rupiah fell 80%, Korean won fell 50%, (4) Capital flight - foreign investors withdrew $100bn, (5) IMF bailouts ($110bn) with harsh conditions (austerity, high interest rates). Causes: (1) Fixed exchange rates overvalued, (2) Large current account deficits, (3) Short-term foreign debt, (4) Weak banking systems, (5) Crony capitalism. Impact: GDP fell 10-15%, unemployment tripled, poverty doubled. Lesson: Fixed pegs vulnerable to speculative attacks if fundamentals weak",
-              "REAL EXAMPLE - 2015 Swiss Franc Shock: Swiss National Bank (SNB) abandoned Euro peg without warning (January 15, 2015). Background: SNB had pegged franc at 1.20 per Euro (2011) to prevent excessive appreciation hurting exports. Maintained peg by buying Euros (reserves grew to 500bn francs). Result: Franc appreciated 30% in minutes (1.20 → 0.85 per Euro). Impact: (1) Swiss exporters devastated, (2) Foreign currency borrowers (Polish mortgages in francs) faced huge losses, (3) Some forex brokers bankrupted. Reason for abandonment: ECB about to launch QE → SNB would need unlimited Euro purchases to maintain peg. Lesson: Even well-resourced central banks cannot maintain unsustainable pegs forever",
-              "REAL EXAMPLE - Plaza Accord (1985): G5 countries (US, Japan, Germany, France, UK) agreed to depreciate US dollar. Background: Dollar overvalued (appreciated 50% in 1980-85) → huge US trade deficit. Agreement: Coordinated intervention to sell dollars. Result: Dollar fell 50% against yen and mark (1985-87). Impact on Japan: Yen appreciation hurt exports → Bank of Japan cut rates to 2.5% → asset price bubble → bubble burst (1991) → lost decades. Lesson: Exchange rate manipulation can have unintended long-term consequences",
-              "REAL EXAMPLE - Black Wednesday (1992): UK forced out of European Exchange Rate Mechanism (ERM). Background: UK joined ERM (1990), pegged pound at 2.95 marks, but UK inflation higher than Germany → pound overvalued. September 16, 1992: Speculators (George Soros) bet against pound → Bank of England spent £27bn reserves defending peg, raised interest rates to 15%, but failed. UK abandoned ERM, pound fell 15%. Impact: Short-term pain but long-term gain - UK economy recovered faster than Eurozone. Lesson: Markets can overwhelm central banks if peg unsustainable"
+              "A floating exchange rate is determined entirely by free market forces of supply and demand without any direct central bank intervention.",
+              "A fixed exchange rate is strictly pegged to another currency, requiring the central bank to buy/sell foreign currency reserves to maintain the peg.",
+              "A managed float allows market forces to determine the baseline rate, but central banks actively intervene to prevent excessive and damaging volatility.",
+              "Exchange rates are heavily influenced by relative interest rates (hot money flows), inflation rates, foreign direct investment, and currency speculation.",
+              "Depreciation (SPICED: Strong Pound Imports Cheap Exports Dear) makes domestic exports more globally competitive but increases imported cost-push inflation.",
+              "The Marshall-Lerner condition states that currency devaluation only improves the current account if the sum of PED for exports and imports is greater than 1.",
+              "The J-curve effect explains that a current account deficit initially worsens after devaluation due to inelastic short-run demand, before improving over time.",
+              "Evaluation: The true impact of exchange rate fluctuations on the real economy depends heavily on the price elasticity of demand for exports and imports."
             ],
             formulas: [
               { name: "Nominal Exchange Rate", expr: "E = Foreign currency / Domestic currency" },
@@ -1729,52 +969,14 @@ export const SUBJECTS = {
             title: { zh: "不平等与贫困", en: "Inequality & Poverty" },
             overview: { zh: "学习收入分配不平等的原因与政府政策。", en: "Comprehensive study of income and wealth inequality, poverty measurement, causes, consequences, and redistribution policies with graphical analysis and real-world examples." },
             keyPoints: [
-              "Income vs Wealth - Income: Flow of money received over time (wages, profits, rent, interest). Measured per year. Example: £30,000 annual salary. Wealth: Stock of assets owned at a point in time (property, savings, shares, pensions). Example: £200,000 house + £50,000 savings = £250,000 wealth. Wealth inequality typically much greater than income inequality",
-
-              "INCOME DISTRIBUTION - Definition: How total national income is divided among population. Can measure by: (1) Quintiles (divide population into 5 equal groups), (2) Deciles (10 groups), (3) Percentiles (100 groups). Example: In UK, top 20% earn 40% of income, bottom 20% earn 8%",
-              "INCOME DISTRIBUTION - Functional distribution: Income divided by factor of production (wages, profits, rent, interest). Example: In UK, wages = 55% of national income, profits = 25%, rent = 15%, interest = 5%",
-              "INCOME DISTRIBUTION - Personal distribution: Income divided among individuals/households. More relevant for inequality analysis. Lorenz curve and Gini coefficient measure this",
-
-              "GRAPHICAL ANALYSIS - Lorenz Curve: Graph showing cumulative percentage of income (vertical axis) against cumulative percentage of population (horizontal axis). Line of perfect equality: 45-degree diagonal (bottom 20% earn 20%, bottom 50% earn 50%, etc.). Actual Lorenz curve bows below this line. Greater bow = greater inequality",
-              "GRAPHICAL ANALYSIS - Lorenz Curve Interpretation: If curve shows bottom 40% earn 15% of income → top 60% earn 85%. If bottom 80% earn 50% → top 20% earn 50%. Curve closer to diagonal = more equal. Curve further from diagonal = more unequal",
-              "GRAPHICAL ANALYSIS - Gini Coefficient: Numerical measure of inequality derived from Lorenz curve. Formula: Gini = Area between Lorenz curve and line of equality / Total area under line of equality. Range: 0 (perfect equality) to 1 (perfect inequality). Typical values: 0.25-0.35 (equal countries like Denmark, Sweden), 0.35-0.45 (moderate like UK, France), 0.45-0.65 (unequal like US, Brazil, South Africa)",
-              "GRAPHICAL ANALYSIS - Gini Coefficient Interpretation: Gini = 0.30 means if you randomly pick two people, their income difference is 30% of average income. Gini = 0.40 means 40% difference. Higher Gini = more inequality. Example: UK Gini = 0.35, US Gini = 0.41, Denmark Gini = 0.28",
-
-              "CAUSES OF INCOME INEQUALITY - Education and Skills: Higher education → higher productivity → higher wages. Skill premium increased due to technology. Example: UK university graduates earn 50% more than non-graduates on average. Doctors, lawyers, engineers earn £50,000-£100,000 vs minimum wage £20,000",
-              "CAUSES OF INCOME INEQUALITY - Wage Differentials: Differences in wages due to: (1) Marginal productivity (more productive workers paid more), (2) Scarcity (rare skills command premium), (3) Barriers to entry (professional qualifications), (4) Discrimination (gender, race pay gaps), (5) Trade unions (collective bargaining raises wages), (6) Monopsony power (single employer can suppress wages)",
-              "CAUSES OF INCOME INEQUALITY - Wealth Ownership: Wealth generates income (rent, dividends, interest). Wealthy people earn capital income on top of wages. Example: Someone with £1 million in shares earning 5% dividend = £50,000 passive income. Wealth inequality → income inequality",
-              "CAUSES OF INCOME INEQUALITY - Inheritance: Intergenerational wealth transfer. Rich parents pass wealth to children (property, shares, trust funds). Example: UK average inheritance = £100,000 but top 10% inherit £500,000+. Perpetuates inequality across generations",
-              "CAUSES OF INCOME INEQUALITY - Technology: Automation replaces low-skill jobs, increases demand for high-skill workers. 'Skill-biased technological change'. Example: Factory robots replace assembly workers (£25,000) but create jobs for engineers (£50,000). Widens wage gap",
-              "CAUSES OF INCOME INEQUALITY - Globalisation: Trade and offshoring reduce demand for low-skill workers in developed countries (manufacturing jobs moved to China). Increases demand for high-skill workers (managers, designers). Example: UK manufacturing jobs fell from 5 million (1980) to 2.5 million (2020)",
-              "CAUSES OF INCOME INEQUALITY - Discrimination: Gender pay gap (women earn 15% less than men in UK), Ethnic pay gap (minorities earn 10% less). Causes: Occupational segregation, Career breaks (maternity), Bias in promotion, Unequal bargaining power",
-              "CAUSES OF INCOME INEQUALITY - Market Power: Monopoly profits → high executive pay. CEO pay increased 1000% since 1980 while average worker pay increased 12%. Example: FTSE 100 CEO average pay = £3.5 million (120x median worker)",
-
-              "ABSOLUTE POVERTY - Definition: Income below minimum needed for basic necessities (food, shelter, clothing). World Bank definition: Living on less than $2.15 per day (2022 prices). Extreme poverty: Less than $1.90 per day. Example: 700 million people (9% of world) live in extreme poverty, mostly in Sub-Saharan Africa and South Asia",
-              "ABSOLUTE POVERTY - Measurement: Poverty line set at cost of basic basket of goods. Example: UK absolute poverty line = £15,000 per year for family of 4. Anyone below this line is in absolute poverty. Absolute poverty has fallen globally (from 36% in 1990 to 9% in 2020) due to economic growth in China and India",
-
-              "RELATIVE POVERTY - Definition: Income below a certain percentage of median income (typically 60%). Relative poverty line moves with average living standards. Example: UK relative poverty line = 60% of median income = £18,000 for family of 4. 14 million people (22%) in UK live in relative poverty",
-              "RELATIVE POVERTY - Criticism: Someone can escape absolute poverty but remain in relative poverty if average incomes rise. Relative poverty can increase even if everyone gets richer (if rich get richer faster). Example: If median income rises from £30,000 to £40,000, poverty line rises from £18,000 to £24,000 → more people fall below line",
-
-              "POVERTY TRAPS - Definition: Circumstances that make it difficult to escape poverty. Creates vicious cycle. Types: (1) Unemployment trap - benefits withdrawn when working, so little incentive to work, (2) Low skills trap - can't afford education → low wages → can't afford education for children, (3) Debt trap - high-interest loans (payday lenders) → debt spiral, (4) Health trap - poor health → can't work → poverty → poor health",
-              "POVERTY TRAPS - Example: Unemployment trap in UK - someone on benefits (£15,000) gets job paying £20,000 but loses benefits and pays tax/NI → net gain only £2,000 → not worth working. Marginal tax rate can exceed 70% for low earners",
-
-              "CONSEQUENCES OF INEQUALITY - Economic: (1) Lower growth - poor can't invest in education, (2) Inefficient allocation - rich save more (low MPC), poor spend more (high MPC), (3) Market failure - merit goods underprovided (education, healthcare), (4) Financial instability - inequality contributed to 2008 crisis (poor borrowed to maintain consumption)",
-              "CONSEQUENCES OF INEQUALITY - Social: (1) Crime - poverty and inequality increase crime rates, (2) Health - inequality linked to lower life expectancy, higher infant mortality, (3) Social mobility - harder for poor to move up, (4) Political instability - inequality fuels populism, protests",
-
-              "REDISTRIBUTION POLICIES - Progressive Taxation: Higher earners pay higher percentage of income in tax. UK income tax: 0% (£0-£12,570), 20% (£12,571-£50,270), 40% (£50,271-£125,140), 45% (£125,140+). Reduces post-tax income inequality. Problem: Disincentive to work, tax avoidance, capital flight",
-              "REDISTRIBUTION POLICIES - Transfer Payments: Government payments to poor (unemployment benefits, child benefits, housing benefits, pensions). UK welfare spending = £250bn (30% of government spending). Reduces poverty directly. Problem: Unemployment trap, dependency culture, cost to taxpayers",
-              "REDISTRIBUTION POLICIES - National Minimum Wage: Legal minimum hourly wage. UK = £10.42 (2023). Raises income of low-paid workers. Problem: May cause unemployment if set too high (firms can't afford to hire), but evidence suggests minimal unemployment effect in practice",
-              "REDISTRIBUTION POLICIES - Universal Basic Services: Free provision of education, healthcare, housing. Reduces inequality by ensuring everyone has access to essentials. UK NHS = free healthcare for all. Problem: Expensive (NHS costs £150bn/year), may be inefficient (no price signal)",
-              "REDISTRIBUTION POLICIES - Wealth Taxes: Tax on assets (property, shares). Examples: Inheritance tax (40% on estates over £325,000), Capital gains tax (20% on investment profits). Reduces wealth inequality. Problem: Hard to value assets, easy to avoid (move assets abroad), may discourage saving and investment",
-              "REDISTRIBUTION POLICIES - Education and Training: Government investment in human capital. Free education, apprenticeships, retraining programs. Increases productivity of poor → higher wages → reduces inequality. Advantage: Addresses root cause (skills gap). Problem: Takes many years to work, expensive",
-
-              "REAL EXAMPLE 1 - US Income Inequality (1980-present): US Gini coefficient rose from 0.34 (1980) to 0.41 (2020), highest among developed countries. Causes: (1) Technology (skill premium), (2) Globalisation (manufacturing decline), (3) Declining unions (membership fell from 25% to 10%), (4) Tax cuts for rich (top rate fell from 70% to 37%), (5) CEO pay explosion (average CEO earns 350x median worker). Top 1% income share rose from 10% (1980) to 20% (2020). Bottom 50% share fell from 20% to 13%. Debate: Some argue inequality drives growth (incentives), others argue it harms growth (demand shortage)",
-
-              "REAL EXAMPLE 2 - Nordic Model (Sweden, Denmark, Norway): Low inequality (Gini = 0.25-0.28) despite high GDP per capita. Policies: (1) High progressive taxes (top rate 60%), (2) Generous welfare state (unemployment benefits 80% of wages), (3) Free education and healthcare, (4) Strong unions (70% membership), (5) Active labor market policies (retraining). Result: Low poverty (5%), high social mobility, high life satisfaction. Criticism: High taxes may discourage work and investment, but Nordic countries have high employment rates (75%+)",
-
-              "REAL EXAMPLE 3 - UK Inequality Trends (1980-present): UK Gini rose from 0.25 (1979) to 0.35 (1990) then stabilized. Causes of rise: (1) Thatcher policies (tax cuts, union restrictions, privatization), (2) Deindustrialization, (3) Financial sector growth (high City salaries). Policies to reduce: (1) National Minimum Wage (1999), (2) Tax credits for low earners, (3) Sure Start (early years education). Result: Relative poverty fell from 25% (1997) to 22% (2020) but absolute poverty fell more (from 30% to 15%)",
-
-              "REAL EXAMPLE 4 - China Inequality (1980-present): China Gini rose from 0.30 (1980) to 0.47 (2020) as economy grew. Causes: (1) Urban-rural divide (city wages 3x rural), (2) Coastal-inland divide (Shanghai GDP per capita 3x Guizhou), (3) Hukou system (restricts rural-urban migration), (4) SOE privatization (created billionaires). 800 million lifted out of absolute poverty but inequality increased. Government response: (1) Abolishing agricultural tax, (2) Rural development programs, (3) Minimum wage increases, (4) Crackdown on billionaires (Jack Ma). Recent trend: Inequality stabilizing as growth slows"
+              "Absolute poverty occurs when individuals lack the minimum income required to afford basic human necessities for survival, like food, water, and shelter.",
+              "Relative poverty occurs when people earn below 60% of the median national income, preventing them from participating fully in normal societal life.",
+              "The Lorenz curve visually plots the cumulative percentage of national income against the cumulative percentage of the population to illustrate inequality.",
+              "The Gini coefficient measures inequality from 0 (perfect equality) to 1 (perfect inequality), mathematically calculated as Area A / (Area A + Area B).",
+              "Causes of inequality include regressive taxation, extreme wage differentials, technological change favouring high-skilled workers, and the deeply uneven distribution of wealth and assets.",
+              "Progressive taxation takes a larger percentage of income from higher earners, actively redistributing wealth to lower the Gini coefficient and reduce inequality.",
+              "Universal benefits (like state pensions) are available to all regardless of wealth, whereas means-tested benefits strictly target only low-income households.",
+              "Evaluation: Highly progressive taxes can reduce the incentive to work and encourage brain drain or severe tax evasion, harming overall economic efficiency."
             ],
             formulas: [
               { name: "Gini Coefficient", expr: "G = Area between Lorenz curve and line of equality" }
@@ -1801,59 +1003,15 @@ export const SUBJECTS = {
             title: { zh: "经济发展", en: "Economic Development" },
             overview: { zh: "学习经济发展的衡量与促进政策。", en: "Comprehensive study of economic development measurement, indicators, barriers, development strategies, and policies with real-world case studies of successful and failed development." },
             keyPoints: [
-              "ECONOMIC GROWTH VS DEVELOPMENT - Economic Growth: Increase in real GDP (quantity of goods and services produced). Measured by % change in GDP. Example: China GDP growth = 10% per year (1980-2010). Focuses on output",
-              "ECONOMIC GROWTH VS DEVELOPMENT - Economic Development: Broader concept including improvements in living standards, health, education, freedom, equality, sustainability. Growth is necessary but not sufficient for development. Example: Oil-rich countries (Saudi Arabia, Kuwait) have high GDP but lower development (limited freedoms, gender inequality)",
-
-              "HUMAN DEVELOPMENT INDEX (HDI) - Definition: Composite index measuring development across three dimensions: (1) Long and healthy life (life expectancy at birth), (2) Knowledge (mean years of schooling + expected years of schooling), (3) Decent standard of living (GNI per capita PPP). Range: 0 to 1. Developed by UN (1990)",
-              "HUMAN DEVELOPMENT INDEX (HDI) - Categories: Very high (HDI > 0.8): Norway, Switzerland, Australia, UK, US. High (0.7-0.8): China, Brazil, Mexico. Medium (0.55-0.7): India, Indonesia, Egypt. Low (< 0.55): Sub-Saharan Africa (Niger, Chad, South Sudan). Example: Norway HDI = 0.961 (1st), Niger HDI = 0.394 (189th)",
-              "HUMAN DEVELOPMENT INDEX (HDI) - Advantages: (1) Broader than GDP (includes health, education), (2) Easy to understand (single number), (3) Allows international comparisons, (4) Highlights development priorities. Disadvantages: (1) Ignores inequality (average hides distribution), (2) Ignores freedom, human rights, environment, (3) Data quality issues in poor countries, (4) Equal weighting of dimensions (arbitrary)",
-
-              "GDP PER CAPITA - Definition: Total GDP divided by population. Measures average income. Example: UK GDP = £2.5 trillion, population = 67 million → GDP per capita = £37,000. Useful for comparing living standards across countries",
-              "GDP PER CAPITA - Limitations: (1) Ignores distribution (average hides inequality - billionaire and beggar average to middle class), (2) Ignores non-market activities (subsistence farming, household work), (3) Ignores quality of life (health, education, freedom), (4) Ignores environmental costs (pollution, resource depletion), (5) PPP adjustment needed for fair comparison (prices differ across countries)",
-
-              "OTHER DEVELOPMENT INDICATORS - Health: Life expectancy (UK = 81 years, Niger = 62), Infant mortality rate (deaths per 1000 births: UK = 4, Niger = 50), Maternal mortality (UK = 7 per 100,000, Niger = 500), Access to clean water (UK = 100%, Niger = 50%)",
-              "OTHER DEVELOPMENT INDICATORS - Education: Literacy rate (% who can read/write: UK = 99%, Niger = 30%), Mean years of schooling (UK = 13, Niger = 2), Primary school enrollment (UK = 100%, Niger = 70%), Gender parity in education (girls/boys ratio)",
-              "OTHER DEVELOPMENT INDICATORS - Inequality: Gini coefficient (UK = 0.35, Brazil = 0.53), Income share of bottom 40% (UK = 20%, Brazil = 10%), Multidimensional Poverty Index (measures deprivation in health, education, living standards)",
-              "OTHER DEVELOPMENT INDICATORS - Environment: CO2 emissions per capita (US = 15 tons, India = 2 tons), Forest coverage (% of land), Access to electricity (UK = 100%, Niger = 15%), Renewable energy share",
-
-              "EMERGING ECONOMIES (BRICS) - Definition: Countries undergoing rapid industrialization and economic growth. BRICS = Brazil, Russia, India, China, South Africa. Also: Mexico, Indonesia, Turkey, Vietnam. Characteristics: (1) Fast GDP growth (5-10% per year), (2) Rising middle class, (3) Urbanization, (4) Industrialization, (5) Increasing global trade share",
-              "EMERGING ECONOMIES - China: GDP growth 10% per year (1980-2010), 800 million lifted out of poverty, now 2nd largest economy ($18 trillion). Model: Export-led growth, FDI, infrastructure investment, authoritarian capitalism",
-              "EMERGING ECONOMIES - India: GDP growth 7% per year (2000-2020), population 1.4 billion (largest), IT services hub (Bangalore), but still 20% in poverty. Model: Services-led growth, democracy, but bureaucracy and infrastructure gaps",
-
-              "BARRIERS TO DEVELOPMENT - Low Capital Accumulation: Poor countries have low savings (people too poor to save) → low investment → low growth → poverty trap. Harrod-Domar model: Growth rate = Savings rate / Capital-output ratio. Example: If savings = 10% GDP, capital-output ratio = 3, then growth = 10%/3 = 3.3%. Need higher savings for faster growth",
-              "BARRIERS TO DEVELOPMENT - Poor Human Capital: Low education and health → low productivity → low wages → can't afford education/health → vicious cycle. Example: Niger literacy = 30%, life expectancy = 62 → low productivity → GDP per capita = $1,200",
-              "BARRIERS TO DEVELOPMENT - Corruption: Bribes, embezzlement, nepotism → resources wasted → discourages investment → slows growth. Corruption Perceptions Index: Denmark = 90 (clean), Somalia = 12 (corrupt). Example: Nigeria lost $400bn to corruption (1960-2000), equivalent to all Western aid to Africa",
-              "BARRIERS TO DEVELOPMENT - Debt Burden: Many developing countries borrowed heavily (1970s-80s) → debt crisis (1980s) → debt service consumes large share of government revenue → less for education, health, infrastructure. Example: Zambia debt service = 30% of government revenue → only 10% for health",
-              "BARRIERS TO DEVELOPMENT - Capital Flight: Wealthy elites move money abroad (tax havens, foreign banks) → reduces domestic investment → slows growth. Example: Africa loses $50bn per year to capital flight (more than receives in aid)",
-              "BARRIERS TO DEVELOPMENT - Poor Infrastructure: Lack of roads, electricity, water, internet → high transport costs → firms can't compete → low growth. Example: Sub-Saharan Africa electricity access = 50% (vs 100% in developed countries) → factories can't operate reliably",
-              "BARRIERS TO DEVELOPMENT - Political Instability: Civil wars, coups, weak institutions → investors avoid country → low FDI → slow growth. Example: Syria civil war (2011-present) → GDP fell 60%, 6 million refugees",
-              "BARRIERS TO DEVELOPMENT - Geography: Landlocked countries (no sea access) → high transport costs → trade difficult. Tropical climate → diseases (malaria), poor soil. Example: 16 of 20 poorest countries are landlocked or tropical",
-              "BARRIERS TO DEVELOPMENT - Dependency on Primary Products: Reliance on agriculture/mining → vulnerable to price volatility → terms of trade decline (Prebisch-Singer hypothesis: primary product prices fall relative to manufactured goods over time). Example: Zambia depends on copper (70% of exports) → when copper price fell 50% (2011-2016) → economic crisis",
-
-              "DEVELOPMENT STRATEGIES - Import Substitution Industrialization (ISI): Protect domestic industries from foreign competition using tariffs and quotas → develop manufacturing → reduce import dependence. Used by: Latin America (1950s-80s), India (1950s-90s). Advantages: Protects infant industries, reduces import dependence, creates jobs. Disadvantages: Inefficiency (no competition), high prices for consumers, retaliation, corruption (lobbying for protection). Example: India ISI (1950-1991) → slow growth (3% per year, 'Hindu rate of growth') → liberalized (1991) → growth accelerated to 7%",
-              "DEVELOPMENT STRATEGIES - Export-Led Growth: Focus on producing for export markets → earn foreign currency → import capital goods → invest → grow. Used by: East Asian Tigers (South Korea, Taiwan, Singapore, Hong Kong), China. Advantages: Economies of scale, competition improves efficiency, foreign currency for imports, technology transfer. Disadvantages: Vulnerable to global recessions, may exploit workers (low wages), environmental damage. Example: South Korea (1960-1990) → GDP per capita $100 → $10,000 through export-led growth (electronics, cars)",
-              "DEVELOPMENT STRATEGIES - Agricultural Development: Improve farm productivity → feed growing population → release labor for industry → rural incomes rise → demand for manufactured goods. Methods: Green Revolution (high-yield seeds, fertilizers, irrigation), Land reform (redistribute land to farmers), Extension services (training). Example: India Green Revolution (1960s-70s) → wheat production doubled → famine eliminated",
-              "DEVELOPMENT STRATEGIES - Microfinance: Small loans to poor (especially women) to start businesses. Pioneered by Grameen Bank (Bangladesh, Muhammad Yunus, Nobel Prize 2006). Advantages: Empowers poor, high repayment rates (98%), creates jobs. Disadvantages: High interest rates (20-30%), debt traps, limited impact on poverty. Example: Grameen Bank lent to 9 million borrowers, mostly women, for small businesses (sewing, farming)",
-
-              "ROLE OF FOREIGN AID - Types: (1) Bilateral aid (country to country), (2) Multilateral aid (through UN, World Bank), (3) Humanitarian aid (emergency relief), (4) Development aid (long-term projects). Total aid = $200bn per year (0.3% of rich countries' GDP, target = 0.7%)",
-              "ROLE OF FOREIGN AID - Advantages: (1) Fills savings gap (provides capital for investment), (2) Fills foreign exchange gap (pays for imports), (3) Provides technical expertise, (4) Humanitarian relief (saves lives). Example: Marshall Plan (US aid to Europe after WW2, $13bn) → Europe recovered quickly",
-              "ROLE OF FOREIGN AID - Disadvantages: (1) Dependency culture (countries rely on aid instead of developing), (2) Corruption (aid stolen by elites), (3) Tied aid (must buy from donor country → expensive), (4) Undermines local industries (free food aid → farmers can't compete), (5) Debt burden (loans must be repaid). Example: Zambia received $18bn aid (1960-2000) but GDP per capita fell",
-
-              "FOREIGN DIRECT INVESTMENT (FDI) - Definition: Long-term investment by foreign company (building factories, acquiring companies). Brings capital, technology, management skills, jobs. Example: Toyota building car plant in UK = FDI inflow",
-              "FOREIGN DIRECT INVESTMENT (FDI) - Advantages: (1) Capital inflow (fills savings gap), (2) Technology transfer (modern machinery, techniques), (3) Jobs created, (4) Tax revenue for government, (5) Multiplier effect (suppliers benefit), (6) Exports increase (if producing for export). Example: China attracted $1.5 trillion FDI (1980-2020) → key driver of growth",
-              "FOREIGN DIRECT INVESTMENT (FDI) - Disadvantages: (1) Profit repatriation (profits sent back to home country → capital outflow), (2) Exploitation (low wages, poor conditions), (3) Environmental damage, (4) Crowding out (foreign firms outcompete local firms), (5) Dependency (if FDI leaves → unemployment). Example: Nike factories in Vietnam → low wages ($2/day), poor conditions, but provides jobs for 500,000 workers",
-
-              "SUSTAINABLE DEVELOPMENT - Definition: Development that meets present needs without compromising ability of future generations to meet their needs (Brundtland Report, 1987). Balances economic, social, environmental goals. UN Sustainable Development Goals (SDGs): 17 goals including end poverty, quality education, clean energy, climate action (target: 2030)",
-              "SUSTAINABLE DEVELOPMENT - Environmental Sustainability: Reduce CO2 emissions (climate change), Protect forests (biodiversity), Reduce pollution (air, water), Sustainable fishing/farming. Trade-off: Economic growth vs environment. Example: China prioritized growth → severe pollution → now investing in renewables (largest solar/wind capacity)",
-              "SUSTAINABLE DEVELOPMENT - Social Sustainability: Reduce inequality, Improve health and education, Gender equality, Decent work. Example: Costa Rica → high HDI (0.81) despite modest GDP ($12,000 per capita) through investment in education, healthcare, environment (98% renewable energy)",
-
-              "REAL EXAMPLE 1 - South Korea Development Miracle (1960-1990): GDP per capita rose from $100 (1960) to $10,000 (1990), now $35,000 (2023). Strategy: (1) Export-led growth (electronics, cars, ships), (2) Government support for chaebols (Samsung, Hyundai, LG), (3) Investment in education (literacy 100%, university enrollment 70%), (4) Land reform (redistributed land to farmers), (5) Authoritarian government (Park Chung-hee) prioritized growth. Result: Transformed from poorest to developed country in one generation. Lesson: Export-led growth + education + government support works",
-
-              "REAL EXAMPLE 2 - Botswana Development Success (1966-2020): GDP per capita rose from $400 (1966) to $8,000 (2020), highest in Africa. Strategy: (1) Diamond exports (40% of GDP, managed by De Beers), (2) Good governance (low corruption, democracy, rule of law), (3) Investment in education and health (free primary education, HIV treatment), (4) Prudent fiscal policy (saved diamond revenues in sovereign wealth fund). Result: Fastest-growing economy in world (1966-2000). Lesson: Natural resources + good governance = development",
-
-              "REAL EXAMPLE 3 - Bangladesh Garment Industry (1980-present): Garment exports rose from $0 (1980) to $40bn (2020, 80% of exports). Employs 4 million workers (mostly women). Strategy: (1) Low wages ($100/month) attract foreign buyers (H&M, Zara), (2) Export Processing Zones (tax breaks for factories), (3) Microfinance (Grameen Bank) empowers women. Impact: Poverty fell from 80% (1980) to 20% (2020), life expectancy rose from 50 to 73, literacy from 30% to 75%. Criticism: Poor working conditions (Rana Plaza collapse 2013 killed 1,100 workers), low wages, environmental damage. Lesson: Export-led growth reduces poverty but raises labor/environmental concerns",
-
-              "REAL EXAMPLE 4 - Venezuela Economic Collapse (2013-present): GDP fell 75% (2013-2023), inflation 1,000,000% (2018), 7 million refugees fled. Causes: (1) Oil dependency (95% of exports) → when oil price fell ($100 → $30) → crisis, (2) Corruption and mismanagement (Chavez/Maduro), (3) Price controls → shortages, (4) Printing money → hyperinflation, (5) Sanctions (US, EU). Result: Poverty 90%, hunger, healthcare collapse. Lesson: Resource curse - oil wealth can harm development if poorly managed"
+              "Economic development encompasses broad improvements in living standards, healthcare, education, and political freedom, going significantly beyond simple real GDP growth.",
+              "The Human Development Index (HDI) measures life expectancy, expected/mean years of schooling, and GNI per capita on a comprehensive 0-1 scale.",
+              "The Harrod-Domar model highlights that economic growth rates depend crucially on the national savings ratio and the productivity of capital investment.",
+              "Primary product dependency leaves developing economies acutely vulnerable to volatile global commodity prices and declining terms of trade (Prebisch-Singer hypothesis).",
+              "Savings gaps occur in low-income countries where extreme poverty prevents saving, depriving domestic banks of the funds needed for vital business investment.",
+              "Microfinance provides tiny loans to impoverished entrepreneurs lacking traditional collateral, empowering them to start small businesses and escape the poverty cycle.",
+              "Foreign aid bridges the savings gap and funds critical infrastructure, but can foster long-term dependency and be misused by corrupt governments.",
+              "The IMF provides emergency short-term loans to stabilise crisis economies, while the World Bank funds long-term developmental infrastructure projects in poorer nations.",
+              "Evaluation: FDI brings essential capital and jobs to developing nations, but corporate profits are often repatriated and local environments may be heavily exploited."
             ],
             formulas: [
               { name: "Human Development Index (HDI)", expr: "HDI = ³√(Life expectancy × Education × Income)" },

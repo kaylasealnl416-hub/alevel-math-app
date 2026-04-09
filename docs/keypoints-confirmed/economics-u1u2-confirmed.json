@@ -1,0 +1,182 @@
+[
+  {
+    "id": "e1c1",
+    "keyPoints": [
+      "Scarcity: Resources are finite but human wants are infinite, forcing economic agents to make choices",
+      "Opportunity Cost: The value of the next best alternative forgone when a decision is made",
+      "Production Possibility Frontier (PPF): Shows the maximum combinations of two goods an economy can produce given current resources (downward-sloping curve)",
+      "Economic Growth on PPF: Shown by an outward shift of the PPF, indicating an increase in the productive capacity of the economy",
+      "Positive Statements: Objective, factual statements that can be tested against evidence to be proven true or false",
+      "Normative Statements: Subjective statements carrying value judgements, often containing words like 'should' or 'ought'",
+      "Factors of Production: Land (reward: rent), Labour (reward: wages), Capital (reward: interest), and Enterprise (reward: profit)",
+      "Division of Labour: Breaking down production into specialized tasks, increasing productivity but risking worker alienation and structural unemployment",
+      "Free Market Economy: Resource allocation is determined entirely by the price mechanism without government intervention (efficiency vs. inequality risk)",
+      "Command Economy: The state allocates resources, which can ensure basic provision but often risks severe bureaucratic inefficiency"
+    ]
+  },
+  {
+    "id": "e1c2",
+    "keyPoints": [
+      "Law of Demand: Inverse relationship between price and quantity demanded (downward-sloping demand curve)",
+      "Shifts in Demand: Caused by changes in income, prices of substitutes/complements, tastes, or population (factors other than the good's own price)",
+      "Diminishing Marginal Utility: As consumption increases, the satisfaction derived from each additional unit declines, explaining the downward-sloping demand curve",
+      "Price Elasticity of Demand (PED): %ΔQD / %ΔP; measures the responsiveness of quantity demanded to a change in price",
+      "Elastic Demand: PED > 1; a price cut will increase total revenue (represented by a flatter demand curve)",
+      "Inelastic Demand: PED < 1; a price rise will increase total revenue (represented by a steeper demand curve)",
+      "Income Elasticity of Demand (YED): %ΔQD / %ΔY; positive for normal goods and negative for inferior goods",
+      "Cross Elasticity of Demand (XED): %ΔQD of Good A / %ΔP of Good B; positive for substitutes and negative for complements",
+      "Consumer Surplus: The difference between what consumers are willing to pay and the market price they actually pay (area above price, below demand curve)",
+      "Evaluation of Elasticities: Estimates are based on historical data which may not hold true in dynamic, real-world markets"
+    ]
+  },
+  {
+    "id": "e1c3",
+    "keyPoints": [
+      "Law of Supply: Direct relationship between price and quantity supplied (upward-sloping supply curve) driven by the profit motive",
+      "Shifts in Supply: Caused by changes in production costs, technology, indirect taxes, or subsidies",
+      "Price Elasticity of Supply (PES): %ΔQS / %ΔP; measures the responsiveness of quantity supplied to a change in price",
+      "Elastic Supply: PES > 1; firms can easily increase output without significant cost increases (flatter supply curve)",
+      "Inelastic Supply: PES < 1; output is restricted by capacity limits, time lags, or lack of factor mobility (steeper supply curve)",
+      "Determinants of PES: Time period, availability of spare capacity, level of raw material stocks, and mobility of factors of production",
+      "Producer Surplus: The difference between the price producers are willing to accept and the market price they receive (area below price, above supply curve)",
+      "Joint Supply: When the production of one good automatically leads to the production of a by-product (e.g., beef and leather)",
+      "Competitive Supply: When two alternative goods compete for the same resources (e.g., land for wheat versus biofuels)",
+      "Evaluation of PES: Supply is almost always inelastic in the immediate short run, but becomes far more elastic in the long run as capacity expands"
+    ]
+  },
+  {
+    "id": "e1c4",
+    "keyPoints": [
+      "Equilibrium Price: The market-clearing price where quantity demanded exactly equals quantity supplied (intersection of D and S curves)",
+      "Excess Demand (Shortage): Occurs when the price is below equilibrium, forcing prices up as consumers bid for scarce goods",
+      "Excess Supply (Surplus): Occurs when the price is above equilibrium, forcing prices down as firms try to clear unsold stock",
+      "Signalling Function: Prices signal information to consumers and producers about resource scarcity and surpluses",
+      "Incentive Function: Higher prices act as an incentive to producers to allocate more resources to a market for higher profits",
+      "Rationing Function: Prices ration scarce resources strictly to those consumers who are willing and able to pay the most",
+      "Specific Tax: A fixed amount of tax per unit, shifting the supply curve vertically upwards by a parallel amount",
+      "Ad Valorem Tax: A percentage tax (e.g., VAT), shifting the supply curve vertically upwards by a diverging amount (steeper slope)",
+      "Subsidies: A government grant to producers, shifting the supply curve vertically downwards, lowering price and increasing quantity",
+      "Tax Incidence (Evaluation): The burden of a tax falls more heavily on consumers if PED is more inelastic relative to PES"
+    ]
+  },
+  {
+    "id": "e1c5",
+    "keyPoints": [
+      "Market Failure: When the free market price mechanism fails to allocate resources efficiently, leading to a net welfare loss",
+      "Externalities: Third-party spillover effects arising from the production or consumption of a good",
+      "Negative Production Externalities: Marginal Social Cost (MSC) > Marginal Private Cost (MPC), leading to overproduction (deadweight welfare loss triangle pointing to social optimum)",
+      "Positive Consumption Externalities: Marginal Social Benefit (MSB) > Marginal Private Benefit (MPB), leading to underconsumption",
+      "Public Goods: Characterised by being non-rival and non-excludable, leading to the free-rider problem and missing markets",
+      "Information Gaps: Asymmetric information where buyers or sellers have unequal knowledge, causing a misallocation of resources",
+      "Merit Goods: Goods that are under-consumed by the free market due to information gaps and positive externalities (e.g., education)",
+      "Demerit Goods: Goods that are over-consumed by the free market due to information gaps and negative externalities (e.g., tobacco)",
+      "Moral Hazard: When economic agents take greater risks because they know they are protected (e.g., bailed-out banks)",
+      "Tragedy of the Commons: The rapid depletion of shared, open-access resources (like ocean fisheries) due to rational self-interest"
+    ]
+  },
+  {
+    "id": "e1c6",
+    "keyPoints": [
+      "Indirect Taxes: Used to internalize negative externalities by making the polluter pay (shifts MPC leftwards towards MSC)",
+      "Evaluation of Taxes: Difficult to accurately assign a monetary value to the externality; highly regressive nature harms lower-income groups",
+      "Subsidies: Used to encourage consumption/production of goods with positive externalities (shifts MPB rightwards towards MSB)",
+      "Evaluation of Subsidies: Significant opportunity cost to the government budget; risk of firms becoming reliant and 'X-inefficient'",
+      "Maximum Prices (Price Ceilings): Set legally below the equilibrium to protect consumers, causing excess demand, queues, and black markets",
+      "Minimum Prices (Price Floors): Set legally above the equilibrium to protect producers or discourage demerit goods, causing excess supply",
+      "Tradable Pollution Permits: A market-based solution capping total industry emissions and allowing firms to buy/sell permits",
+      "Evaluation of Permits: Achieves efficient allocation of pollution reduction, but governments struggle to set the optimal cap and enforce compliance",
+      "State Provision: Direct government funding of public or merit goods to overcome missing markets, ensuring universal access",
+      "Government Failure: When government intervention leads to a net welfare loss (e.g., due to regulatory capture, admin costs, or unintended consequences)"
+    ]
+  },
+  {
+    "id": "e2c1",
+    "keyPoints": [
+      "Gross Domestic Product (GDP): The total value of all goods and services produced within a country's borders in a given year",
+      "Real vs. Nominal GDP: Real GDP is adjusted for inflation (measured in constant prices); Nominal GDP is not adjusted (measured in current prices)",
+      "Inflation: The sustained increase in the general price level of an economy, typically measured by the Consumer Prices Index (CPI)",
+      "Deflation vs. Disinflation: Deflation is a falling general price level (negative inflation); Disinflation is a falling rate of inflation (prices rising slower)",
+      "Unemployment Rate: The percentage of the economically active population (workforce) who are without a job but actively seeking one",
+      "Measures of Unemployment: The Claimant Count measures those receiving out-of-work benefits; the ILO measure surveys those actively seeking work (internationally comparable)",
+      "Current Account on the Balance of Payments: A record of a country's trade in goods, trade in services, primary income, and secondary income",
+      "Current Account Deficit: When the total value of imports (withdrawals) exceeds the total value of exports (injections)",
+      "Human Development Index (HDI): A composite indicator of living standards measuring health (life expectancy), education (mean/expected years), and income (GNI per capita)",
+      "Evaluation of GDP: Often a flawed measure of living standards as it ignores the shadow economy, income inequality, environmental degradation, and unpaid work"
+    ]
+  },
+  {
+    "id": "e2c2",
+    "keyPoints": [
+      "Aggregate Demand (AD): Total planned spending on domestic goods and services at various price levels; AD = C + I + G + (X - M)",
+      "Consumption (C): Spending by households on consumer goods/services; heavily influenced by interest rates, consumer confidence, and the wealth effect",
+      "The Wealth Effect: When rising asset prices (e.g., housing, shares) increase consumer confidence and borrowing, shifting AD right",
+      "Investment (I): Planned spending by firms on capital goods; determined by interest rates, business expectations ('animal spirits'), and corporation tax",
+      "Government Spending (G): Expenditure by the state on public services and infrastructure (an autonomous injection into the circular flow)",
+      "Net Exports (X - M): Export revenues minus import expenditure; determined by exchange rates, relative inflation, and foreign income levels",
+      "Downward-sloping AD Curve: Explained by the wealth effect, the interest rate effect, and the international trade effect as the general price level falls",
+      "The Multiplier Effect: An initial injection into the circular flow leads to a much greater final increase in real GDP (Formula: k = 1/MPW)",
+      "Marginal Propensity to Consume (MPC): The proportion of an increase in income that is spent on consumption; directly determines the size of the multiplier",
+      "Evaluation of AD: Shifting AD is heavily dependent on consumer and business confidence; rate cuts won't work if 'animal spirits' are low"
+    ]
+  },
+  {
+    "id": "e2c3",
+    "keyPoints": [
+      "Aggregate Supply (AS): The total planned output of goods and services that producers are willing to supply at various price levels",
+      "Short-Run AS (SRAS): Upward-sloping curve; assumes wage rates and prices of other factors of production are fixed in the short run",
+      "Shifts in SRAS: Caused entirely by changes in the costs of production (e.g., wage rates, raw material prices, exchange rates, business taxes)",
+      "Long-Run AS (LRAS): Represents the maximum productive capacity of the economy (the full employment level of output)",
+      "Classical LRAS: A perfectly vertical curve at the natural rate of unemployment; assumes all markets clear and wages are perfectly flexible in the long run",
+      "Keynesian AS: A reverse-L shaped curve showing mass unemployment (horizontal), bottleneck (curved), and full capacity (vertical) sections",
+      "Shifts in LRAS: Caused by changes in the quantity or quality of factors of production (e.g., education, technology, net migration)",
+      "Productivity: Output per worker or per unit of capital; increasing productivity is the main driver of an outward shift in LRAS",
+      "Supply Shocks: Sudden, unexpected changes in SRAS, such as an oil price spike causing cost-push inflation and lower growth (stagflation)",
+      "Evaluation of AS Models: Keynesians argue economies can remain stuck in demand-deficient unemployment forever; Classicists argue self-correction occurs via falling real wages"
+    ]
+  },
+  {
+    "id": "e2c4",
+    "keyPoints": [
+      "Circular Flow of Income: A macroeconomic model showing the continuous flow of money, goods, and services between households and firms",
+      "Injections: Additions to the circular flow that increase aggregate demand (Investment, Government Spending, Exports)",
+      "Withdrawals (Leakages): Reductions from the circular flow that decrease aggregate demand (Savings, Taxes, Imports)",
+      "Macroeconomic Equilibrium: Occurs exactly where AD = AS, or alternatively where total Injections = total Withdrawals",
+      "Output Gap: The difference between actual real GDP and potential real GDP (the trend rate of growth)",
+      "Positive Output Gap: Actual GDP is above potential LRAS; indicates severe inflationary pressure and over-utilization of resources",
+      "Negative Output Gap: Actual GDP is below potential LRAS; indicates spare capacity and high cyclical unemployment",
+      "Marginal Propensity to Withdraw (MPW): The sum of Marginal Propensity to Save (MPS), Tax (MPT), and Import (MPM)",
+      "The Multiplier Formula: k = 1 / (1 - MPC) or k = 1 / MPW; highlights how high leakages significantly dampen the multiplier effect",
+      "Paradox of Thrift: If all households try to save more (increasing leakages), AD falls, leading to lower overall national income and potentially lower total savings"
+    ]
+  },
+  {
+    "id": "e2c5",
+    "keyPoints": [
+      "Short-Run Economic Growth: An increase in actual real GDP, caused by an outward shift in AD using up existing spare capacity",
+      "Long-Run Economic Growth: An increase in the productive potential of the economy, shown by an outward shift of the LRAS curve or the PPF",
+      "Determinants of Growth: Investment in physical capital, technological progress, education/training, and an increase in the size of the labor force",
+      "Benefits of Growth: Higher living standards, lower cyclical unemployment, a fiscal dividend (higher tax revenues), and a potential 'virtuous cycle' of investment",
+      "Costs of Growth: Severe environmental degradation, widening income inequality, demand-pull inflation risk, and depletion of non-renewable resources",
+      "Sustainable Growth: Economic growth that meets the needs of the present without compromising the ability of future generations to meet their own needs",
+      "Recessions: Two consecutive quarters of negative real GDP growth, characterized by falling AD and rising cyclical unemployment",
+      "Hysteresis: When a prolonged recession permanently damages the economy's LRAS (e.g., workers permanently losing skills or firms scrapping machinery)",
+      "The Economic Cycle: The natural fluctuation of the economy between periods of expansion (boom) and contraction (slump/recession)",
+      "Evaluation of Growth: To be beneficial long-term, growth must be balanced (AD and AS shifting together) to avoid unsustainable high inflation"
+    ]
+  },
+  {
+    "id": "e2c6",
+    "keyPoints": [
+      "Demand-Side Policies: Fiscal and Monetary policies aimed at shifting AD to manage inflation, unemployment, and economic growth",
+      "Monetary Policy: Central bank manipulation of base interest rates, the money supply, and exchange rates to achieve macroeconomic targets (e.g., 2% inflation)",
+      "Expansionary Monetary Policy: Cutting base interest rates to lower borrowing costs, boosting Consumption (C) and Investment (I), shifting AD right",
+      "Quantitative Easing (QE): Central banks creating electronic money to buy government bonds, lowering long-term interest rates and injecting liquidity into banks",
+      "Fiscal Policy: Government manipulation of taxation and public spending to influence AD and the overall budget balance",
+      "Expansionary Fiscal Policy: Increasing government spending (G) or cutting taxes to boost AD, often leading to a larger budget deficit and higher national debt",
+      "Supply-Side Policies: Interventions specifically designed to increase the productive capacity of the economy (shifting LRAS to the right)",
+      "Market-based Supply-Side Policies: Deregulation, privatization, cutting income/corporation taxes, and reducing union power to improve free-market incentives",
+      "Interventionist Supply-Side Policies: Government investment in education, infrastructure, and R&D to deliberately correct market failures in provision",
+      "Policy Conflicts (Evaluation): Unavoidable trade-offs between macroeconomic objectives, such as the Phillips Curve trade-off between unemployment and inflation"
+    ]
+  }
+]

@@ -1,0 +1,152 @@
+[
+  {
+    "id": "e3c1",
+    "keyPoints": [
+      "Sole traders have unlimited liability, whereas public limited companies (PLCs) offer limited liability and can raise capital via stock markets.",
+      "Profit maximisation occurs where Marginal Cost equals Marginal Revenue (MC=MR), satisfying shareholders with high dividend payouts.",
+      "Revenue maximisation occurs where Marginal Revenue is zero (MR=0), often used by managers to increase market share or justify higher salaries.",
+      "Sales maximisation occurs where Average Cost equals Average Revenue (AC=AR), allowing the firm to expand as much as possible without making a loss.",
+      "Satisficing happens when managers make enough profit to satisfy shareholders while pursuing other goals like improving working conditions or environmental standards.",
+      "Economies of scale are falls in long-run average costs (LRAC) as output increases, including purchasing, managerial, and technical economies.",
+      "Minimum Efficient Scale (MES) is the lowest level of output at which long-run average costs are fully minimised.",
+      "Diseconomies of scale occur when LRAC rises due to control, coordination, and communication problems in overly large organisations.",
+      "Evaluation: Small and Medium Enterprises (SMEs) survive against large firms by offering bespoke products, exploiting niche markets, and providing superior customer service."
+    ]
+  },
+  {
+    "id": "e3c2",
+    "keyPoints": [
+      "Total Revenue (TR) is Price multiplied by Quantity (P×Q), while Average Revenue (AR) equals price in a single-price market.",
+      "Marginal Revenue (MR) is the addition to total revenue gained from selling one extra unit of output.",
+      "Fixed Costs (FC) do not vary with output, whereas Variable Costs (VC) change directly with the level of production.",
+      "Average Total Cost (ATC) is Total Cost divided by Quantity, typically U-shaped in the short run due to the law of diminishing marginal returns.",
+      "Marginal Cost (MC) is the cost of producing one additional unit, mathematically intersecting both AC and AVC at their lowest minimum points.",
+      "Normal profit is the minimum reward required to keep factors of production in their current use, occurring where AR equals AC.",
+      "Supernormal profit is any profit earned in excess of normal profit, occurring when Average Revenue is greater than Average Cost (AR > AC).",
+      "The short-run shutdown point occurs when price falls below Average Variable Cost (AR < AVC), meaning day-to-day running costs aren't covered.",
+      "Evaluation: Accurately calculating MC and MR in reality is extremely difficult, meaning many real-world firms rely on simple cost-plus pricing instead."
+    ]
+  },
+  {
+    "id": "e3c3",
+    "keyPoints": [
+      "Perfect competition features infinite buyers and sellers, homogeneous products, perfect information, and absolutely no barriers to entry or exit.",
+      "Monopolistic competition involves many firms selling slightly differentiated products, resulting in downward-sloping AR curves and normal long-run profit.",
+      "Oligopoly is dominated by a few large interdependent firms, characterised by price rigidity, intense non-price competition, and high entry barriers.",
+      "Game theory analyses oligopoly interdependence; the Nash equilibrium occurs when no player can benefit by changing their strategy unilaterally.",
+      "A pure monopoly holds 100% market share, but legal working monopolies have greater than 25%, allowing them to act as dominant price makers.",
+      "Productive efficiency occurs at the lowest point on the AC curve, while allocative efficiency occurs where Price equals Marginal Cost (P=MC).",
+      "Dynamic efficiency involves reinvesting supernormal profits into R&D to lower long-run costs and improve product quality over time.",
+      "Price discrimination charges different prices to different consumer groups for the exact same product, requiring distinct PEDs and prevention of market seepage.",
+      "Evaluation: Monopolies cause deadweight welfare loss and allocative inefficiency, but can achieve massive economies of scale and fund dynamic efficiency, ultimately benefiting consumers."
+    ]
+  },
+  {
+    "id": "e3c4",
+    "keyPoints": [
+      "Demand for labour is a derived demand, determined by Marginal Revenue Product (MRP = Marginal Physical Product × Marginal Revenue).",
+      "Supply of labour shifts due to changes in net migration, education levels, working conditions, and the demographic makeup of the population.",
+      "The backward-bending supply curve of labour shows the substitution effect dominating initially, then the income effect dominating at high wage rates.",
+      "In perfectly competitive labour markets, wages are determined by the intersection of industry supply and demand, making individual firms strict wage takers.",
+      "A monopsony is a single dominant buyer of labour, enabling them to suppress wages below the competitive market equilibrium and restrict employment.",
+      "Trade unions aim to negotiate higher wages and better conditions, effectively acting as a monopoly supplier of labour to counter monopsonist employers.",
+      "A National Minimum Wage (NMW) legally prevents worker exploitation but may cause classical unemployment if set above the free market equilibrium wage.",
+      "Wage differentials exist due to varying marginal productivity, compensating differentials for dangerous work, and significant differences in trade union power.",
+      "Evaluation: The unemployment impact of a minimum wage depends on the elasticity of labour demand; highly inelastic demand means minimal job losses."
+    ]
+  },
+  {
+    "id": "e3c5",
+    "keyPoints": [
+      "Competition policy aims to prevent anti-competitive practices, regulate mergers, and protect consumer welfare from monopoly exploitation.",
+      "The Competition and Markets Authority (CMA) investigates corporate mergers that would result in a combined market share exceeding 25%.",
+      "Natural monopolies have continuously falling long-run average costs, making it more productively efficient for one firm to supply the entire market.",
+      "RPI-X regulation caps price increases at inflation minus expected efficiency gains, forcing natural monopolies to cut internal costs to maintain profit.",
+      "Privatisation transfers public sector assets to the private sector, theoretically increasing efficiency and innovation through profit-motivated competition.",
+      "Nationalisation involves the government purchasing private firms, allowing the state to prioritise social welfare and allocative efficiency over profit maximisation.",
+      "Deregulation removes statutory barriers to entry, increasing market contestability and forcing incumbent firms to operate more efficiently to survive.",
+      "Regulatory capture occurs when industry regulators act in the commercial interest of the firms they supervise rather than protecting consumers.",
+      "Evaluation: Government intervention can lead to government failure due to asymmetric information, massive administrative costs, and unintended consequences like regulatory capture."
+    ]
+  },
+  {
+    "id": "e4c1",
+    "keyPoints": [
+      "Globalisation is the increasing integration and interdependence of the world's economies, driven by reduced transport costs and sweeping trade liberalisation.",
+      "Multinational Corporations (MNCs) drive globalisation by locating production globally to exploit comparative advantages and significantly lower wage costs.",
+      "Foreign Direct Investment (FDI) involves investing capital into foreign countries, boosting the host nation's economic growth and accelerating technological transfer.",
+      "Benefits of globalisation include greater consumer choice, international economies of scale, lower prices, and rapid export-led growth for emerging economies.",
+      "Costs of globalisation include severe environmental degradation, structural unemployment in deindustrialised developed nations, and increased vulnerability to global economic shocks.",
+      "Emerging economies, like the BRICS nations, have experienced rapid industrialisation, pulling millions out of absolute poverty but often widening domestic income inequality.",
+      "Trade liberalisation involves removing tariffs and quotas, expanding global markets and allowing countries to specialise efficiently according to comparative advantage.",
+      "Evaluation: Globalisation disproportionately benefits high-skilled workers and capital owners, directly contributing to rising relative poverty in previously industrialised regions."
+    ]
+  },
+  {
+    "id": "e4c2",
+    "keyPoints": [
+      "Absolute advantage occurs when a country can produce a specific good using fewer resources than another country.",
+      "Comparative advantage states countries should specialise in producing goods where they have a lower opportunity cost, thereby maximising global output.",
+      "Free trade promotes allocative efficiency, global economies of scale, and reduces domestic monopoly power by increasing intense international competition.",
+      "Tariffs are taxes on imported goods that raise domestic prices, protect local producers, and generate government revenue but severely harm consumers.",
+      "Quotas place a strict physical limit on the volume of imports, restricting supply and raising prices without directly generating tax revenue.",
+      "Export subsidies lower production costs for domestic firms, making them more competitive internationally but carrying a high opportunity cost for taxpayers.",
+      "The World Trade Organization (WTO) promotes free trade by organising multilateral negotiation rounds and settling international trade disputes between member nations.",
+      "A customs union is a trading bloc with completely free internal trade and a common external tariff applied universally to all non-members.",
+      "Evaluation: The infant industry argument justifies short-term protectionism, allowing new domestic industries to grow and achieve economies of scale before facing global competition."
+    ]
+  },
+  {
+    "id": "e4c3",
+    "keyPoints": [
+      "The current account records trade in goods, trade in services, primary income (investment returns), and secondary income (international transfers).",
+      "A current account deficit means the total monetary value of imports and outflows exceeds the value of exports and inflows.",
+      "Causes of a deficit include high domestic inflation, an overvalued exchange rate, low labour productivity, and a high marginal propensity to import.",
+      "Primary income includes remittances from workers abroad and profits, dividends, or interest returning from foreign portfolio and direct investments.",
+      "Expenditure-reducing policies, such as higher interest rates, reduce domestic aggregate demand to lower overall spending on imported goods.",
+      "Expenditure-switching policies, such as tariffs or currency devaluation, aim to make domestic goods relatively cheaper and more attractive than foreign imports.",
+      "Persistent deficits may indicate deep structural uncompetitiveness and require financing through foreign borrowing, increasing the national debt burden.",
+      "Evaluation: A current account deficit isn't always bad if it's driven by importing capital goods that will boost future export capacity and LRAS."
+    ]
+  },
+  {
+    "id": "e4c4",
+    "keyPoints": [
+      "A floating exchange rate is determined entirely by free market forces of supply and demand without any direct central bank intervention.",
+      "A fixed exchange rate is strictly pegged to another currency, requiring the central bank to buy/sell foreign currency reserves to maintain the peg.",
+      "A managed float allows market forces to determine the baseline rate, but central banks actively intervene to prevent excessive and damaging volatility.",
+      "Exchange rates are heavily influenced by relative interest rates (hot money flows), inflation rates, foreign direct investment, and currency speculation.",
+      "Depreciation (SPICED: Strong Pound Imports Cheap Exports Dear) makes domestic exports more globally competitive but increases imported cost-push inflation.",
+      "The Marshall-Lerner condition states that currency devaluation only improves the current account if the sum of PED for exports and imports is greater than 1.",
+      "The J-curve effect explains that a current account deficit initially worsens after devaluation due to inelastic short-run demand, before improving over time.",
+      "Evaluation: The true impact of exchange rate fluctuations on the real economy depends heavily on the price elasticity of demand for exports and imports."
+    ]
+  },
+  {
+    "id": "e4c5",
+    "keyPoints": [
+      "Absolute poverty occurs when individuals lack the minimum income required to afford basic human necessities for survival, like food, water, and shelter.",
+      "Relative poverty occurs when people earn below 60% of the median national income, preventing them from participating fully in normal societal life.",
+      "The Lorenz curve visually plots the cumulative percentage of national income against the cumulative percentage of the population to illustrate inequality.",
+      "The Gini coefficient measures inequality from 0 (perfect equality) to 1 (perfect inequality), mathematically calculated as Area A / (Area A + Area B).",
+      "Causes of inequality include regressive taxation, extreme wage differentials, technological change favouring high-skilled workers, and the deeply uneven distribution of wealth and assets.",
+      "Progressive taxation takes a larger percentage of income from higher earners, actively redistributing wealth to lower the Gini coefficient and reduce inequality.",
+      "Universal benefits (like state pensions) are available to all regardless of wealth, whereas means-tested benefits strictly target only low-income households.",
+      "Evaluation: Highly progressive taxes can reduce the incentive to work and encourage brain drain or severe tax evasion, harming overall economic efficiency."
+    ]
+  },
+  {
+    "id": "e4c6",
+    "keyPoints": [
+      "Economic development encompasses broad improvements in living standards, healthcare, education, and political freedom, going significantly beyond simple real GDP growth.",
+      "The Human Development Index (HDI) measures life expectancy, expected/mean years of schooling, and GNI per capita on a comprehensive 0-1 scale.",
+      "The Harrod-Domar model highlights that economic growth rates depend crucially on the national savings ratio and the productivity of capital investment.",
+      "Primary product dependency leaves developing economies acutely vulnerable to volatile global commodity prices and declining terms of trade (Prebisch-Singer hypothesis).",
+      "Savings gaps occur in low-income countries where extreme poverty prevents saving, depriving domestic banks of the funds needed for vital business investment.",
+      "Microfinance provides tiny loans to impoverished entrepreneurs lacking traditional collateral, empowering them to start small businesses and escape the poverty cycle.",
+      "Foreign aid bridges the savings gap and funds critical infrastructure, but can foster long-term dependency and be misused by corrupt governments.",
+      "The IMF provides emergency short-term loans to stabilise crisis economies, while the World Bank funds long-term developmental infrastructure projects in poorer nations.",
+      "Evaluation: FDI brings essential capital and jobs to developing nations, but corporate profits are often repatriated and local environments may be heavily exploited."
+    ]
+  }
+]
