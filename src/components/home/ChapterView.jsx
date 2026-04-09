@@ -130,26 +130,34 @@ export default function ChapterView({ chapter, book, nav, t, lang, subject = "ma
                 </div>
                 <button
                   onClick={() => {
-                    const allIndices = (ch.keyPoints || []).map((_, i) => i)
+                    const filteredCount = (ch.keyPoints || []).filter(kp => kp?.trim()).length
+                    const allIndices = Array.from({ length: filteredCount }, (_, i) => i)
                     const allOpen = allIndices.every(i => expandedKP.has(i))
                     setExpandedKP(allOpen ? new Set() : new Set(allIndices))
                   }}
                   style={{ fontSize: 12, fontWeight: 600, color: color, background: "none", border: `1px solid ${color}30`, borderRadius: 8, padding: "4px 10px", cursor: "pointer" }}
                 >
-                  {(ch.keyPoints || []).every((_, i) => expandedKP.has(i)) ? 'Collapse All' : 'Expand All'}
+                  {(() => {
+                    const filteredCount = (ch.keyPoints || []).filter(kp => kp?.trim()).length
+                    return Array.from({ length: filteredCount }, (_, i) => i).every(i => expandedKP.has(i)) ? 'Collapse All' : 'Expand All'
+                  })()}
                 </button>
               </div>
               <ul style={styles.keyPointsList}>
-                {(ch.keyPoints || []).map((kp, i) => {
+                {(ch.keyPoints || []).filter(kp => kp?.trim()).map((kp, i) => {
                   // 支持 " - "、"："、": " 三种分隔符
                   const sepMatch = kp.match(/^(.+?)(?:\s*[：:]\s*|\s+-\s+)(.+)$/)
                   const hasChinese = (s) => /[\u4e00-\u9fff]/.test(s)
                   const rawTerm = sepMatch ? sepMatch[1] : kp
+                  // 剥去外层括号：(Index Laws) → Index Laws
+                  const stripped = rawTerm.trim().replace(/^\((.+)\)$/, '$1').trim()
+                  // 含数学符号的字符串不做 Title Case（避免 d/dx → D/Dx，Δ=0 → Δ=0 等问题）
+                  const hasMath = /[\/=\^∫√ΣΔδθ]/.test(stripped)
                   // 中文内容不做 Title Case；英文长句（>4词）也保持原样，只对短词组做 Title Case
-                  const wordCount = rawTerm.trim().split(/\s+/).length
-                  const term = hasChinese(rawTerm) || wordCount > 4
-                    ? rawTerm
-                    : rawTerm.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
+                  const wordCount = stripped.split(/\s+/).length
+                  const term = hasChinese(stripped) || wordCount > 4 || hasMath
+                    ? stripped
+                    : stripped.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
                   const desc = sepMatch ? sepMatch[2] : null
                   const isOpen = expandedKP.has(i);
                   const toggle = () => setExpandedKP(prev => {

@@ -8,6 +8,7 @@ export function toEn(text) {
     .replace(/：/g, ': ').replace(/；/g, '; ')
     .replace(/【/g, '').replace(/】/g, '')
     .replace(/、/g, ', ').replace(/《》〈〉/g, '')
+    .replace(/\(\s*\)/g, '')
     .replace(/\s{2,}/g, ' ')
     .replace(/^[,.:;\s]+/, '')
     .trim();
@@ -350,8 +351,8 @@ export function localiseChapter(chapter, lang) {
     ...chapter,
     title: getTitle(),
     overview: getOverview(),
-    hardPoints: getField(chapter.hardPoints),
-    examTips: getField(chapter.examTips),
+    hardPoints: en.hardPoints || getField(chapter.hardPoints),
+    examTips: en.examTips || getField(chapter.examTips),
     keyPoints: chapter.keyPoints?.map ? chapter.keyPoints.map(kp => getField(kp)) : chapter.keyPoints,
     formulas: chapter.formulas || [],
     difficulty: chapter.difficulty,
