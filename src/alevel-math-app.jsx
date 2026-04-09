@@ -51,6 +51,7 @@ export default function ALevelMathApp() {
     if (subject !== undefined) setSelectedSubject(subject);
     if (book !== undefined) setSelectedBook(book);
     if (chapter !== undefined) setSelectedChapter(chapter);
+    window.scrollTo(0, 0);
   };
 
   return (
