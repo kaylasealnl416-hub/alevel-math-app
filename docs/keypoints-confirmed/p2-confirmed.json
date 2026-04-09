@@ -1,0 +1,114 @@
+[
+  {
+    "id": "p2c1",
+    "keyPoints": [
+      "Polynomial Division: Divide f(x) by (x - a) using algebraic long division",
+      "The Remainder Theorem: The remainder when f(x) is divided by (ax - b) is f(b/a)",
+      "The Factor Theorem: (x - a) is a factor of f(x) if and only if f(a) = 0",
+      "Factorising Cubics: Find one root using the factor theorem, then divide to find the quadratic factor",
+      "Algebraic Fractions: Simplify by fully factorising the numerator and denominator then cancelling common factors",
+      "Mathematical Proof: A logical and structured argument to show that a mathematical statement is always true",
+      "Proof by Deduction: Starting from known facts and using logical steps to reach the desired conclusion",
+      "Proof by Exhaustion: Proving a statement by testing every possible case within a restricted set",
+      "Disproof by Counter-example: Finding a single case where a statement is false to prove it is not always true"
+    ]
+  },
+  {
+    "id": "p2c2",
+    "keyPoints": [
+      "Equation of a Circle (Origin Centre): x² + y² = r² where r is the radius",
+      "Equation of a Circle (General Centre): (x - a)² + (y - b)² = r² where centre is (a, b)",
+      "Expanded Circle Equation: x² + y² + 2fx + 2gy + c = 0 with centre (-f, -g) and radius √(f² + g² - c)",
+      "Finding Centre and Radius: Complete the square for x and y terms to convert to (x - a)² + (y - b)² = r² form",
+      "Circle Intersection with a Line: Substitute the line equation into the circle equation and solve the resulting quadratic",
+      "Tangent to a Circle: A line that intersects the circle at exactly one point, finding where discriminant Δ = 0",
+      "Tangent and Radius Property: The tangent to a circle is perpendicular to the radius at the point of intersection",
+      "Perpendicular Bisector of a Chord: The perpendicular bisector of any chord always passes through the centre of the circle",
+      "Angle in a Semicircle: The angle subtended by a diameter at the circumference is always 90°"
+    ]
+  },
+  {
+    "id": "p2c3",
+    "keyPoints": [
+      "Exponential Function: Graphs of y = aˣ always pass through (0, 1) and have an asymptote at y = 0",
+      "Logarithm Definition: logₐn = x is equivalent to aˣ = n",
+      "Multiplication Law: logₐx + logₐy = logₐ(xy)",
+      "Division Law: logₐx - logₐy = logₐ(x/y)",
+      "Power Law: logₐ(xᵏ) = k logₐx",
+      "Special Logarithm Values: logₐa = 1 and logₐ1 = 0",
+      "Logarithm of a Reciprocal: logₐ(1/x) = -logₐx",
+      "Change of Base Formula: logₐx = (logₙx) / (logₙa)",
+      "Solving Exponential Equations: Take logs of both sides to solve equations like aˣ = b"
+    ]
+  },
+  {
+    "id": "p2c4",
+    "keyPoints": [
+      "Pascal's Triangle: Generates the coefficients for the expansion of (a + b)ⁿ",
+      "Factorial Notation: n! = n × (n - 1) × (n - 2) × ... × 1, where 0! = 1",
+      "Combinations Formula: ⁿCᵣ = n! / (r!(n - r)!) representing the number of ways to choose r items from n",
+      "Binomial Theorem: (a + b)ⁿ = aⁿ + ⁿC₁aⁿ⁻¹b + ⁿC₂aⁿ⁻²b² + ... + bⁿ",
+      "General Term of Expansion: The (r+1)th term is given by ⁿCᵣ aⁿ⁻ʳ bʳ",
+      "Expansion of (1 + x)ⁿ: 1 + nx + n(n-1)x²/2! + n(n-1)(n-2)x³/3! + ...",
+      "Using Approximations: Substitute a small value of x into the first few terms of the expansion",
+      "Coefficient Extraction: Find the specific constant multiplying a given power of x in an expansion"
+    ]
+  },
+  {
+    "id": "p2c5",
+    "keyPoints": [
+      "Arithmetic Sequence: The nth term is given by uₙ = a + (n - 1)d, where a is first term and d is common difference",
+      "Sum of an Arithmetic Series (Formula 1): Sₙ = n/2 (2a + (n - 1)d)",
+      "Sum of an Arithmetic Series (Formula 2): Sₙ = n/2 (a + L), where L is the last term",
+      "Geometric Sequence: The nth term is given by uₙ = arⁿ⁻¹, where a is first term and r is common ratio",
+      "Sum of a Geometric Series: Sₙ = a(1 - rⁿ) / (1 - r) or Sₙ = a(rⁿ - 1) / (r - 1)",
+      "Sum to Infinity of a Geometric Series: S∞ = a / (1 - r), valid only when -1 < r < 1",
+      "Sigma Notation: Σ represents the sum of a sequence of terms from a lower limit to an upper limit",
+      "Recurrence Relations: A sequence defined by expressing the next term as a function of the previous term uₙ₊₁ = f(uₙ)",
+      "Increasing and Decreasing Sequences: uₙ₊₁ > uₙ for an increasing sequence, and uₙ₊₁ < uₙ for a decreasing sequence",
+      "Periodic Sequences: A sequence that repeats its terms after a certain interval k, so uₙ₊ₖ = uₙ"
+    ]
+  },
+  {
+    "id": "p2c6",
+    "keyPoints": [
+      "Tangent Identity: tanθ ≡ sinθ / cosθ",
+      "Pythagorean Identity: sin²θ + cos²θ ≡ 1",
+      "Equivalent Pythagorean Forms: sin²θ ≡ 1 - cos²θ and cos²θ ≡ 1 - sin²θ",
+      "CAST Diagram: Identifies which trigonometric ratios are positive in each of the four quadrants",
+      "Principal Value: The primary solution given by a calculator in the standard range",
+      "Solving Trigonometric Equations: Find the principal value, then use symmetry and periodicity to find other solutions in the interval",
+      "Period of Sine and Cosine: Solutions repeat every 360°, so sinθ = sin(θ ± 360°)",
+      "Period of Tangent: Solutions repeat every 180°, so tanθ = tan(θ ± 180°)",
+      "Quadratic Trigonometric Equations: Substitute an identity to form a quadratic equation entirely in sine or entirely in cosine"
+    ]
+  },
+  {
+    "id": "p2c7",
+    "keyPoints": [
+      "Increasing Functions: A function is increasing on an interval if f'(x) ≥ 0 for all x in that interval",
+      "Decreasing Functions: A function is decreasing on an interval if f'(x) ≤ 0 for all x in that interval",
+      "Stationary Points: Points on a curve where the gradient is zero, found by solving f'(x) = 0",
+      "Second Derivative Test: Determines the nature of a stationary point using f''(x)",
+      "Local Maximum: At a stationary point, if f''(x) < 0, the point is a local maximum",
+      "Local Minimum: At a stationary point, if f''(x) > 0, the point is a local minimum",
+      "Point of Inflection: A stationary point where the gradient does not change sign",
+      "Curve Sketching: Use intercepts, stationary points, and asymptotic behaviour to sketch a function",
+      "Optimisation Problems: Form an equation for the quantity to be maximised or minimised, and find where its derivative is zero"
+    ]
+  },
+  {
+    "id": "p2c8",
+    "keyPoints": [
+      "Definite Integral: Evaluates the net area under a curve between limits a and b, written as ∫[a,b] f(x) dx = F(b) - F(a)",
+      "Area Above the x-axis: The definite integral evaluation gives a positive value",
+      "Area Below the x-axis: The definite integral gives a negative value, so take the absolute value for the physical area",
+      "Total Area: For curves crossing the x-axis, calculate integrals for sections separately and add their absolute values",
+      "Area Between a Curve and a Line: Find intersections, then calculate ∫ (Upper - Lower) dx",
+      "Area Between Two Curves: Evaluate the integral of the upper curve minus the lower curve between their intersection points",
+      "The Trapezium Rule: Estimates area under a curve as ≈ ½h [ (y₀ + yₙ) + 2(y₁ + y₂ + ... + yₙ₋₁) ]",
+      "Trapezium Rule Strip Width: h = (b - a) / n, where n is the number of strips",
+      "Accuracy of Trapezium Rule: Overestimates for convex curves and underestimates for concave curves"
+    ]
+  }
+]

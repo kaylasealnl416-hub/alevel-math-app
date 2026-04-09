@@ -353,7 +353,7 @@ export function localiseChapter(chapter, lang) {
     overview: getOverview(),
     hardPoints: en.hardPoints || getField(chapter.hardPoints),
     examTips: en.examTips || getField(chapter.examTips),
-    keyPoints: chapter.keyPoints?.map ? chapter.keyPoints.map(kp => getField(kp)) : chapter.keyPoints,
+    keyPoints: chapter.keyPoints?.map ? chapter.keyPoints.map(kp => kp?.en ?? getField(kp)) : chapter.keyPoints,
     formulas: chapter.formulas || [],
     difficulty: chapter.difficulty,
   };

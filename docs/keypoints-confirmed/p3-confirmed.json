@@ -1,0 +1,116 @@
+[
+  {
+    "id": "p3c1",
+    "keyPoints": [
+      "Simplifying Algebraic Fractions: Factorise numerator and denominator fully, then cancel common factors",
+      "Improper Algebraic Fractions: Use algebraic long division so the degree of numerator < degree of denominator",
+      "Partial Fractions (Distinct Linear Factors): Split into the form A/(x-a) + B/(x-b)",
+      "Partial Fractions (Repeated Linear Factors): Split into the form A/(x-a) + B/(x-a)² + C/(x-b)",
+      "Finding Constants in Partial Fractions: Substitute suitable values of x to eliminate terms and solve",
+      "Equating Coefficients: Expand the identity and equate coefficients of corresponding powers of x",
+      "Remainder Theorem: When polynomial f(x) is divided by (ax-b), the remainder is f(b/a)",
+      "Factor Theorem: If f(a) = 0, then (x-a) is a factor of the polynomial f(x)"
+    ]
+  },
+  {
+    "id": "p3c2",
+    "keyPoints": [
+      "Mappings and Functions: A mapping is a function only if every valid input has exactly one output",
+      "Domain and Range: Domain is the set of all inputs x, Range is the set of all outputs f(x)",
+      "Composite Functions: fg(x) means apply function g first, then apply function f to the result",
+      "Inverse Functions: f⁻¹(x) exists if and only if f(x) is a one-to-one function",
+      "Finding Inverses: Swap x and y in the equation, then rearrange to make y the subject",
+      "Graph of Inverse: The graph of y = f⁻¹(x) is a reflection of y = f(x) in the line y = x",
+      "Modulus Function: |x| = x for x ≥ 0, and |x| = -x for x < 0",
+      "Graph of y = |f(x)|: Reflect any parts of the curve below the x-axis upwards in the x-axis",
+      "Graph of y = f(|x|): Erase the left side of the y-axis, then reflect the right side in the y-axis",
+      "Solving Modulus Equations: Isolate the modulus expression, then split into positive and negative cases"
+    ]
+  },
+  {
+    "id": "p3c3",
+    "keyPoints": [
+      "Secant Function: sec θ = 1 / cos θ",
+      "Cosecant Function: cosec θ = 1 / sin θ",
+      "Cotangent Function: cot θ = 1 / tan θ = cos θ / sin θ",
+      "Pythagorean Identities: 1 + tan²θ ≡ sec²θ and 1 + cot²θ ≡ cosec²θ",
+      "Addition Formula (Sine): sin(A ± B) = sin A cos B ± cos A sin B",
+      "Addition Formula (Cosine): cos(A ± B) = cos A cos B ∓ sin A sin B",
+      "Addition Formula (Tangent): tan(A ± B) = (tan A ± tan B) / (1 ∓ tan A tan B)",
+      "Double Angle (Sine): sin 2A = 2 sin A cos A",
+      "Double Angle (Cosine): cos 2A = cos²A - sin²A = 2cos²A - 1 = 1 - 2sin²A",
+      "R-alpha Form: a cos θ ± b sin θ = R cos(θ ∓ α) where R = √(a² + b²) and tan α = b/a"
+    ]
+  },
+  {
+    "id": "p3c4",
+    "keyPoints": [
+      "Derivative of Natural Exponential: d/dx(eˣ) = eˣ",
+      "Derivative of Scaled Exponential: d/dx(eᵏˣ) = k eᵏˣ",
+      "Derivative of Natural Logarithm: d/dx(ln x) = 1/x",
+      "Derivative of General Base: d/dx(aˣ) = aˣ ln a",
+      "Exponential Growth Model: N = A eᵏᵗ where k > 0 models an increasing population",
+      "Exponential Decay Model: N = A e⁻ᵏᵗ where k > 0 models a decreasing quantity",
+      "Log-linear Graphs: Plotting ln y against t for y = A eᵏᵗ produces a straight line with gradient k",
+      "Log-log Graphs: Plotting log y against log x for y = A xⁿ produces a straight line with gradient n"
+    ]
+  },
+  {
+    "id": "p3c5",
+    "keyPoints": [
+      "Chain Rule: dy/dx = (dy/du) × (du/dx) used for composite functions",
+      "Product Rule: d/dx(uv) = u(dv/dx) + v(du/dx) used for multiplied functions",
+      "Quotient Rule: d/dx(u/v) = (v(du/dx) - u(dv/dx)) / v² used for divided functions",
+      "Differentiating Sine: d/dx(sin kx) = k cos kx",
+      "Differentiating Cosine: d/dx(cos kx) = -k sin kx",
+      "Differentiating Tangent: d/dx(tan kx) = k sec²(kx)",
+      "Differentiating Secant: d/dx(sec x) = sec x tan x",
+      "Differentiating Cosecant: d/dx(cosec x) = -cosec x cot x",
+      "Differentiating Cotangent: d/dx(cot x) = -cosec²x",
+      "Implicit Differentiation: Differentiate y terms with respect to y, then multiply by dy/dx"
+    ]
+  },
+  {
+    "id": "p3c6",
+    "keyPoints": [
+      "Integrating Exponentials: ∫ eᵏˣ dx = (1/k)eᵏˣ + C",
+      "Integrating Reciprocals: ∫ (1/x) dx = ln|x| + C",
+      "Integrating Fractions f'/f: ∫ (f'(x)/f(x)) dx = ln|f(x)| + C",
+      "Integrating Sine: ∫ sin kx dx = -(1/k)cos kx + C",
+      "Integrating Cosine: ∫ cos kx dx = (1/k)sin kx + C",
+      "Integrating Secant Squared: ∫ sec²kx dx = (1/k)tan kx + C",
+      "Integration by Substitution: Replace x with u to simplify the integral, remembering to convert dx to du",
+      "Integration by Parts: ∫ u (dv/dx) dx = uv - ∫ v (du/dx) dx",
+      "Volume of Revolution (x-axis): V = π ∫ y² dx evaluated between limits a and b",
+      "Volume of Revolution (y-axis): V = π ∫ x² dy evaluated between limits c and d"
+    ]
+  },
+  {
+    "id": "p3c7",
+    "keyPoints": [
+      "Position Vector: A vector from the origin O to a point A, denoted as a or OA",
+      "Vector Magnitude: Length of vector a = xi + yj + zk is |a| = √(x² + y² + z²)",
+      "Unit Vector: A vector of length 1 in the direction of a, calculated as a / |a|",
+      "Vector Equation of a Line: r = a + λb where a is a position vector and b is a direction vector",
+      "Parallel Lines: Two lines are parallel if their direction vectors are scalar multiples of each other",
+      "Intersecting Lines: Found by equating the r vectors of two lines and solving for scalars λ and μ",
+      "Skew Lines: Lines in 3D space that are neither parallel nor intersect",
+      "Dot Product (Scalar Product): a · b = a₁b₁ + a₂b₂ + a₃b₃",
+      "Angle Between Vectors: Calculated using cos θ = (a · b) / (|a| |b|)",
+      "Perpendicular Vectors: Two non-zero vectors are perpendicular if their dot product a · b = 0"
+    ]
+  },
+  {
+    "id": "p3c8",
+    "keyPoints": [
+      "Formulating Differential Equations: Express a contextual rate of change mathematically using dy/dt or dx/dt",
+      "Direct Integration: If dy/dx = f(x), then the solution is y = ∫ f(x) dx",
+      "Separation of Variables: Rearrange dy/dx = f(x)g(y) to the form ∫ (1/g(y)) dy = ∫ f(x) dx",
+      "General Solution: The integrated equation containing an arbitrary constant of integration + C",
+      "Particular Solution: Found by substituting boundary or initial conditions into the general solution to evaluate C",
+      "Proportional Rates: 'Rate of growth is proportional to y' translates to dy/dt = ky",
+      "Newton's Law of Cooling: Rate of temperature change is proportional to difference with surroundings: dT/dt = -k(T - T₀)",
+      "Connected Rates of Change: Use the chain rule to link related variables, e.g., dy/dt = (dy/dx) × (dx/dt)"
+    ]
+  }
+]

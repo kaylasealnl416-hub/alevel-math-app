@@ -1,0 +1,120 @@
+[
+  {
+    "id": "p1c1",
+    "keyPoints": [
+      "Index Laws: aᵐ × aⁿ = aᵐ⁺ⁿ; aᵐ ÷ aⁿ = aᵐ⁻ⁿ; (aᵐ)ⁿ = aᵐⁿ",
+      "Fractional Indices: a to the power of 1/m is the m-th root of a",
+      "Negative Indices: a⁻ᵐ = 1 ÷ aᵐ",
+      "Difference of Two Squares: x² - y² = (x + y)(x - y)",
+      "Surd Multiplication: √(ab) = √a × √b",
+      "Surd Division: √(a ÷ b) = √a ÷ √b",
+      "Rationalising Denominators: Multiply numerator and denominator by a - √b for fractions containing a + √b",
+      "Factorising Quadratics: Find factors of ac that sum to b to factorise ax² + bx + c"
+    ]
+  },
+  {
+    "id": "p1c2",
+    "keyPoints": [
+      "Quadratic Equation Form: ax² + bx + c = 0 where a ≠ 0",
+      "Quadratic Formula: x = (-b ± √(b² - 4ac)) ÷ 2a",
+      "Completing the Square: x² + bx = (x + b/2)² - (b/2)²",
+      "General Completed Square: ax² + bx + c = a(x + b/2a)² + (c - b²/4a)",
+      "Turning Point: The minimum or maximum point of a quadratic graph y = a(x + p)² + q is at (-p, q)",
+      "Discriminant: b² - 4ac determines the number of real roots of a quadratic equation",
+      "Two Distinct Real Roots: b² - 4ac > 0",
+      "One Repeated Root: b² - 4ac = 0",
+      "No Real Roots: b² - 4ac < 0"
+    ]
+  },
+  {
+    "id": "p1c3",
+    "keyPoints": [
+      "Linear Simultaneous Equations: Can be solved using the methods of elimination or substitution",
+      "Quadratic Simultaneous Equations: Require substitution from the linear equation to the quadratic equation",
+      "Graphical Intersections: Solutions to simultaneous equations represent the coordinates where their graphs intersect",
+      "Linear Inequalities: Solved similarly to equations but the inequality sign reverses when multiplying or dividing by a negative number",
+      "Quadratic Inequalities: Rearrange to f(x) > 0 or f(x) < 0, find critical values, and sketch the graph to deduce the solution set",
+      "Curve Positions: The inequality f(x) < g(x) represents the x-values where the curve y = f(x) is below the curve y = g(x)",
+      "Regions: The inequality y < f(x) represents the coordinate area strictly below the curve y = f(x)",
+      "Solid vs Dotted Lines: Use a solid line for ≤ or ≥ and a dotted line for < or > when defining regions on a graph"
+    ]
+  },
+  {
+    "id": "p1c4",
+    "keyPoints": [
+      "Cubic Graphs: f(x) = ax³ + bx² + cx + d has up to 3 roots and crosses the y-axis at the constant d",
+      "Cubic Roots: If p is a root of f(x), then the graph of y = f(x) touches or crosses the x-axis at (p, 0)",
+      "Reciprocal Graphs: y = a ÷ x has asymptotes at x = 0 and y = 0",
+      "Inverse Square Graphs: y = a ÷ x² has asymptotes at x = 0 and y = 0 and the y-values are always positive if a > 0",
+      "Vertical Translation: The transformation y = f(x) + a shifts the graph vertically by a units",
+      "Horizontal Translation: The transformation y = f(x + a) shifts the graph horizontally by -a units",
+      "Vertical Stretch: The transformation y = af(x) stretches the graph vertically by a scale factor of a",
+      "Horizontal Stretch: The transformation y = f(ax) stretches the graph horizontally by a scale factor of 1/a"
+    ]
+  },
+  {
+    "id": "p1c5",
+    "keyPoints": [
+      "Equation of a Line: y = mx + c where m is the gradient and c is the y-intercept",
+      "Gradient Formula: m = (y₂ - y₁) ÷ (x₂ - x₁)",
+      "Point-Gradient Equation: y - y₁ = m(x - x₁)",
+      "General Form of a Line: ax + by + c = 0 where a, b, and c are integers",
+      "Parallel Lines: Have identical gradients where m₁ = m₂",
+      "Perpendicular Lines: Gradients multiply to -1 where m₁ × m₂ = -1",
+      "Distance Between Points: d = √((x₂ - x₁)² + (y₂ - y₁)²)",
+      "Midpoint Formula: M = ((x₁ + x₂) ÷ 2, (y₁ + y₂) ÷ 2)"
+    ]
+  },
+  {
+    "id": "p1c6",
+    "keyPoints": [
+      "Cosine Rule (Side Length): a² = b² + c² - 2bc cos(A)",
+      "Cosine Rule (Angle): cos(A) = (b² + c² - a²) ÷ 2bc",
+      "Sine Rule: a ÷ sin(A) = b ÷ sin(B) = c ÷ sin(C)",
+      "Area of a Triangle: Area = ½ab sin(C)",
+      "Sine Graph: Period is 360°, ranges from -1 to 1, and passes through the origin",
+      "Cosine Graph: Period is 360°, ranges from -1 to 1, and the y-intercept is 1",
+      "Tangent Graph: Period is 180° with asymptotes at x = 90° ± 180°n",
+      "Transforming Trigonometric Graphs: y = sin(x + θ) shifts the sine graph horizontally by -θ"
+    ]
+  },
+  {
+    "id": "p1c7",
+    "keyPoints": [
+      "Radian Measure: 180° = π radians",
+      "Radian Conversion: To convert degrees to radians, multiply by π ÷ 180",
+      "Arc Length Formula: s = rθ where θ is measured in radians",
+      "Sector Area Formula: A = ½r²θ where θ is measured in radians",
+      "Segment Area: Area of a segment = ½r²(θ - sin(θ)) where θ is in radians",
+      "Perimeter of a Sector: Perimeter = 2r + rθ where θ is in radians",
+      "Area of a Triangle in Radians: Area = ½ab sin(C) applies directly when C is in radians",
+      "Exact Trigonometric Values: Familiarity with exact radian values such as sin(π ÷ 6) = 1 ÷ 2 is required"
+    ]
+  },
+  {
+    "id": "p1c8",
+    "keyPoints": [
+      "Gradient of a Curve: The gradient of a curve at a point is the gradient of the tangent to the curve at that point",
+      "Power Rule: If y = xⁿ, then dy ÷ dx = nxⁿ⁻¹",
+      "Constant Rule: The derivative of any constant value is 0",
+      "Multiple Terms: Differentiate each term independently for expressions involving addition or subtraction",
+      "Finding Gradients: Substitute the given x-value into the derivative f'(x) to evaluate the gradient at a specific point",
+      "Equation of Tangent: y - y₁ = m(x - x₁) where the gradient m = f'(x₁)",
+      "Equation of Normal: y - y₁ = (-1 ÷ m)(x - x₁) where the normal gradient is the negative reciprocal of f'(x₁)",
+      "Second Order Derivatives: f''(x) or d²y ÷ dx² is obtained by differentiating the first derivative"
+    ]
+  },
+  {
+    "id": "p1c9",
+    "keyPoints": [
+      "Indefinite Integration: Integration is the reverse of differentiation; ∫ f'(x) dx = f(x) + c",
+      "Power Rule for Integration: ∫xⁿ dx = (xⁿ⁺¹ ÷ (n + 1)) + c, valid for all n ≠ -1",
+      "Constant of Integration: Always include the constant + c for all indefinite integrals",
+      "Multiple Terms: Integrate each term in a polynomial independently",
+      "Constant Multiples: ∫kf(x) dx = k∫f(x) dx where k is a constant multiplier",
+      "Finding the Function: If the derivative f'(x) is known, the original function is f(x) = ∫f'(x) dx",
+      "Evaluating c: Substitute a given coordinate (x, y) on the curve into the integrated equation to solve for the constant of integration",
+      "Fractional Powers: Convert all roots and reciprocal terms to fractional or negative indices before integrating"
+    ]
+  }
+]

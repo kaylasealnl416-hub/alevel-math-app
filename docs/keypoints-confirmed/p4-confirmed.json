@@ -1,0 +1,117 @@
+[
+  {
+    "id": "p4c1",
+    "keyPoints": [
+      "Basis Case: Show the statement is true for the first value, usually n = 1",
+      "Inductive Hypothesis: Assume the statement is true for n = k",
+      "Inductive Step: Show that if it is true for n = k, it must also be true for n = k + 1",
+      "Conclusion Statement: Conclude the statement is true for all n ∈ ℤ⁺ by mathematical induction",
+      "Series Induction: Prove Σ f(r) = S(n) by showing S(k) + f(k+1) = S(k+1)",
+      "Divisibility Induction: Prove f(n) is divisible by d by showing f(k+1) - f(k) = md",
+      "Matrix Induction: Prove Mⁿ = A by showing Mᵏ × M = Mᵏ⁺¹",
+      "Inequality Induction: Prove f(n) > g(n) by manipulating f(k+1) using the assumption f(k) > g(k)"
+    ]
+  },
+  {
+    "id": "p4c2",
+    "keyPoints": [
+      "Imaginary Unit: i = √(-1) and i² = -1",
+      "Complex Number Form: z = x + iy, where x is the real part and y is the imaginary part",
+      "Complex Conjugate: The conjugate of z = x + iy is z* = x - iy",
+      "Modulus: |z| = √(x² + y²), representing the distance from the origin on an Argand diagram",
+      "Argument: arg(z) = θ, the angle made with the positive real axis, where -π < θ ≤ π",
+      "Modulus-Argument Form: z = r(cos θ + i sin θ), where r = |z|",
+      "Multiplication in Polar: r₁(cos θ₁ + i sin θ₁) × r₂(cos θ₂ + i sin θ₂) = r₁r₂(cos(θ₁ + θ₂) + i sin(θ₁ + θ₂))",
+      "Division in Polar: (r₁/r₂)(cos(θ₁ - θ₂) + i sin(θ₁ - θ₂))",
+      "Locus of a Circle: |z - z₁| = r represents a circle with centre z₁ and radius r",
+      "Perpendicular Bisector Locus: |z - z₁| = |z - z₂| is the perpendicular bisector of the line joining z₁ and z₂"
+    ]
+  },
+  {
+    "id": "p4c3",
+    "keyPoints": [
+      "Matrix Addition and Subtraction: Matrices must have the same dimensions to add or subtract corresponding elements",
+      "Matrix Multiplication: Multiply rows of the first matrix by columns of the second; AB is not necessarily equal to BA",
+      "Identity Matrix: A square matrix I with 1s on the main diagonal and 0s elsewhere, where MI = IM = M",
+      "Determinant of 2×2: For M = (a b; c d), det(M) = ad - bc",
+      "Inverse of 2×2: M⁻¹ = (1/det(M)) × (d -b; -c a)",
+      "Singular Matrix: A matrix with det(M) = 0, meaning it has no inverse",
+      "Linear Transformations: A matrix maps a position vector (x, y) to a new position (x', y')",
+      "Rotation Matrix: Represents anticlockwise rotation by θ about the origin: (cos θ, -sin θ; sin θ, cos θ)",
+      "Successive Transformations: Applying transformation M₁ then M₂ is given by the matrix product M₂M₁",
+      "Area Scale Factor: The absolute value of the determinant |det(M)| gives the area scale factor of the transformation"
+    ]
+  },
+  {
+    "id": "p4c4",
+    "keyPoints": [
+      "Vector Equation of a Line: r = a + t d, where a is a position vector and d is the direction vector",
+      "Scalar Dot Product: a · b = a₁b₁ + a₂b₂ + a₃b₃ = |a||b|cos θ",
+      "Perpendicular Vectors: Two non-zero vectors a and b are perpendicular if a · b = 0",
+      "Vector Cross Product: a × b = (|a||b|sin θ)n̂, producing a vector perpendicular to both a and b",
+      "Area of a Triangle: Area = ½ |a × b| where a and b are vectors forming adjacent sides",
+      "Scalar Triple Product: a · (b × c) calculates the volume of a parallelepiped",
+      "Vector Equation of a Plane: r · n = a · n = d, where n is a normal vector to the plane",
+      "Cartesian Equation of a Plane: n₁x + n₂y + n₃z = d, where (n₁, n₂, n₃) is the normal vector",
+      "Angle Between Two Planes: Found using the dot product of their normal vectors: cos θ = |n₁ · n₂| / (|n₁||n₂|)",
+      "Shortest Distance from Origin to Plane: Distance = |d| / |n| for the plane r · n = d"
+    ]
+  },
+  {
+    "id": "p4c5",
+    "keyPoints": [
+      "Definition of sinh x: sinh x = (eˣ - e⁻ˣ) / 2",
+      "Definition of cosh x: cosh x = (eˣ + e⁻ˣ) / 2",
+      "Definition of tanh x: tanh x = sinh x / cosh x = (eˣ - e⁻ˣ) / (eˣ + e⁻ˣ)",
+      "Fundamental Identity: cosh²x - sinh²x = 1",
+      "Secondary Identity: 1 - tanh²x = sech²x",
+      "Osborn's Rule: Replace trigonometric functions with hyperbolic ones, but change the sign of any product of two sines",
+      "Derivative of sinh x: d/dx(sinh x) = cosh x",
+      "Derivative of cosh x: d/dx(cosh x) = sinh x",
+      "Inverse Hyperbolic Functions: arsinh x = ln(x + √(x² + 1))",
+      "Solving Hyperbolic Equations: Convert sinh x and cosh x to exponential forms to form a quadratic in eˣ"
+    ]
+  },
+  {
+    "id": "p4c6",
+    "keyPoints": [
+      "Polar Coordinate System: Points are defined by (r, θ), where r is the distance from the pole and θ is the angle from the initial line",
+      "Conversion to Cartesian: x = r cos θ and y = r sin θ",
+      "Conversion from Cartesian: r = √(x² + y²) and tan θ = y / x",
+      "Area of a Polar Sector: Area = ½ ∫ r² dθ between limits α and β",
+      "Symmetry about Initial Line: If r(θ) = r(-θ), the curve is symmetrical about the initial line (x-axis)",
+      "Symmetry about Pole: If r(θ) = r(π + θ), the curve has half-turn symmetry about the origin",
+      "Tangents Parallel to Initial Line: Occur where dy/dθ = 0, using y = r sin θ",
+      "Tangents Perpendicular to Initial Line: Occur where dx/dθ = 0, using x = r cos θ",
+      "Intersections of Polar Curves: Set r₁ = r₂ and solve for θ within the given interval"
+    ]
+  },
+  {
+    "id": "p4c7",
+    "keyPoints": [
+      "Maclaurin Series Expansion: f(x) = f(0) + x f'(0) + (x²/2!)f''(0) + (x³/3!)f'''(0) + ...",
+      "Series Expansion Validity: The range of values of x for which the infinite series converges to the function",
+      "Standard Expansions: Use known Maclaurin series for eˣ, sin x, cos x, and ln(1+x) to form composite series",
+      "Improper Integrals (Infinite Limits): Evaluate ∫ f(x) dx to ∞ by taking the limit as upper bound approaches ∞",
+      "Improper Integrals (Asymptotes): Evaluate by taking the limit as the bound approaches the undefined value",
+      "Integration by Substitution: Let u = g(x), replace dx with (dx/du)du, and adjust the limits",
+      "Volume of Revolution (Parametric): V = π ∫ y² (dx/dt) dt",
+      "Mean Value of a Function: Mean = (1 / (b - a)) ∫ f(x) dx from a to b"
+    ]
+  },
+  {
+    "id": "p4c8",
+    "keyPoints": [
+      "General Form: a(d²y/dx²) + b(dy/dx) + cy = f(x)",
+      "Auxiliary Equation: Form the quadratic am² + bm + c = 0 to find the Complementary Function (CF)",
+      "CF for Two Real Roots (m₁, m₂): y = A e^(m₁x) + B e^(m₂x)",
+      "CF for One Repeated Root (m): y = (A + Bx) e^(mx)",
+      "CF for Complex Roots (p ± qi): y = e^(px) (A cos qx + B sin qx)",
+      "Particular Integral (PI): A specific trial function representing the non-homogeneous part f(x)",
+      "PI for Polynomial f(x): Use a trial function of the same degree, e.g., y = λx² + μx + ν",
+      "PI for Exponential f(x) = k e^(nx): Try y = λ e^(nx), unless n is a root of the auxiliary equation",
+      "PI for Trigonometric f(x): Try y = λ cos ωx + μ sin ωx",
+      "General Solution: Combine the Complementary Function and Particular Integral: y = CF + PI"
+    ]
+  }
+]

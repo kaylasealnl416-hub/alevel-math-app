@@ -1,0 +1,95 @@
+[
+  {
+    "id": "m1c1",
+    "keyPoints": [
+      "Particle Model: Mass is concentrated at a single point, rotational forces and air resistance are ignored",
+      "Displacement: s = average velocity × time = ½(u + v)t",
+      "Constant Acceleration (Velocity): v = u + at",
+      "Constant Acceleration (Displacement 1): s = ut + ½at²",
+      "Constant Acceleration (Displacement 2): s = vt - ½at²",
+      "Constant Acceleration (Velocity Squared): v² = u² + 2as",
+      "Velocity-Time Graphs: Gradient represents acceleration, area under the graph represents displacement",
+      "Displacement-Time Graphs: Gradient represents velocity"
+    ]
+  },
+  {
+    "id": "m1c2",
+    "keyPoints": [
+      "Newton's First Law: A particle remains at rest or moves with constant velocity unless acted upon by a resultant force",
+      "Newton's Second Law: Resultant Force = mass × acceleration (F = ma)",
+      "Newton's Third Law: For every action, there is an equal and opposite reaction",
+      "Weight: The gravitational force acting on a mass, W = mg",
+      "Normal Reaction: The force acting perpendicular to a surface when an object is in contact with it",
+      "Connected Particles: Particles connected by a taut string share the same tension and magnitude of acceleration",
+      "Pulleys: A smooth, light pulley ensures tension is constant throughout the string",
+      "Resolving Forces: F_x = F cos θ and F_y = F sin θ for a force F at angle θ to the horizontal"
+    ]
+  },
+  {
+    "id": "m1c3",
+    "keyPoints": [
+      "Equilibrium Condition: The vector sum of all forces acting on a particle is zero",
+      "Limiting Equilibrium: The point at which a particle is just about to move, friction is at its maximum",
+      "Frictional Force: Friction acts in the direction opposite to potential or actual motion",
+      "Coefficient of Friction: F_max = μR, where μ is the coefficient of friction and R is the normal reaction",
+      "Static Friction: F ≤ μR when the particle is not moving",
+      "Smooth Surfaces: Frictional force is assumed to be zero (μ = 0)",
+      "Inclined Planes: Weight components are mg sin θ parallel to the slope and mg cos θ perpendicular to the slope",
+      "Triangle of Forces: Three coplanar forces in equilibrium can be represented by a closed vector triangle"
+    ]
+  },
+  {
+    "id": "m1c4",
+    "keyPoints": [
+      "Moment of a Force: Moment = Force × perpendicular distance from the pivot",
+      "Direction of Moments: Measured as either clockwise or anticlockwise",
+      "Principle of Moments: For a system in equilibrium, total clockwise moments = total anticlockwise moments",
+      "Centre of Mass (Uniform Rod): The weight acts exactly at the midpoint of the rod",
+      "Non-uniform Rod: The weight acts at the centre of mass, which is not necessarily the geometric centre",
+      "Tilting: When a rigid body is on the verge of tilting about a pivot, the reaction at all other supports is zero",
+      "Equilibrium of a Rigid Body: Resultant force is zero in all directions AND resultant moment is zero about any point",
+      "Couples: Two equal and opposite parallel forces that produce rotation but no translation"
+    ]
+  },
+  {
+    "id": "m1c5",
+    "keyPoints": [
+      "Work Done: Work = Force × distance moved in the direction of the force (W = Fs)",
+      "Work Done at an Angle: W = Fs cos θ",
+      "Kinetic Energy (KE): KE = ½mv², the energy of a moving object",
+      "Gravitational Potential Energy (GPE): GPE = mgh, the energy gained by raising a mass through height h",
+      "Work-Energy Principle: Net work done on a particle equals its change in kinetic energy",
+      "Conservation of Mechanical Energy: If no external forces act, total mechanical energy (KE + GPE) is constant",
+      "Work Done Against Friction: Decreases the total mechanical energy of the system",
+      "Power: The rate at which work is done, P = Work / time",
+      "Driving Power: P = Fv, where F is the driving force and v is the velocity"
+    ]
+  },
+  {
+    "id": "m1c6",
+    "keyPoints": [
+      "Momentum: A vector quantity defined as mass × velocity (p = mv)",
+      "Impulse of a Force: Impulse = Force × time (I = Ft)",
+      "Impulse-Momentum Principle: Impulse = Change in momentum (I = mv - mu)",
+      "Conservation of Momentum: Total momentum before collision = Total momentum after collision (m₁u₁ + m₂u₂ = m₁v₁ + m₂v₂)",
+      "Coalescing Particles: If two particles stick together after collision, m₁u₁ + m₂u₂ = (m₁ + m₂)v",
+      "Impact with a Wall: Impulse exerted by the wall = m(v - u), considering vector directions carefully",
+      "Newton's Law of Restitution: Speed of separation = e × speed of approach",
+      "Perfectly Elastic Collision: Coefficient of restitution e = 1, no kinetic energy is lost",
+      "Perfectly Inelastic Collision: Coefficient of restitution e = 0, particles coalesce"
+    ]
+  },
+  {
+    "id": "m1c7",
+    "keyPoints": [
+      "Horizontal Component of Velocity: Remains constant throughout motion (u_x = u cos θ)",
+      "Vertical Component of Velocity: Subject to constant downward acceleration due to gravity (u_y = u sin θ, a_y = -g)",
+      "Horizontal Displacement: x = (u cos θ)t",
+      "Vertical Displacement: y = (u sin θ)t - ½gt²",
+      "Time of Flight: Found by setting vertical displacement y = 0",
+      "Maximum Height: Occurs when the vertical component of velocity is zero",
+      "Horizontal Range: The horizontal distance travelled when the projectile returns to its initial height",
+      "Equation of Trajectory: y = x tan θ - (gx²)/(2u² cos² θ)"
+    ]
+  }
+]

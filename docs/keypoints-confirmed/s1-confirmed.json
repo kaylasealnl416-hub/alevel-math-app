@@ -1,0 +1,102 @@
+[
+  {
+    "id": "s1c1",
+    "keyPoints": [
+      "Mathematical Model: A simplified mathematical representation of a real-world situation",
+      "Modelling Process Step 1: Recognise a real-world problem and state objectives",
+      "Modelling Process Step 2: Make assumptions to simplify the problem",
+      "Modelling Process Step 3: Formulate a mathematical model based on the variables",
+      "Modelling Process Step 4: Use the model to make predictions",
+      "Modelling Process Step 5: Collect experimental data and compare with predictions",
+      "Modelling Process Step 6: Refine the model if predictions do not match observed data",
+      "Advantages of Models: Quick, cheap, easily adaptable, and avoid ethical or practical issues of real experiments"
+    ]
+  },
+  {
+    "id": "s1c2",
+    "keyPoints": [
+      "Mean: x̄ = Σx / n for raw data, or x̄ = Σfx / Σf for frequency distributions",
+      "Median: The middle value when data is ordered, giving the 50th percentile (Q2)",
+      "Mode: The most frequently occurring value or class in the data set",
+      "Range: The difference between the highest and lowest values",
+      "Lower Quartile (Q1): The value at the 25th percentile of ordered data",
+      "Upper Quartile (Q3): The value at the 75th percentile of ordered data",
+      "Interquartile Range (IQR): IQR = Q3 - Q1, measuring the spread of the middle 50% of data",
+      "Variance (σ²): The mean of the squares minus the square of the mean: σ² = (Σx² / n) - x̄²",
+      "Standard Deviation (σ): The square root of variance, measuring average deviation from the mean",
+      "Linear Coding: If y = (x - a) / b, then mean ȳ = (x̄ - a) / b and standard deviation σ_y = σ_x / b"
+    ]
+  },
+  {
+    "id": "s1c3",
+    "keyPoints": [
+      "Outliers: Extreme values typically defined as > Q3 + 1.5×IQR or < Q1 - 1.5×IQR",
+      "Box Plot: A visual diagram showing the minimum, Q1, median, Q3, maximum, and outliers",
+      "Histogram: A chart for continuous data where the area of the bar represents frequency",
+      "Frequency Density: Used for histogram y-axis, calculated as Frequency / Class Width",
+      "Cumulative Frequency: A running total of frequencies, always plotted at the upper class boundary",
+      "Symmetrical Distribution: Mean = Median = Mode, and Q3 - Q2 = Q2 - Q1",
+      "Positive Skew: Mean > Median > Mode, and Q3 - Q2 > Q2 - Q1 (tail points right)",
+      "Negative Skew: Mean < Median < Mode, and Q2 - Q1 > Q3 - Q2 (tail points left)",
+      "Stem and Leaf Diagram: Displays the shape of a distribution while retaining original raw data values",
+      "Comparing Distributions: Always compare one measure of location (e.g., median) and one measure of spread (e.g., IQR)"
+    ]
+  },
+  {
+    "id": "s1c4",
+    "keyPoints": [
+      "Probability Range: For any event A, 0 ≤ P(A) ≤ 1",
+      "Complementary Event: The probability of an event not happening is P(A') = 1 - P(A)",
+      "Addition Rule: P(A ∪ B) = P(A) + P(B) - P(A ∩ B)",
+      "Mutually Exclusive Events: Events that cannot happen together, where P(A ∩ B) = 0",
+      "Independent Events: The occurrence of one event does not affect the other, where P(A ∩ B) = P(A) × P(B)",
+      "Conditional Probability: The probability of A given B has occurred is P(A | B) = P(A ∩ B) / P(B)",
+      "Tree Diagrams: Used for sequential events; multiply probabilities along branches to find intersections",
+      "Venn Diagrams: Visual representations of sets used to calculate unions, intersections, and conditional probabilities",
+      "Sum of Exhaustive Events: The sum of probabilities of all mutually exclusive and exhaustive outcomes is 1"
+    ]
+  },
+  {
+    "id": "s1c5",
+    "keyPoints": [
+      "Scatter Diagram: A graph to visualize the relationship between two variables (x and y)",
+      "Explanatory Variable (x): The independent variable plotted on the horizontal axis",
+      "Response Variable (y): The dependent variable plotted on the vertical axis",
+      "PMCC (r): Product Moment Correlation Coefficient measures linear strength, where -1 ≤ r ≤ 1",
+      "Causation: A strong correlation (r close to 1 or -1) does not automatically imply that one variable causes the other",
+      "Regression Line of y on x: Equation y = a + bx used to estimate y for a given x",
+      "Gradient (b): Represents the predicted change in the response variable y for a 1-unit increase in x",
+      "Intercept (a): Represents the predicted value of y when x = 0",
+      "Interpolation: Making a prediction within the range of the given data (generally reliable)",
+      "Extrapolation: Making a prediction outside the range of the given data (unreliable)"
+    ]
+  },
+  {
+    "id": "s1c6",
+    "keyPoints": [
+      "Discrete Random Variable: A variable X that can only take specific, distinct values with associated probabilities",
+      "Probability Distribution: A table or formula showing all possible outcomes of X and their probabilities, where Σ P(X=x) = 1",
+      "Discrete Uniform Distribution: All possible values of X have an equal probability of occurring",
+      "Expected Value (Mean): E(X) = μ = Σ x P(X=x)",
+      "Expected Value of a Function: E(g(X)) = Σ g(x) P(X=x)",
+      "Variance: Var(X) = σ² = E(X²) - (E(X))²",
+      "Linear Transformation of Mean: E(aX + b) = aE(X) + b",
+      "Linear Transformation of Variance: Var(aX + b) = a²Var(X)",
+      "Cumulative Distribution Function: F(x) = P(X ≤ x), representing the running total of probabilities"
+    ]
+  },
+  {
+    "id": "s1c7",
+    "keyPoints": [
+      "Normal Distribution: A continuous, bell-shaped, symmetrical distribution denoted by X ~ N(μ, σ²)",
+      "Properties: Symmetrical about the mean, so Mean = Median = Mode, and the total area under the curve is 1",
+      "Standard Normal Distribution: Denoted by Z ~ N(0, 1) with mean 0 and variance 1",
+      "Standardisation Formula: Converts any normal variable to a standard normal variable using Z = (X - μ) / σ",
+      "Using Tables: The statistical tables provide Φ(z) = P(Z < z) for positive values of z",
+      "Symmetry Rule: For negative values, use the symmetry property P(Z < -z) = 1 - P(Z < z)",
+      "Inverse Normal: Using the probability area to read backwards from the tables to find the corresponding z-value",
+      "Percentage Points: Approximately 68% of data lies within μ ± σ, 95% within μ ± 2σ, and 99.7% within μ ± 3σ",
+      "Finding Unknown Parameters: Form simultaneous linear equations using Z = (X - μ) / σ to find unknown μ or σ"
+    ]
+  }
+]
