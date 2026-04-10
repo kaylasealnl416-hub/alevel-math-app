@@ -152,6 +152,17 @@ app.use('/api/auth/register', rateLimiter({
   }
 }))
 
+// 严格的速率限制 - 刷新端点（防止令牌枚举）
+app.use('/api/auth/refresh', rateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 分钟
+  limit: 10, // 最多 10 次刷新尝试
+  standardHeaders: 'draft-6',
+  keyGenerator: (c) => c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || 'anonymous'
+}))
+
+// /me 路由先走统一鉴权中间件，避免和 authMiddleware 逻辑分叉
+app.use('/api/auth/me', authMiddleware)
+
 // 公开路由（无需认证，带缓存）
 app.route('/api/auth', authRoutes)
 
@@ -173,13 +184,17 @@ app.use('/api/progress/*', authMiddleware, csrfProtection())
 // chat 路由已移除
 app.use('/api/questions', authMiddleware, csrfProtection())
 app.use('/api/questions/*', authMiddleware, csrfProtection())
+app.use('/api/question-sets', authMiddleware, csrfProtection())
 app.use('/api/question-sets/*', authMiddleware, csrfProtection())
+app.use('/api/user-answers', authMiddleware, csrfProtection())
 app.use('/api/user-answers/*', authMiddleware, csrfProtection())
 app.use('/api/exams', authMiddleware, csrfProtection())
 app.use('/api/exams/*', authMiddleware, csrfProtection())
 app.use('/api/recommendations', authMiddleware, csrfProtection())
 app.use('/api/recommendations/*', authMiddleware, csrfProtection())
+app.use('/api/learning-plans', authMiddleware, csrfProtection())
 app.use('/api/learning-plans/*', authMiddleware, csrfProtection())
+app.use('/api/wrong-questions', authMiddleware, csrfProtection())
 app.use('/api/wrong-questions/*', authMiddleware, csrfProtection())
 // practice 需要认证
 

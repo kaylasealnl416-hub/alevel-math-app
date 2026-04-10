@@ -17,6 +17,16 @@ describe('jwt utils', () => {
 
     expect(payload.userId).toBe(42)
     expect(payload.email).toBe('unit@example.com')
+    expect(payload.type).toBe('access')
+  })
+
+  test('generateRefreshToken creates refresh-type payload', async () => {
+    const { generateRefreshToken, verifyToken } = await loadJwtModule()
+    const refreshToken = generateRefreshToken({ userId: 7 })
+    const payload = verifyToken(refreshToken)
+
+    expect(payload.userId).toBe(7)
+    expect(payload.type).toBe('refresh')
   })
 
   test('verifyToken returns null for invalid token', async () => {

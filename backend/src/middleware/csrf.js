@@ -3,7 +3,7 @@
  * 防止跨站请求伪造攻击
  */
 
-import { randomBytes } from 'crypto'
+import { randomBytes, timingSafeEqual } from 'crypto'
 
 // 存储 CSRF Token（生产环境应使用 Redis）
 // 警告：服务重启后所有 token 失效，用户会遇到 403 直到重新请求 token
@@ -46,8 +46,16 @@ export function verifyCsrfToken(userId, token) {
     return false
   }
 
-  // 验证 Token
-  return stored.token === token
+  // 使用常量时间比较，降低时序侧信道风险
+  try {
+    return timingSafeEqual(
+      Buffer.from(stored.token, 'hex'),
+      Buffer.from(token, 'hex')
+    )
+  } catch {
+    // 长度不一致或输入异常时，直接按无效 token 处理
+    return false
+  }
 }
 
 /**

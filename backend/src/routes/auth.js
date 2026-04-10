@@ -269,7 +269,7 @@ app.post('/refresh', async (c) => {
     }
 
     const payload = verifyToken(refreshToken)
-    if (!payload) {
+    if (!payload || payload.type !== 'refresh') {
       return c.json({
         success: false,
         error: { code: 'INVALID_TOKEN', message: '刷新令牌无效或已过期' }
@@ -320,22 +320,8 @@ app.post('/refresh', async (c) => {
  */
 app.get('/me', async (c) => {
   try {
-    // Try Authorization header first, then fall back to httpOnly cookie
-    const authHeader = c.req.header('Authorization')
-    let token = null
-
-    if (authHeader) {
-      token = authHeader.replace('Bearer ', '')
-    } else {
-      // Parse auth_token from cookie
-      const cookieHeader = c.req.header('Cookie')
-      if (cookieHeader) {
-        const match = cookieHeader.match(/auth_token=([^;]+)/)
-        if (match) token = match[1]
-      }
-    }
-
-    if (!token) {
+    const userId = c.get('userId')
+    if (!userId) {
       return c.json({
         success: false,
         error: {
@@ -345,23 +331,11 @@ app.get('/me', async (c) => {
       }, 401)
     }
 
-    const payload = verifyToken(token)
-
-    if (!payload) {
-      return c.json({
-        success: false,
-        error: {
-          code: 'UNAUTHORIZED',
-          message: '令牌无效'
-        }
-      }, 401)
-    }
-
     // 获取用户信息
     const user = await db
       .select()
       .from(users)
-      .where(eq(users.id, payload.userId))
+      .where(eq(users.id, userId))
       .limit(1)
 
     if (user.length === 0) {

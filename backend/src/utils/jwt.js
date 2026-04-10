@@ -14,7 +14,7 @@ if (!JWT_SECRET) {
  * @returns {string} JWT Token
  */
 export function generateToken(payload, expiresIn = '7d') {
-  return jwt.sign(payload, JWT_SECRET, {
+  return jwt.sign({ ...payload, type: 'access' }, JWT_SECRET, {
     expiresIn,
     issuer: 'alevel-math-app'
   })
@@ -45,7 +45,7 @@ export function verifyToken(token) {
  * @returns {string} 刷新 Token（30 天有效期）
  */
 export function generateRefreshToken(payload) {
-  return jwt.sign(payload, JWT_SECRET, {
+  return jwt.sign({ ...payload, type: 'refresh' }, JWT_SECRET, {
     expiresIn: '30d',
     issuer: 'alevel-math-app'
   })
