@@ -1,0 +1,84 @@
+你是 Edexcel International A-Level (IAL) 数学专家，熟悉 Pearson Edexcel IAL 课纲。
+
+任务：为以下每个章节生成 8-10 条关键知识点（Key Points）。
+
+要求：
+1. 纯英文
+2. 每条包含核心概念名称 + 简明公式或规则，用冒号或破折号分隔
+3. 数学公式使用 Unicode 上下标符号（如 aᵐ、√、Σ、Δ、∫、∞、≤、≥、±）
+4. 不要用 LaTeX 语法（不要写 \frac、^{} 等）
+5. 每条控制在一行以内，简洁准确
+6. 输出格式严格为 JSON 数组，如下：
+
+[
+  {
+    "id": "p1c1",
+    "keyPoints": [
+      "Index Laws: aᵐ × aⁿ = aᵐ⁺ⁿ; aᵐ ÷ aⁿ = aᵐ⁻ⁿ; (aᵐ)ⁿ = aᵐⁿ",
+      "Zero and negative indices: a⁰ = 1 (a≠0); a⁻ⁿ = 1/aⁿ",
+      "..."
+    ]
+  },
+  ...
+]
+
+章节列表（按此顺序输出）：
+
+=== Pure Mathematics 1 (WMA11) ===
+p1c1 Ch1: Algebraic Expressions
+p1c2 Ch2: Quadratics
+p1c3 Ch3: Equations & Inequalities
+p1c4 Ch4: Graphs & Transformations
+p1c5 Ch5: Straight Line Geometry
+p1c6 Ch6: Trigonometric Ratios
+p1c7 Ch7: Radians
+p1c8 Ch8: Differentiation
+p1c9 Ch9: Integration
+
+=== Pure Mathematics 2 (WMA12) ===
+p2c1 Ch1: Algebraic Methods
+p2c2 Ch2: Coordinate Geometry: Circles
+p2c3 Ch3: Exponentials & Logarithms
+p2c4 Ch4: Binomial Expansion
+p2c5 Ch5: Sequences & Series
+p2c6 Ch6: Trigonometric Identities
+p2c7 Ch7: Further Differentiation
+p2c8 Ch8: Further Integration
+
+=== Statistics 1 (WST01) ===
+s1c1 Ch1: Mathematical Modelling
+s1c2 Ch2: Measures of Location & Spread
+s1c3 Ch3: Representations of Data
+s1c4 Ch4: Probability
+s1c5 Ch5: Correlation & Regression
+s1c6 Ch6: Discrete Random Variables
+s1c7 Ch7: Normal Distribution
+
+=== Pure Mathematics 3 (WMA13) ===
+p3c1 Ch1: Further Algebraic Methods
+p3c2 Ch2: Functions
+p3c3 Ch3: Further Trigonometry
+p3c4 Ch4: Further Exponentials & Logarithms
+p3c5 Ch5: Advanced Differentiation
+p3c6 Ch6: Advanced Integration
+p3c7 Ch7: Vectors
+p3c8 Ch8: Differential Equations
+
+=== Pure Mathematics 4 (WMA14) ===
+p4c1 Ch1: Proof by Mathematical Induction
+p4c2 Ch2: Complex Numbers
+p4c3 Ch3: Matrices
+p4c4 Ch4: Further Vectors
+p4c5 Ch5: Hyperbolic Functions
+p4c6 Ch6: Polar Coordinates
+p4c7 Ch7: Further Calculus
+p4c8 Ch8: Second-Order Differential Equations
+
+=== Mechanics 1 (WME01) ===
+m1c1 Ch1: Mathematical Models & Kinematics
+m1c2 Ch2: Dynamics of a Particle
+m1c3 Ch3: Forces & Equilibrium
+m1c4 Ch4: Moments
+m1c5 Ch5: Work, Energy & Power
+m1c6 Ch6: Impulse & Momentum
+m1c7 Ch7: Projectile Motion
