@@ -1,0 +1,184 @@
+[
+  {
+    "id": "fm1c1",
+    "keyPoints": [
+      "Complex Number Definition: z = a + bi where i² = -1, a is real part Re(z), b is imaginary part Im(z)",
+      "Complex Conjugate: The conjugate of z = a + bi is z* = a - bi",
+      "Addition and Subtraction: (a + bi) ± (c + di) = (a ± c) + (b ± d)i",
+      "Multiplication: (a + bi)(c + di) = (ac - bd) + (ad + bc)i",
+      "Division: Multiply both numerator and denominator by the complex conjugate of the denominator",
+      "Argand Diagram: Represents z = a + bi as point (a, b), with real x-axis and imaginary y-axis",
+      "Modulus: |z| = √(a² + b²), representing the geometric distance from the origin to the point",
+      "Argument: arg(z) = θ where tan(θ) = b/a, strictly defined within the principal range -π < θ ≤ π",
+      "Roots of Polynomials: For real-coefficient equations, complex roots always occur in conjugate pairs a ± bi",
+      "Modulus-Argument Form: z = r(cos θ + i sin θ) where r is the modulus |z| and θ is the argument arg(z)",
+      "Locus of a Circle: |z - z₁| = r represents a circle with its centre at complex number z₁ and radius r",
+      "Locus of a Half-Line: arg(z - z₁) = θ represents a half-line starting from z₁ (excluding z₁) at angle θ to the positive real direction",
+      "Locus of a Perpendicular Bisector: |z - z₁| = |z - z₂| represents the straight line geometrically equidistant from points z₁ and z₂"
+    ]
+  },
+  {
+    "id": "fm1c2",
+    "keyPoints": [
+      "Matrix Addition and Subtraction: Only possible for matrices of the same order, performed element by element",
+      "Scalar Multiplication: Every individual element in the matrix is multiplied by the scalar factor k",
+      "Matrix Multiplication: An m×n matrix multiplied by an n×p matrix yields an m×p matrix, AB ≠ BA generally",
+      "Identity Matrix: Square matrix I with 1s on main diagonal and 0s elsewhere, satisfying AI = IA = A",
+      "Determinant of 2×2 Matrix: det(M) or |M| = ad - bc for a matrix with rows (a, b) and (c, d)",
+      "Inverse of 2×2 Matrix: M⁻¹ = 1/(ad - bc) × matrix with rows (d, -b) and (-c, a)",
+      "Singular Matrix: A matrix with its determinant equal to 0, meaning its inverse does not exist",
+      "Linear Transformations: Image vector found by pre-multiplying the position vector by transformation matrix M",
+      "Combined Transformations: Matrix for transformation A followed by transformation B is given by BA",
+      "Area Scale Factor: The absolute value of the determinant |M| gives the area scale factor of the transformation"
+    ]
+  },
+  {
+    "id": "fm1c3",
+    "keyPoints": [
+      "Basis Step: Prove the statement is true for the base case, typically n = 1",
+      "Assumption Step: Explicitly state the assumption that the statement is true for n = k",
+      "Inductive Step: Use algebraic manipulation to show that if true for n = k, it is true for n = k + 1",
+      "Concluding Statement: 'True for n=1, if true for n=k then true for n=k+1, hence true for all n ≥ 1'",
+      "Series Proofs: Add the (k+1)th term to the assumed sum for n = k and factorise to reach the target form",
+      "Divisibility Proofs: Express f(k+1) in terms of f(k) to prove the required integer multiple is maintained",
+      "Matrix Power Proofs: Multiply the assumed matrix Mᵏ by M to obtain the structure of Mᵏ⁺¹",
+      "Recurrence Relations: Substitute the assumption uₖ into the given recursive formula to find uₖ⁺₁"
+    ]
+  },
+  {
+    "id": "fm1c4",
+    "keyPoints": [
+      "Sum of First n Integers: Σr = ½n(n + 1)",
+      "Sum of Squares: Σr² = ⅙n(n + 1)(2n + 1)",
+      "Sum of Cubes: Σr³ = ¼n²(n + 1)²",
+      "Linear Properties: Σ(ar + b) = aΣr + bΣ1",
+      "Sum of Constants: Σ1 = n for limits from r = 1 to n",
+      "Method of Differences: Σ(f(r) - f(r+1)) = f(1) - f(n+1) as intermediate terms cancel out",
+      "Partial Fractions: Decompose complex algebraic fractions to enable the method of differences",
+      "Changing Limits: Σ from r=k to n equals (Σ from r=1 to n) - (Σ from r=1 to k-1)"
+    ]
+  },
+  {
+    "id": "fm1c5",
+    "keyPoints": [
+      "Coordinate Conversion: x = r cos(θ) and y = r sin(θ)",
+      "Polar to Cartesian: r² = x² + y² and tan(θ) = y/x",
+      "Polar Equation of Curve: Defined as a function of the angle, given in the form r = f(θ)",
+      "Circle Centred at Pole: The equation r = a represents a circle of radius a centred at the origin",
+      "Half-Line: The equation θ = α represents a half-line starting from the pole making angle α with initial line",
+      "Area of Sector: Area = ½∫ r² dθ evaluated between limits α and β",
+      "Tangents Parallel to Initial Line: Solve d/dθ(y) = 0, which is equivalent to d/dθ(r sin(θ)) = 0",
+      "Tangents Perpendicular to Initial Line: Solve d/dθ(x) = 0, which is equivalent to d/dθ(r cos(θ)) = 0",
+      "Cardioid Curve: Equations of the form r = a(1 ± cos θ) or r = a(1 ± sin θ) represent a heart-shaped curve with a cusp at the pole",
+      "Rose Curve: Equations of the form r = a cos(nθ) or r = a sin(nθ) represent curves with n petals if n is odd, and 2n petals if n is even"
+    ]
+  },
+  {
+    "id": "fm2c1",
+    "keyPoints": [
+      "Hyperbolic Sine: sinh(x) = ½(eˣ - e⁻ˣ)",
+      "Hyperbolic Cosine: cosh(x) = ½(eˣ + e⁻ˣ)",
+      "Hyperbolic Tangent: tanh(x) = sinh(x) / cosh(x) = (eˣ - e⁻ˣ) / (eˣ + e⁻ˣ)",
+      "Fundamental Identity: cosh²(x) - sinh²(x) = 1",
+      "Osborn's Rule: To derive hyperbolic identities from trigonometric ones, replace cos²(x) with cosh²(x) and sin²(x) with -sinh²(x)",
+      "Addition Formula: sinh(A ± B) = sinh(A)cosh(B) ± cosh(A)sinh(B)",
+      "Differentiation: d/dx(sinh x) = cosh x and d/dx(cosh x) = sinh x",
+      "Inverse Hyperbolic Sine: arsinh(x) = ln(x + √(x² + 1))",
+      "Inverse Hyperbolic Cosine: arcosh(x) = ln(x + √(x² - 1)) for x ≥ 1",
+      "Standard Integration: ∫ 1/√(x² + a²) dx = arsinh(x/a) + c",
+      "Inverse Hyperbolic Tangent: artanh(x) = ½ln((1 + x) / (1 - x)) valid for domain |x| < 1",
+      "Differentiation of Inverse Sine: d/dx(arsinh x) = 1 / √(x² + 1)"
+    ]
+  },
+  {
+    "id": "fm2c2",
+    "keyPoints": [
+      "Integrating Factor Method: For a first-order linear DE dy/dx + P(x)y = Q(x), the integrating factor is I(x) = e^(∫P(x)dx)",
+      "Solving with Integrating Factor: Multiply the DE by I(x) to form d/dx(y × I(x)) = Q(x) × I(x), then integrate both sides",
+      "Second-Order Homogeneous DE: For a(d²y/dx²) + b(dy/dx) + cy = 0, solve the auxiliary equation am² + bm + c = 0",
+      "Real Distinct Roots (m₁, m₂): The Complementary Function (CF) is y = Ae^(m₁x) + Be^(m₂x)",
+      "Real Repeated Root (m): The Complementary Function (CF) is y = (A + Bx)e^(mx)",
+      "Complex Conjugate Roots (α ± βi): The Complementary Function (CF) is y = e^(αx)(A cos(βx) + B sin(βx))",
+      "Particular Integral (PI): A specific trial function that satisfies the non-homogeneous equation a(d²y/dx²) + b(dy/dx) + cy = f(x)",
+      "PI Form for Polynomials: If f(x) is a polynomial of degree n, try a PI of the form y = λxⁿ + ... + μ",
+      "PI Form for Exponentials: If f(x) = ke^(px), try a PI of y = λe^(px), or λxe^(px) if e^(px) is already in the CF",
+      "General Solution: The complete solution is always the sum of the Complementary Function and the Particular Integral (y = CF + PI)",
+      "PI Form for Trigonometric Functions: If f(x) contains p cos(kx) or q sin(kx), always try a PI of y = λ cos(kx) + μ sin(kx) even if one term is missing"
+    ]
+  },
+  {
+    "id": "fm2c3",
+    "keyPoints": [
+      "Vector Space Axioms: A set of vectors that is closed under vector addition and scalar multiplication, satisfying commutativity and associativity",
+      "Subspace Test: A subset W is a subspace if it contains the zero vector and is closed under both addition and scalar multiplication",
+      "Linear Independence: Vectors v₁, v₂, ... are linearly independent if c₁v₁ + c₂v₂ + ... = 0 strictly implies all scalars cᵢ = 0",
+      "Spanning Set: A set of vectors spans a space V if every vector in V can be expressed as a linear combination of those vectors",
+      "Basis of a Vector Space: A set of vectors that is both linearly independent and spans the entire vector space",
+      "Dimension: The exact number of vectors contained in any basis of a given vector space",
+      "Linear Transformation: A mapping T mapping between spaces such that T(u + v) = T(u) + T(v) and T(cu) = cT(u)",
+      "Kernel (Null Space): The set of all vectors v in the domain such that their transformation yields the zero vector, T(v) = 0",
+      "Image (Column Space): The set of all possible output vectors T(v) generated by applying the transformation to the domain",
+      "Rank-Nullity Theorem: The dimension of the kernel plus the dimension of the image always equals the dimension of the domain"
+    ]
+  },
+  {
+    "id": "fmech1c1",
+    "keyPoints": [
+      "Momentum Definition: p = mv, a vector quantity measured in N s or kg m/s",
+      "Impulse Definition: I = FΔt, representing the change in momentum I = mv - mu",
+      "Conservation of Momentum: In a closed system, total momentum before impact equals total momentum after impact (m₁u₁ + m₂u₂ = m₁v₁ + m₂v₂)",
+      "Newton's Law of Restitution: e = (v₂ - v₁) / (u₁ - u₂), where 0 ≤ e ≤ 1, defining the elasticity of a collision",
+      "Perfectly Elastic Collision: e = 1, kinetic energy is completely conserved during the impact",
+      "Perfectly Inelastic Collision: e = 0, particles coalesce and move with a common velocity after impact",
+      "Impact with a Fixed Surface: v = eu, where u is the approach speed and v is the separation speed along the normal",
+      "Kinetic Energy Loss: Change in KE = ½m₁u₁² + ½m₂u₂² - (½m₁v₁² + ½m₂v₂²), always positive for 0 ≤ e < 1",
+      "Impulse between Particles: The impulse exerted by particle A on particle B is equal and opposite to the impulse exerted by B on A"
+    ]
+  },
+  {
+    "id": "fmech1c2",
+    "keyPoints": [
+      "Angular Velocity: ω = dθ/dt or ω = v/r, measured in radians per second (rad/s)",
+      "Linear Velocity: v = rω, acting tangentially to the circular path at any given point",
+      "Centripetal Acceleration: a = v²/r or a = rω², always directed towards the centre of the circle",
+      "Centripetal Force: F = mv²/r or F = mrω², the resultant force required to maintain circular motion",
+      "Motion on a Banked Track: For no sideways friction, tan(θ) = v²/(rg) where θ is the angle of banking",
+      "Conical Pendulum: Vertical component T cos(θ) = mg, horizontal component T sin(θ) = mrω²",
+      "Vertical Circle Energy: Conservation of mechanical energy between two points is ½mv² - ½mu² = ±mgΔh",
+      "Vertical Circle Force: Radial equation of motion is T - mg cos(θ) = mv²/r (for a string) or R ± mg cos(θ) = mv²/r (for a surface)",
+      "Completing a Vertical Circle (String): Tension T ≥ 0 at the highest point, requiring minimum top velocity v ≥ √(gr) and bottom velocity u ≥ √(5gr)",
+      "Completing a Vertical Circle (Rod): Velocity v > 0 at the highest point, requiring minimum bottom velocity u > √(4gr)"
+    ]
+  },
+  {
+    "id": "fs1c1",
+    "keyPoints": [
+      "Expectation Definition: E(X) = μ = Σ x P(X = x)",
+      "Expected Value of a Function: E(g(X)) = Σ g(x) P(X = x)",
+      "Variance Definition: Var(X) = σ² = E(X²) - [E(X)]²",
+      "Linear Transformation of Expectation: E(aX + b) = aE(X) + b",
+      "Linear Transformation of Variance: Var(aX + b) = a²Var(X)",
+      "Discrete Uniform Distribution: P(X = x) = 1/n for x = 1, 2, ..., n",
+      "Uniform Expectation and Variance: E(X) = (n + 1)/2 and Var(X) = (n² - 1)/12",
+      "Poisson Distribution: P(X = x) = (e⁻λ × λˣ) / x! for events occurring randomly at a constant average rate",
+      "Poisson Parameters: For X ~ Po(λ), the expectation and variance are equal, E(X) = λ and Var(X) = λ",
+      "Geometric Distribution: P(X = x) = p(1 - p)ˣ⁻¹ for the number of trials up to and including the first success",
+      "Geometric Expectation and Variance: For X ~ Geo(p), E(X) = 1/p and Var(X) = (1 - p) / p²"
+    ]
+  },
+  {
+    "id": "fs1c2",
+    "keyPoints": [
+      "Null Hypothesis (H₀): The default assumption or status quo being tested, always taking the form of an exact parameter value",
+      "Alternative Hypothesis (H₁): The statement accepted if H₀ is rejected, dictating a one-tailed (< or >) or two-tailed (≠) test",
+      "Significance Level (α): The probability of incorrectly rejecting a true null hypothesis, defining the maximum size of the critical region",
+      "Test Statistic: A statistic calculated from sample data used to decide whether to reject the null hypothesis",
+      "Critical Region: The range of values of the test statistic that provides enough evidence to reject H₀",
+      "Actual Significance Level: The true probability of the test statistic falling into the critical region when H₀ is true",
+      "p-value: The probability of observing a test statistic at least as extreme as the one calculated, assuming H₀ is true",
+      "Binomial Hypothesis Test: Test a population proportion p by assuming X ~ B(n, p) under H₀ and calculating P(X ≤ x) or P(X ≥ x)",
+      "Poisson Hypothesis Test: Test a rate λ by assuming X ~ Po(λ) under H₀ and comparing the probability of the observed count against α",
+      "Two-Tailed Test Division: For a two-tailed test at significance level α, the critical region is split, typically using α/2 for each tail"
+    ]
+  }
+]

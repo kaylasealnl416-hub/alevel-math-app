@@ -81,6 +81,20 @@ if (result.success) { ... }  // ❌ result.success 不存在
 | ChatPage | `/chat` 路由存在但 Navbar 未显示入口 |
 | AI 设置 | 服务端控制，`localStorage ai_settings` 已弃用 |
 
+## 🎨 设计规范参考（Design Spec Reference）
+
+进行任何 UI/UX 设计时，**必须**参考以下路径中的行业设计规范：
+
+**路径：** `D:\CodeProjects\awesome-design-md\design-md\`
+
+该目录包含 60+ 家顶级产品的设计规范。本项目推荐优先参考：
+- `apple` — 清晰、简洁的教育类界面规范
+- `linear.app` — 信息层级与排版系统
+- `notion` — 内容型页面的布局与卡片设计
+- `vercel` — 现代 Dashboard 风格参考
+
+**注意：** 本项目已有既定配色（Google Clean），配色以 `③ 配色` 章节为准，用上述文档补充间距、字体、交互等细节。
+
 ## 规则
 
 - 注释/文档/提交信息全部中文
