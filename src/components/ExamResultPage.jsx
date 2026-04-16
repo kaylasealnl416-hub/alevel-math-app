@@ -6,7 +6,7 @@ import MathText from './practice/MathText'
 import Loading from './common/Loading'
 import Toast from './common/Toast'
 import { Button } from './ui'
-import { get } from '../utils/apiClient'
+import { get, post } from '../utils/apiClient'
 
 function ExamResultPage() {
   const { examId } = useParams()
@@ -47,8 +47,17 @@ function ExamResultPage() {
     try {
       setLoading(true); setError(null)
       const data = await get(`/api/exams/${examId}/result`)
-      setExam(data.exam || data)
-      setQuestions(data.questions || data.exam?.questionSet?.questions || [])
+      const examData = data.exam || data
+      const qs = data.questions || data.exam?.questionSet?.questions || []
+      setExam(examData)
+      setQuestions(qs)
+      // 考试完成后，为涉及的每个章节记录学习进度（非阻塞）
+      if (examData.status === 'graded' || examData.status === 'submitted') {
+        const uniqueChapterIds = [...new Set(qs.map(q => q.chapterId).filter(Boolean))]
+        uniqueChapterIds.forEach(cid => {
+          post('/api/progress', { chapterId: cid, status: 'in_progress' }).catch(() => {})
+        })
+      }
     } catch (err) {
       console.error('Failed to fetch exam result:', err)
       setError('Failed to load exam result. Please try again later.')

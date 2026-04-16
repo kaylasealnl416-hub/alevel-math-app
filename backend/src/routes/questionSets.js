@@ -9,6 +9,7 @@ import {
   getQuestionSetWithQuestions,
   deleteQuestionSet,
   getUserQuestionSets,
+  getPublicMockExams,
   COMPOSE_STRATEGIES
 } from '../services/examComposer.js'
 
@@ -115,6 +116,23 @@ app.get('/', async (c) => {
 
   } catch (error) {
     console.error('获取试卷列表失败:', error)
+    return c.json({
+      success: false,
+      error: { code: 'SERVER_ERROR', message: error.message }
+    }, 500)
+  }
+})
+
+/**
+ * GET /api/question-sets/mock-exams
+ * 获取所有公开模拟卷（type='mock_exam'，无需 userId 过滤）
+ */
+app.get('/mock-exams', async (c) => {
+  try {
+    const result = await getPublicMockExams()
+    return c.json({ success: true, data: result })
+  } catch (error) {
+    console.error('获取模拟卷列表失败:', error)
     return c.json({
       success: false,
       error: { code: 'SERVER_ERROR', message: error.message }

@@ -10,8 +10,6 @@ import CurriculumView from "./components/home/CurriculumView.jsx";
 import ChapterView from "./components/home/ChapterView.jsx";
 import ExamView from "./components/home/ExamView.jsx";
 import MockExamView from "./components/home/MockExamView.jsx";
-import ErrorBookView from "./components/home/ErrorBookView.jsx";
-
 export default function ALevelMathApp() {
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
@@ -19,20 +17,7 @@ export default function ALevelMathApp() {
   const [selectedSubject, setSelectedSubject] = useState("mathematics");
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedChapter, setSelectedChapter] = useState(null);
-  const [errorBook, setErrorBook] = useState(() => {
-    try {
-      const saved = localStorage.getItem("alevel_math_errorbook");
-      return saved ? JSON.parse(saved) : [];
-    } catch (e) {
-      console.error("读取错题本失败", e);
-      return [];
-    }
-  });
   const [lang] = useState("en");
-
-  useEffect(() => {
-    localStorage.setItem("alevel_math_errorbook", JSON.stringify(errorBook));
-  }, [errorBook]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -89,17 +74,6 @@ export default function ALevelMathApp() {
             t={t}
             lang={lang}
             subject={selectedSubject}
-            onAddError={(q) => setErrorBook(prev => [...prev.filter(e => e.id !== q.id), q])}
-          />
-        )}
-        {activeView === "errorbook" && (
-          <ErrorBookView
-            errors={errorBook}
-            subject={selectedSubject}
-            onClear={(id) => setErrorBook(prev => prev.filter(e => e.id !== id))}
-            nav={nav}
-            t={t}
-            lang={lang}
           />
         )}
         {/* chat 视图已移除 */}

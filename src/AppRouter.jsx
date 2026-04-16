@@ -23,6 +23,7 @@ const LearningPlanPage = lazy(() => import('./components/LearningPlanPage.jsx'))
 const WrongQuestionsPage = lazy(() => import('./components/WrongQuestionsPage.jsx'))
 const PracticePage = lazy(() => import('./components/PracticePage.jsx'))
 const QuestionUploadPage = lazy(() => import('./components/QuestionUploadPage.jsx'))
+const PastPapersPage = lazy(() => import('./components/PastPapersPage.jsx'))
 // ChatPage 已移除（对话辅导功能停用）
 
 // Minimal loading fallback
@@ -98,6 +99,13 @@ export default function AppRouter() {
                 <Route path="/practice" element={
                   <ProtectedRoute>
                     <PracticePage />
+                  </ProtectedRoute>
+                } />
+
+                {/* Past Papers — 正式考试模式（需要登录） */}
+                <Route path="/past-papers" element={
+                  <ProtectedRoute>
+                    <PastPapersPage />
                   </ProtectedRoute>
                 } />
 

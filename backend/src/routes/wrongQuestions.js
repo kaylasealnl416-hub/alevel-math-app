@@ -38,6 +38,7 @@ app.get('/', async (c) => {
         questionId: examQuestionResults.questionId,
         userAnswer: examQuestionResults.userAnswer,
         isCorrect: examQuestionResults.isCorrect,
+        isMastered: examQuestionResults.isMastered,
         score: examQuestionResults.score,
         maxScore: examQuestionResults.maxScore,
         aiFeedback: examQuestionResults.aiFeedback,
@@ -197,31 +198,42 @@ app.post('/', async (c) => {
 
 /**
  * POST /api/wrong-questions/:id/master
- * 标记错题为已掌握
+ * 标记/取消标记错题为已掌握（写入 DB）
  */
 app.post('/:id/master', async (c) => {
   try {
+    const userId = c.get('userId')
     const id = parseInt(c.req.param('id'))
+    const body = await c.req.json().catch(() => ({}))
+    const mastered = body.mastered !== false // 默认 true，传 false 则取消
 
-    // 这里可以添加一个 mastered 字段到 exam_question_results 表
-    // 或者创建一个单独的 mastered_questions 表
-    // 目前简单返回成功
+    if (!userId) {
+      return c.json({ success: false, error: { code: 'UNAUTHORIZED', message: '未登录' } }, 401)
+    }
 
-    return c.json({
-      success: true,
-      data: {
-        message: '已标记为掌握'
-      }
-    })
+    // 验证该记录属于当前用户，再更新
+    const [result] = await db
+      .update(examQuestionResults)
+      .set({ isMastered: mastered })
+      .where(
+        and(
+          eq(examQuestionResults.id, id),
+          sql`${examQuestionResults.examId} IN (SELECT id FROM exams WHERE user_id = ${parseInt(userId)})`
+        )
+      )
+      .returning({ id: examQuestionResults.id, isMastered: examQuestionResults.isMastered })
+
+    if (!result) {
+      return c.json({ success: false, error: { code: 'NOT_FOUND', message: '记录不存在或无权限' } }, 404)
+    }
+
+    return c.json({ success: true, data: { id: result.id, isMastered: result.isMastered } })
 
   } catch (error) {
     console.error('标记掌握失败:', error)
     return c.json({
       success: false,
-      error: {
-        code: 'SERVER_ERROR',
-        message: '标记失败'
-      }
+      error: { code: 'SERVER_ERROR', message: '标记失败' }
     }, 500)
   }
 })

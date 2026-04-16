@@ -492,6 +492,18 @@ export async function deleteQuestionSet(questionSetId) {
 }
 
 /**
+ * 获取所有公开模拟卷（type='mock_exam'，不限 userId）
+ */
+export async function getPublicMockExams() {
+  const result = await db
+    .select()
+    .from(questionSets)
+    .where(eq(questionSets.type, 'mock_exam'))
+    .orderBy(sql`${questionSets.createdAt} DESC`)
+  return result
+}
+
+/**
  * 获取用户的试卷列表
  */
 export async function getUserQuestionSets(userId, options = {}) {
@@ -523,5 +535,6 @@ export default {
   getQuestionSetWithQuestions,
   deleteQuestionSet,
   getUserQuestionSets,
+  getPublicMockExams,
   COMPOSE_STRATEGIES
 }

@@ -342,6 +342,9 @@ export const examQuestionResults = pgTable('exam_question_results', {
   // AI 点评
   aiFeedback: jsonb('ai_feedback'), // { explanation: "...", mistakes: [...], suggestions: [...], relatedTopics: [...] }
 
+  // 掌握状态
+  isMastered: boolean('is_mastered').notNull().default(false),
+
   createdAt: timestamp('created_at').defaultNow(),
 })
 

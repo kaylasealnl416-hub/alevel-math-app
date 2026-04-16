@@ -427,11 +427,11 @@ function SubjectsView({ nav, lang }) {
               action: () => authNav("curriculum", "mathematics"),
             },
             {
-              icon: "📝", title: "Mock Exams",
+              icon: "📝", title: "Past Papers",
               desc: "Timed past paper simulations to prepare for the real Edexcel IAL exam.",
               bg: "linear-gradient(135deg,#FFFBEB,#FEF3C7)", border: "#FDE68A",
               iconBg: "#FEF3C7",
-              action: () => authNav("mock", "mathematics"),
+              action: () => navigate('/past-papers'),
             },
           ].map((item, i) => (
             <div

@@ -697,7 +697,7 @@ export const CURRICULUM = {
       // ── S1 Chapter 6 ───────────────────────────────────────────
       {
         id: "s1c6", num: 6, title: "Discrete Random Variables",
-        overview: "离散随机变量（DRV）建立了从概率到期望、方差的数学框架，是S1中连接概率论与统计推断的核心桥梁。期望E(X)和方差Var(X)的计算，以及线性变换 Y=aX+b 对它们的影响，是高频考点。二项分布（Binomial Distribution）B(n,p)作为最重要的离散分布嵌入本章，计算器的二项分布功能是必须掌握的实战技巧。",
+        overview: "离散随机变量（DRV）建立了从概率到期望、方差的数学框架，是S1中连接概率论与统计推断的核心桥梁。期望E(X)和方差Var(X)的计算，以及线性变换 Y=aX+b 对它们的影响，是高频考点。注意：二项分布 B(n,p) 属于 S2 (WST02)，S1 不考。（Binomial Distribution B(n,p) belongs to S2, not S1.）",
         keyPoints: [
           { en: "Discrete Random Variable: A variable X that can only take specific, distinct values with associated probabilities" },
           { en: "Probability Distribution: A table or formula showing all possible outcomes of X and their probabilities, where Σ P(X=x) = 1" },
@@ -884,7 +884,7 @@ export const CURRICULUM = {
       },
       {
         id: "p3c5", num: 5, title: "Advanced Differentiation",
-        overview: "P3微分章节是A-Level微积分的顶峰，引入链式法则（Chain Rule）、乘积法则（Product Rule）、商法则（Quotient Rule）、隐函数微分（Implicit Differentiation）、参数方程微分（Parametric Differentiation），以及所有三角函数的求导。这些工具使得几乎任意复杂函数都能被微分，是WMA13中分值最高的单一章节（约20分）。",
+        overview: "P3微分章节是A-Level微积分的顶峰，引入链式法则（Chain Rule）、乘积法则（Product Rule）、商法则（Quotient Rule）、隐函数微分（Implicit Differentiation），以及所有三角函数的求导。这些工具使得几乎任意复杂函数都能被微分，是WMA13中分值最高的单一章节（约20分）。注意：参数方程微分（Parametric Differentiation）属于 P4 (WMA14)，不在 P3 范围内。",
         keyPoints: [
           { en: "Chain Rule: dy/dx = (dy/du) × (du/dx) used for composite functions" },
           { en: "Product Rule: d/dx(uv) = u(dv/dx) + v(du/dx) used for multiplied functions" },
@@ -927,7 +927,10 @@ export const CURRICULUM = {
           { en: "Integration by Substitution: Replace x with u to simplify the integral, remembering to convert dx to du" },
           { en: "Integration by Parts: ∫ u (dv/dx) dx = uv - ∫ v (du/dx) dx" },
           { en: "Volume of Revolution (x-axis): V = π ∫ y² dx evaluated between limits a and b" },
-          { en: "Volume of Revolution (y-axis): V = π ∫ x² dy evaluated between limits c and d" }
+          { en: "Volume of Revolution (y-axis): V = π ∫ x² dy evaluated between limits c and d" },
+          { en: "Integrating Tangent: ∫ tan x dx = ln|sec x| + C, derived using the f'(x)/f(x) pattern with f(x) = cos x" },
+          { en: "Integrating with Trigonometric Identities: Use sin²x = ½(1 - cos 2x) and cos²x = ½(1 + cos 2x) to reduce powers before integrating" },
+          { en: "Integration using Partial Fractions: Decompose the integrand into partial fractions first, then integrate each term separately" }
         ],
         formulas: [
           { name: "Integration by Parts", expr: "∫u dv = uv − ∫v du (LIATE rule for choosing u)" },
@@ -1041,7 +1044,7 @@ export const CURRICULUM = {
       },
       {
         id: "p4c2", num: 2, title: "Complex Numbers",
-        overview: "复数将实数扩展至二维复平面（Argand Diagram），赋予每个实数方程（包括无实数解的方程）完整的解集。P4涵盖复数的四则运算、共轭、模和辐角（Modulus-Argument Form）、以及De Moivre定理对复数幂次的应用。\"复数的轨迹（Loci）\"是P4考试中最具综合性的题型——用复数不等式描述Argand图中的几何区域。这是许多学生认为P4最难的章节。",
+        overview: "复数将实数扩展至二维复平面（Argand Diagram），赋予每个实数方程（包括无实数解的方程）完整的解集。P4涵盖复数的四则运算、共轭、模和辐角（Modulus-Argument Form）、以及复数轨迹（Loci）。\"复数的轨迹（Loci）\"是P4考试中最具综合性的题型——用复数不等式描述Argand图中的几何区域。注意：De Moivre 定理属于 FP2 (WFM02)，不在 P4 范围内。（De Moivre's theorem belongs to FP2 (WFM02), not P4.）",
         keyPoints: [
           { en: "Imaginary Unit: i = √(-1) and i² = -1" },
           { en: "Complex Number Form: z = x + iy, where x is the real part and y is the imaginary part" },
@@ -1072,7 +1075,7 @@ export const CURRICULUM = {
       },
       {
         id: "p4c3", num: 3, title: "Matrices",
-        overview: "矩阵将多变量线性方程组的操作代数化，是现代数学、计算机图形学和量化金融的基础工具。P4涵盖2×2和3×3矩阵的运算、行列式、逆矩阵、以及矩阵代表几何变换（旋转、反射、放大）的理解。利用矩阵解方程组（Cramer's Rule 或 Inverse Method）是高频考点，矩阵的不可逆性（奇异矩阵）与方程组无唯一解紧密相关。",
+        overview: "矩阵将多变量线性方程组的操作代数化，是现代数学、计算机图形学和量化金融的基础工具。P4涵盖2×2矩阵的运算、行列式、逆矩阵、以及矩阵代表几何变换（旋转、反射、放大）的理解。利用矩阵解方程组（Inverse Method）是高频考点，矩阵的不可逆性（奇异矩阵）与方程组无唯一解紧密相关。注意：3×3矩阵属于 FP3 (WFM03)，不在 P4 范围内。（P4 covers 2×2 matrices only. 3×3 matrices belong to FP3 (WFM03).）",
         keyPoints: [
           { en: "Matrix Addition and Subtraction: Matrices must have the same dimensions to add or subtract corresponding elements" },
           { en: "Matrix Multiplication: Multiply rows of the first matrix by columns of the second; AB is not necessarily equal to BA" },

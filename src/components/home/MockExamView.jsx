@@ -4,9 +4,10 @@ import { CURRICULUM } from "../../data/curriculum.js";
 import { PAST_PAPERS, SUBJECT_NAMES } from "../../data/allSubjects.js";
 import { styles } from "../../styles/homeStyles.js";
 import MathText from "../practice/MathText";
+import AnswerInput from "../AnswerInput.jsx";
 import Toast from "../common/Toast";
 import { useAuth } from "../../contexts/AuthContext.jsx";
-import { post, put } from "../../utils/apiClient.js";
+import { get, post, put } from "../../utils/apiClient.js";
 
 function LoadingSpinner({ message }) {
   return (
@@ -17,7 +18,22 @@ function LoadingSpinner({ message }) {
   );
 }
 
-export default function MockExamView({ nav, onAddError, t, lang, subject = "mathematics" }) {
+// 将 DB 题目格式转换为 MockExamView 内部格式
+function mapQuestion(q) {
+  return {
+    id: q.id,
+    question: typeof q.content === 'object' ? (q.content.en || q.content.zh) : q.content,
+    marks: q.difficulty >= 4 ? 8 : q.difficulty >= 3 ? 5 : 3,
+    options: q.options || {},
+    correct: null,
+    solution: "",
+    topic: (q.tags || [])[0] || "mathematics",
+    difficulty: q.difficulty >= 4 ? "hard" : q.difficulty >= 3 ? "medium" : "easy",
+    type: q.type,
+  };
+}
+
+export default function MockExamView({ nav, t, lang, subject = "mathematics", questionSetId = null, onBack = null }) {
   const { user } = useAuth();
   const [phase, setPhase] = useState("select");
   const [selectedPaper, setSelectedPaper] = useState(null);
@@ -29,18 +45,18 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
   const timerRef = useRef();
   const answersRef = useRef(answers);
   answersRef.current = answers;
+  const autoStartedRef = useRef(false); // 防止 questionSetId 模式下重复触发
 
   // 根据学科选择数据源
   const isMath = subject === "mathematics";
   const dataSource = isMath ? CURRICULUM : (SUBJECTS[subject]?.books || {});
 
-  // 从后端题库获取题目（不再调用 AI）
+  // ① 通过随机抽题加载（原有逻辑，章节均匀取题）
   const startMock = async (paper) => {
     setSelectedPaper(paper);
     setLoading(true);
 
     try {
-      // 获取该 paper 对应的章节 ID（取第一个章节作为入口）
       const bookData = dataSource[paper.paper.replace(/[12]$/, "")] || dataSource[Object.keys(dataSource)[0]];
       const chapterIds = bookData ? bookData.chapters.map(c => c.id) : [];
 
@@ -50,10 +66,8 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
         return;
       }
 
-      // 从多个章节均匀取题，模拟真实考试跨章节出题
       const totalNeeded = paper.questions || 10;
       const perChapter = Math.max(1, Math.ceil(totalNeeded / chapterIds.length));
-      // 随机打乱章节顺序
       const shuffledChapters = [...chapterIds].sort(() => Math.random() - 0.5);
 
       let allQuestions = [];
@@ -78,26 +92,13 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
         return;
       }
 
-      // 取所需数量并打乱
       const data = { questions: allQuestions.slice(0, totalNeeded).sort(() => Math.random() - 0.5) };
 
       if (allQuestions.length < totalNeeded) {
         Toast.info(`题库暂时只有 ${allQuestions.length} 道题，不足 ${totalNeeded} 道`);
       }
 
-      // 转换为 MockExamView 期望的格式
-      const qs = data.questions.map((q, i) => ({
-        id: q.id,
-        question: typeof q.content === 'object' ? (q.content.en || q.content.zh) : q.content,
-        marks: q.difficulty >= 4 ? 6 : q.difficulty >= 3 ? 4 : 2,
-        options: q.options || {},
-        correct: null, // 答案在提交后从后端获取
-        solution: "",
-        topic: (q.tags || [])[0] || subject,
-        difficulty: q.difficulty >= 4 ? "hard" : q.difficulty >= 3 ? "medium" : "easy",
-        type: q.type,
-      }));
-
+      const qs = data.questions.map(mapQuestion);
       setQuestions(qs);
       setAnswers({});
       setTimeLeft(paper.duration * 60);
@@ -107,6 +108,53 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
     }
     setLoading(false);
   };
+
+  // ② 通过 question_set_id 加载（Past Papers 正式考试模式）
+  const startMockBySet = async (questionSet) => {
+    setLoading(true);
+    try {
+      // 调用 GET /api/question-sets/:id 获取题目（含题目详情）
+      const data = await get(`/api/question-sets/${questionSet.id}`);
+      const { questionSet: qs, questions: rawQs } = data;
+
+      if (!rawQs || rawQs.length === 0) {
+        Toast.error("该试卷暂无题目");
+        setLoading(false);
+        return;
+      }
+
+      // 解析试卷标题获取显示信息，如 "WMA12/01 Mock Paper — May 2026"
+      const titleMatch = qs.title?.match(/^([A-Z0-9/]+)\s+Mock Paper/i);
+      const codeDisplay = titleMatch ? titleMatch[1] : qs.title || 'Mock';
+
+      setSelectedPaper({
+        year: qs.title?.match(/\d{4}/)?.[0] || new Date().getFullYear(),
+        session: 'Mock Paper',
+        paper: codeDisplay,
+        duration: Math.round((qs.timeLimit || 5400) / 60),
+        questions: rawQs.length,
+        questionSetId: qs.id,
+        title: qs.title,
+      });
+
+      setQuestions(rawQs.map(mapQuestion));
+      setAnswers({});
+      setTimeLeft(qs.timeLimit || 5400);
+      setPhase("exam");
+    } catch (e) {
+      Toast.error(e.message || "Failed to load question set.");
+    }
+    setLoading(false);
+  };
+
+  // questionSetId prop：自动加载指定题集（PastPapersPage 使用）
+  // 注意：必须在 startMockBySet 定义之后，保证闭包引用有效
+  useEffect(() => {
+    if (questionSetId && !autoStartedRef.current) {
+      autoStartedRef.current = true;
+      startMockBySet({ id: questionSetId });
+    }
+  }, [questionSetId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const submitMock = useCallback(async () => {
     clearInterval(timerRef.current);
@@ -137,7 +185,6 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
         // 提交失败时静默处理
       }
 
-      // 主观题（isCorrect === null）不计入正确/错误统计
       if (isCorrect === true) correct++;
       if (needsReview) pendingReview++;
       review.push({
@@ -153,9 +200,6 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
     // 通过正式 exam 流程记录错题（已登录时）
     if (user) {
       try {
-        // 创建 mock exam 记录，通过 quick-start 接口复用正式流程
-        // 这样错题会自动进入 examQuestionResults，错题本可查
-        const questionIds = questions.map(q => q.id);
         const examData = await post('/api/exams/quick-start', {
           chapterId: questions[0]?.topic || 'mock',
           questionCount: questions.length,
@@ -166,7 +210,6 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
 
         if (examData?.id) {
           const mockExamId = examData.id;
-          // 逐题保存答案到 exam 记录
           for (const q of questions) {
             const ans = currentAnswers[q.id];
             if (ans !== undefined) {
@@ -175,25 +218,19 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
               } catch (_) {}
             }
           }
-          // 提交并批改
           try {
             await post(`/api/exams/${mockExamId}/submit`, {}, { showErrorToast: false });
           } catch (_) {}
         }
       } catch (err) {
-        // Mock exam 记录创建失败，提示用户但不阻塞结果展示
         console.warn('Mock exam record creation failed:', err.message);
         Toast.info('错题记录保存失败，结果仍可查看');
       }
-    } else if (onAddError) {
-      review.filter(q => q.isCorrect === false).forEach(q =>
-        onAddError({ ...q, subject, timestamp: Date.now(), userAnswer: currentAnswers[q.id] })
-      );
     }
 
     setResults({ correct, pendingReview, total: questions.length, review });
     setPhase("results");
-  }, [questions, user, onAddError, subject, selectedPaper]);
+  }, [questions, user, subject, selectedPaper]);
 
   useEffect(() => {
     if (phase === "exam" && timeLeft > 0) {
@@ -219,6 +256,15 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
     questions: 8,
     desc: dataSource[unit]?.title?.en || dataSource[unit]?.title || unit
   }));
+
+  // questionSetId 模式下的 select 阶段仅显示 loading
+  if (phase === "select" && questionSetId) {
+    return (
+      <div style={styles.pageWrap}>
+        <LoadingSpinner message={loading ? t.loadingPaper : "Preparing exam..."} />
+      </div>
+    );
+  }
 
   if (phase === "select") {
     return (
@@ -302,22 +348,36 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
                 </span>
               </div>
               <div style={styles.examQText}><MathText text={q.question} /></div>
-              <div style={styles.examOptions}>
-                {Object.entries(q.options || {}).map(([letter, text]) => {
-                  const isSelected = answers[q.id] === letter;
-                  return (
-                    <button key={letter}
-                      onClick={() => setAnswers(a => ({ ...a, [q.id]: letter }))}
-                      style={{ ...styles.optionBtn, ...(isSelected ? styles.optionSelected : {}) }}>
-                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${isSelected ? "#1a73e8" : "#CBD5E1"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "border-color 0.15s" }}>
-                        {isSelected && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#1a73e8" }} />}
-                      </div>
-                      <span style={styles.optionLetter}>{letter}</span>
-                      <span>{text}</span>
-                    </button>
-                  );
-                })}
-              </div>
+
+              {/* MCQ：保留带选项文本的原有样式 */}
+              {q.type === 'multiple_choice' && Object.keys(q.options || {}).length > 0 ? (
+                <div style={styles.examOptions}>
+                  {Object.entries(q.options || {}).map(([letter, text]) => {
+                    const isSelected = answers[q.id] === letter;
+                    return (
+                      <button key={letter}
+                        onClick={() => setAnswers(a => ({ ...a, [q.id]: letter }))}
+                        style={{ ...styles.optionBtn, ...(isSelected ? styles.optionSelected : {}) }}>
+                        <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${isSelected ? "#1a73e8" : "#CBD5E1"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "border-color 0.15s" }}>
+                          {isSelected && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#1a73e8" }} />}
+                        </div>
+                        <span style={styles.optionLetter}>{letter}</span>
+                        <span>{text}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : (
+                /* calculation / proof / short_answer / fill_blank：使用 AnswerInput（含符号键盘）*/
+                <div style={{ marginTop: 12 }}>
+                  <AnswerInput
+                    question={q}
+                    value={answers[q.id] || ''}
+                    onChange={(val) => setAnswers(a => ({ ...a, [q.id]: val }))}
+                    disabled={false}
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -329,7 +389,6 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
   }
 
   if (phase === "results" && results) {
-    // 分数只基于可判定的题目（排除待批改）
     const gradedTotal = results.total - (results.pendingReview || 0);
     const pct = gradedTotal > 0 ? Math.round((results.correct / gradedTotal) * 100) : 0;
     const grade = pct >= 90 ? "A*" : pct >= 80 ? "A" : pct >= 70 ? "B" : pct >= 60 ? "C" : pct >= 50 ? "D" : "E";
@@ -362,21 +421,32 @@ export default function MockExamView({ nav, onAddError, t, lang, subject = "math
                 <span>{q.isCorrect === null ? "Pending" : q.isCorrect ? `+${q.marks}` : "0"}/{q.marks} {t.marks}</span>
               </div>
               <div style={styles.reviewQuestion}>{q.question}</div>
-              <div style={styles.reviewSolution}>
-                <strong>{t.modelAnswer} ({q.correct}):</strong> <MathText text={q.solution} />
+              <div style={{ ...styles.reviewSolution, borderTop: '1px solid #e8eaed', paddingTop: 8, marginTop: 8 }}>
+                <strong>{t.modelAnswer}:</strong>
+                {q.correct && <span style={{ marginLeft: 4, color: '#188038', fontWeight: 600 }}>({q.correct})</span>}
+                {q.solution && <div style={{ marginTop: 4 }}><MathText text={q.solution} /></div>}
               </div>
-              {!q.isCorrect && (
+              {q.userAnswer && (
+                <div style={{ marginTop: 6, fontSize: 12, color: '#5f6368' }}>
+                  📝 Your answer: <em>{q.userAnswer.length > 200 ? q.userAnswer.slice(0, 200) + '…' : q.userAnswer}</em>
+                </div>
+              )}
+              {!q.isCorrect && q.isCorrect !== null && (
                 <div style={styles.aiExplanation}>
-                  💡 {t.yourAnswerWas} {q.userAnswer || t.noAnswer}. {t.reviewLabel} {q.topic}
+                  💡 {t.reviewLabel} {q.topic}
                 </div>
               )}
             </div>
           ))}
         </div>
-        <button onClick={() => setPhase("select")} style={styles.btnSecondary}>{t.backToMenu}</button>
+        <button onClick={() => onBack ? onBack() : setPhase("select")} style={styles.btnSecondary}>{t.backToMenu}</button>
       </div>
     );
   }
 
   return null;
 }
+
+// 导出 startMockBySet 供 PastPapersPage 使用的辅助 hook / context 不必要
+// PastPapersPage 通过 ref 调用，见下方 export
+export { mapQuestion };

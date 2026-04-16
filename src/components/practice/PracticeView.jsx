@@ -150,17 +150,30 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
   const handleNext = async () => {
     if (currentIndex + 1 >= questions.length) {
       setLoading(true)
+      const allResults = roundResults.concat([{
+        questionId: questions[currentIndex].id,
+        isCorrect: feedback.isCorrect,
+      }])
       try {
         const data = await post('/api/practice/summary', {
           chapterId,
-          results: roundResults.concat([{
-            questionId: questions[currentIndex].id,
-            isCorrect: feedback.isCorrect,
-          }]),
+          results: allResults,
         })
         setRecommendations(data?.recommendations || [])
       } catch (e) {
         // 非关键操作，仍然显示 summary
+      }
+      // 记录章节学习进度（非阻塞，失败不影响 UI）
+      if (chapterId) {
+        const correctCount = allResults.filter(r => r.isCorrect === true).length
+        const totalCount = allResults.filter(r => r.isCorrect !== null).length
+        const masteryLevel = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0
+        post('/api/progress', {
+          chapterId,
+          status: masteryLevel >= 70 ? 'completed' : 'in_progress',
+          masteryLevel,
+          timeSpent: elapsedSeconds,
+        }).catch(() => {})
       }
       setLoading(false)
       setPhase('summary')

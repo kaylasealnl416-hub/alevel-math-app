@@ -109,3 +109,40 @@
   font-size: 0.875rem;
   color: #9ca3af;
 }
+
+/* ============ 数学符号小键盘 ============ */
+.math-symbol-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.sym-btn {
+  padding: 3px 8px;
+  min-width: 30px;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  background: #f8f9fa;
+  color: #202124;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  user-select: none;
+}
+
+.sym-btn:hover:not(:disabled) {
+  background: #e8f0fe;
+  border-color: #1a73e8;
+  color: #1a73e8;
+}
+
+.sym-btn:active:not(:disabled) {
+  background: #d2e3fc;
+}
+
+.sym-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

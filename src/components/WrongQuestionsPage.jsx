@@ -52,8 +52,12 @@ function WrongQuestionsPage() {
         examId: wq.examId, examType: wq.exam.type, examDate: wq.exam.createdAt,
         userAnswer: wq.userAnswer, aiFeedback: wq.aiFeedback, chapter: wq.chapter, attemptCount: 1,
         resultId: wq.id,
+        isMastered: wq.isMastered || false,
       }))
       setWrongQuestions(wrong)
+      // 用服务端数据初始化 masteredIds，与 localStorage 合并（以服务端为准）
+      const serverMastered = new Set(wrong.filter(q => q.isMastered).map(q => q.id))
+      setMasteredIds(prev => new Set([...serverMastered, ...prev]))
     } catch (err) {
       console.error('Failed to fetch wrong questions:', err)
       setError('Failed to load wrong questions. Please try again later.')
@@ -68,16 +72,18 @@ function WrongQuestionsPage() {
 
   const toggleMastered = async (question) => {
     const newSet = new Set(masteredIds)
-    if (newSet.has(question.id)) {
-      newSet.delete(question.id)
-      setToast({ message: 'Removed from mastered', type: 'info' })
-    } else {
+    const nowMastered = !newSet.has(question.id)
+    if (nowMastered) {
       newSet.add(question.id)
       setToast({ message: 'Marked as mastered!', type: 'success' })
-      // 通知后端（stub，不阻塞）
-      post(`/api/wrong-questions/${question.resultId}/master`).catch(() => {})
+    } else {
+      newSet.delete(question.id)
+      setToast({ message: 'Removed from mastered', type: 'info' })
     }
     setMasteredIds(newSet)
+    // 同步写入服务端（真实持久化）
+    post(`/api/wrong-questions/${question.resultId}/master`, { mastered: nowMastered }).catch(() => {})
+    // 同时保留 localStorage 作为离线缓存
     localStorage.setItem(`mastered_${userId}`, JSON.stringify([...newSet]))
   }
 
@@ -108,6 +114,23 @@ function WrongQuestionsPage() {
   const getExamTypeLabel = (type) => {
     const labels = { chapter_test: 'Chapter Test', unit_test: 'Unit Test', mock_exam: 'Mock Exam', diagnostic: 'Diagnostic Test' }
     return labels[type] || type
+  }
+
+  // 从 chapterId 前缀推断 subject，用于跳转练习
+  const getSubjectFromChapterId = (chapterId) => {
+    if (!chapterId) return 'mathematics'
+    if (chapterId.startsWith('pol')) return 'politics'
+    if (chapterId.startsWith('psy')) return 'psychology'
+    if (chapterId.startsWith('fmech')) return 'further-math'
+    if (chapterId.startsWith('fm') || chapterId.startsWith('fs') || chapterId.startsWith('fp')) return 'further-math'
+    if (chapterId.startsWith('e')) return 'economics'
+    if (chapterId.startsWith('h')) return 'history'
+    return 'mathematics'
+  }
+
+  const handleRetry = (question) => {
+    const subject = getSubjectFromChapterId(question.chapterId)
+    navigate(`/practice?chapter=${question.chapterId}&subject=${subject}`)
   }
 
   if (loading) return <Loading message="Loading wrong questions..." size="large" fullScreen />
@@ -262,6 +285,14 @@ function WrongQuestionsPage() {
                           onClick={() => toggleAnswer(question.id)}
                         >
                           {showAnswer[question.id] ? 'Hide Answer' : 'Show Answer'}
+                        </Button>
+
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => handleRetry(question)}
+                        >
+                          Retry Chapter
                         </Button>
 
                         <Button

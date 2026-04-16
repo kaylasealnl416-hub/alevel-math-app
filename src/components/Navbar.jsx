@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { path: '/', label: 'Home' },
   { path: '/practice', label: 'Practice' },
   { path: '/exams', label: 'Exams' },
+  { path: '/past-papers', label: 'Past Papers' },
   { path: '/learning-plan', label: 'Study Plan' },
   { path: '/wrong-questions', label: 'Wrong Answers' },
 ]

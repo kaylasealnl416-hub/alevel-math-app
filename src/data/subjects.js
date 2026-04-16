@@ -24,16 +24,16 @@ export const SUBJECTS = {
             title: { zh: "经济学本质与基本概念", en: "The Nature of Economics & Basic Concepts" },
             overview: { zh: "介绍经济学的本质，理解稀缺性、选择与机会成本的关系，学习正理经济学与规范经济学的区别。", en: "Introduces the nature of economics, understanding scarcity, choice, and opportunity cost, learning the difference between positive and normative economics." },
             keyPoints: [
-              "Scarcity: Resources are finite but human wants are infinite, forcing economic agents to make choices",
-              "Opportunity Cost: The value of the next best alternative forgone when a decision is made",
-              "Production Possibility Frontier (PPF): Shows the maximum combinations of two goods an economy can produce given current resources (downward-sloping curve)",
-              "Economic Growth on PPF: Shown by an outward shift of the PPF, indicating an increase in the productive capacity of the economy",
-              "Positive Statements: Objective, factual statements that can be tested against evidence to be proven true or false",
-              "Normative Statements: Subjective statements carrying value judgements, often containing words like 'should' or 'ought'",
-              "Factors of Production: Land (reward: rent), Labour (reward: wages), Capital (reward: interest), and Enterprise (reward: profit)",
-              "Division of Labour: Breaking down production into specialized tasks, increasing productivity but risking worker alienation and structural unemployment",
-              "Free Market Economy: Resource allocation is determined entirely by the price mechanism without government intervention (efficiency vs. inequality risk)",
-              "Command Economy: The state allocates resources, which can ensure basic provision but often risks severe bureaucratic inefficiency"
+              "The Basic Economic Problem: Resources are finite while human wants are infinite, creating scarcity which forces economic agents to make choices about what, how and for whom to produce",
+              "Opportunity Cost: The value of the next best alternative forgone when making a decision (crucial for evaluating consumer, firm, and government resource allocation choices)",
+              "Production Possibility Frontier (PPF): Shows the maximum potential combinations of two goods an economy can produce when all resources are fully and efficiently employed in a given time period",
+              "PPF Movements and Shifts: A movement from inside to the curve shows actual economic growth using idle resources, while an outward shift indicates potential economic growth via increased quantity or quality of resources",
+              "Positive Statements: Objective, factual statements that can be tested or verified against empirical evidence to be proven either true or false",
+              "Normative Statements: Subjective statements carrying value judgements that cannot be scientifically tested, often forming the basis of normative economic policy recommendations",
+              "Factors of Production: The economic inputs required to generate output, comprising land (rewarded by rent), labour (wages), capital (interest), and enterprise (profit)",
+              "Specialisation and Division of Labour: Breaking down production processes into distinct, specialised tasks to increase productivity and lower unit costs (evaluated by risks of worker monotony, high turnover, and structural unemployment)",
+              "Free Market Economy: An economic system where resource allocation is determined entirely by the price mechanism and the invisible hand with no government intervention (evaluated by high efficiency versus risks of inequality and market failure)",
+              "Command Economy: An economic system where the state owns all resources and directs allocation, which can ensure equitable provision of public goods but often suffers from severe bureaucratic inefficiency and lack of profit incentives"
             ],
             formulas: [
               { name: "Opportunity Cost", expr: "OC = Value of next best alternative foregone" },
@@ -67,16 +67,16 @@ export const SUBJECTS = {
             title: { zh: "需求与消费者行为", en: "Demand & Consumer Behaviour" },
             overview: { zh: "学习需求曲线、需求法则、需求弹性以及消费者剩余的概念。", en: "Learn about demand curves, law of demand, demand elasticities, and consumer surplus." },
             keyPoints: [
-              "Law of Demand: Inverse relationship between price and quantity demanded (downward-sloping demand curve)",
-              "Shifts in Demand: Caused by changes in income, prices of substitutes/complements, tastes, or population (factors other than the good's own price)",
-              "Diminishing Marginal Utility: As consumption increases, the satisfaction derived from each additional unit declines, explaining the downward-sloping demand curve",
-              "Price Elasticity of Demand (PED): %ΔQD / %ΔP; measures the responsiveness of quantity demanded to a change in price",
-              "Elastic Demand: PED > 1; a price cut will increase total revenue (represented by a flatter demand curve)",
-              "Inelastic Demand: PED < 1; a price rise will increase total revenue (represented by a steeper demand curve)",
-              "Income Elasticity of Demand (YED): %ΔQD / %ΔY; positive for normal goods and negative for inferior goods",
-              "Cross Elasticity of Demand (XED): %ΔQD of Good A / %ΔP of Good B; positive for substitutes and negative for complements",
-              "Consumer Surplus: The difference between what consumers are willing to pay and the market price they actually pay (area above price, below demand curve)",
-              "Evaluation of Elasticities: Estimates are based on historical data which may not hold true in dynamic, real-world markets"
+              "Law of Demand: The inverse relationship between price and quantity demanded over a given time period, represented by a downward-sloping demand curve (relies heavily on the ceteris paribus assumption)",
+              "Movements vs Shifts in Demand: A change in price causes a movement along the demand curve, whereas a change in conditions of demand such as income, tastes, or substitute prices causes the entire curve to shift (crucial for distinguishing between changing prices and changing market conditions)",
+              "Rationality and Diminishing Marginal Utility: Consumers aim to maximise utility, but the satisfaction gained from consuming each additional unit declines, forming the theoretical basis for the downward-sloping demand curve (evaluated by behavioural insights like habitual behaviour or bounded rationality)",
+              "Price Elasticity of Demand (PED): The responsiveness of quantity demanded to a change in price, calculated as %ΔQD divided by %ΔP (values range from perfectly inelastic at 0, unitary elastic at 1, to perfectly elastic at infinity)",
+              "PED and Total Revenue: When demand is price elastic where |PED| > 1, a price reduction increases total revenue, whereas when demand is price inelastic where |PED| < 1, a price increase raises total revenue (vital for evaluating firm pricing strategies)",
+              "Determinants of PED: Demand is more price elastic when there are close substitutes, the good takes up a high proportion of income, is a luxury, or over a longer time period (determines the incidence of taxation and subsidy benefits)",
+              "Income Elasticity of Demand (YED): The responsiveness of quantity demanded to a change in consumer income, calculated as %ΔQD divided by %ΔY (positive for normal goods, negative for inferior goods, and greater than +1 for luxury goods)",
+              "Cross Elasticity of Demand (XED): The responsiveness of quantity demanded of Good A to a change in the price of Good B, calculated as %ΔQD of Good A divided by %ΔP of Good B (positive values indicate substitutes, negative values indicate complements, and zero indicates independent goods)",
+              "Consumer Surplus: The difference between the maximum price consumers are willing and able to pay and the actual market price they do pay, shown as the area below the demand curve and above the price line (evaluated by its loss when prices rise due to shifts in supply or indirect taxes)",
+              "Evaluation of Elasticity Estimates: Using elasticity calculations to guide business or government policy is limited because point estimates rely on historical data, assume ceteris paribus, and often fail to capture dynamic shifts in real-world consumer preferences"
             ],
             formulas: [
               { name: "Price Elasticity of Demand (PED)", expr: "PED = (%ΔQd) / (%ΔP)" },
@@ -137,16 +137,16 @@ export const SUBJECTS = {
             title: { zh: "供给与生产者行为", en: "Supply & Producer Behaviour" },
             overview: { zh: "学习供给曲线、供给法则、供给弹性以及生产者剩余的概念。", en: "Learn about supply curves, law of supply, supply elasticity, producer surplus, and detailed supply curve analysis." },
             keyPoints: [
-              "Law of Supply: Direct relationship between price and quantity supplied (upward-sloping supply curve) driven by the profit motive",
-              "Shifts in Supply: Caused by changes in production costs, technology, indirect taxes, or subsidies",
-              "Price Elasticity of Supply (PES): %ΔQS / %ΔP; measures the responsiveness of quantity supplied to a change in price",
-              "Elastic Supply: PES > 1; firms can easily increase output without significant cost increases (flatter supply curve)",
-              "Inelastic Supply: PES < 1; output is restricted by capacity limits, time lags, or lack of factor mobility (steeper supply curve)",
-              "Determinants of PES: Time period, availability of spare capacity, level of raw material stocks, and mobility of factors of production",
-              "Producer Surplus: The difference between the price producers are willing to accept and the market price they receive (area below price, above supply curve)",
-              "Joint Supply: When the production of one good automatically leads to the production of a by-product (e.g., beef and leather)",
-              "Competitive Supply: When two alternative goods compete for the same resources (e.g., land for wheat versus biofuels)",
-              "Evaluation of PES: Supply is almost always inelastic in the immediate short run, but becomes far more elastic in the long run as capacity expands"
+              "Law of Supply: The direct positive relationship between price and quantity supplied over a given time period, represented by an upward-sloping supply curve driven by the profit motive (relies on the ceteris paribus assumption)",
+              "Movements vs Shifts in Supply: A change in price causes a movement along the supply curve, whereas a change in the conditions of supply such as wage rates, raw material costs, technology, or government intervention causes the entire curve to shift",
+              "Price Elasticity of Supply (PES): The responsiveness of quantity supplied to a change in price, calculated as the percentage change in quantity supplied divided by the percentage change in price (always yields a positive value)",
+              "Price Elastic Supply: When PES is greater than +1, indicating that quantity supplied is highly responsive to price changes, graphically represented by a relatively flat supply curve that intersects the price axis",
+              "Price Inelastic Supply: When PES is less than +1, indicating that quantity supplied is relatively unresponsive to price changes, graphically represented by a relatively steep supply curve that intersects the quantity axis",
+              "Determinants of PES: Supply is more price elastic when firms have abundant spare capacity, high levels of readily available raw material stockpiles, and highly mobile factors of production",
+              "Producer Surplus: The difference between the minimum price a firm is willing and able to accept for a good and the actual equilibrium market price received, illustrated as the area above the supply curve and below the market price line",
+              "Joint Supply: A situation where the production of one good automatically yields another as a by-product, meaning an increase in the production of the primary good shifts the supply curve of the joint good outwards",
+              "Competitive Supply: A situation where two goods compete for the same scarce factors of production, meaning an increase in the profitability and production of one good causes an inward shift in the supply curve of the alternative good",
+              "Evaluation of PES and Time Lags: Supply is virtually perfectly inelastic in the immediate momentary period, but becomes progressively more price elastic in the long run as firms can alter all factors of production and expand capital capacity"
             ],
             formulas: [
               { name: "Price Elasticity of Supply (PES)", expr: "PES = (%ΔQs) / (%ΔP)" },
@@ -178,16 +178,16 @@ export const SUBJECTS = {
             title: { zh: "市场均衡", en: "Market Equilibrium" },
             overview: { zh: "学习市场均衡的形成、价格机制的功能以及供需变化对均衡的影响。", en: "Learn about market equilibrium formation, functions of price mechanism, and effects of supply and demand changes on equilibrium." },
             keyPoints: [
-              "Equilibrium Price: The market-clearing price where quantity demanded exactly equals quantity supplied (intersection of D and S curves)",
-              "Excess Demand (Shortage): Occurs when the price is below equilibrium, forcing prices up as consumers bid for scarce goods",
-              "Excess Supply (Surplus): Occurs when the price is above equilibrium, forcing prices down as firms try to clear unsold stock",
-              "Signalling Function: Prices signal information to consumers and producers about resource scarcity and surpluses",
-              "Incentive Function: Higher prices act as an incentive to producers to allocate more resources to a market for higher profits",
-              "Rationing Function: Prices ration scarce resources strictly to those consumers who are willing and able to pay the most",
-              "Specific Tax: A fixed amount of tax per unit, shifting the supply curve vertically upwards by a parallel amount",
-              "Ad Valorem Tax: A percentage tax (e.g., VAT), shifting the supply curve vertically upwards by a diverging amount (steeper slope)",
-              "Subsidies: A government grant to producers, shifting the supply curve vertically downwards, lowering price and increasing quantity",
-              "Tax Incidence (Evaluation): The burden of a tax falls more heavily on consumers if PED is more inelastic relative to PES"
+              "Market Equilibrium: The state where quantity demanded exactly equals quantity supplied, establishing a market-clearing price where there is no tendency for change, graphically represented by the intersection of the demand and supply curves",
+              "Excess Demand (Shortage): A disequilibrium condition occurring when the current market price is below the equilibrium price, resulting in quantity demanded exceeding quantity supplied, which causes an upward pressure on price as consumers bid for scarce goods",
+              "Excess Supply (Surplus): A disequilibrium condition occurring when the market price sits above the equilibrium level, causing quantity supplied to exceed quantity demanded and placing downward pressure on price as producers reduce prices to clear unsold inventory",
+              "The Signalling Function of Prices: Price changes communicate crucial information to economic agents, such as rising prices signalling increasing resource scarcity or higher demand, prompting consumers and producers to adjust their economic behaviour",
+              "The Incentive Function of Prices: Higher market prices act as a powerful incentive for profit-maximising firms to allocate more factors of production into a market to expand output, while simultaneously incentivising consumers to contract their quantity demanded",
+              "The Rationing Function of Prices: When resources are scarce and demand outstrips supply, rising prices serve to ration the limited goods, allocating them exclusively to consumers who possess the highest willingness and ability to pay",
+              "Specific (Unit) Tax: A fixed absolute amount of tax levied per unit of a good sold, which increases the costs of production and shifts the supply curve vertically upwards by a parallel and constant amount equal to the tax",
+              "Ad Valorem Tax: A tax levied as a percentage of the value of the good (such as VAT), causing a pivotal, diverging upward shift of the supply curve because the absolute tax amount per unit increases as the price of the good rises",
+              "Producer Subsidies: Government grants paid to firms to lower their effective costs of production, which shifts the market supply curve vertically downwards, resulting in a lower equilibrium market price for consumers and a higher equilibrium quantity traded",
+              "Evaluation of Tax and Subsidy Incidence: The distribution of an indirect tax burden or subsidy benefit depends entirely on relative elasticities; if demand is more price inelastic than supply, consumers bear the greatest burden of a tax and reap the most price-reduction benefit from a subsidy"
             ],
             formulas: [
               { name: "Equilibrium Condition", expr: "Qd = Qs" },
@@ -243,16 +243,16 @@ export const SUBJECTS = {
             title: { zh: "市场失灵", en: "Market Failure" },
             overview: { zh: "学习市场失灵的原因：外部性、公共物品、信息不对称等问题。", en: "Learn about market failure causes: externalities, public goods, information asymmetry, with detailed graphical analysis and policy solutions." },
             keyPoints: [
-              "Market Failure: When the free market price mechanism fails to allocate resources efficiently, leading to a net welfare loss",
-              "Externalities: Third-party spillover effects arising from the production or consumption of a good",
-              "Negative Production Externalities: Marginal Social Cost (MSC) > Marginal Private Cost (MPC), leading to overproduction (deadweight welfare loss triangle pointing to social optimum)",
-              "Positive Consumption Externalities: Marginal Social Benefit (MSB) > Marginal Private Benefit (MPB), leading to underconsumption",
-              "Public Goods: Characterised by being non-rival and non-excludable, leading to the free-rider problem and missing markets",
-              "Information Gaps: Asymmetric information where buyers or sellers have unequal knowledge, causing a misallocation of resources",
-              "Merit Goods: Goods that are under-consumed by the free market due to information gaps and positive externalities (e.g., education)",
-              "Demerit Goods: Goods that are over-consumed by the free market due to information gaps and negative externalities (e.g., tobacco)",
-              "Moral Hazard: When economic agents take greater risks because they know they are protected (e.g., bailed-out banks)",
-              "Tragedy of the Commons: The rapid depletion of shared, open-access resources (like ocean fisheries) due to rational self-interest"
+              "Market Failure: A situation where the free market price mechanism fails to allocate scarce resources efficiently, resulting in a net welfare loss and a failure to produce at the socially optimum equilibrium where Marginal Social Benefit (MSB) equals Marginal Social Cost (MSC)",
+              "Externalities: The positive or negative spillover effects on third parties not directly involved in an economic transaction, meaning the market price fails to reflect the true costs or benefits to society, thus causing a divergence between private and social costs or benefits",
+              "Negative Production Externalities: Occur when Marginal Social Cost (MSC) exceeds Marginal Private Cost (MPC), leading the free market to overproduce and underprice the good compared to the socially optimum equilibrium, generating a deadweight welfare loss triangle pointing towards the social optimum",
+              "Positive Consumption Externalities: Occur when Marginal Social Benefit (MSB) exceeds Marginal Private Benefit (MPB), causing the free market to under-consume and under-price the good relative to the socially optimum level, creating a potential welfare gain that is not realised",
+              "Public Goods: Goods that are strictly non-rivalrous and non-excludable in consumption, meaning consumers cannot be prevented from using them without paying, which leads to the free-rider problem and completely missing markets if left entirely to the private sector",
+              "Information Gaps and Asymmetric Information: Market failure arising when economic agents lack perfect information or when buyers and sellers possess unequal knowledge, leading to irrational decision-making, adverse selection, and a misallocation of resources",
+              "Merit Goods: Goods that the government determines are intrinsically beneficial but are under-consumed and under-provided in a free market due to individuals suffering from imperfect information regarding their long-term private benefits and the existence of significant positive consumption externalities",
+              "Demerit Goods: Goods deemed intrinsically harmful that are over-consumed and over-provided in a free market because consumers suffer from information gaps regarding their long-term private costs and because their consumption generates negative externalities",
+              "Moral Hazard: A situation of asymmetric information where economic agents take excessive risks because they know that the negative consequences of their actions will be borne by a third party, such as governments bailing out failing financial institutions",
+              "Tragedy of the Commons: The rapid depletion and degradation of common pool resources — which are non-excludable but rivalrous, such as global fishing grounds — because rational, self-interested agents overuse the resource without bearing the full marginal social cost of their actions"
             ],
             formulas: [
               { name: "Marginal Social Cost (MSC)", expr: "MSC = MPC + MEC" },
@@ -285,16 +285,16 @@ export const SUBJECTS = {
             title: { zh: "政府干预", en: "Government Intervention" },
             overview: { zh: "学习政府干预市场的各种手段及其效果。", en: "Learn about various government interventions in markets and their effects, with detailed graphical analysis and real-world examples." },
             keyPoints: [
-              "Indirect Taxes: Used to internalize negative externalities by making the polluter pay (shifts MPC leftwards towards MSC)",
-              "Evaluation of Taxes: Difficult to accurately assign a monetary value to the externality; highly regressive nature harms lower-income groups",
-              "Subsidies: Used to encourage consumption/production of goods with positive externalities (shifts MPB rightwards towards MSB)",
-              "Evaluation of Subsidies: Significant opportunity cost to the government budget; risk of firms becoming reliant and 'X-inefficient'",
-              "Maximum Prices (Price Ceilings): Set legally below the equilibrium to protect consumers, causing excess demand, queues, and black markets",
-              "Minimum Prices (Price Floors): Set legally above the equilibrium to protect producers or discourage demerit goods, causing excess supply",
-              "Tradable Pollution Permits: A market-based solution capping total industry emissions and allowing firms to buy/sell permits",
-              "Evaluation of Permits: Achieves efficient allocation of pollution reduction, but governments struggle to set the optimal cap and enforce compliance",
-              "State Provision: Direct government funding of public or merit goods to overcome missing markets, ensuring universal access",
-              "Government Failure: When government intervention leads to a net welfare loss (e.g., due to regulatory capture, admin costs, or unintended consequences)"
+              "Indirect Taxes: Governments impose specific or ad valorem taxes on goods generating negative externalities to internalise the external costs, shifting the Marginal Private Cost (MPC) curve upwards to align with the Marginal Social Cost (MSC) and resolving over-production",
+              "Evaluation of Indirect Taxes: While effective at raising government revenue and reducing harmful consumption, indirect taxes are hindered by the difficulty of accurately quantifying the external cost to set the optimal tax rate, and their regressive nature disproportionately burdens lower-income households",
+              "Subsidies: Government grants designed to lower effective production costs and reduce market prices, thereby incentivising the consumption and production of merit goods or goods yielding positive externalities to shift market equilibrium towards the socially optimum level",
+              "Evaluation of Subsidies: Despite increasing equity and correcting under-consumption, subsidies incur a significant opportunity cost on government budgets and risk fostering X-inefficiency as reliant firms lose the competitive incentive to minimise their average costs",
+              "Maximum Prices (Price Ceilings): A legally imposed price limit set below the free market equilibrium to improve affordability for vulnerable consumers, which inherently generates excess demand (a shortage) and risks the emergence of shadow markets and non-price rationing mechanisms",
+              "Minimum Prices (Price Floors): A legally enforced price limit set above the free market equilibrium designed to guarantee primary producer incomes or restrict the consumption of demerit goods, inherently resulting in excess supply (a surplus) that the government or agency may be forced to purchase",
+              "Tradable Pollution Permits: A market-based intervention where the government caps total allowable industry emissions and issues tradable quotas, financially incentivising clean firms who can sell surplus permits while penalising highly polluting firms who are forced to purchase them",
+              "Evaluation of Tradable Permits: This system successfully internalises external environmental costs using the price mechanism, but its effectiveness is heavily compromised by the immense difficulty in accurately setting the pollution cap, high regulatory administration costs, and the risk of international free-rider problems",
+              "State Provision: The direct funding and supply of public or merit goods by the government, financed through general taxation, to completely overcome the missing markets caused by the free-rider problem and ensure equitable, universal access regardless of a consumer's ability to pay",
+              "Government Failure: Occurs when government intervention in a market misfires and results in a deeper misallocation of resources and a net welfare loss, commonly caused by unintended consequences, excessive administrative costs, information gaps, or regulatory capture"
             ],
             formulas: [
               { name: "Tax Incidence", expr: "Tax burden depends on PED and PES elasticity" },
@@ -333,16 +333,16 @@ export const SUBJECTS = {
             title: { zh: "经济表现衡量", en: "Economic Performance Measures" },
             overview: { zh: "学习衡量经济表现的四大指标：经济增长、通胀、失业、国际收支。", en: "Learn the four main indicators of economic performance: economic growth, inflation, unemployment, balance of payments." },
             keyPoints: [
-              "Gross Domestic Product (GDP): The total value of all goods and services produced within a country's borders in a given year",
-              "Real vs. Nominal GDP: Real GDP is adjusted for inflation (measured in constant prices); Nominal GDP is not adjusted (measured in current prices)",
-              "Inflation: The sustained increase in the general price level of an economy, typically measured by the Consumer Prices Index (CPI)",
-              "Deflation vs. Disinflation: Deflation is a falling general price level (negative inflation); Disinflation is a falling rate of inflation (prices rising slower)",
-              "Unemployment Rate: The percentage of the economically active population (workforce) who are without a job but actively seeking one",
-              "Measures of Unemployment: The Claimant Count measures those receiving out-of-work benefits; the ILO measure surveys those actively seeking work (internationally comparable)",
-              "Current Account on the Balance of Payments: A record of a country's trade in goods, trade in services, primary income, and secondary income",
-              "Current Account Deficit: When the total value of imports (withdrawals) exceeds the total value of exports (injections)",
-              "Human Development Index (HDI): A composite indicator of living standards measuring health (life expectancy), education (mean/expected years), and income (GNI per capita)",
-              "Evaluation of GDP: Often a flawed measure of living standards as it ignores the shadow economy, income inequality, environmental degradation, and unpaid work"
+              "Gross Domestic Product (GDP): The total market value of all final goods and services produced within a country's geographical borders over a given period, typically a year, serving as the primary indicator of national macroeconomic size",
+              "Real vs. Nominal GDP: Nominal GDP measures the value of national output at current market prices, whereas Real GDP isolates the true change in output volume by stripping out the effects of inflation using constant base-year prices",
+              "Inflation: The sustained upward movement in the general price level of an economy over time, which consequently erodes the purchasing power of money, typically measured using the weighted basket of goods in the Consumer Prices Index (CPI)",
+              "Deflation vs. Disinflation: Deflation is a sustained decrease in the general price level indicating a negative inflation rate, whereas disinflation occurs when the general price level continues to rise but at a slower, decelerating rate",
+              "Unemployment Rate: The proportion of the economically active population — the labour force comprising both the employed and the unemployed — who are currently without a job but are willing, able, and actively seeking employment",
+              "Measures of Unemployment: The Claimant Count records the number of people successfully claiming unemployment-related welfare benefits, while the International Labour Organisation (ILO) survey provides a broader, internationally comparable measure of those without work who have actively sought a job in the past four weeks and are available to start within two",
+              "Current Account of the Balance of Payments: A macroeconomic record tracking a country's day-to-day international transactions, comprising the balance of trade in goods, the balance of trade in services, primary income (investment returns), and secondary income (current transfers)",
+              "Current Account Deficit: A macroeconomic scenario where the total monetary value of a country's outflows for imported goods, services, and income transfers exceeds the total value of its export inflows, representing a net withdrawal from the circular flow of income",
+              "Human Development Index (HDI): A composite normative indicator of economic development and living standards that combines three dimensions: health (life expectancy at birth), education (mean and expected years of schooling), and living standards (real GNI per capita at purchasing power parity)",
+              "Evaluation of GDP: While a standard measure of growth, GDP is frequently criticised as a flawed proxy for living standards because it fails to account for wealth inequality, negative environmental externalities, improvements in product quality, and the unrecorded value of the shadow economy"
             ],
             formulas: [
               { name: "GDP Growth Rate", expr: "(Real GDP₂ - Real GDP₁) / Real GDP₁ × 100%" },
@@ -397,16 +397,16 @@ export const SUBJECTS = {
             title: { zh: "总需求", en: "Aggregate Demand" },
             overview: { zh: "学习总需求的构成要素及其影响因素。", en: "Learn the components of aggregate demand and factors affecting them, including detailed AD curve analysis." },
             keyPoints: [
-              "Aggregate Demand (AD): Total planned spending on domestic goods and services at various price levels; AD = C + I + G + (X - M)",
-              "Consumption (C): Spending by households on consumer goods/services; heavily influenced by interest rates, consumer confidence, and the wealth effect",
-              "The Wealth Effect: When rising asset prices (e.g., housing, shares) increase consumer confidence and borrowing, shifting AD right",
-              "Investment (I): Planned spending by firms on capital goods; determined by interest rates, business expectations ('animal spirits'), and corporation tax",
-              "Government Spending (G): Expenditure by the state on public services and infrastructure (an autonomous injection into the circular flow)",
-              "Net Exports (X - M): Export revenues minus import expenditure; determined by exchange rates, relative inflation, and foreign income levels",
-              "Downward-sloping AD Curve: Explained by the wealth effect, the interest rate effect, and the international trade effect as the general price level falls",
-              "The Multiplier Effect: An initial injection into the circular flow leads to a much greater final increase in real GDP (Formula: k = 1/MPW)",
-              "Marginal Propensity to Consume (MPC): The proportion of an increase in income that is spent on consumption; directly determines the size of the multiplier",
-              "Evaluation of AD: Shifting AD is heavily dependent on consumer and business confidence; rate cuts won't work if 'animal spirits' are low"
+              "Aggregate Demand (AD): The total planned expenditure on domestically produced goods and services at any given general price level over a specific time period, calculated using the formula AD = C + I + G + (X - M)",
+              "Consumption (C): The largest component of aggregate demand representing total planned household expenditure on consumer goods and services, which is heavily determined by real disposable income, prevailing interest rates, consumer confidence, and wealth effects",
+              "The Wealth Effect: The psychological phenomenon where an increase in the perceived value of physical or financial assets, such as housing or equities, boosts consumer confidence and borrowing, leading to an outward shift in the Aggregate Demand curve",
+              "Investment (I): Total planned spending by firms on capital goods to increase their productive capacity, primarily determined by the cost of borrowing, business expectations driven by Keynesian 'animal spirits', and the rate of corporation tax",
+              "Government Expenditure (G): An autonomous injection into the circular flow of income representing state spending on public goods, merit goods, and infrastructure, which can be manipulated as part of discretionary fiscal policy to manage macroeconomic fluctuations",
+              "Net Exports (X - M): The total value of export revenues minus total import expenditures, representing the international trade balance, which is heavily influenced by the real exchange rate, relative inflation rates, and the degree of foreign economic growth",
+              "The Downward-Sloping AD Curve: An inversely proportional relationship between the general price level and real output, theoretically explained by the real wealth effect, the interest rate effect, and the international trade effect which boosts the competitiveness of domestic exports as prices fall",
+              "The Multiplier Effect: The macroeconomic process where an initial autonomous injection into the circular flow of income generates a proportionately larger final increase in national income and real GDP, calculated using the formula k = 1/(1-MPC) or k = 1/MPW",
+              "Marginal Propensity to Consume (MPC): The proportion of any additional unit of disposable income that is spent on consumption rather than saved, which directly determines the magnitude of the multiplier effect and is typically higher in lower-income households",
+              "Evaluation of Aggregate Demand: The effectiveness of demand-side policies is frequently constrained by the elasticity of the Aggregate Supply curve, time lags, and prevailing economic sentiment, meaning monetary stimulus may prove ineffective in a recession if consumer confidence and 'animal spirits' are severely depressed"
             ],
             formulas: [
               { name: "Aggregate Demand (AD)", expr: "AD = C + I + G + (X - M)" },
@@ -461,16 +461,16 @@ export const SUBJECTS = {
             title: { zh: "总供给", en: "Aggregate Supply" },
             overview: { zh: "学习短期与长期总供给曲线的区别。", en: "Learn about short-run and long-run aggregate supply curves." },
             keyPoints: [
-              "Aggregate Supply (AS): The total planned output of goods and services that producers are willing to supply at various price levels",
-              "Short-Run AS (SRAS): Upward-sloping curve; assumes wage rates and prices of other factors of production are fixed in the short run",
-              "Shifts in SRAS: Caused entirely by changes in the costs of production (e.g., wage rates, raw material prices, exchange rates, business taxes)",
-              "Long-Run AS (LRAS): Represents the maximum productive capacity of the economy (the full employment level of output)",
-              "Classical LRAS: A perfectly vertical curve at the natural rate of unemployment; assumes all markets clear and wages are perfectly flexible in the long run",
-              "Keynesian AS: A reverse-L shaped curve showing mass unemployment (horizontal), bottleneck (curved), and full capacity (vertical) sections",
-              "Shifts in LRAS: Caused by changes in the quantity or quality of factors of production (e.g., education, technology, net migration)",
-              "Productivity: Output per worker or per unit of capital; increasing productivity is the main driver of an outward shift in LRAS",
-              "Supply Shocks: Sudden, unexpected changes in SRAS, such as an oil price spike causing cost-push inflation and lower growth (stagflation)",
-              "Evaluation of AS Models: Keynesians argue economies can remain stuck in demand-deficient unemployment forever; Classicists argue self-correction occurs via falling real wages"
+              "Aggregate Supply (AS): The total planned volume of domestic goods and services that firms across the economy are willing and able to produce at any given general price level over a specific time period",
+              "Short-Run Aggregate Supply (SRAS): An upward-sloping curve representing the direct relationship between the general price level and real output, predicated on the macroeconomic assumption that money wage rates and other factor prices remain fixed",
+              "Shifts in SRAS: Outward or inward shifts of the short-run aggregate supply curve are determined exclusively by changes in the unit costs of production, driven by factors such as global commodity prices, money wage negotiations, indirect business taxes, and exchange rate fluctuations",
+              "Long-Run Aggregate Supply (LRAS): Represents the maximum potential productive capacity of an economy where all factors of production are fully and efficiently employed, corresponding to the natural rate of unemployment and the economy's production possibility frontier",
+              "Classical LRAS: A perfectly inelastic, vertical curve illustrating the classical macroeconomic view that markets clear continuously and that fully flexible prices and wages will always return the economy to its full employment level of real output in the long run",
+              "Keynesian AS: A non-linear aggregate supply curve featuring a horizontal section indicating deep recession with spare capacity, an intermediate upward-sloping bottleneck section where capacity constraints cause inflationary pressure, and a vertical section representing absolute full capacity",
+              "Shifts in LRAS: Long-term outward shifts in macroeconomic productive capacity are achieved through improvements in the quantity or quality of the factors of production, such as technological progress, net inward migration, and capital investment",
+              "Productivity: The efficiency of production measured as real output per unit of input, such as labour productivity (output per worker hour), where sustained increases act as the fundamental driver of outward shifts in the LRAS curve and non-inflationary economic growth",
+              "Supply Shocks: Sudden, exogenous events that drastically alter the macroeconomic costs of production, such as an unexpected surge in global oil prices, which shift the SRAS curve inwards and trigger the dual problem of cost-push inflation and stagnant real GDP growth known as stagflation",
+              "Evaluation of AS Models: While classical economists assert that the economy will naturally self-correct from recessions via falling real wages, Keynesian economists argue that downwardly 'sticky' wages mean an economy can remain trapped in a persistent negative output gap indefinitely without government intervention"
             ],
             formulas: [
               { name: "Output Gap", expr: "Output gap = Actual GDP - Potential GDP" },
@@ -520,16 +520,16 @@ export const SUBJECTS = {
             title: { zh: "国民收入", en: "National Income" },
             overview: { zh: "学习国民收入的决定与乘数效应。", en: "Learn about national income determination and the multiplier effect, with real-world examples from the 2008 financial crisis." },
             keyPoints: [
-              "Circular Flow of Income: A macroeconomic model showing the continuous flow of money, goods, and services between households and firms",
-              "Injections: Additions to the circular flow that increase aggregate demand (Investment, Government Spending, Exports)",
-              "Withdrawals (Leakages): Reductions from the circular flow that decrease aggregate demand (Savings, Taxes, Imports)",
-              "Macroeconomic Equilibrium: Occurs exactly where AD = AS, or alternatively where total Injections = total Withdrawals",
-              "Output Gap: The difference between actual real GDP and potential real GDP (the trend rate of growth)",
-              "Positive Output Gap: Actual GDP is above potential LRAS; indicates severe inflationary pressure and over-utilization of resources",
-              "Negative Output Gap: Actual GDP is below potential LRAS; indicates spare capacity and high cyclical unemployment",
-              "Marginal Propensity to Withdraw (MPW): The sum of Marginal Propensity to Save (MPS), Tax (MPT), and Import (MPM)",
-              "The Multiplier Formula: k = 1 / (1 - MPC) or k = 1 / MPW; highlights how high leakages significantly dampen the multiplier effect",
-              "Paradox of Thrift: If all households try to save more (increasing leakages), AD falls, leading to lower overall national income and potentially lower total savings"
+              "The Circular Flow of Income: A macroeconomic model illustrating the continuous movement of money, goods, and services between households who provide factors of production and firms who supply goods, theoretically demonstrating that national output, income, and expenditure are perfectly equal",
+              "Injections: Autonomous additions to the circular flow of income comprising physical investment by firms (I), government expenditure (G), and export revenues (X), which trigger the multiplier effect and shift aggregate demand outwards",
+              "Withdrawals (Leakages): Diversions of money from the circular flow consisting of household savings (S), direct and indirect taxation (T), and expenditure on imports (M), which actively dampen the multiplier effect and restrict national income growth",
+              "Macroeconomic Equilibrium: The state established either when total aggregate demand equals aggregate supply (AD = AS) or, in the context of the circular flow, when the sum of total injections exactly balances the sum of total withdrawals (I + G + X = S + T + M)",
+              "Output Gap: The macroeconomic discrepancy between an economy's actual level of real GDP and its estimated potential, full-employment level of real GDP, which remains notoriously difficult for policymakers to measure accurately",
+              "Positive Output Gap: An economic condition where actual real GDP temporarily exceeds the potential long-run aggregate supply, indicating an unsustainable over-utilisation of resources that inevitably generates severe demand-pull inflationary pressures",
+              "Negative Output Gap: An economic condition where actual real GDP falls below the economy's potential productive capacity, resulting in downward pressure on the general price level, significant spare capacity, and high levels of demand-deficient cyclical unemployment",
+              "Marginal Propensity to Withdraw (MPW): The exact proportion of any additional unit of national income that is leaked from the circular flow, calculated mathematically as the sum of the marginal propensities to save (MPS), tax (MPT), and import (MPM)",
+              "The Multiplier Formula: The mathematical relationship defining the multiplier effect as k = 1 / (1 - MPC) or k = 1 / MPW, highlighting that the final expansion of national income is heavily constrained if an economy has high systemic leakages",
+              "Paradox of Thrift: The Keynesian concept postulating that if all households simultaneously increase their marginal propensity to save to protect themselves during a downturn, this collective leakage causes aggregate demand to collapse, ironically resulting in lower national income and potentially lower absolute total savings"
             ],
             formulas: [
               { name: "Multiplier", expr: "k = 1 / (1 - MPC)" },
@@ -556,16 +556,16 @@ export const SUBJECTS = {
             title: { zh: "经济增长", en: "Economic Growth" },
             overview: { zh: "学习经济增长的衡量、来源及其政策。", en: "Comprehensive study of economic growth measurement, sources, theories, and policies, including growth models and real-world case studies." },
             keyPoints: [
-              "Short-Run Economic Growth: An increase in actual real GDP, caused by an outward shift in AD using up existing spare capacity",
-              "Long-Run Economic Growth: An increase in the productive potential of the economy, shown by an outward shift of the LRAS curve or the PPF",
-              "Determinants of Growth: Investment in physical capital, technological progress, education/training, and an increase in the size of the labor force",
-              "Benefits of Growth: Higher living standards, lower cyclical unemployment, a fiscal dividend (higher tax revenues), and a potential 'virtuous cycle' of investment",
-              "Costs of Growth: Severe environmental degradation, widening income inequality, demand-pull inflation risk, and depletion of non-renewable resources",
-              "Sustainable Growth: Economic growth that meets the needs of the present without compromising the ability of future generations to meet their own needs",
-              "Recessions: Two consecutive quarters of negative real GDP growth, characterized by falling AD and rising cyclical unemployment",
-              "Hysteresis: When a prolonged recession permanently damages the economy's LRAS (e.g., workers permanently losing skills or firms scrapping machinery)",
-              "The Economic Cycle: The natural fluctuation of the economy between periods of expansion (boom) and contraction (slump/recession)",
-              "Evaluation of Growth: To be beneficial long-term, growth must be balanced (AD and AS shifting together) to avoid unsustainable high inflation"
+              "Short-Run Economic Growth: An increase in a country's actual real GDP over a given time period, typically driven by an outward shift in aggregate demand that absorbs existing macroeconomic spare capacity and reduces cyclical unemployment",
+              "Long-Run Economic Growth: An expansion in the maximum productive potential of an economy, graphically represented by an outward shift of the Long-Run Aggregate Supply (LRAS) curve or the Production Possibility Frontier (PPF), driven by increases in the quantity or quality of factors of production",
+              "Determinants of Long-Run Growth: The fundamental drivers of potential output expansion include sustained investment in physical capital, rapid technological progress, improvements in human capital via education and training, and demographic shifts that increase the active labour force",
+              "Benefits of Economic Growth: Sustained economic expansion generates higher real living standards, alleviates absolute poverty, reduces demand-deficient unemployment, and provides governments with a fiscal dividend through increased tax revenues that can be reinvested into public services",
+              "Costs of Economic Growth: Rapid economic expansion frequently incurs severe negative externalities such as environmental degradation and the rapid depletion of non-renewable resources, while simultaneously risking volatile demand-pull inflation and exacerbating structural wealth and income inequalities",
+              "Sustainable Economic Growth: A rate of macroeconomic expansion that satisfies the material needs of the present population without jeopardising the environment or depleting the critical natural capital required for future generations to meet their own economic needs",
+              "Recessions: A sustained macroeconomic contraction, strictly defined as at least two consecutive quarters of negative real GDP growth, typically characterised by collapsing aggregate demand, plunging consumer confidence, and a sharp rise in cyclical unemployment",
+              "Hysteresis: A structural macroeconomic phenomenon where a severe or prolonged recession inflicts permanent damage on an economy's long-run productive capacity, such as structurally unemployed workers suffering from skill degradation or firms permanently scrapping physical capital",
+              "The Economic Cycle: The natural, recurrent fluctuation of actual real GDP around its long-term trend growth rate, sequentially passing through distinct phases of boom, economic slowdown, recession, and eventual recovery",
+              "Evaluation of Economic Growth: For growth to genuinely enhance long-term living standards, it must be balanced and sustainable, meaning that aggregate demand and long-run aggregate supply must shift outwards at roughly the same pace to avoid triggering destabilising demand-pull inflation"
             ],
             formulas: [
               { name: "Economic Growth Rate", expr: "Growth rate = (Real GDP₂ - Real GDP₁) / Real GDP₁ × 100%" },
@@ -593,16 +593,16 @@ export const SUBJECTS = {
             title: { zh: "宏观经济政策", en: "Macroeconomic Policy" },
             overview: { zh: "学习宏观经济政策的目标与工具。", en: "Learn about macroeconomic policy objectives and instruments, with detailed analysis of fiscal, monetary, and supply-side policies." },
             keyPoints: [
-              "Demand-Side Policies: Fiscal and Monetary policies aimed at shifting AD to manage inflation, unemployment, and economic growth",
-              "Monetary Policy: Central bank manipulation of base interest rates, the money supply, and exchange rates to achieve macroeconomic targets (e.g., 2% inflation)",
-              "Expansionary Monetary Policy: Cutting base interest rates to lower borrowing costs, boosting Consumption (C) and Investment (I), shifting AD right",
-              "Quantitative Easing (QE): Central banks creating electronic money to buy government bonds, lowering long-term interest rates and injecting liquidity into banks",
-              "Fiscal Policy: Government manipulation of taxation and public spending to influence AD and the overall budget balance",
-              "Expansionary Fiscal Policy: Increasing government spending (G) or cutting taxes to boost AD, often leading to a larger budget deficit and higher national debt",
-              "Supply-Side Policies: Interventions specifically designed to increase the productive capacity of the economy (shifting LRAS to the right)",
-              "Market-based Supply-Side Policies: Deregulation, privatization, cutting income/corporation taxes, and reducing union power to improve free-market incentives",
-              "Interventionist Supply-Side Policies: Government investment in education, infrastructure, and R&D to deliberately correct market failures in provision",
-              "Policy Conflicts (Evaluation): Unavoidable trade-offs between macroeconomic objectives, such as the Phillips Curve trade-off between unemployment and inflation"
+              "Demand-Side Policies: Macroeconomic interventions comprising fiscal and monetary policy designed to manipulate aggregate demand, primarily utilised to smooth the economic cycle, manage demand-pull inflation, and reduce cyclical unemployment",
+              "Monetary Policy: The manipulation of monetary variables by an independent central bank — specifically the base interest rate, the money supply, and the exchange rate — designed primarily to maintain price stability and achieve a target inflation rate, such as the UK's 2% CPI target",
+              "Expansionary Monetary Policy: The reduction of base interest rates to lower the cost of credit and reduce the reward for saving, which heavily incentivises household consumption (C) and corporate investment (I) to shift aggregate demand outwards and close a negative output gap",
+              "Quantitative Easing (QE): An unconventional monetary policy where a central bank creates digital reserves to purchase government bonds, driving up bond prices and inversely lowering long-term yield rates to inject liquidity directly into the commercial banking system",
+              "Fiscal Policy: The deliberate manipulation of government expenditure (G) and direct or indirect taxation (T) by the state to influence the level of aggregate demand, alter the distribution of wealth, and manage the national budget deficit",
+              "Expansionary Fiscal Policy: A macroeconomic stance involving increased government spending or reduced taxation to stimulate aggregate demand, which, while highly effective due to the multiplier effect during severe recessions, frequently results in a widening fiscal deficit and an accumulation of national debt",
+              "Supply-Side Policies: Microeconomic and macroeconomic interventions specifically designed to increase the long-run productive capacity of an economy, graphically represented by an outward shift of the Long-Run Aggregate Supply (LRAS) curve, thereby facilitating non-inflationary economic growth",
+              "Market-Based Supply-Side Policies: Policies designed to remove barriers to free market efficiency and enhance price-mechanism incentives, including privatisation, deregulation, reducing trade union power, and cutting marginal income and corporation tax rates to boost enterprise",
+              "Interventionist Supply-Side Policies: Direct state interventions designed to overcome free-market failures and permanently enhance human or physical capital, such as systematic government funding for infrastructure projects, education and training, and research and development (R&D) subsidies",
+              "Macroeconomic Policy Conflicts: The structural inevitability that achieving one macroeconomic objective often necessitates compromising another, famously illustrated by the short-run Phillips Curve which demonstrates the explicit trade-off between reducing cyclical unemployment and controlling demand-pull inflation"
             ],
             formulas: [
               { name: "Budget Surplus", expr: "Budget surplus = T - G" },
@@ -639,15 +639,15 @@ export const SUBJECTS = {
             title: { zh: "企业类型与规模", en: "Business Types & Size" },
             overview: { zh: "学习不同类型企业的特点、优势与劣势，以及规模经济。", en: "Learn about different types of businesses, their characteristics, advantages and disadvantages, and economies of scale." },
             keyPoints: [
-              "Sole traders have unlimited liability, whereas public limited companies (PLCs) offer limited liability and can raise capital via stock markets.",
-              "Profit maximisation occurs where Marginal Cost equals Marginal Revenue (MC=MR), satisfying shareholders with high dividend payouts.",
-              "Revenue maximisation occurs where Marginal Revenue is zero (MR=0), often used by managers to increase market share or justify higher salaries.",
-              "Sales maximisation occurs where Average Cost equals Average Revenue (AC=AR), allowing the firm to expand as much as possible without making a loss.",
-              "Satisficing happens when managers make enough profit to satisfy shareholders while pursuing other goals like improving working conditions or environmental standards.",
-              "Economies of scale are falls in long-run average costs (LRAC) as output increases, including purchasing, managerial, and technical economies.",
-              "Minimum Efficient Scale (MES) is the lowest level of output at which long-run average costs are fully minimised.",
-              "Diseconomies of scale occur when LRAC rises due to control, coordination, and communication problems in overly large organisations.",
-              "Evaluation: Small and Medium Enterprises (SMEs) survive against large firms by offering bespoke products, exploiting niche markets, and providing superior customer service."
+              "Sole traders operate with unlimited liability, exposing their personal assets to business debts, whereas public limited companies (PLCs) benefit from limited liability, a separate legal identity, and the ability to raise significant financial capital through the public issuance of equity on stock markets",
+              "Profit maximisation, the traditional neo-classical firm objective, occurs at the output level where Marginal Cost strictly equals Marginal Revenue (MC = MR), generating the greatest possible surplus to satisfy shareholders through high dividend payouts and to fund future capital investment",
+              "Revenue maximisation occurs at the output level where Marginal Revenue is zero (MR = 0), a strategic objective often pursued by directors seeking to rapidly expand market share, deter new entrants, or justify higher executive remuneration, frequently illustrating the principal-agent problem",
+              "Sales volume maximisation occurs where Average Cost equals Average Revenue (AC = AR), representing the absolute limit of output expansion before the firm incurs an economic loss, allowing managers to maximize market presence while still earning normal profit to appease shareholders",
+              "Satisficing, a direct consequence of the divorce of ownership from control, occurs when managers aim to achieve a merely acceptable level of profit to satisfy shareholders, enabling them to simultaneously pursue secondary personal or corporate objectives such as improving working conditions or environmental standards",
+              "Internal economies of scale refer to the reduction in long-run average costs (LRAC) as a firm expands its scale of production, driven by cost-saving factors such as bulk-buying purchasing power, technical efficiencies from specialised capital, and managerial specialisation",
+              "The Minimum Efficient Scale (MES) is strictly defined as the lowest level of total output at which a firm fully exploits all internal economies of scale and minimises its long-run average cost, acting as a critical determinant of market structure and barriers to entry",
+              "Diseconomies of scale occur when a firm expands beyond its optimum size, resulting in an upward-sloping long-run average cost curve driven by complex bureaucratic inefficiencies, severe communication failures, and a lack of control or coordination within an overly large organisation",
+              "Evaluation of Firm Size: Despite lacking the capacity to exploit significant economies of scale, Small and Medium Enterprises (SMEs) can successfully survive alongside large monopolies by operating in highly specialised niche markets, offering bespoke products with highly price-inelastic demand, and providing superior, personalised customer service"
             ],
             formulas: [
               { name: "Economies of Scale", expr: "AC falls as Q increases" },
@@ -675,15 +675,15 @@ export const SUBJECTS = {
             title: { zh: "收益、成本与利润", en: "Revenue, Costs & Profit" },
             overview: { zh: "学习企业的收益结构、成本分类与利润最大化条件。", en: "Learn about business revenue structure, cost classification, and profit maximisation conditions." },
             keyPoints: [
-              "Total Revenue (TR) is Price multiplied by Quantity (P×Q), while Average Revenue (AR) equals price in a single-price market.",
-              "Marginal Revenue (MR) is the addition to total revenue gained from selling one extra unit of output.",
-              "Fixed Costs (FC) do not vary with output, whereas Variable Costs (VC) change directly with the level of production.",
-              "Average Total Cost (ATC) is Total Cost divided by Quantity, typically U-shaped in the short run due to the law of diminishing marginal returns.",
-              "Marginal Cost (MC) is the cost of producing one additional unit, mathematically intersecting both AC and AVC at their lowest minimum points.",
-              "Normal profit is the minimum reward required to keep factors of production in their current use, occurring where AR equals AC.",
-              "Supernormal profit is any profit earned in excess of normal profit, occurring when Average Revenue is greater than Average Cost (AR > AC).",
-              "The short-run shutdown point occurs when price falls below Average Variable Cost (AR < AVC), meaning day-to-day running costs aren't covered.",
-              "Evaluation: Accurately calculating MC and MR in reality is extremely difficult, meaning many real-world firms rely on simple cost-plus pricing instead."
+              "Total Revenue (TR) is the aggregate total of money received by a firm from the sale of its output, calculated as Price multiplied by Quantity (P × Q), whereas Average Revenue (AR), which equates strictly to the firm's demand curve, is total revenue divided by quantity and equals the product's price in a single-price market",
+              "Marginal Revenue (MR) is the net addition to total revenue generated from selling exactly one additional unit of output, mathematically defined as the change in total revenue divided by the change in quantity (ΔTR / ΔQ), and is strictly equal to zero when total revenue is fully maximised",
+              "Fixed Costs (FC) are costs that do not vary with the level of output in the short run, such as rent and salaried management, whereas Variable Costs (VC) alter directly in proportion to the level of production, such as raw materials and piece-rate labour",
+              "Average Total Cost (ATC), calculated as total cost divided by quantity or by adding average fixed and average variable costs (AFC + AVC), forms a distinctive U-shaped curve in the short run driven fundamentally by the law of diminishing marginal productivity",
+              "Marginal Cost (MC) is the addition to total cost incurred from producing one extra unit of output (ΔTC / ΔQ), and its corresponding curve will always mathematically intersect both the Average Total Cost (ATC) and Average Variable Cost (AVC) curves precisely at their lowest minimum points",
+              "Normal profit is the exact minimum opportunity cost required to keep an entrepreneur's factors of production permanently in their current use, representing an implicit cost that is included within total costs, and occurs exactly at the breakeven output level where Average Revenue equals Average Cost (AR = AC)",
+              "Supernormal (abnormal or economic) profit is the strictly positive difference between total revenue and total economic costs, achieved at output levels where Average Revenue is strictly greater than Average Total Cost (AR > ATC), which acts as a powerful signalling incentive for new firms to enter contestable markets",
+              "The short-run shutdown point occurs precisely at the output level where Average Revenue exactly equals Average Variable Cost (AR = AVC), meaning if the market price drops below this threshold, the firm fails to cover its day-to-day operational expenses and will cease production immediately to minimise its total losses",
+              "Evaluation of Profit Maximisation: Although neo-classical theory assumes firms optimally produce where Marginal Cost equals Marginal Revenue (MC = MR), in reality, this is heavily compromised by imperfect information regarding complex marginal cost curves, leading many firms to adopt simpler heuristic strategies such as cost-plus pricing"
             ],
             formulas: [
               { name: "Total Revenue (TR)", expr: "TR = P × Q" },
@@ -714,15 +714,15 @@ export const SUBJECTS = {
             title: { zh: "市场结构", en: "Market Structure" },
             overview: { zh: "学习不同市场结构的特点与企业行为，包括博弈论分析。", en: "Comprehensive study of market structures (perfect competition, monopoly, monopolistic competition, oligopoly) with graphical analysis, efficiency evaluation, game theory, and real-world examples." },
             keyPoints: [
-              "Perfect competition features infinite buyers and sellers, homogeneous products, perfect information, and absolutely no barriers to entry or exit.",
-              "Monopolistic competition involves many firms selling slightly differentiated products, resulting in downward-sloping AR curves and normal long-run profit.",
-              "Oligopoly is dominated by a few large interdependent firms, characterised by price rigidity, intense non-price competition, and high entry barriers.",
-              "Game theory analyses oligopoly interdependence; the Nash equilibrium occurs when no player can benefit by changing their strategy unilaterally.",
-              "A pure monopoly holds 100% market share, but legal working monopolies have greater than 25%, allowing them to act as dominant price makers.",
-              "Productive efficiency occurs at the lowest point on the AC curve, while allocative efficiency occurs where Price equals Marginal Cost (P=MC).",
-              "Dynamic efficiency involves reinvesting supernormal profits into R&D to lower long-run costs and improve product quality over time.",
-              "Price discrimination charges different prices to different consumer groups for the exact same product, requiring distinct PEDs and prevention of market seepage.",
-              "Evaluation: Monopolies cause deadweight welfare loss and allocative inefficiency, but can achieve massive economies of scale and fund dynamic efficiency, ultimately benefiting consumers."
+              "Perfect competition is a theoretical market structure characterised by infinite buyers and sellers, homogeneous products, perfect information, and zero barriers to entry or exit, meaning firms are pure price takers facing a perfectly elastic demand curve where Average Revenue strictly equals Marginal Revenue (AR = MR)",
+              "Monopolistic competition involves a large number of independent firms selling slightly differentiated products within a market possessing low barriers to entry, granting them marginal price-making power that yields a downward-sloping AR curve, though any short-run supernormal profits are inevitably competed away to normal profit in the long run",
+              "Oligopoly is a highly concentrated market dominated by a few large, mutually interdependent firms protected by high barriers to entry, characteristically exhibiting price rigidity modelled by the kinked demand curve, intense non-price competition, and a persistent structural temptation to engage in tacit or overt collusion",
+              "Game theory mathematically models the strategic interdependence of oligopolistic firms using payoff matrices, demonstrating through the prisoner's dilemma how firms face conflicting incentives to cooperate or cheat, often culminating in a Nash equilibrium where no player can unilaterally benefit from altering their chosen strategy",
+              "While a pure monopoly dictates 100% of market supply, a legally defined working monopoly requires only a 25% market concentration ratio, granting the firm significant monopoly power to act as a dominant price maker, restrict total market output, and permanently sustain supernormal profits by erecting formidable artificial or natural barriers to entry",
+              "Static efficiency comprises productive efficiency, achieved exclusively at the lowest minimum point on the average cost curve where technical economies are maximised, and allocative efficiency, which occurs exactly at the socially optimum output level where Price equals Marginal Cost (P = MC) and total economic welfare is fully maximised",
+              "Dynamic efficiency occurs in the long run when firms explicitly reinvest their protected supernormal profits into intensive research and development (R&D) and continuous process innovation, progressively shifting the long-run average cost curve downwards and elevating the quality of goods available to consumers",
+              "Third-degree price discrimination is a profit-maximising strategy where a firm possessing significant monopoly power separates its consumer base into distinct demographic sub-groups with divergent price elasticities of demand (PED) and strictly prevents market seepage, thereby systematically converting consumer surplus into producer surplus",
+              "Evaluation of Monopoly Market Structure: Although traditional theory condemns monopolies for deliberately restricting output to raise prices and generating a deadweight welfare loss of allocative and productive inefficiency, they can be rigorously defended if they function as a natural monopoly exploiting massive internal economies of scale or if their supernormal profits consistently fund socially beneficial dynamic efficiency"
             ],
             formulas: [
               { name: "Monopoly Pricing", expr: "MR = MC for profit maximisation" },
@@ -756,15 +756,15 @@ export const SUBJECTS = {
             title: { zh: "劳动力市场", en: "Labour Market" },
             overview: { zh: "学习劳动力需求、供给与工资决定。", en: "Comprehensive study of labour demand, supply, wage determination, trade unions, monopsony, minimum wage, and labour market imperfections with graphical analysis and real-world examples." },
             keyPoints: [
-              "Demand for labour is a derived demand, determined by Marginal Revenue Product (MRP = Marginal Physical Product × Marginal Revenue).",
-              "Supply of labour shifts due to changes in net migration, education levels, working conditions, and the demographic makeup of the population.",
-              "The backward-bending supply curve of labour shows the substitution effect dominating initially, then the income effect dominating at high wage rates.",
-              "In perfectly competitive labour markets, wages are determined by the intersection of industry supply and demand, making individual firms strict wage takers.",
-              "A monopsony is a single dominant buyer of labour, enabling them to suppress wages below the competitive market equilibrium and restrict employment.",
-              "Trade unions aim to negotiate higher wages and better conditions, effectively acting as a monopoly supplier of labour to counter monopsonist employers.",
-              "A National Minimum Wage (NMW) legally prevents worker exploitation but may cause classical unemployment if set above the free market equilibrium wage.",
-              "Wage differentials exist due to varying marginal productivity, compensating differentials for dangerous work, and significant differences in trade union power.",
-              "Evaluation: The unemployment impact of a minimum wage depends on the elasticity of labour demand; highly inelastic demand means minimal job losses."
+              "The demand for labour is a derived demand, meaning it is fundamentally dependent on the demand for the final goods and services the workers produce, and is theoretically determined by the Marginal Revenue Product (MRP), calculated mathematically as Marginal Physical Product multiplied by Marginal Revenue (MPP × MR)",
+              "The macroeconomic supply of labour is dictated by the size and demographic composition of the economically active population, while occupational supply shifts due to changes in net migration, the length of required training, and variations in non-pecuniary benefits such as working conditions",
+              "The backward-bending individual supply curve of labour theoretically demonstrates that at lower wages, the substitution effect incentivises more hours worked as the opportunity cost of leisure rises, but at exceptionally high wage rates, the income effect dominates as workers choose to consume more normal goods, including leisure time, thereby reducing their hours supplied",
+              "In a perfectly competitive labour market, the equilibrium wage rate is determined entirely by the intersection of industry demand and supply, rendering individual firms pure wage takers facing a perfectly elastic labour supply curve where the Average Cost of Labour strictly equals the Marginal Cost of Labour (ACL = MCL)",
+              "A monopsony labour market is characterised by a single dominant employer possessing significant wage-setting power, facing an upward-sloping supply curve where the Marginal Cost of Labour (MCL) lies strictly above the Average Cost of Labour (ACL), allowing them to maximise profit by systematically suppressing both wage rates and employment levels below the perfectly competitive equilibrium",
+              "Trade unions attempt to correct labour market failures by engaging in collective bargaining to negotiate higher wages and superior working conditions, effectively operating as a monopoly supplier of labour that can successfully counteract the exploitative wage-setting power of a monopsonist employer, thereby creating a bilateral monopoly",
+              "A National Minimum Wage (NMW) acts as a legally enforced price floor designed to alleviate poverty and prevent worker exploitation, but classical economic theory dictates that setting it strictly above the free-market equilibrium wage inherently generates excess supply and causes involuntary classical unemployment",
+              "Wage differentials arise in real-world labour markets due to variations in workers' marginal revenue productivity, differences in human capital accumulation, compensating wage differentials for hazardous occupations, varying degrees of trade union density, and persistent geographical or occupational labour immobility",
+              "Evaluation of Minimum Wages: While classical theory predicts a minimum wage causes job losses directly proportional to the wage elasticity of labour demand, monopsony theory demonstrates that introducing a carefully set minimum wage in a highly monopsonistic market can paradoxically increase both the equilibrium wage rate and the absolute level of employment"
             ],
             formulas: [
               { name: "Marginal Revenue Product of Labour (MRPL)", expr: "MRPL = MPₗ × MR" },
@@ -793,15 +793,15 @@ export const SUBJECTS = {
             title: { zh: "政府干预与竞争政策", en: "Government Intervention & Competition Policy" },
             overview: { zh: "学习政府对企业行为的管制政策。", en: "Comprehensive study of competition policy, merger regulation, natural monopoly regulation, privatization, nationalization, and deregulation with real-world examples and policy evaluation." },
             keyPoints: [
-              "Competition policy aims to prevent anti-competitive practices, regulate mergers, and protect consumer welfare from monopoly exploitation.",
-              "The Competition and Markets Authority (CMA) investigates corporate mergers that would result in a combined market share exceeding 25%.",
-              "Natural monopolies have continuously falling long-run average costs, making it more productively efficient for one firm to supply the entire market.",
-              "RPI-X regulation caps price increases at inflation minus expected efficiency gains, forcing natural monopolies to cut internal costs to maintain profit.",
-              "Privatisation transfers public sector assets to the private sector, theoretically increasing efficiency and innovation through profit-motivated competition.",
-              "Nationalisation involves the government purchasing private firms, allowing the state to prioritise social welfare and allocative efficiency over profit maximisation.",
-              "Deregulation removes statutory barriers to entry, increasing market contestability and forcing incumbent firms to operate more efficiently to survive.",
-              "Regulatory capture occurs when industry regulators act in the commercial interest of the firms they supervise rather than protecting consumers.",
-              "Evaluation: Government intervention can lead to government failure due to asymmetric information, massive administrative costs, and unintended consequences like regulatory capture."
+              "Competition policy encompasses government interventions designed to promote market contestability, regulate oligopolistic mergers, and protect consumer welfare by legally prohibiting anti-competitive practices such as overt collusion and predatory pricing",
+              "The Competition and Markets Authority (CMA) holds the statutory power to investigate and block corporate mergers or takeovers if they generate a combined market concentration ratio exceeding the 25% legal threshold or significantly lessen competition",
+              "Natural monopolies exist when a market exhibits such massive internal economies of scale that long-run average costs continuously fall across all levels of market demand, meaning it is only productively efficient for a single firm to supply the entire market",
+              "RPI-X price capping is a regulatory mechanism that limits a monopolist's price increases to the Retail Prices Index (inflation) minus 'X' (expected efficiency savings), aggressively incentivising natural monopolies to slash their average costs to maximise retained profit",
+              "Privatisation involves the transfer of state-owned public sector assets to the private sector, theoretically driving dynamic and productive efficiency by exposing formerly sheltered monopolies to the discipline of profit-motivated free market competition",
+              "Nationalisation is the state acquisition of private sector firms, enabling the government to fund massive long-term infrastructure projects and intentionally operate at an allocatively efficient output level (P=MC) by absorbing operational losses through general taxation",
+              "Deregulation involves the removal of legal and statutory barriers to entry, strategically designed to increase market contestability and the threat of 'hit-and-run' entry, thereby forcing incumbent monopolies to operate more efficiently and reduce prices",
+              "Regulatory capture is a severe form of government failure occurring when statutory industry regulators develop close relationships with the monopolies they oversee, ultimately acting to protect the commercial interests of those firms rather than consumer welfare",
+              "Evaluation of Competition Policy: Interventions such as strict price caps or forced demergers carry a high risk of government failure due to severe asymmetric information, immense administrative enforcement costs, and the unintended loss of beneficial monopoly economies of scale"
             ],
             formulas: [
               { name: "Herfindahl-Hirschman Index (HHI)", expr: "HHI = Σ(Market share)², >2500 = high concentration" },
@@ -835,14 +835,15 @@ export const SUBJECTS = {
             title: { zh: "全球化", en: "Globalisation" },
             overview: { zh: "学习全球化的原因、表现及其影响。", en: "Learn about the causes, manifestations and impacts of globalisation, with detailed case study of China's WTO accession." },
             keyPoints: [
-              "Globalisation is the increasing integration and interdependence of the world's economies, driven by reduced transport costs and sweeping trade liberalisation.",
-              "Multinational Corporations (MNCs) drive globalisation by locating production globally to exploit comparative advantages and significantly lower wage costs.",
-              "Foreign Direct Investment (FDI) involves investing capital into foreign countries, boosting the host nation's economic growth and accelerating technological transfer.",
-              "Benefits of globalisation include greater consumer choice, international economies of scale, lower prices, and rapid export-led growth for emerging economies.",
-              "Costs of globalisation include severe environmental degradation, structural unemployment in deindustrialised developed nations, and increased vulnerability to global economic shocks.",
-              "Emerging economies, like the BRICS nations, have experienced rapid industrialisation, pulling millions out of absolute poverty but often widening domestic income inequality.",
-              "Trade liberalisation involves removing tariffs and quotas, expanding global markets and allowing countries to specialise efficiently according to comparative advantage.",
-              "Evaluation: Globalisation disproportionately benefits high-skilled workers and capital owners, directly contributing to rising relative poverty in previously industrialised regions."
+              "Globalisation represents the increasing integration and economic interdependence of national economies through the expansion of international trade, driven fundamentally by containerisation, falling telecommunication costs, and widespread trade liberalisation",
+              "Multinational Corporations (MNCs) accelerate the globalisation process by fragmenting their global value chains to exploit the comparative advantages of different nations, specifically by offshoring labour-intensive processes to low-wage emerging economies to achieve internal economies of scale",
+              "Trade liberalisation, coordinated by international institutions such as the World Trade Organization (WTO), systematically removes tariff and non-tariff barriers, thereby increasing trade volume and allowing nations to specialise in industries where they possess the lowest opportunity cost",
+              "The liberalisation of capital flows facilitates Foreign Direct Investment (FDI), allowing MNCs to provide developing nations with vital injections of physical capital, advanced technological transfers, and managerial expertise that shift the Long-Run Aggregate Supply (LRAS) curve outwards",
+              "Deindustrialisation in developed nations often results in significant structural unemployment as labour-intensive manufacturing industries migrate toward lower-cost emerging economies, leading to a permanent decline in the demand for low-skilled domestic labour",
+              "Emerging market economies leverage globalisation to achieve export-led growth by accessing vast global markets, benefiting from the positive externalities of MNC presence such as improved infrastructure and increased tax revenues from corporate expansion",
+              "Globalisation heightens systemic risk through increased economic interdependence, ensuring that localized financial shocks or cyclical recessions in major economies are rapidly transmitted globally via integrated supply chains and interconnected financial markets",
+              "The global mobility of MNCs enables aggressive tax avoidance strategies such as transfer pricing, where profits are shifted to low-tax jurisdictions, thereby eroding the fiscal base of host governments and potentially leading to government failure in public service provision",
+              "Although globalisation enhances global productive efficiency and consumer surplus through lower prices and increased variety, it is frequently evaluated for exacerbating relative poverty and widening the wage gap between high-skilled and low-skilled workers within individual nations"
             ],
             formulas: [
               { name: "Globalisation Index", expr: "Trade openness = (X+M)/GDP × 100%" },
@@ -867,15 +868,15 @@ export const SUBJECTS = {
             title: { zh: "国际贸易", en: "International Trade" },
             overview: { zh: "学习国际贸易理论与政策。", en: "Comprehensive study of international trade theory, policy instruments, and real-world trade disputes, including graphical analysis and case studies." },
             keyPoints: [
-              "Absolute advantage occurs when a country can produce a specific good using fewer resources than another country.",
-              "Comparative advantage states countries should specialise in producing goods where they have a lower opportunity cost, thereby maximising global output.",
-              "Free trade promotes allocative efficiency, global economies of scale, and reduces domestic monopoly power by increasing intense international competition.",
-              "Tariffs are taxes on imported goods that raise domestic prices, protect local producers, and generate government revenue but severely harm consumers.",
-              "Quotas place a strict physical limit on the volume of imports, restricting supply and raising prices without directly generating tax revenue.",
-              "Export subsidies lower production costs for domestic firms, making them more competitive internationally but carrying a high opportunity cost for taxpayers.",
-              "The World Trade Organization (WTO) promotes free trade by organising multilateral negotiation rounds and settling international trade disputes between member nations.",
-              "A customs union is a trading bloc with completely free internal trade and a common external tariff applied universally to all non-members.",
-              "Evaluation: The infant industry argument justifies short-term protectionism, allowing new domestic industries to grow and achieve economies of scale before facing global competition."
+              "Absolute advantage occurs when a country can produce a greater quantity of a good than another country using the same volume of resources, or the same quantity using fewer factor inputs",
+              "The theory of comparative advantage suggests that global output is maximised when nations specialise in producing goods in which they have the lowest opportunity cost and trade these goods at a mutually beneficial terms of trade",
+              "Free trade enhances global allocative efficiency and consumer surplus by allowing firms to exploit internal economies of scale and reducing the market power of domestic monopolies through intense international competitive pressure",
+              "Tariffs are indirect taxes imposed on imported goods that increase the domestic price and producer surplus while generating government tax revenue, but they result in a net welfare loss and a contraction in consumer surplus",
+              "Quotas are non-tariff barriers that impose a strict physical limit on the volume of imports, creating a domestic supply shortage and raising prices for consumers without generating any direct tax revenue for the government",
+              "Export subsidies are government grants provided to domestic firms to lower their marginal costs of production, artificially increasing their international price competitiveness at the expense of a significant fiscal opportunity cost",
+              "The World Trade Organization (WTO) facilitates trade liberalisation by providing a multilateral framework for negotiating the reduction of trade barriers and settling legal disputes between member nations",
+              "A customs union is a high level of economic integration involving the total elimination of internal trade barriers and the adoption of a common external tariff (CET) against all non-member nations, which can lead to trade creation or trade diversion",
+              "The infant industry argument provides a justification for protectionism by allowing nascent domestic industries to develop and achieve economies of scale until they are sufficiently competitive to survive global competition without state support"
             ],
             formulas: [
               { name: "Comparative Advantage", expr: "Country should specialize in goods with lowest opportunity cost" },
@@ -902,14 +903,14 @@ export const SUBJECTS = {
             title: { zh: "国际收支", en: "Balance of Payments" },
             overview: { zh: "学习国际收支账户的构成与平衡。", en: "Comprehensive study of balance of payments accounts, BOP components, imbalances, and adjustment mechanisms with real-world case studies." },
             keyPoints: [
-              "The current account records trade in goods, trade in services, primary income (investment returns), and secondary income (international transfers).",
-              "A current account deficit means the total monetary value of imports and outflows exceeds the value of exports and inflows.",
-              "Causes of a deficit include high domestic inflation, an overvalued exchange rate, low labour productivity, and a high marginal propensity to import.",
-              "Primary income includes remittances from workers abroad and profits, dividends, or interest returning from foreign portfolio and direct investments.",
-              "Expenditure-reducing policies, such as higher interest rates, reduce domestic aggregate demand to lower overall spending on imported goods.",
-              "Expenditure-switching policies, such as tariffs or currency devaluation, aim to make domestic goods relatively cheaper and more attractive than foreign imports.",
-              "Persistent deficits may indicate deep structural uncompetitiveness and require financing through foreign borrowing, increasing the national debt burden.",
-              "Evaluation: A current account deficit isn't always bad if it's driven by importing capital goods that will boost future export capacity and LRAS."
+              "The current account of the Balance of Payments tracks the trade in goods and services, primary income consisting of investment returns and remittances, and secondary income which encompasses current transfers such as government aid",
+              "A current account deficit occurs when the total value of debits from imports and income outflows exceeds the total value of credits from exports and income inflows, representing a net withdrawal from the circular flow of income",
+              "Structural causes of a current account deficit include a persistent loss of international price competitiveness due to high relative inflation, an overvalued exchange rate, and weak supply-side performance such as low labour productivity",
+              "Primary income records the net flow of profits, dividends, and interest generated from foreign portfolio and direct investments, alongside the compensation of employees working in foreign economies",
+              "Expenditure-reducing policies utilise contractionary fiscal or monetary measures, such as higher income taxes or interest rates, to dampen domestic aggregate demand and reduce the absolute volume of import expenditure",
+              "Expenditure-switching policies, such as currency devaluation or protectionist tariffs, aim to improve the trade balance by making domestic exports more price-competitive and imports relatively more expensive to consumers",
+              "A persistent current account deficit may indicate deep-seated structural uncompetitiveness that requires financing through a financial account surplus, potentially leading to an unsustainable accumulation of external debt",
+              "A current account deficit is evaluated as sustainable and potentially beneficial if it is driven by the importation of high-technology capital goods that will enhance the economy's Long-Run Aggregate Supply and future export capacity"
             ],
             formulas: [
               { name: "Current Account", expr: "CA = X - M + NI + NT" },
@@ -936,14 +937,14 @@ export const SUBJECTS = {
             title: { zh: "汇率", en: "Exchange Rates" },
             overview: { zh: "学习汇率制度与汇率决定因素。", en: "Comprehensive study of exchange rate systems, determinants, and effects, including graphical analysis and major currency crises." },
             keyPoints: [
-              "A floating exchange rate is determined entirely by free market forces of supply and demand without any direct central bank intervention.",
-              "A fixed exchange rate is strictly pegged to another currency, requiring the central bank to buy/sell foreign currency reserves to maintain the peg.",
-              "A managed float allows market forces to determine the baseline rate, but central banks actively intervene to prevent excessive and damaging volatility.",
-              "Exchange rates are heavily influenced by relative interest rates (hot money flows), inflation rates, foreign direct investment, and currency speculation.",
-              "Depreciation (SPICED: Strong Pound Imports Cheap Exports Dear) makes domestic exports more globally competitive but increases imported cost-push inflation.",
-              "The Marshall-Lerner condition states that currency devaluation only improves the current account if the sum of PED for exports and imports is greater than 1.",
-              "The J-curve effect explains that a current account deficit initially worsens after devaluation due to inelastic short-run demand, before improving over time.",
-              "Evaluation: The true impact of exchange rate fluctuations on the real economy depends heavily on the price elasticity of demand for exports and imports."
+              "A floating exchange rate is determined exclusively by the free market interaction of supply and demand for a currency, theoretically providing an automatic adjustment mechanism to correct a Balance of Payments disequilibrium",
+              "A fixed exchange rate system requires the central bank to maintain a specific peg against another currency or a basket of currencies through the active purchase or sale of foreign currency reserves or by adjusting domestic interest rates",
+              "A managed exchange rate involves a system where the value is primarily determined by market forces but the central bank intervenes periodically to reduce excessive volatility or keep the rate within a non-disclosed target band",
+              "The demand and supply of a currency are driven by relative interest rates attracting hot money flows, relative inflation rates affecting price competitiveness, and the level of foreign direct investment or speculative sentiment",
+              "A depreciation of the exchange rate makes domestic exports more price-competitive while making imports more expensive, potentially shifting aggregate demand outwards while simultaneously increasing the risk of imported cost-push inflation",
+              "The Marshall-Lerner condition stipulates that a currency devaluation will only lead to an improvement in the current account balance if the absolute sum of the price elasticities of demand for exports and imports is greater than one",
+              "The J-curve effect illustrates that a current account deficit initially deepens following a devaluation due to short-run price inelasticities and fixed-price contracts before eventually improving as consumers and firms adjust their behavior",
+              "The impact of exchange rate fluctuations on macroeconomic performance is evaluated by considering the magnitude and duration of the change, the availability of domestic spare capacity, and the prevailing global economic climate"
             ],
             formulas: [
               { name: "Nominal Exchange Rate", expr: "E = Foreign currency / Domestic currency" },
@@ -969,14 +970,14 @@ export const SUBJECTS = {
             title: { zh: "不平等与贫困", en: "Inequality & Poverty" },
             overview: { zh: "学习收入分配不平等的原因与政府政策。", en: "Comprehensive study of income and wealth inequality, poverty measurement, causes, consequences, and redistribution policies with graphical analysis and real-world examples." },
             keyPoints: [
-              "Absolute poverty occurs when individuals lack the minimum income required to afford basic human necessities for survival, like food, water, and shelter.",
-              "Relative poverty occurs when people earn below 60% of the median national income, preventing them from participating fully in normal societal life.",
-              "The Lorenz curve visually plots the cumulative percentage of national income against the cumulative percentage of the population to illustrate inequality.",
-              "The Gini coefficient measures inequality from 0 (perfect equality) to 1 (perfect inequality), mathematically calculated as Area A / (Area A + Area B).",
-              "Causes of inequality include regressive taxation, extreme wage differentials, technological change favouring high-skilled workers, and the deeply uneven distribution of wealth and assets.",
-              "Progressive taxation takes a larger percentage of income from higher earners, actively redistributing wealth to lower the Gini coefficient and reduce inequality.",
-              "Universal benefits (like state pensions) are available to all regardless of wealth, whereas means-tested benefits strictly target only low-income households.",
-              "Evaluation: Highly progressive taxes can reduce the incentive to work and encourage brain drain or severe tax evasion, harming overall economic efficiency."
+              "Absolute poverty occurs when individuals possess insufficient household income to afford the minimum basic necessities required for human survival, such as nutrition, clean water, and shelter, typically measured against the World Bank's international poverty line",
+              "Relative poverty refers to households earning significantly less than the average income in their society, defined specifically as falling below the 60% of median national income threshold, which restricts their ability to participate in the standard living conditions of their specific cultural context",
+              "The Lorenz curve is a graphical representation of income or wealth inequality that plots the cumulative percentage of total national income against the cumulative percentage of the population, where the degree of its curvature away from the 45-degree line of perfect equality indicates the severity of the distribution",
+              "The Gini coefficient is a numerical measure of inequality ranging from 0 to 1, calculated as the ratio of the area between the Lorenz curve and the line of perfect equality (Area A) to the total area under the line of perfect equality (Area A + Area B)",
+              "Primary causes of income and wealth inequality include structural changes such as capital-intensive technological progress which displaces low-skilled labour, alongside regressive fiscal policies and the unequal ownership of income-generating assets like property and equities",
+              "Progressive taxation systems, where the marginal rate of tax increases as income rises, serve as a fundamental tool for fiscal redistribution by narrowing the gap between gross and disposable incomes to lower the Gini coefficient",
+              "Universal benefits are social welfare payments provided to all citizens regardless of their financial status to ensure social cohesion, whereas means-tested benefits are strictly targeted at low-income households to improve vertical equity and minimize the government's fiscal burden",
+              "The implementation of highly progressive tax and benefit systems is evaluated against the risk of creating 'poverty traps' and disincentivising work through high effective marginal tax rates, which may ultimately compromise productive efficiency and long-run economic growth"
             ],
             formulas: [
               { name: "Gini Coefficient", expr: "G = Area between Lorenz curve and line of equality" }
@@ -1003,15 +1004,15 @@ export const SUBJECTS = {
             title: { zh: "经济发展", en: "Economic Development" },
             overview: { zh: "学习经济发展的衡量与促进政策。", en: "Comprehensive study of economic development measurement, indicators, barriers, development strategies, and policies with real-world case studies of successful and failed development." },
             keyPoints: [
-              "Economic development encompasses broad improvements in living standards, healthcare, education, and political freedom, going significantly beyond simple real GDP growth.",
-              "The Human Development Index (HDI) measures life expectancy, expected/mean years of schooling, and GNI per capita on a comprehensive 0-1 scale.",
-              "The Harrod-Domar model highlights that economic growth rates depend crucially on the national savings ratio and the productivity of capital investment.",
-              "Primary product dependency leaves developing economies acutely vulnerable to volatile global commodity prices and declining terms of trade (Prebisch-Singer hypothesis).",
-              "Savings gaps occur in low-income countries where extreme poverty prevents saving, depriving domestic banks of the funds needed for vital business investment.",
-              "Microfinance provides tiny loans to impoverished entrepreneurs lacking traditional collateral, empowering them to start small businesses and escape the poverty cycle.",
-              "Foreign aid bridges the savings gap and funds critical infrastructure, but can foster long-term dependency and be misused by corrupt governments.",
-              "The IMF provides emergency short-term loans to stabilise crisis economies, while the World Bank funds long-term developmental infrastructure projects in poorer nations.",
-              "Evaluation: FDI brings essential capital and jobs to developing nations, but corporate profits are often repatriated and local environments may be heavily exploited."
+              "Economic development is a normative concept representing multidimensional improvements in living standards, human capabilities, and qualitative indicators such as health and education, distinguishing it from the purely quantitative measure of real GDP growth",
+              "The Human Development Index (HDI) is a composite statistic ranging from 0 to 1 that measures national progress across three dimensions: health (life expectancy at birth), education (mean and expected years of schooling), and standard of living (GNI per capita at PPP)",
+              "The Harrod-Domar model suggests that the rate of economic growth is directly determined by the national savings ratio and inversely related to the capital-output ratio, emphasizing that a lack of domestic savings creates a significant barrier to capital accumulation",
+              "Primary product dependency exposes developing nations to extreme price volatility and a long-term decline in the terms of trade, as the Prebisch-Singer hypothesis posits that the income elasticity of demand for primary products is lower than that for manufactured goods",
+              "A domestic savings gap occurs in developing economies where low per capita incomes necessitate high consumption levels, leading to insufficient internal funds for the investment required to shift the Long-Run Aggregate Supply (LRAS) curve outwards",
+              "Microfinance schemes provide small-scale credit and financial services to low-income entrepreneurs who lack access to traditional banking due to a lack of collateral, aiming to stimulate local enterprise and facilitate a transition out of the absolute poverty cycle",
+              "Official Development Assistance (ODA) can provide the necessary capital to bridge the savings and foreign exchange gaps, yet its effectiveness is often evaluated against the risks of fostering welfare dependency and the potential for funds to be diverted by institutional corruption",
+              "The International Monetary Fund (IMF) primarily provides short-term financial assistance and conditional loans to stabilize countries facing balance of payments crises, whereas the World Bank focuses on funding long-term structural infrastructure and development projects to reduce global poverty",
+              "Foreign Direct Investment (FDI) is evaluated as a catalyst for development through technology transfer and job creation, but it may also lead to significant capital flight via profit repatriation and the exploitation of domestic natural resources under weak regulatory frameworks"
             ],
             formulas: [
               { name: "Human Development Index (HDI)", expr: "HDI = ³√(Life expectancy × Education × Income)" },
@@ -5100,8 +5101,7 @@ export const SUBJECTS = {
           "Singular Matrix: A matrix with its determinant equal to 0, meaning its inverse does not exist",
           "Linear Transformations: Image vector found by pre-multiplying the position vector by transformation matrix M",
           "Combined Transformations: Matrix for transformation A followed by transformation B is given by BA",
-          "Area Scale Factor: The absolute value of the determinant |M| gives the area scale factor of the transformation",
-          "Determinant of 3×3 Matrix: Expand along any row or column using cofactors, alternating signs with pattern +−+/−+−/+−+"
+          "Area Scale Factor: The absolute value of the determinant |M| gives the area scale factor of the transformation"
 ],
             formulas: [
               { name: "2×2 Determinant", expr: "det[a b; c d] = ad - bc" },
@@ -5241,7 +5241,10 @@ export const SUBJECTS = {
           "Inverse Hyperbolic Cosine: arcosh(x) = ln(x + √(x² - 1)) for x ≥ 1",
           "Standard Integration: ∫ 1/√(x² + a²) dx = arsinh(x/a) + c",
           "Inverse Hyperbolic Tangent: artanh(x) = ½ln((1 + x) / (1 - x)) valid for domain |x| < 1",
-          "Differentiation of Inverse Hyperbolic Sine: d/dx(arsinh x) = 1 / √(x² + 1)"
+          "Differentiation of Inverse Hyperbolic Sine: d/dx(arsinh x) = 1 / √(x² + 1)",
+          "De Moivre's Theorem: [r(cos θ + i sin θ)]ⁿ = rⁿ(cos nθ + i sin nθ) for all integer n",
+          "Nth Roots of a Complex Number: z^(1/n) yields n distinct roots equally spaced at angle 2π/n on a circle of radius r^(1/n)",
+          "Roots of Unity: The n nth roots of unity sum to zero and are equally spaced on the unit circle"
 ],
             formulas: [
               { name: "sinh Definition", expr: "sinh x = (eˣ - e⁻ˣ)/2" },
@@ -5299,7 +5302,7 @@ export const SUBJECTS = {
           {
             id: "fm2c3", num: 3,
             title: { zh: "向量空间", en: "Vector Spaces" },
-            overview: { zh: "学习向量空间的定义、子空间、基与维数。", en: "Learn definitions, subspaces, basis and dimension of vector spaces." },
+            overview: { zh: "⚠️ 注意：向量空间与秩-零化定理不属于 Pearson Edexcel IAL 规格书，本章为大学衔接扩展内容。学习向量空间的定义、子空间、基与维数。", en: "⚠️ Note: Vector spaces and the Rank-Nullity Theorem are NOT part of the Pearson Edexcel IAL specification. This chapter covers university-level linear algebra as enrichment content. Topics: definitions, subspaces, basis and dimension of vector spaces." },
             keyPoints: [
           "Vector Space Axioms: A set of vectors that is closed under vector addition and scalar multiplication, satisfying commutativity and associativity",
           "Subspace Test: A subset W is a subspace if it contains the zero vector and is closed under both addition and scalar multiplication",
@@ -5413,7 +5416,7 @@ export const SUBJECTS = {
           {
             id: "fs1c1", num: 1,
             title: { zh: "离散随机变量", en: "Discrete Random Variables" },
-            overview: { zh: "学习离散随机变量的分布、期望与方差。", en: "Learn distribution, expectation and variance of discrete random variables." },
+            overview: { zh: "学习离散随机变量的分布、期望与方差。⚠️ 注意：几何分布（Geometric Distribution）不在 Pearson Edexcel IAL 规格书中，属扩展内容。", en: "Learn distribution, expectation and variance of discrete random variables. ⚠️ Note: The Geometric Distribution is NOT included in the Pearson Edexcel IAL specification. It is included here as enrichment content." },
             keyPoints: [
           "Expectation Definition: E(X) = μ = Σ x P(X = x)",
           "Expected Value of a Function: E(g(X)) = Σ g(x) P(X = x)",

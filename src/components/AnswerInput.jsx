@@ -1,13 +1,18 @@
 // ============================================================
 // AnswerInput Component
 // Supports multiple question types for answer entry
+// 含数学符号小键盘（calculation / fill_blank / proof / short_answer）
 // ============================================================
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import '../styles/AnswerInput.css'
+
+// 数学符号列表
+const MATH_SYMBOLS = ['√', '²', '³', '∫', 'θ', 'π', '≥', '≤', '≠', '×', '÷', '±', '∞', '→', '∑']
 
 const AnswerInput = ({ question, value, onChange, disabled = false }) => {
   const [localValue, setLocalValue] = useState(value || '')
+  const inputRef = useRef(null)
 
   useEffect(() => {
     setLocalValue(value || '')
@@ -17,6 +22,44 @@ const AnswerInput = ({ question, value, onChange, disabled = false }) => {
     setLocalValue(newValue)
     onChange(newValue)
   }
+
+  // 在光标位置插入符号（input 和 textarea 通用）
+  const insertSymbol = (sym) => {
+    const el = inputRef.current
+    if (!el) {
+      handleChange(localValue + sym)
+      return
+    }
+    const start = el.selectionStart ?? localValue.length
+    const end = el.selectionEnd ?? localValue.length
+    const newVal = localValue.slice(0, start) + sym + localValue.slice(end)
+    handleChange(newVal)
+    // React 重渲染后恢复光标位置
+    requestAnimationFrame(() => {
+      if (el) {
+        el.selectionStart = el.selectionEnd = start + sym.length
+        el.focus()
+      }
+    })
+  }
+
+  // 数学符号工具栏（非 MCQ 题型共用）
+  const MathSymbolBar = () => (
+    <div className="math-symbol-bar">
+      {MATH_SYMBOLS.map(sym => (
+        <button
+          key={sym}
+          type="button"
+          className="sym-btn"
+          onMouseDown={(e) => { e.preventDefault(); insertSymbol(sym) }}
+          disabled={disabled}
+          title={sym}
+        >
+          {sym}
+        </button>
+      ))}
+    </div>
+  )
 
   // Multiple choice
   if (question.type === 'multiple_choice') {
@@ -44,7 +87,9 @@ const AnswerInput = ({ question, value, onChange, disabled = false }) => {
     return (
       <div className="answer-input fill-blank">
         <div className="answer-label">Fill in your answer:</div>
+        <MathSymbolBar />
         <input
+          ref={inputRef}
           type="text"
           className="answer-text-input"
           value={localValue}
@@ -60,18 +105,21 @@ const AnswerInput = ({ question, value, onChange, disabled = false }) => {
   if (question.type === 'calculation') {
     return (
       <div className="answer-input calculation">
-        <div className="answer-label">Enter your result:</div>
-        <input
-          type="text"
-          className="answer-text-input"
+        <div className="answer-label">Enter your working & result:</div>
+        <MathSymbolBar />
+        <textarea
+          ref={inputRef}
+          className="answer-textarea"
           value={localValue}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="Enter a number or expression..."
+          placeholder="Show your working step by step, then state the final answer..."
+          rows={5}
           disabled={disabled}
         />
         <div className="input-hint">
-          💡 You can enter a number, fraction, or mathematical expression
+          💡 Show all working steps. Final answer on the last line.
         </div>
+        <div className="textarea-counter">{localValue.length} chars</div>
       </div>
     )
   }
@@ -81,7 +129,9 @@ const AnswerInput = ({ question, value, onChange, disabled = false }) => {
     return (
       <div className="answer-input short-answer">
         <div className="answer-label">Write your answer:</div>
+        <MathSymbolBar />
         <textarea
+          ref={inputRef}
           className="answer-textarea"
           value={localValue}
           onChange={(e) => handleChange(e.target.value)}
