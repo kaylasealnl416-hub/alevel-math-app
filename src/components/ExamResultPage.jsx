@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ScoreCard from './exam/ScoreCard'
 import AIFeedback from './exam/AIFeedback'
@@ -19,12 +19,32 @@ function ExamResultPage() {
   const [aiFeedback, setAiFeedback] = useState(null)
   const [loadingFeedback, setLoadingFeedback] = useState(false)
   const [toast, setToast] = useState(null)
+  const progressWrittenRef = useRef(false)
 
   useEffect(() => { fetchExamResult() }, [examId])
 
   useEffect(() => {
     if (exam && exam.status === 'graded') fetchAIFeedback()
   }, [exam])
+
+  // 进度写入：仅在批改完成（graded）后，按真实得分判断 completed / in_progress
+  useEffect(() => {
+    if (!exam || exam.status !== 'graded' || !questions.length || progressWrittenRef.current) return
+    progressWrittenRef.current = true
+    const pct = exam.maxScore > 0
+      ? Math.round((exam.totalScore / exam.maxScore) * 100)
+      : exam.totalCount > 0
+        ? Math.round((exam.correctCount / exam.totalCount) * 100)
+        : 0
+    const uniqueChapterIds = [...new Set(questions.map(q => q.chapterId).filter(Boolean))]
+    uniqueChapterIds.forEach(cid => {
+      post('/api/progress', {
+        chapterId: cid,
+        status: pct >= 60 ? 'completed' : 'in_progress',
+        masteryLevel: pct,
+      }).catch(() => {})
+    })
+  }, [exam?.status, questions]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // submitted 但未 graded：轮询等待批改完成
   useEffect(() => {
@@ -51,13 +71,7 @@ function ExamResultPage() {
       const qs = data.questions || data.exam?.questionSet?.questions || []
       setExam(examData)
       setQuestions(qs)
-      // 考试完成后，为涉及的每个章节记录学习进度（非阻塞）
-      if (examData.status === 'graded' || examData.status === 'submitted') {
-        const uniqueChapterIds = [...new Set(qs.map(q => q.chapterId).filter(Boolean))]
-        uniqueChapterIds.forEach(cid => {
-          post('/api/progress', { chapterId: cid, status: 'in_progress' }).catch(() => {})
-        })
-      }
+      // 进度写入由专用 useEffect 处理（在 graded 后按分数判断），此处不写
     } catch (err) {
       console.error('Failed to fetch exam result:', err)
       setError('Failed to load exam result. Please try again later.')
