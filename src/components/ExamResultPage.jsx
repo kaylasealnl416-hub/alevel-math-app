@@ -21,7 +21,11 @@ function ExamResultPage() {
   const [toast, setToast] = useState(null)
   const progressWrittenRef = useRef(false)
 
-  useEffect(() => { fetchExamResult() }, [examId])
+  useEffect(() => {
+    // examId 变化时重置进度写入标记，确保每次进入新考试结果页都能写入
+    progressWrittenRef.current = false
+    fetchExamResult()
+  }, [examId])
 
   useEffect(() => {
     if (exam && exam.status === 'graded') fetchAIFeedback()

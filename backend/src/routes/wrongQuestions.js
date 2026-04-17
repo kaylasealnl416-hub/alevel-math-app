@@ -18,7 +18,8 @@ app.get('/', async (c) => {
   try {
     const userId = c.get('userId')
     const subject = c.req.query('subject')
-    const limit = parseInt(c.req.query('limit') || '50')
+    const rawLimit = parseInt(c.req.query('limit') || '50')
+    const limit = isNaN(rawLimit) ? 50 : Math.min(rawLimit, 200)
 
     if (!userId) {
       return c.json({
@@ -139,6 +140,11 @@ app.get('/', async (c) => {
 app.post('/', async (c) => {
   try {
     const userId = c.get('userId')
+
+    if (!userId) {
+      return c.json({ success: false, error: { code: 'UNAUTHORIZED', message: '未登录' } }, 401)
+    }
+
     const { questionId, userAnswer, examId } = await c.req.json()
 
     if (!questionId) {
@@ -280,29 +286,35 @@ app.get('/stats', async (c) => {
       }, 400)
     }
 
-    // 查询错题总数
+    // 查询错题总数（含 Practice 错题，examId 可为 null）
     const totalWrong = await db
       .select({ count: sql`count(*)` })
       .from(examQuestionResults)
-      .innerJoin(exams, eq(examQuestionResults.examId, exams.id))
+      .leftJoin(exams, eq(examQuestionResults.examId, exams.id))
       .where(
         and(
-          eq(exams.userId, parseInt(userId)),
+          or(
+            eq(exams.userId, parseInt(userId)),
+            eq(examQuestionResults.userId, parseInt(userId))
+          ),
           eq(examQuestionResults.isCorrect, false)
         )
       )
 
-    // 查询最近7天的错题趋势
+    // 查询最近7天的错题趋势（含 Practice 错题）
     const recentWrong = await db
       .select({
         date: sql`DATE(${examQuestionResults.createdAt})`,
         count: sql`count(*)`
       })
       .from(examQuestionResults)
-      .innerJoin(exams, eq(examQuestionResults.examId, exams.id))
+      .leftJoin(exams, eq(examQuestionResults.examId, exams.id))
       .where(
         and(
-          eq(exams.userId, parseInt(userId)),
+          or(
+            eq(exams.userId, parseInt(userId)),
+            eq(examQuestionResults.userId, parseInt(userId))
+          ),
           eq(examQuestionResults.isCorrect, false),
           sql`${examQuestionResults.createdAt} >= NOW() - INTERVAL '7 days'`
         )
