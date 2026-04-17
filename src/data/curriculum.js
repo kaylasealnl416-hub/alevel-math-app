@@ -713,16 +713,13 @@ export const CURRICULUM = {
           { name: "Expected Value", expr: "E(X) = Σ xᵢ·P(X=xᵢ)" },
           { name: "Variance", expr: "Var(X) = E(X²)−[E(X)]² = Σxᵢ²·P(X=xᵢ)−[E(X)]²" },
           { name: "Linear Transformation (Expectation)", expr: "E(aX+b) = a·E(X) + b" },
-          { name: "Linear Transformation (Variance)", expr: "Var(aX+b) = a²·Var(X) (b has no effect)" },
-          { name: "Binomial Distribution", expr: "X~B(n,p): P(X=r)=C(n,r)pʳ(1−p)ⁿ⁻ʳ" },
-          { name: "Binomial E(X) and Var(X)", expr: "E(X)=np; Var(X)=np(1−p)" }
+          { name: "Linear Transformation (Variance)", expr: "Var(aX+b) = a²·Var(X) (b has no effect)" }
         ],
         difficulty: "Intermediate",
-        hardPoints: "【高频失分点】计算E(X²)时，将[E(X)]²误作E(X²)（混淆Var(X)=E(X²)−[E(X)]²中的两项）；线性变换方差时，Var(aX+b)=a²Var(X)——平移量b不影响方差，但学生常忘记而写成a²Var(X)+b²；二项分布适用条件验证：若n较大且p与0.5差距大，学生有时会错误使用正态分布（S1中不考正态近似）。",
-        examTips: "E(X²)的计算必须列出xᵢ², P(X=xᵢ)两列再逐行相乘，不要跳步。二项概率计算：Casio ClassWiz的\"STAT→Distribution→Binomial\"可快速计算，但必须手写概率公式作为解题步骤。建议先列出P(X=r)的公式，再代入数值。",
+        hardPoints: "【高频失分点】计算E(X²)时，将[E(X)]²误作E(X²)（混淆Var(X)=E(X²)−[E(X)]²中的两项）；线性变换方差时，Var(aX+b)=a²Var(X)——平移量b不影响方差，但学生常忘记而写成a²Var(X)+b²。注意：Binomial Distribution B(n,p) 属于 WST02(S2)，不在 WST01(S1) 范围内。",
+        examTips: "E(X²)的计算必须列出xᵢ², P(X=xᵢ)两列再逐行相乘，不要跳步。计算Var(X)时先求E(X²)，再减去[E(X)]²。在概率分布表中，所有P(X=x)之和必须等于1，可用此验证答案。",
         youtube: [
-          { title: "S1 Discrete Random Variables — ExamSolutions", url: "https://www.youtube.com/results?search_query=S1+discrete+random+variables+expectation+variance+edexcel", channel: "ExamSolutions" },
-          { title: "Binomial Distribution — TLMaths", url: "https://www.youtube.com/results?search_query=S1+binomial+distribution+A+level+statistics", channel: "TLMaths" }
+          { title: "S1 Discrete Random Variables — ExamSolutions", url: "https://www.youtube.com/results?search_query=S1+discrete+random+variables+expectation+variance+edexcel", channel: "ExamSolutions" }
         ]
       },
       // ── S1 Chapter 7 ───────────────────────────────────────────
