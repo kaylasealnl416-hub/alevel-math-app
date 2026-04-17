@@ -153,6 +153,7 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
       const allResults = roundResults.concat([{
         questionId: questions[currentIndex].id,
         isCorrect: feedback.isCorrect,
+        answer: userAnswer,
       }])
       try {
         const data = await post('/api/practice/summary', {
@@ -163,6 +164,15 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
       } catch (e) {
         // 非关键操作，仍然显示 summary
       }
+      // 记录 Practice 错题到错题本（非阻塞）
+      const wrongOnes = allResults.filter(r => r.isCorrect === false)
+      wrongOnes.forEach(r => {
+        post('/api/wrong-questions', {
+          questionId: r.questionId,
+          userAnswer: r.answer ?? null,
+        }).catch(() => {})
+      })
+
       // 记录章节学习进度（非阻塞，失败不影响 UI）
       if (chapterId) {
         const correctCount = allResults.filter(r => r.isCorrect === true).length

@@ -6,7 +6,7 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
 import { examQuestionResults, exams, questions, chapters } from '../db/schema.js'
-import { eq, and, desc, sql } from 'drizzle-orm'
+import { eq, and, or, desc, sql, isNull } from 'drizzle-orm'
 
 const app = new Hono()
 
@@ -30,7 +30,7 @@ app.get('/', async (c) => {
       }, 400)
     }
 
-    // 查询用户的所有错题
+    // 查询用户的所有错题（含 Practice 错题，examId 可为 null）
     let query = db
       .select({
         id: examQuestionResults.id,
@@ -55,7 +55,7 @@ app.get('/', async (c) => {
           tags: questions.tags,
           chapterId: questions.chapterId
         },
-        // 关联考试信息
+        // 关联考试信息（Practice 错题为 null）
         exam: {
           id: exams.id,
           type: exams.type,
@@ -68,12 +68,16 @@ app.get('/', async (c) => {
         }
       })
       .from(examQuestionResults)
-      .innerJoin(exams, eq(examQuestionResults.examId, exams.id))
+      .leftJoin(exams, eq(examQuestionResults.examId, exams.id))
       .innerJoin(questions, eq(examQuestionResults.questionId, questions.id))
       .leftJoin(chapters, eq(questions.chapterId, chapters.id))
       .where(
         and(
-          eq(exams.userId, parseInt(userId)),
+          // 归属验证：exam 的 userId 或直接记录的 userId
+          or(
+            eq(exams.userId, parseInt(userId)),
+            eq(examQuestionResults.userId, parseInt(userId))
+          ),
           eq(examQuestionResults.isCorrect, false)
         )
       )
@@ -130,12 +134,12 @@ app.get('/', async (c) => {
 
 /**
  * POST /api/wrong-questions
- * 手动记录错题（来自 Mock Exam 等非正式考试场景）
+ * 记录错题（Practice 场景：examId = null，直接用 userId 标记归属）
  */
 app.post('/', async (c) => {
   try {
     const userId = c.get('userId')
-    const { questionId, userAnswer, question } = await c.req.json()
+    const { questionId, userAnswer, examId } = await c.req.json()
 
     if (!questionId) {
       return c.json({
@@ -148,26 +152,28 @@ app.post('/', async (c) => {
     const [existingQuestion] = await db
       .select({ id: questions.id })
       .from(questions)
-      .where(eq(questions.id, questionId))
+      .where(eq(questions.id, parseInt(questionId)))
       .limit(1)
 
     if (!existingQuestion) {
-      // 题目不在数据库中（可能是临时生成的），静默跳过
       return c.json({
         success: true,
         data: { message: '题目不在题库中，跳过记录', skipped: true }
       })
     }
 
-    // 查重：同一用户同一题目只保留最近一条错题记录
+    // 查重：同一用户同一题目只保留最近一条错题记录（via userId 或 examId）
     const [existing] = await db
       .select({ id: examQuestionResults.id })
       .from(examQuestionResults)
-      .innerJoin(exams, eq(examQuestionResults.examId, exams.id))
+      .leftJoin(exams, eq(examQuestionResults.examId, exams.id))
       .where(
         and(
-          eq(exams.userId, parseInt(userId)),
-          eq(examQuestionResults.questionId, questionId),
+          or(
+            eq(exams.userId, parseInt(userId)),
+            eq(examQuestionResults.userId, parseInt(userId))
+          ),
+          eq(examQuestionResults.questionId, parseInt(questionId)),
           eq(examQuestionResults.isCorrect, false)
         )
       )
@@ -180,11 +186,23 @@ app.post('/', async (c) => {
       })
     }
 
-    // 没有关联的 exam 时，无法插入 examQuestionResults（需要 examId）
-    // 返回成功但标记为无法记录
+    // 插入错题记录（examId 可空，userId 直接存）
+    const [inserted] = await db
+      .insert(examQuestionResults)
+      .values({
+        examId: examId ? parseInt(examId) : null,
+        userId: parseInt(userId),
+        questionId: parseInt(questionId),
+        userAnswer: userAnswer ?? null,
+        isCorrect: false,
+        score: 0,
+        maxScore: 0,
+      })
+      .returning({ id: examQuestionResults.id })
+
     return c.json({
       success: true,
-      data: { message: '错题已记录（本地）', recorded: false }
+      data: { id: inserted.id, recorded: true }
     })
 
   } catch (error) {
@@ -211,14 +229,20 @@ app.post('/:id/master', async (c) => {
       return c.json({ success: false, error: { code: 'UNAUTHORIZED', message: '未登录' } }, 401)
     }
 
-    // 验证该记录属于当前用户，再更新
+    // 验证该记录属于当前用户（支持 examId 关联 或 直接 userId）
     const [result] = await db
       .update(examQuestionResults)
       .set({ isMastered: mastered })
       .where(
         and(
           eq(examQuestionResults.id, id),
-          sql`${examQuestionResults.examId} IN (SELECT id FROM exams WHERE user_id = ${parseInt(userId)})`
+          or(
+            sql`${examQuestionResults.examId} IN (SELECT id FROM exams WHERE user_id = ${parseInt(userId)})`,
+            and(
+              isNull(examQuestionResults.examId),
+              eq(examQuestionResults.userId, parseInt(userId))
+            )
+          )
         )
       )
       .returning({ id: examQuestionResults.id, isMastered: examQuestionResults.isMastered })

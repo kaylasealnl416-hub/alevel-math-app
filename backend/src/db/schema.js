@@ -329,14 +329,17 @@ export const exams = pgTable('exams', {
 // 考试逐题结果表
 export const examQuestionResults = pgTable('exam_question_results', {
   id: serial('id').primaryKey(),
-  examId: integer('exam_id').notNull().references(() => exams.id, { onDelete: 'cascade' }),
+  // examId 可空：来自 Practice 的错题无关联考试记录
+  examId: integer('exam_id').references(() => exams.id, { onDelete: 'cascade' }),
+  // userId 直接标记归属（Practice 错题无 examId 时用此字段做权限校验）
+  userId: integer('user_id').references(() => users.id, { onDelete: 'cascade' }),
   questionId: integer('question_id').notNull().references(() => questions.id, { onDelete: 'cascade' }),
 
   // 答题数据
   userAnswer: jsonb('user_answer').notNull(),
   isCorrect: boolean('is_correct').notNull(),
-  score: real('score').notNull(),
-  maxScore: real('max_score').notNull(),
+  score: real('score').notNull().default(0),
+  maxScore: real('max_score').notNull().default(0),
   timeSpent: integer('time_spent'), // 答题时长（秒）
 
   // AI 点评

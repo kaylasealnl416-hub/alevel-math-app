@@ -49,7 +49,7 @@ function WrongQuestionsPage() {
         id: wq.question.id, type: wq.question.type, difficulty: wq.question.difficulty,
         content: wq.question.content, options: wq.question.options, answer: wq.question.answer,
         explanation: wq.question.explanation, tags: wq.question.tags, chapterId: wq.question.chapterId,
-        examId: wq.examId, examType: wq.exam.type, examDate: wq.exam.createdAt,
+        examId: wq.examId, examType: wq.exam?.type || 'practice', examDate: wq.exam?.createdAt || wq.createdAt,
         userAnswer: wq.userAnswer, aiFeedback: wq.aiFeedback, chapter: wq.chapter, attemptCount: 1,
         resultId: wq.id,
         isMastered: wq.isMastered || false,
@@ -112,8 +112,12 @@ function WrongQuestionsPage() {
   }
 
   const getExamTypeLabel = (type) => {
-    const labels = { chapter_test: 'Chapter Test', unit_test: 'Unit Test', mock_exam: 'Mock Exam', diagnostic: 'Diagnostic Test' }
-    return labels[type] || type
+    const labels = {
+      chapter_test: 'Chapter Test', unit_test: 'Unit Test',
+      mock_exam: 'Mock Exam', diagnostic: 'Diagnostic Test',
+      practice: 'Practice',
+    }
+    return labels[type] || type || 'Practice'
   }
 
   // 从 chapterId 前缀推断 subject，用于跳转练习
