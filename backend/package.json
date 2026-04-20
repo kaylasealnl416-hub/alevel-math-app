@@ -2,7 +2,7 @@
   "name": "alevel-backend",
   "version": "1.0.0",
   "description": "A-Level AI教师后端服务",
-  "module": "index.ts",
+  "main": "src/index.js",
   "type": "module",
   "private": true,
   "scripts": {
