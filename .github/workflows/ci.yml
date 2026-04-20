@@ -1,4 +1,4 @@
-name: Code Quality Check
+name: CI
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [main, master]
 
 jobs:
-  quality:
-    name: Lint + TypeCheck + Test
+  frontend:
+    name: 前端 (Lint + TypeCheck + Test + Build)
     runs-on: ubuntu-latest
 
     steps:
@@ -26,12 +26,34 @@ jobs:
 
       - name: 🔍 ESLint 代码规范检查
         run: npm run lint
-        # 发现代码风格问题、潜在 bug
 
       - name: 🔷 TypeScript 类型检查
         run: npm run typecheck
-        # 发现类型错误，防止运行时崩溃
 
-      - name: 🧪 运行单元测试
+      - name: 🧪 Vitest 单元测试
         run: npm test
-        # 确保已有功能没有被破坏
+
+      - name: 🏗️ 构建验证（vite build）
+        run: npm run build
+
+  backend:
+    name: 后端 (Bun 单元测试)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: 📥 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 🥟 安装 Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: 📦 安装依赖
+        run: bun install --frozen-lockfile
+
+      - name: 🧪 Bun 单元测试
+        run: bun test tests/unit
