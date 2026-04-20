@@ -5,6 +5,18 @@
 
 ---
 
+## 📘 技术文档 Wiki（核心 · 必读）
+
+> 2026-04-17 创建的完整技术文档套装，适合新开发者上手与功能全景参考。
+
+- **[wiki/01-product-guide.md](./wiki/01-product-guide.md)** — 产品使用指南（功能全景） ⭐
+- **[wiki/02-architecture.md](./wiki/02-architecture.md)** — 系统架构文档 ⭐
+- **[wiki/03-api-reference.md](./wiki/03-api-reference.md)** — REST API 接口清单 ⭐
+- **[wiki/04-database-schema.md](./wiki/04-database-schema.md)** — 数据库 Schema（Drizzle ORM）⭐
+- **[wiki/05-developer-guide.md](./wiki/05-developer-guide.md)** — 开发指南（新人上手） ⭐
+
+---
+
 ## 项目说明
 
 - [startup-guide.md](./startup-guide.md) — 启动说明

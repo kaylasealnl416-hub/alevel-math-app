@@ -395,7 +395,7 @@ users ────────────────────────�
 
 **前端（.env.local）：**
 ```
-VITE_API_BASE=https://alevel-backend.onrender.com
+VITE_API_URL=https://alevel-math-app.onrender.com
 VITE_GOOGLE_CLIENT_ID=xxx
 ```
 

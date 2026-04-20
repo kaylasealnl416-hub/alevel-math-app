@@ -2,7 +2,7 @@
 
 > 最后更新：2026-04-17  
 > 版本：v1.5.0  
-> Base URL（生产）：`https://alevel-backend.onrender.com`  
+> Base URL（生产）：`https://alevel-math-app.onrender.com`  
 > Base URL（本地开发）：`http://localhost:4000`
 
 ---

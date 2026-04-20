@@ -450,7 +450,7 @@ feat(F3c): Practice 错题写入错题本（方案B）
 
 ```bash
 # 检查后端健康状态
-curl https://alevel-backend.onrender.com/health
+curl https://alevel-math-app.onrender.com/health
 
 # 前端验证
 # 访问 https://alevel-math-app.vercel.app
