@@ -1,56 +1,48 @@
 # 规约文档索引
 
-## 📋 核心规划文档（必读）
+> specs/ 存规约性（架构决策、产品路线图、审查报告、课程大纲、部署检查）文档。
+> Phase 0-4 实施过程中的 21 份完成报告与阶段计划已归档至 `_archive/phase-reports/`。
 
-- **[complete-technical-plan.md](./complete-technical-plan.md)** - 完整技术方案（超详细版）⭐
-- **[development-progress.md](./development-progress.md)** - 开发进度追踪 ⭐
-- **[quick-reference.md](./quick-reference.md)** - 快速参考指南 ⭐
-- [product-roadmap-2026.md](./product-roadmap-2026.md) - 产品规划与开发路线图
-- [phase0-infrastructure-plan.md](./phase0-infrastructure-plan.md) - Phase 0基础设施搭建方案
+---
+
+## 📋 核心规划（必读）
+
+- **[complete-technical-plan.md](./complete-technical-plan.md)** — 完整技术方案 ⭐
+- **[development-progress.md](./development-progress.md)** — 开发进度追踪 ⭐
+- **[quick-reference.md](./quick-reference.md)** — 快速参考 ⭐
+- [product-roadmap-2026.md](./product-roadmap-2026.md) — 产品规划与路线图
+- [architecture-decision-record.md](./architecture-decision-record.md) — ADR 架构决策
 
 ## 🎨 设计文档
 
-- [DESIGN.md](./DESIGN.md) - 项目整体设计文档
-- [DESIGN_NEW_SUBJECTS.md](./DESIGN_NEW_SUBJECTS.md) - 新科目设计文档
+- [DESIGN.md](./DESIGN.md) — 整体设计
+- [DESIGN_NEW_SUBJECTS.md](./DESIGN_NEW_SUBJECTS.md) — 新科目设计
 
 ## 🔍 代码审查
 
-- [CODE_REVIEW.md](./CODE_REVIEW.md) - 代码审查记录
-- [code-audit-plan.md](./code-audit-plan.md) - 代码审核计划
-- [code-audit-summary.md](./code-audit-summary.md) - 代码审核总结
-- [code-audit-p0-findings.md](./code-audit-p0-findings.md) - P0级问题发现
+- [CODE_REVIEW.md](./CODE_REVIEW.md) — 代码审查记录
+- [REFACTOR_PLAN.md](./REFACTOR_PLAN.md) — 重构计划
 
-## 🔧 重构计划
+## 🔒 安全修复（2026-03-07）
 
-- [REFACTOR_PLAN.md](./REFACTOR_PLAN.md) - 重构计划
+- **[security-fixes-final-report.md](./security-fixes-final-report.md)** — 收官报告 ⭐
+- [security-fixes-report.md](./security-fixes-report.md) — 技术实现详报
+- [security-fixes-summary.md](./security-fixes-summary.md) — 简要总结
 
 ## 📚 课程大纲
 
-- [PEARSON_IAL_SYLLABUS.md](./PEARSON_IAL_SYLLABUS.md) - Pearson IAL 课程大纲
+- [PEARSON_IAL_SYLLABUS.md](./PEARSON_IAL_SYLLABUS.md) — Pearson IAL 课程大纲
+
+## 🚀 部署
+
+- [deployment-guide.md](./deployment-guide.md) — 部署指南
+- [deployment-checklist.md](./deployment-checklist.md) — 部署检查
+- [api-integration-test.md](./api-integration-test.md) — API 集成测试
+
+## 🗄 归档
+
+- [_archive/phase-reports/](./_archive/phase-reports/) — 21 份 Phase 0-4 实施计划与完成报告（code-audit / full-code-review / phase0-4 全程）
 
 ---
 
-## 📖 文档使用指南
-
-### 新成员入门
-
-1. 先读 **[quick-reference.md](./quick-reference.md)** 了解项目结构和常用命令
-2. 再读 **[complete-technical-plan.md](./complete-technical-plan.md)** 了解完整技术方案
-3. 查看 **[development-progress.md](./development-progress.md)** 了解当前进度和任务分配
-
-### 开发过程中
-
-- 需要查命令？→ [quick-reference.md](./quick-reference.md)
-- 需要了解架构？→ [complete-technical-plan.md](./complete-technical-plan.md)
-- 需要更新进度？→ [development-progress.md](./development-progress.md)
-- 需要了解产品规划？→ [product-roadmap-2026.md](./product-roadmap-2026.md)
-
-### 遇到问题
-
-1. 先查 [quick-reference.md](./quick-reference.md) 的"常见问题"章节
-2. 再查 [complete-technical-plan.md](./complete-technical-plan.md) 的"风险评估与应对"章节
-3. 如果还没解决，在 [development-progress.md](./development-progress.md) 中记录问题
-
----
-
-**最后更新**：2026-03-06
+**最后更新**：2026-04-20（深度整理任务归档历史报告）

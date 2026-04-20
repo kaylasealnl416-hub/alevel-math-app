@@ -41,7 +41,7 @@ export const PAST_PAPERS = [
   { year: 2021, session: "May/Jun", paper: "P1", code:"WMA11", duration: 90, questions: 11, desc: "Pure Mathematics 1" },
 ];
 
-// Subject name mapping (shared by MockExamView and ErrorBookView)
+// Subject name mapping (shared by MockExamView and WrongQuestionsPage)
 export const SUBJECT_NAMES = {
   mathematics: "Mathematics",
   economics: "Economics",

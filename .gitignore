@@ -39,6 +39,8 @@ practice-full-test.spec.js
 practice-session-test.spec.js
 playwright.config.js
 playwright-*.config.js
+ux-full-test.spec.js
+.playwright-cli/
 
 # ===== Temporary files =====
 tmp/
@@ -46,6 +48,7 @@ temp/
 *.tmp
 *.bak
 *.backup*
+archive/*.zip
 
 # ===== IDE =====
 .vscode
