@@ -3484,7 +3484,7 @@ export const SUBJECTS = {
         color: "#37474F",
         chapters: [
           {
-            id: "p1c1", num: 1,
+            id: "pol1c1", num: 1,
             title: { zh: "英国民主制度", en: "UK Democracy" },
             overview: { zh: "学习英国的民主制度和选举系统。", en: "Learn about UK's democratic system and electoral system." },
             keyPoints: [
@@ -3546,7 +3546,7 @@ export const SUBJECTS = {
             ]
           },
           {
-            id: "p1c2", num: 2,
+            id: "pol1c2", num: 2,
             title: { zh: "核心政治理论", en: "Core Political Ideas" },
             overview: { zh: "深入学习三大核心政治思想：自由主义、保守主义和社会主义的历史发展、核心价值观、主要分支和代表人物。", en: "In-depth study of three core political ideologies: Liberalism, Conservatism, and Socialism, including their historical development, core values, main branches, and key thinkers." },
             keyPoints: [
@@ -3606,7 +3606,7 @@ export const SUBJECTS = {
         color: "#263238",
         chapters: [
           {
-            id: "p2c1", num: 1,
+            id: "pol2c1", num: 1,
             title: { zh: "美国联邦制度", en: "US Federalism & Constitution" },
             overview: { zh: "学习美国的联邦制度。", en: "Comprehensive study of US federalism and Constitution: Constitutional foundations (1787), separation of powers, checks and balances, division of powers between federal and state governments, enumerated and reserved powers, concurrent powers, Supremacy Clause, states' rights debates, Supreme Court's role in federalism, evolution of federalism (dual, cooperative, new federalism), contemporary federalism issues, and comparative analysis with UK unitary system." },
             keyPoints: [
@@ -3691,7 +3691,7 @@ export const SUBJECTS = {
             ]
           },
           {
-            id: "p2c2", num: 2,
+            id: "pol2c2", num: 2,
             title: { zh: "美国国会", en: "US Congress" },
             overview: { zh: "学习美国国会的结构和功能。", en: "Comprehensive study of US Congress: Bicameral structure (House of Representatives and Senate), composition and elections, powers and functions, legislative process (bill to law), committee system, party leadership, checks and balances, relationship with President, representation theories, contemporary issues (polarization, gridlock, gerrymandering), and comparison with UK Parliament." },
             keyPoints: [
@@ -3782,7 +3782,7 @@ export const SUBJECTS = {
             ]
           },
           {
-            id: "p2c3", num: 3,
+            id: "pol2c3", num: 3,
             title: { zh: "美国总统", en: "US Presidency" },
             overview: { zh: "学习美国总统的权力和职能。", en: "Comprehensive study of US Presidency: Constitutional powers (Article II), roles of President (Chief Executive, Commander-in-Chief, Chief Diplomat, Chief Legislator), formal and informal powers, relationship with Congress, presidential elections (primaries, Electoral College), Cabinet and Executive Office, limits on presidential power, imperial vs imperiled presidency debate, and comparison with UK Prime Minister." },
             keyPoints: [
@@ -3871,7 +3871,7 @@ export const SUBJECTS = {
         color: "#1A237E",
         chapters: [
           {
-            id: "p3c1", num: 1,
+            id: "pol3c1", num: 1,
             title: { zh: "全球化", en: "Globalisation" },
             overview: { zh: "学习全球化的概念和影响。", en: "Comprehensive study of globalisation: Definition and drivers, economic dimension (trade, FDI, TNCs), political dimension (IGOs, global governance), cultural dimension (McDonaldisation, cultural imperialism), technological drivers (internet, transport), winners and losers, impact on sovereignty, anti-globalisation movements, and debates on future of globalisation." },
             keyPoints: [
@@ -3960,7 +3960,7 @@ export const SUBJECTS = {
             ]
           },
           {
-            id: "p3c2", num: 2,
+            id: "pol3c2", num: 2,
             title: { zh: "国际组织", en: "International Organisations" },
             overview: { zh: "学习主要国际组织的结构和功能。", en: "Comprehensive study of major international organisations: United Nations (structure, Security Council, peacekeeping, reform debates), European Union (history, institutions, single market, Brexit), NATO (purpose, expansion, Article 5, current challenges), World Trade Organization, International Monetary Fund, World Bank, effectiveness debates, and challenges facing international organisations." },
             keyPoints: [
@@ -4048,7 +4048,7 @@ export const SUBJECTS = {
             ]
           },
           {
-            id: "p3c3", num: 3,
+            id: "pol3c3", num: 3,
             title: { zh: "国际关系理论", en: "International Relations Theories" },
             overview: { zh: "学习国际关系的理论框架。", en: "Comprehensive study of International Relations theories: Realism (classical and neorealism, power, security, national interest, key thinkers), Liberalism (neoliberal institutionalism, cooperation, interdependence, democratic peace theory), Constructivism (identity, norms, social construction, culture), comparison of theories, application to case studies (Cold War, European integration, War on Terror, climate change), and debates on theory relevance." },
             keyPoints: [
@@ -4150,7 +4150,7 @@ export const SUBJECTS = {
         color: "#37474F",
         chapters: [
           {
-            id: "p4c1", num: 1,
+            id: "pol4c1", num: 1,
             title: { zh: "比较政治学方法", en: "Comparative Politics Methods" },
             overview: { zh: "学习比较不同政治体系的方法。", en: "Comprehensive study of comparative politics methods: Definition and scope, comparative method (most similar/different systems design), political systems comparison (presidential vs parliamentary, federal vs unitary), regime types (democracy, authoritarianism, totalitarianism), democratization and transitions (waves of democracy, transition theories), political culture and socialization, case studies (US, UK, China, Russia), and methodological challenges." },
             keyPoints: [
@@ -4233,7 +4233,7 @@ export const SUBJECTS = {
             ]
           },
           {
-            id: "p4c2", num: 2,
+            id: "pol4c2", num: 2,
             title: { zh: "美国政治体系", en: "US Political System" },
             overview: { zh: "深入学习美国政治制度。", en: "Study the US political system in depth." },
             keyPoints: [
@@ -4290,7 +4290,7 @@ export const SUBJECTS = {
             ]
           },
           {
-            id: "p4c3", num: 3,
+            id: "pol4c3", num: 3,
             title: { zh: "全球治理与国际组织", en: "Global Governance & International Organisations" },
             overview: { zh: "学习全球治理机制和国际组织。", en: "Study global governance mechanisms and international organisations." },
             keyPoints: [

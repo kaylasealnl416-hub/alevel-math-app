@@ -31,15 +31,15 @@
 **章节与典型题型**：
 | chapter_id | 章节 | 典型考点 |
 |---|---|---|
-| math_p1c1 | Algebraic Expressions | 指数化简、代数分式、有理化 |
-| math_p1c2 | Quadratics | 判别式、顶点形式、二次不等式 |
-| math_p1c3 | Equations & Inequalities | 联立方程、模不等式、图形法 |
-| math_p1c4 | Graphs & Transformations | 函数变换（平移/拉伸/反射） |
-| math_p1c5 | Straight Line Geometry | 直线方程、斜率、垂直/平行 |
-| math_p1c6 | Trigonometric Ratios | sin/cos/tan、CAST、精确值 |
-| math_p1c7 | Radians | 弧度/扇形面积/弧长 |
-| math_p1c8 | Differentiation | 多项式导数、切线、法线、极值 |
-| math_p1c9 | Integration | 不定积分、定积分、曲线面积 |
+| p1c1 | Algebraic Expressions | 指数化简、代数分式、有理化 |
+| p1c2 | Quadratics | 判别式、顶点形式、二次不等式 |
+| p1c3 | Equations & Inequalities | 联立方程、模不等式、图形法 |
+| p1c4 | Graphs & Transformations | 函数变换（平移/拉伸/反射） |
+| p1c5 | Straight Line Geometry | 直线方程、斜率、垂直/平行 |
+| p1c6 | Trigonometric Ratios | sin/cos/tan、CAST、精确值 |
+| p1c7 | Radians | 弧度/扇形面积/弧长 |
+| p1c8 | Differentiation | 多项式导数、切线、法线、极值 |
+| p1c9 | Integration | 不定积分、定积分、曲线面积 |
 
 **详细规范** → `docs/exam-specs/WMA11-P1.md`（含官方 prompt 模板）
 
@@ -66,14 +66,14 @@
 **章节**：
 | chapter_id | 章节 |
 |---|---|
-| math_p2c1 | Algebraic Methods（因式定理、多项式长除、代数证明） |
-| math_p2c2 | Coordinate Geometry: Circles |
-| math_p2c3 | Exponentials & Logarithms |
-| math_p2c4 | Binomial Expansion |
-| math_p2c5 | Sequences & Series |
-| math_p2c6 | Trigonometric Identities |
-| math_p2c7 | Further Differentiation |
-| math_p2c8 | Further Integration |
+| p2c1 | Algebraic Methods（因式定理、多项式长除、代数证明） |
+| p2c2 | Coordinate Geometry: Circles |
+| p2c3 | Exponentials & Logarithms |
+| p2c4 | Binomial Expansion |
+| p2c5 | Sequences & Series |
+| p2c6 | Trigonometric Identities |
+| p2c7 | Further Differentiation |
+| p2c8 | Further Integration |
 
 **详细规范** → `docs/exam-specs/WMA12-P2.md`
 
@@ -86,14 +86,14 @@
 **章节**：
 | chapter_id | 章节 | 核心考点 |
 |---|---|---|
-| math_p3c1 | Further Algebraic Methods | 部分分数 |
-| math_p3c2 | Functions | 定义域值域、复合、反函数 |
-| math_p3c3 | Further Trigonometry | sec/cosec/cot、inverse trig |
-| math_p3c4 | Further Exp & Log | 含 e^x、ln x 的微积分 |
-| math_p3c5 | Advanced Differentiation | 隐函数、参数方程 |
-| math_p3c6 | Advanced Integration | 分部积分、三角换元、部分分数积分 |
-| math_p3c7 | Vectors | 3D 向量、向量方程、点积、夹角 |
-| math_p3c8 | Differential Equations | 分离变量、初值问题 |
+| p3c1 | Further Algebraic Methods | 部分分数 |
+| p3c2 | Functions | 定义域值域、复合、反函数 |
+| p3c3 | Further Trigonometry | sec/cosec/cot、inverse trig |
+| p3c4 | Further Exp & Log | 含 e^x、ln x 的微积分 |
+| p3c5 | Advanced Differentiation | 隐函数、参数方程 |
+| p3c6 | Advanced Integration | 分部积分、三角换元、部分分数积分 |
+| p3c7 | Vectors | 3D 向量、向量方程、点积、夹角 |
+| p3c8 | Differential Equations | 分离变量、初值问题 |
 
 **详细规范** → `docs/exam-specs/WMA13-P3.md`
 
@@ -106,14 +106,14 @@
 **章节**：
 | chapter_id | 章节 | 核心考点 |
 |---|---|---|
-| math_p4c1 | Proof by Mathematical Induction | 数学归纳法 |
-| math_p4c2 | Complex Numbers | Argand 图、模与辐角 |
-| math_p4c3 | Matrices | 行列式、逆矩阵、线性变换 |
-| math_p4c4 | Further Vectors | 平面方程、点到平面距离 |
-| math_p4c5 | Hyperbolic Functions | sinh/cosh/tanh |
-| math_p4c6 | Polar Coordinates | 极坐标图形、面积 |
-| math_p4c7 | Further Calculus | 麦克劳林、弧长、旋转体 |
-| math_p4c8 | 2nd-Order ODE | 特征方程 |
+| p4c1 | Proof by Mathematical Induction | 数学归纳法 |
+| p4c2 | Complex Numbers | Argand 图、模与辐角 |
+| p4c3 | Matrices | 行列式、逆矩阵、线性变换 |
+| p4c4 | Further Vectors | 平面方程、点到平面距离 |
+| p4c5 | Hyperbolic Functions | sinh/cosh/tanh |
+| p4c6 | Polar Coordinates | 极坐标图形、面积 |
+| p4c7 | Further Calculus | 麦克劳林、弧长、旋转体 |
+| p4c8 | 2nd-Order ODE | 特征方程 |
 
 **P4 倒推特别注意**：复数题先选整数 modulus，矩阵题先选整数 determinant。
 
@@ -126,13 +126,13 @@
 ⚠️ **本仓库尚未沉淀 S1 规范文档**。给 S1 出题前先告知用户："S1 的题型规范还没整理完，要不先用基础模板出几道你审一下？"
 
 S1 章节（来自 seed-mathematics.js）：
-- math_s1c1 Mathematical Modelling
-- math_s1c2 Measures of Location & Spread
-- math_s1c3 Representations of Data
-- math_s1c4 Probability
-- math_s1c5 Correlation & Regression
-- math_s1c6 Discrete Random Variables
-- math_s1c7 Normal Distribution
+- s1c1 Mathematical Modelling
+- s1c2 Measures of Location & Spread
+- s1c3 Representations of Data
+- s1c4 Probability
+- s1c5 Correlation & Regression
+- s1c6 Discrete Random Variables
+- s1c7 Normal Distribution
 
 **通用 S1 规则**（暂行）：
 - 用真实数据集情境（运动员成绩、考试分数、降雨量等）
@@ -146,13 +146,13 @@ S1 章节（来自 seed-mathematics.js）：
 ⚠️ **本仓库尚未沉淀 M1 规范文档**。同 S1，先告知用户。
 
 M1 章节：
-- math_m1c1 Mathematical Models & Kinematics
-- math_m1c2 Dynamics of a Particle
-- math_m1c3 Forces & Equilibrium
-- math_m1c4 Moments
-- math_m1c5 Work, Energy & Power
-- math_m1c6 Impulse & Momentum
-- math_m1c7 Projectile Motion
+- m1c1 Mathematical Models & Kinematics
+- m1c2 Dynamics of a Particle
+- m1c3 Forces & Equilibrium
+- m1c4 Moments
+- m1c5 Work, Energy & Power
+- m1c6 Impulse & Momentum
+- m1c7 Projectile Motion
 
 **通用 M1 规则**（暂行）：
 - g 取 9.8 m/s²（IAL 标准）

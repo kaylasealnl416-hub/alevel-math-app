@@ -302,3 +302,47 @@ const ANTHROPIC_API_KEY = "sk-ant-xxx" // 暴露在前端代码中
 **文档结束**
 
 **下一步**：执行部署计划
+
+---
+
+# ADR-002：chapter_id 命名规范化（2026-05-05）
+
+**决策日期**：2026-05-05
+**决策状态**：✅ 已执行并验证
+**详细记录**：[docs/session-2026-05-05.md](../docs/session-2026-05-05.md)
+
+## 背景
+
+2026-03-18 commit `4a25e1f` 引入 `seed-mathematics.js` 用 `math_` 前缀的 chapter_id 系统，但**只在该单一文件落地，从未被前端 / 其它后端配置 / wiki 文档接受**——形成"半截迁移"留下的孤儿空壳：mathematics 47 个 chapter_id 同时存在 36 对重复（旧版有数据 + math_ 版空壳）+ 11 个孤立 math_ 空壳。
+
+调查暴露**根本原因**：CLAUDE.md 第 7 行声明 "Politics 已修复 p → pol"，**但 DB 从未真正迁移**——politics 仍占 `p_` 前缀，跟 mathematics 的 P1 Ch1 等冲突。Sonnet 4.6 看到冲突给 mathematics 加 `math_` 前缀绕开，但只补了一头，没修 politics。
+
+## 决策内容
+
+**完整对齐 CLAUDE.md 第 7 行学科前缀表，不引入额外前缀系统**：
+
+| 学科 | chapter_id 前缀 |
+|---|---|
+| Mathematics | `p` / `s` / `m`（如 `p1c3` / `s1c4` / `m1c1`） |
+| Economics | `e`（如 `e1c1`） |
+| **Politics** | **`pol`**（从 `p_` 迁移） |
+| History / Psychology / Further Math | 按 CLAUDE.md 表 |
+
+**新增数据完整性约束**：`chapters_unit_num_unique UNIQUE (unit_id, num)`，防止类似半截迁移留下重复记录复发。
+
+## 备选方案及驳回理由
+
+- **保留 math_ 前缀方案**：需迁移 273 道 mathematics 题 FK + 改前端 curriculum.js / data-import / topicChapterMap / wiki 多份文件。**驳回原因**：90% 项目代码已用纯前缀，反向迁移代价大；且不解决 politics 违规问题。
+- **不动 politics、mathematics 内部混用 ID 系统**（11 章用 math_ + 36 章用纯前缀）：**驳回原因**：mathematics 内部前缀不统一，将来出题、查询、维护都需特殊判断；治标不治本。
+
+## 执行成果
+
+- **DB**：87 politics questions FK + 1 progress + 4 sets + 11 chapters → `pol_` 前缀；mathematics 36 空壳删除 + 11 孤立 RENAME；加唯一约束。事务保护、零数据丢失。
+- **代码**：14 文件同步（前端 / 后端 / skill 文档）
+- **数据**：mathematics 273 题 + economics 120 题 + politics 87 题，**0 道题内容变化**
+
+## 影响
+
+- ✅ Mathematics 前端 P1 Ch1/Ch2、P2 Ch1-Ch3、P3 Ch1-Ch3、P4 Ch1-Ch3 共 11 章，过去访问会拿到 politics 内容的潜在 bug，**顺手修复**
+- ✅ Politics 学科继续完全可用（87 题 / 18 user_answers / 31 exam_question_results 全部保留）
+- ✅ 唯一约束防复发——将来谁手抖再 INSERT 重复章节会被 DB 立即拒绝

@@ -7,7 +7,7 @@
 ## Step 1：解析用户输入
 
 用户可能说：
-- "给 math_p1c3 出 5 道难度 4 的题" — 信息全，直接进 Step 2
+- "给 p1c3 出 5 道难度 4 的题" — 信息全，直接进 Step 2
 - "P1 第 3 章出 5 道高阶题" — 需 list-chapters 确认 ID
 - "出一份 P1 完整模拟卷" — 整单元，按 docs/exam-specs/WMA11-P1.md 的 75 分卷结构出
 - "Econ Unit 1 来一套" — 整单元，按 WEC11-U1.md 的 80 分卷结构
@@ -30,15 +30,15 @@ bun scripts/question-seeder/list-chapters.mjs mathematics
 📚 数学  (id: mathematics)
 
 📖 Pure Mathematics 1  (unit_id: mathematics_P1)
-   math_p1c1              | Ch1 Algebraic Expressions
-   math_p1c2              | Ch2 Quadratics
-   math_p1c3              | Ch3 Equations & Inequalities
+   p1c1              | Ch1 Algebraic Expressions
+   p1c2              | Ch2 Quadratics
+   p1c3              | Ch3 Equations & Inequalities
    ...
 ```
 
 **复制实际 ID 进 Step 4 prompt**，绝不靠记忆拼。
 
-如果用户给的是逻辑名（"P1 第 3 章"），主代理需自行映射到 `math_p1c3`。
+如果用户给的是逻辑名（"P1 第 3 章"），主代理需自行映射到 `p1c3`。
 
 ---
 
@@ -57,7 +57,7 @@ prompt:
 你是一名 Pearson Edexcel International A Level 资深出题人。请为 alevel-math-app 项目出 {N} 道符合 IAL 标准的题目。
 
 【目标章节】
-- chapter_id: {math_p1c3}
+- chapter_id: {p1c3}
 - 章节标题: Equations & Inequalities
 - 单元: WMA11/01 Pure Mathematics P1
 
@@ -84,7 +84,7 @@ prompt:
 严格的 JSON 数组（不要 markdown 包裹），每个元素结构如下：
 
 {
-  "chapterId": "math_p1c3",
+  "chapterId": "p1c3",
   "type": "calculation",
   "difficulty": 4,
   "content": {
@@ -165,12 +165,12 @@ JSON 数组（结构同输入，但已修正），加一个顶层字段说明你
 ```
 我用出题代理 + 审阅代理生成了 5 道题（审阅代理修正了 1 道）：
 
-【1】math_p1c3 · 难度4 · calculation · ~8min
+【1】p1c3 · 难度4 · calculation · ~8min
    题面：解联立方程 2x+y=7 与 x²-y=1
    答案：(x,y)=(2,3) 或 (-3,13)
    覆盖：联立方程 + 二次方程
 
-【2】math_p1c3 · 难度4 · calculation · ~8min
+【2】p1c3 · 难度4 · calculation · ~8min
    题面：求 |2x-3| < 5 的解集
    答案：x ∈ (-1, 4)
    覆盖：模不等式
@@ -224,7 +224,7 @@ rm D:/CodeProjects/alevel-math-app/backend/scripts/question-seeder/_pending/<YYY
 给用户一句话：
 
 ```
-✅ 5 道题已发布到 DB（章节 math_p1c3）。ID: [124, 125, 126, 127, 128]。前端立即可见。
+✅ 5 道题已发布到 DB（章节 p1c3）。ID: [124, 125, 126, 127, 128]。前端立即可见。
 ```
 
 ---

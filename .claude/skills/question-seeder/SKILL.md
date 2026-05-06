@@ -1,11 +1,29 @@
 ---
 name: question-seeder
-description: 为 alevel-math-app 项目按 Pearson Edexcel International A Level (IAL) 官方标准批量出题并入库。当用户要求出题、生成题目、给某章节出 N 道题、造模拟卷、补题、扩充题库时务必触发；当用户提到 chapter_id（如 math_p1c3、e1c2、e3c1）、学科（Mathematics、Economics、Further Math、History、Psychology、Politics）、单元（P1、P2、Unit1、Unit2）、考试代码（WMA11、WEC11 等）时也务必触发。覆盖出题→独立审阅→预览确权→入库→发布全流程。题目必须符合 IAL 真题题型、mark scheme 规范、倒推法（answer-first design）。也可通过 /seed-questions 命令显式调用。这个 skill 替代了已废弃的 AI 出题 API（backend/src/routes/questions.js 的 /generate 端点已停用），是 alevel-math-app 唯一合规的出题路径。
+description: 为 alevel-math-app 项目按 Pearson Edexcel International A Level (IAL) 官方标准批量出题并入库。当用户要求出题、生成题目、给某章节出 N 道题、造模拟卷、补题、扩充题库时务必触发；当用户提到 chapter_id（如 p1c3、e1c2、e3c1）、学科（Mathematics、Economics、Further Math、History、Psychology、Politics）、单元（P1、P2、Unit1、Unit2）、考试代码（WMA11、WEC11 等）时也务必触发。覆盖出题→独立审阅→预览确权→入库→发布全流程。题目必须符合 IAL 真题题型、mark scheme 规范、倒推法（answer-first design）。也可通过 /seed-questions 命令显式调用。这个 skill 替代了已废弃的 AI 出题 API（backend/src/routes/questions.js 的 /generate 端点已停用），是 alevel-math-app 唯一合规的出题路径。
 ---
 
 # Question Seeder — A-Level 出题 Skill
 
 为 `D:\CodeProjects\alevel-math-app` 批量出题并入库。所有题目必须符合 **Pearson Edexcel International A Level** 官方标准（题型、mark scheme、难度分布、倒推法）。
+
+---
+
+## 当前题库优先级（截至 2026-05-06）
+
+主用户 Kayla 当前最缺题的章节，建议主动触发出题时优先：
+
+| 学科 | 单元 | 现状 | 优先级 |
+|---|---|---|---|
+| Math | P3 (`p3c1`-`p3c8`) | 15 题，c1-c3 全空 | 🎯🎯🎯 高 |
+| Math | P4 (`p4c1`-`p4c8`) | 12 题，c1-c4 几乎全空 | 🎯🎯🎯 高 |
+| Math | M1 (`m1c1`-`m1c7`) | 12 题，c3/c6/c7 全空 | 🎯🎯🎯 高 |
+| Econ | U3 (`e3c1`-`e3c5`) | **0 题** | 🎯🎯🎯 高 |
+| Econ | U4 (`e4c1`-`e4c6`) | **0 题** | 🎯🎯🎯 高 |
+| Math | P1/P2/S1 | 234 题已就绪 | ✅ 暂不需补 |
+| Econ | U1/U2 | 120 题已就绪 | ✅ 暂不需补 |
+
+如果用户笼统说"出题"未指定章节，先用 `bun scripts/db-cleanup/inventory.mjs` 查实时现状（这个表可能过时），再建议从最缺的章节开始。
 
 ---
 
@@ -30,7 +48,7 @@ description: 为 alevel-math-app 项目按 Pearson Edexcel International A Level
 
 提取四要素：
 - **学科**：mathematics / economics / further-math / history / psychology / politics
-- **chapter_id 范围**：可能是单章（`math_p1c3`）、多章（`math_p1c3,math_p1c4`）、整单元（`P1`→自动展开到该单元所有章节）、整学科（`mathematics`→劝阻，太多）
+- **chapter_id 范围**：可能是单章（`p1c3`）、多章（`p1c3,p1c4`）、整单元（`P1`→自动展开到该单元所有章节）、整学科（`mathematics`→劝阻，太多）
 - **题数**：每章节多少题
 - **难度**：1-5 数字范围（用户可能说"高阶"=4-5，"基础"=1-2，"中等"=3）
 
@@ -42,7 +60,7 @@ description: 为 alevel-math-app 项目按 Pearson Edexcel International A Level
 cd D:/CodeProjects/alevel-math-app/backend && bun scripts/question-seeder/list-chapters.mjs <subjectId>
 ```
 
-⚠️ **chapter_id 实际格式与 4 月设计文档不同**——见 `references/chapter-id-map.md`。Mathematics 用 `math_p1c3`（带 `math_` 前缀），其他学科可能直接 `e1c1`。**绝不能凭直觉拼 ID**，必须从 list-chapters 输出里复制。
+⚠️ **chapter_id 必须从 list-chapters 输出里复制**——别凭记忆拼。规范：mathematics 用 `p`/`s`/`m` 前缀（如 `p1c3` / `s1c4` / `m1c1`），economics 用 `e`（如 `e1c1`），politics 用 `pol`（2026-05-05 从 `p_` 迁过来）。详见 `references/chapter-id-map.md`。
 
 ### Step 3：读对应学科出题规则
 
@@ -130,7 +148,7 @@ cd D:/CodeProjects/alevel-math-app/backend && bun scripts/question-seeder/publis
 
 - **`references/workflow.md`** — 详细工作流模板（含 Agent prompt 模板）
 - **`references/db-schema.md`** — questions 表字段速查 + JSON 结构样例
-- **`references/chapter-id-map.md`** — 6 学科 chapter_id 实际格式（含 math_ 前缀坑）
+- **`references/chapter-id-map.md`** — 6 学科 chapter_id 实际格式（2026-05-05 数据卫生整改后的最新规范）
 - **`references/mathematics-rules.md`** — Math 出题规则（含 P1-P4/S1/M1）
 - **`references/economics-rules.md`** — Econ 出题规则（含 Unit 1-4）
 - **`templates/question-batch.example.json`** — 题目 JSON 模板范例
@@ -146,7 +164,7 @@ cd D:/CodeProjects/alevel-math-app/backend && bun scripts/question-seeder/publis
 
 ## 四、铁律（违反会导致严重 bug）
 
-1. **chapter_id 必须从 list-chapters 输出复制**，不能凭记忆拼。`p1c3` ≠ `math_p1c3`。
+1. **chapter_id 必须从 list-chapters 输出复制**，不能凭记忆拼。绝不要使用废弃的 `math_` 前缀（2026-05-05 已清理）。
 2. **content/answer 必须填中英 + LaTeX 三字段**：`{ zh: "...", en: "...", latex: "..." }`。前端 KaTeX 渲染依赖 latex 字段。
 3. **倒推法（answer-first design）是硬性铁律**：先定整数/简分答案，再反推参数。这是 Edexcel 真题的隐形规律。
 4. **入库默认 status: 'reviewed'**，绝不直接 `'published'`。错题污染线上题库是 TODO(0) 级别（备考用户 Kayla 会受影响）。

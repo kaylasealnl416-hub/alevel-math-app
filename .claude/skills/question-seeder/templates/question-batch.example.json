@@ -5,7 +5,7 @@
   "_default_status": "reviewed (脚本默认，绝不要直接给 published)",
   "questions": [
     {
-      "chapterId": "math_p1c3",
+      "chapterId": "p1c3",
       "type": "calculation",
       "difficulty": 4,
       "content": {

@@ -22,7 +22,7 @@
 
 ```json
 {
-  "chapterId": "math_p1c3",
+  "chapterId": "p1c3",
   "type": "calculation",
   "difficulty": 4,
   "content": {

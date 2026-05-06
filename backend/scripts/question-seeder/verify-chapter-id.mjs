@@ -27,7 +27,7 @@ for (const c of found) {
 if (missing.length > 0) {
   console.log(`\n❌ 未找到 ${missing.length} 个：`)
   for (const id of missing) console.log(`  ✗ ${id}`)
-  console.log('\n可能原因：前缀写错。mathematics 实际用 math_p1c3 / math_s1c4 等带前缀格式；economics 用 e1c1。')
+  console.log('\n可能原因：前缀写错。mathematics 用 p/s/m 前缀（如 p1c3 / s1c4 / m1c1）；economics 用 e（如 e1c1）；politics 用 pol（如 pol1c1）。')
   console.log('用 list-chapters.mjs 查真实 ID。')
   await closeConnection()
   process.exit(1)
