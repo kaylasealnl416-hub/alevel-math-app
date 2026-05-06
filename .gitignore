@@ -1,5 +1,11 @@
 # ===== Claude Code =====
-.claude/
+# 默认排除整个 .claude/，再用 ! 例外放行项目级 skill / commands（团队共享资产）
+.claude/*
+!.claude/skills/
+!.claude/commands/
+# 第三方 skill 软链（指向本机 42plugin 缓存）不入仓——团队成员可自行安装
+.claude/skills/code-review-pro/
+.claude/skills/dev-init/
 
 # ===== Bun & Node.js =====
 node_modules/

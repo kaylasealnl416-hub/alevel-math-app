@@ -1,0 +1,57 @@
+{
+  "_doc": "题目批次入库 JSON 模板。可作为顶层数组直接传给 insert-questions.mjs，也可包在 { questions: [...] } 里。",
+  "_required_fields": ["chapterId", "type", "difficulty", "content", "answer"],
+  "_optional_fields": ["options", "explanation", "tags", "source", "estimatedTime", "status"],
+  "_default_status": "reviewed (脚本默认，绝不要直接给 published)",
+  "questions": [
+    {
+      "chapterId": "math_p1c3",
+      "type": "calculation",
+      "difficulty": 4,
+      "content": {
+        "zh": "解联立方程 $2x + y = 7$ 与 $x^2 - y = 1$。",
+        "en": "Solve the simultaneous equations $2x + y = 7$ and $x^2 - y = 1$.",
+        "latex": "\\begin{cases} 2x + y = 7 \\\\ x^2 - y = 1 \\end{cases}"
+      },
+      "options": null,
+      "answer": {
+        "value": "(2, 3) 或 (-3, 13)",
+        "latex": "(x, y) = (2, 3) \\text{ 或 } (-3, 13)",
+        "explanation": "由式①得 y=7-2x，代入式②化简得 x²+2x-8=0，因式分解 (x-2)(x+3)=0。"
+      },
+      "explanation": {
+        "zh": "Step 1：由 $2x+y=7$ 得 $y = 7 - 2x$\nStep 2：代入 $x^2 - y = 1$ 得 $x^2 - (7-2x) = 1$\nStep 3：化简 $x^2 + 2x - 8 = 0$\nStep 4：因式分解 $(x-2)(x+3) = 0$，所以 $x = 2$ 或 $x = -3$\nStep 5：代回得 $(2, 3)$ 和 $(-3, 13)$",
+        "en": "Step 1: From $2x+y=7$, $y = 7 - 2x$\nStep 2: Substitute into $x^2 - y = 1$: $x^2 - (7-2x) = 1$\nStep 3: Simplify: $x^2 + 2x - 8 = 0$\nStep 4: Factor: $(x-2)(x+3) = 0$, so $x = 2$ or $x = -3$\nStep 5: Back-substitute to get $(2, 3)$ and $(-3, 13)$"
+      },
+      "tags": ["联立方程", "二次方程", "代入消元法"],
+      "estimatedTime": 480
+    },
+    {
+      "chapterId": "e1c2",
+      "type": "multiple_choice",
+      "difficulty": 2,
+      "content": {
+        "zh": "2024 年 4 月，英国苹果价格上涨 10%，需求量下降 5%。该商品的需求价格弹性 (PED) 是：",
+        "en": "In April 2024, UK apple prices rose by 10% and quantity demanded fell by 5%. The PED is:",
+        "latex": ""
+      },
+      "options": [
+        "A. -0.5（缺乏弹性）",
+        "B. -2.0（富有弹性）",
+        "C. 0.5（缺乏弹性，符号错误）",
+        "D. -0.05（计算错误，未除百分比）"
+      ],
+      "answer": {
+        "value": "A",
+        "latex": "PED = \\frac{-5\\%}{+10\\%} = -0.5",
+        "explanation": "PED = % ΔQd / % ΔP = -5/10 = -0.5，绝对值 0.5 < 1，缺乏弹性。"
+      },
+      "explanation": {
+        "zh": "需求价格弹性公式：PED = 需求量变化百分比 ÷ 价格变化百分比 = -5% / 10% = -0.5。负号表示价格与需求量反向变动（符合需求定律），绝对值 0.5 < 1 属于缺乏弹性 (inelastic)。\n\n排除项：B 错在量级；C 错在丢失负号；D 错在小数点。",
+        "en": "PED formula: % change in Qd / % change in P = -5% / 10% = -0.5. Negative sign reflects inverse relationship; |PED| = 0.5 < 1 indicates inelastic demand."
+      },
+      "tags": ["需求价格弹性", "PED", "弹性分类"],
+      "estimatedTime": 90
+    }
+  ]
+}
