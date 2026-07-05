@@ -57,7 +57,7 @@ export default function MockExamView({ nav, t, lang, subject = "mathematics", qu
     setLoading(true);
 
     try {
-      const bookData = dataSource[paper.paper.replace(/[12]$/, "")] || dataSource[Object.keys(dataSource)[0]];
+      const bookData = dataSource[paper.paper] || dataSource[paper.paper.replace(/[12]$/, "")] || dataSource[Object.keys(dataSource)[0]];
       const chapterIds = bookData ? bookData.chapters.map(c => c.id) : [];
 
       if (chapterIds.length === 0) {
@@ -247,14 +247,14 @@ export default function MockExamView({ nav, t, lang, subject = "mathematics", qu
   const fmt = (s) => `${Math.floor(s / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
 
   // 根据学科动态生成试卷列表
-  const papers = isMath ? PAST_PAPERS : Object.keys(dataSource).map((unit, idx) => ({
-    year: 2024,
-    session: "May/Jun",
+  const papers = isMath ? PAST_PAPERS : Object.entries(dataSource).map(([unit, unitData]) => ({
+    year: new Date().getFullYear(),
+    session: unitData.exam?.availability || "Pearson IAL",
     paper: unit,
-    code: `WEC0${idx + 1}`,
-    duration: 90,
-    questions: 8,
-    desc: dataSource[unit]?.title?.en || dataSource[unit]?.title || unit
+    code: unitData.exam?.code || unit,
+    duration: unitData.exam?.duration || 90,
+    questions: unitData.exam?.marks >= 80 ? 10 : 8,
+    desc: unitData.title?.en || unitData.title || unit,
   }));
 
   // questionSetId 模式下的 select 阶段仅显示 loading

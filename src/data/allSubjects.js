@@ -48,5 +48,6 @@ export const SUBJECT_NAMES = {
   history: "History",
   politics: "Politics",
   psychology: "Psychology",
-  further_math: "Further Mathematics"
+  further_math: "Further Mathematics",
+  physics: "Physics"
 };

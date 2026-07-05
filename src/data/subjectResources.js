@@ -16,6 +16,11 @@ export const SUBJECT_RESOURCES = {
     { name: "Economics Online", desc: "Diagrams & explanations", url: "https://www.economicsonline.co.uk/" },
     { name: "Edexcel Economics", desc: "Official specification & past papers", url: "https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/economics-2018.html" },
   ],
+  physics: [
+    { name: "Pearson IAL Physics", desc: "Official specification, course materials and updates", url: "https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/physics-2018.html" },
+    { name: "Pearson Past Papers", desc: "Official past papers and mark schemes", url: "https://qualifications.pearson.com/en/support/support-topics/exams/past-papers.html?Qualification-Family=International-Advanced-Level&Qualification-Subject=Physics+%282018%29&Specification-Code=Pearson-UK%3ASpecification-Code%2Fial18-physics&Status=Pearson-UK%3AStatus%2FLive" },
+    { name: "Pearson Student Book Answers", desc: "Official answers for Pearson International A Level Physics books", url: "https://www.pearson.com/international-schools/international-a-level-answers.html" },
+  ],
   history: [
     { name: "Tutor2u", desc: "Revision notes & resources", url: "https://www.tutor2u.net/history" },
     { name: "History Learning Site", desc: "Notes & essays", url: "https://www.historylearningsite.co.uk/" },

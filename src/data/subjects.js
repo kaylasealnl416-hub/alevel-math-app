@@ -3,6 +3,8 @@
 // Economics data. Mathematics data is in CURRICULUM (original file).
 // ============================================================
 
+import { PHYSICS_SUBJECT } from "./physicsSubject.js";
+
 export const SUBJECTS = {
   economics: {
     id: "economics",
@@ -5485,7 +5487,8 @@ export const SUBJECTS = {
         ]
       }
     }
-  }
+  },
+  physics: PHYSICS_SUBJECT
 };
 
 export default SUBJECTS;

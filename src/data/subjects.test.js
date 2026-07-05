@@ -50,6 +50,22 @@ describe('Subject Data Validation', () => {
   it('should have expected subjects', () => {
     const subjectIds = Object.keys(SUBJECTS)
     expect(subjectIds).toContain('economics')
+    expect(subjectIds).toContain('physics')
+  })
+
+  it('physics should cover all Pearson IAL units', () => {
+    const physics = SUBJECTS.physics
+    expect(physics).toBeDefined()
+    expect(Object.keys(physics.books)).toEqual(['Unit1', 'Unit2', 'Unit3', 'Unit4', 'Unit5', 'Unit6'])
+
+    const expectedCodes = ['WPH11/01', 'WPH12/01', 'WPH13/01', 'WPH14/01', 'WPH15/01', 'WPH16/01']
+    Object.values(physics.books).forEach((unit, index) => {
+      expect(unit.exam.code).toBe(expectedCodes[index])
+      expect(unit.chapters.length).toBeGreaterThan(0)
+      unit.chapters.forEach(chapter => {
+        expect(chapter.id.startsWith('phy')).toBe(true)
+      })
+    })
   })
 })
 

@@ -9,6 +9,7 @@ import { put } from '../utils/apiClient'
 const ALL_SUBJECTS = [
   { id: 'mathematics', label: 'Mathematics', icon: '📐' },
   { id: 'economics', label: 'Economics', icon: '📊' },
+  { id: 'physics', label: 'Physics', icon: '⚛️' },
   { id: 'history', label: 'History', icon: '📜' },
   { id: 'politics', label: 'Politics', icon: '🏛️' },
   { id: 'psychology', label: 'Psychology', icon: '🧠' },

@@ -52,6 +52,7 @@ export default function CurriculumView({ nav, t, lang, subject = "mathematics", 
     S1: "WST01", M1: "WME01",
     Unit1: "WEC11", Unit2: "WEC12", Unit3: "WEC13", Unit4: "WEC14",
   };
+  const bookCode = book.exam?.code || BOOK_CODES[activeBook];
 
   // AI tutor intro per subject
   const AI_INTROS = {
@@ -107,14 +108,14 @@ export default function CurriculumView({ nav, t, lang, subject = "mathematics", 
                   <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, color: "#F8FAFC", fontFamily: "inherit" }}>
                     {getBookTitle(book)}
                   </h1>
-                  {BOOK_CODES[activeBook] && (
+                  {bookCode && (
                     <span style={{
                       padding: "2px 9px", borderRadius: 5,
                       background: "rgba(255,255,255,0.08)",
                       border: "1px solid rgba(255,255,255,0.14)",
                       fontSize: 12, fontWeight: 600, color: "#94A3B8",
                     }}>
-                      {BOOK_CODES[activeBook]}
+                      {bookCode}
                     </span>
                   )}
                 </div>

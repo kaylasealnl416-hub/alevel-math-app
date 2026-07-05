@@ -153,6 +153,7 @@ function SubjectsView({ nav, lang }) {
             else if (id.startsWith('psy')) subjectId = 'psychology';
             else if (id.startsWith('fm') || id.startsWith('fs') || id.startsWith('fmech')) subjectId = 'further-math';
             else if (id.startsWith('e')) subjectId = 'economics';
+            else if (id.startsWith('phy')) subjectId = 'physics';
             else if (id.startsWith('h')) subjectId = 'history';
             map[subjectId] = (map[subjectId] || 0) + 1;
           }
