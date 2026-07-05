@@ -5,6 +5,26 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/subjects",
+      "destination": "/subjects.html"
+    },
+    {
+      "source": "/subjects/:subject",
+      "destination": "/subjects/:subject.html"
+    },
+    {
+      "source": "/subjects/:subject/:unit",
+      "destination": "/subjects/:subject/:unit.html"
+    },
+    {
+      "source": "/subjects/:subject/:unit/:chapter",
+      "destination": "/subjects/:subject/:unit/:chapter.html"
+    },
+    {
+      "source": "/resources/past-papers",
+      "destination": "/resources/past-papers.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

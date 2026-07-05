@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">A-Level Hub</title>
+  <desc id="desc">Pearson Edexcel International A-Level study platform</desc>
+  <rect width="1200" height="630" fill="#f8f9fa" />
+  <circle cx="1040" cy="80" r="220" fill="#dbeafe" />
+  <circle cx="120" cy="540" r="180" fill="#e8f0fe" />
+  <rect x="96" y="96" width="1008" height="438" rx="40" fill="#202124" />
+  <text x="150" y="238" fill="#ffffff" font-family="Georgia, serif" font-size="76" font-weight="700">A-Level Hub</text>
+  <text x="150" y="315" fill="#93c5fd" font-family="Arial, sans-serif" font-size="38" font-weight="700">Pearson Edexcel IAL study platform</text>
+  <text x="150" y="386" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="30">Mathematics · Physics · Economics</text>
+  <text x="150" y="448" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="26">Syllabus guides, worked examples, videos and past paper links</text>
+</svg>

@@ -24,6 +24,8 @@ const WrongQuestionsPage = lazy(() => import('./components/WrongQuestionsPage.js
 const PracticePage = lazy(() => import('./components/PracticePage.jsx'))
 const QuestionUploadPage = lazy(() => import('./components/QuestionUploadPage.jsx'))
 const PastPapersPage = lazy(() => import('./components/PastPapersPage.jsx'))
+const SeoPageRouter = lazy(() => import('./components/seo/SeoPages.jsx'))
+const PastPapersDirectoryPage = lazy(() => import('./components/seo/SeoPages.jsx').then(module => ({ default: module.PastPapersDirectoryPage })))
 // ChatPage 已移除（对话辅导功能停用）
 
 // Minimal loading fallback
@@ -51,6 +53,13 @@ export default function AppRouter() {
               <Route element={<Layout />}>
                 {/* Main app */}
                 <Route path="/" element={<ALevelMathApp />} />
+
+                {/* Public SEO landing pages */}
+                <Route path="/subjects" element={<SeoPageRouter />} />
+                <Route path="/subjects/:subjectSlug" element={<SeoPageRouter />} />
+                <Route path="/subjects/:subjectSlug/:unitSlug" element={<SeoPageRouter />} />
+                <Route path="/subjects/:subjectSlug/:unitSlug/:chapterSlug" element={<SeoPageRouter />} />
+                <Route path="/resources/past-papers" element={<PastPapersDirectoryPage />} />
 
                 {/* Auth pages */}
                 <Route path="/login" element={<AuthPage />} />
