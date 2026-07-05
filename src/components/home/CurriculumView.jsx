@@ -196,6 +196,8 @@ export default function CurriculumView({ nav, t, lang, subject = "mathematics", 
                     boxShadow: isOpen ? `0 2px 12px ${bookColor}12` : "none",
                     transition: "border-color 0.2s, box-shadow 0.2s",
                     overflow: "hidden",
+                    position: "relative",
+                    zIndex: isOpen ? 2 : 1,
                   }}
                 >
                   {/* Chapter header row */}
@@ -254,9 +256,7 @@ export default function CurriculumView({ nav, t, lang, subject = "mathematics", 
 
                   {/* Expanded content */}
                   <div style={{
-                    display: "grid",
-                    gridTemplateRows: isOpen ? "1fr" : "0fr",
-                    transition: "grid-template-rows 0.3s ease",
+                    display: isOpen ? "block" : "none",
                     background: "#F8FAFC",
                     borderTop: isOpen ? `1px solid ${bookColor}18` : "1px solid transparent",
                   }}>
@@ -273,6 +273,8 @@ export default function CurriculumView({ nav, t, lang, subject = "mathematics", 
                             border: "none", borderRadius: 7,
                             fontSize: 13, fontWeight: 600,
                             cursor: "pointer",
+                            position: "relative",
+                            zIndex: 3,
                             transition: "opacity 0.15s",
                           }}
                           onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}

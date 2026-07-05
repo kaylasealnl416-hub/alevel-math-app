@@ -41,6 +41,39 @@ export const PAST_PAPERS = [
   { year: 2021, session: "May/Jun", paper: "P1", code:"WMA11", duration: 90, questions: 11, desc: "Pure Mathematics 1" },
 ];
 
+const PEARSON_IAL_PHYSICS_PAST_PAPER_BASE_URL = "https://qualifications.pearson.com/en/support/support-topics/exams/past-papers.html?Qualification-Family=International-Advanced-Level&Qualification-Subject=Physics+%282018%29&Specification-Code=Pearson-UK%3ASpecification-Code%2Fial18-physics&Status=Pearson-UK%3AStatus%2FLive";
+
+const PHYSICS_PAPER_UNITS = [
+  { paper: "Unit1", code: "WPH11/01", duration: 90, questions: 10, marks: 80, desc: "Mechanics and Materials" },
+  { paper: "Unit2", code: "WPH12/01", duration: 90, questions: 10, marks: 80, desc: "Waves and Electricity" },
+  { paper: "Unit3", code: "WPH13/01", duration: 80, questions: 8, marks: 50, desc: "Practical Skills in Physics I" },
+  { paper: "Unit4", code: "WPH14/01", duration: 105, questions: 10, marks: 90, desc: "Further Mechanics, Fields and Particles" },
+  { paper: "Unit5", code: "WPH15/01", duration: 105, questions: 10, marks: 90, desc: "Thermodynamics, Radiation, Oscillations and Cosmology" },
+  { paper: "Unit6", code: "WPH16/01", duration: 80, questions: 8, marks: 50, desc: "Practical Skills in Physics II" },
+];
+
+const PHYSICS_PAST_PAPER_SERIES = [
+  { year: 2024, session: "Jan", examSeries: "January-2024" },
+  { year: 2024, session: "May/Jun", examSeries: "June-2024" },
+  { year: 2024, session: "Oct", examSeries: "October-2024" },
+];
+
+export const PHYSICS_PAST_PAPERS = PHYSICS_PAST_PAPER_SERIES.flatMap(series =>
+  PHYSICS_PAPER_UNITS.map(unit => ({
+    ...series,
+    ...unit,
+    subject: "physics",
+    source: "Pearson",
+    sourceUrl: `${PEARSON_IAL_PHYSICS_PAST_PAPER_BASE_URL}&Exam-Series=${series.examSeries}`,
+    availabilityNote: "Official Pearson past paper search. Recent locked papers must remain linked, not mirrored.",
+  }))
+);
+
+export const PAST_PAPERS_BY_SUBJECT = {
+  mathematics: PAST_PAPERS,
+  physics: PHYSICS_PAST_PAPERS,
+};
+
 // Subject name mapping (shared by MockExamView and WrongQuestionsPage)
 export const SUBJECT_NAMES = {
   mathematics: "Mathematics",

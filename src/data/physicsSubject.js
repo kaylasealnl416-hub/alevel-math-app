@@ -1,8 +1,233 @@
+const PHYSICS_WORKED_EXAMPLES = {
+  phy1c1: [
+    {
+      question: { en: "A trolley starts from rest and accelerates uniformly at 2.4 m s^-2 for 5.0 s. Find its final velocity and displacement." },
+      answer: { en: "Use v = u + at = 0 + 2.4 x 5.0 = 12 m s^-1. Then s = ut + 1/2 at^2 = 0 + 0.5 x 2.4 x 5.0^2 = 30 m. Final velocity = 12 m s^-1; displacement = 30 m." },
+    },
+  ],
+  phy1c2: [
+    {
+      question: { en: "A 40 N force acts 35 degrees above the horizontal. Calculate its horizontal and vertical components." },
+      answer: { en: "Resolve using perpendicular components. Horizontal component = 40 cos 35 = 32.8 N. Vertical component = 40 sin 35 = 22.9 N. Quote components with directions, not just magnitudes." },
+    },
+  ],
+  phy1c3: [
+    {
+      question: { en: "A 0.20 kg trolley moving at 6.0 m s^-1 collides with a stationary 0.30 kg trolley and they stick together. Find their common velocity." },
+      answer: { en: "Momentum before = 0.20 x 6.0 + 0.30 x 0 = 1.2 kg m s^-1. Combined mass = 0.50 kg. Conservation of momentum gives v = 1.2 / 0.50 = 2.4 m s^-1 in the original direction." },
+    },
+  ],
+  phy1c4: [
+    {
+      question: { en: "A 60 kg student climbs 4.5 m in 12 s. Estimate the useful power output, taking g = 9.81 N kg^-1." },
+      answer: { en: "Gain in gravitational potential energy = mgh = 60 x 9.81 x 4.5 = 2649 J. Power = energy / time = 2649 / 12 = 221 W. The useful power output is about 220 W." },
+    },
+  ],
+  phy1c5: [
+    {
+      question: { en: "A block of volume 3.0 x 10^-4 m^3 is fully submerged in water. Calculate the upthrust and the resultant force if its weight is 3.6 N." },
+      answer: { en: "Upthrust = weight of displaced water = rho V g = 1000 x 3.0 x 10^-4 x 9.81 = 2.94 N. Resultant force = 3.6 - 2.94 = 0.66 N downward." },
+    },
+  ],
+  phy1c6: [
+    {
+      question: { en: "A wire of length 1.5 m and diameter 0.50 mm extends by 1.2 mm when a 20 N load is added. Estimate the Young modulus." },
+      answer: { en: "Area = pi(0.25 x 10^-3)^2 = 1.96 x 10^-7 m^2. Stress = 20 / area = 1.02 x 10^8 Pa. Strain = 1.2 x 10^-3 / 1.5 = 8.0 x 10^-4. Young modulus = stress / strain = 1.27 x 10^11 Pa." },
+    },
+  ],
+  phy2c1: [
+    {
+      question: { en: "A sound wave has frequency 500 Hz and wavelength 0.68 m. Calculate the wave speed." },
+      answer: { en: "Use v = f lambda. v = 500 x 0.68 = 340 m s^-1. Check that Hz is s^-1, so the units become m s^-1." },
+    },
+  ],
+  phy2c2: [
+    {
+      question: { en: "A string fixed at both ends has length 0.80 m and vibrates in its fundamental mode at 120 Hz. Find the wave speed." },
+      answer: { en: "For the fundamental mode, L = lambda / 2, so lambda = 2L = 1.60 m. Wave speed v = f lambda = 120 x 1.60 = 192 m s^-1." },
+    },
+  ],
+  phy2c3: [
+    {
+      question: { en: "Light forms a first-order maximum at 20 degrees using a grating with 600 lines mm^-1. Estimate the wavelength." },
+      answer: { en: "Grating spacing d = 1 / (600 x 10^3) = 1.67 x 10^-6 m. Using n lambda = d sin theta with n = 1 gives lambda = 1.67 x 10^-6 x sin 20 = 5.70 x 10^-7 m." },
+    },
+  ],
+  phy2c4: [
+    {
+      question: { en: "Photons of energy 4.0 eV strike a metal with work function 2.3 eV. Find the maximum kinetic energy of the emitted electrons in joules." },
+      answer: { en: "Maximum kinetic energy = photon energy - work function = 4.0 - 2.3 = 1.7 eV. Convert to joules: 1.7 x 1.60 x 10^-19 = 2.72 x 10^-19 J." },
+    },
+  ],
+  phy2c5: [
+    {
+      question: { en: "A charge of 2.4 C passes through a lamp in 0.80 s when the potential difference is 6.0 V. Calculate the current and power." },
+      answer: { en: "Current I = Q / t = 2.4 / 0.80 = 3.0 A. Power P = VI = 6.0 x 3.0 = 18 W." },
+    },
+  ],
+  phy2c6: [
+    {
+      question: { en: "A 2.0 m wire has resistance 12 ohm and diameter 0.40 mm. Calculate its resistivity." },
+      answer: { en: "Area A = pi(0.20 x 10^-3)^2 = 1.26 x 10^-7 m^2. Resistivity rho = RA / L = 12 x 1.26 x 10^-7 / 2.0 = 7.5 x 10^-7 ohm m." },
+    },
+  ],
+  phy3c1: [
+    {
+      question: { en: "Plan the variables for investigating how pendulum period depends on length." },
+      answer: { en: "Independent variable: pendulum length. Dependent variable: period, found by timing several oscillations and dividing by the number. Control variables: bob mass, release angle, timing method and pivot type. Use at least five lengths and repeat timings." },
+    },
+  ],
+  phy3c2: [
+    {
+      question: { en: "A micrometer gives diameter readings of 0.52 mm, 0.51 mm and 0.53 mm. State the mean diameter and a sensible reading uncertainty." },
+      answer: { en: "Mean diameter = (0.52 + 0.51 + 0.53) / 3 = 0.52 mm. With a 0.01 mm resolution micrometer and small scatter, a sensible reading uncertainty is about +/- 0.01 mm." },
+    },
+  ],
+  phy3c3: [
+    {
+      question: { en: "A length is 0.500 +/- 0.002 m and a time for 10 oscillations is 20.0 +/- 0.2 s. Calculate both percentage uncertainties." },
+      answer: { en: "Length percentage uncertainty = 0.002 / 0.500 x 100 = 0.40%. Time percentage uncertainty = 0.2 / 20.0 x 100 = 1.0%. The period T = t / 10 has the same percentage uncertainty as t." },
+    },
+  ],
+  phy3c4: [
+    {
+      question: { en: "A force-extension graph has best-fit gradient 25 N m^-1. What physical quantity does this represent for a spring?" },
+      answer: { en: "Hooke's law is F = kx. On a graph of F against x, the gradient equals k. Therefore the spring constant is 25 N m^-1." },
+    },
+  ],
+  phy3c5: [
+    {
+      question: { en: "In a falling-ball viscosity experiment, students time the ball by eye between two marks. Identify one limitation and one targeted improvement." },
+      answer: { en: "Limitation: reaction time creates a large uncertainty in the time interval, especially if the distance is short. Improvement: use light gates or video analysis, or increase the distance after terminal velocity has been reached." },
+    },
+  ],
+  phy3c6: [
+    {
+      question: { en: "In a Young modulus practical, a force-extension graph has gradient 1.0 x 10^4 N m^-1 for a wire of length 2.0 m and area 2.0 x 10^-7 m^2. Find E." },
+      answer: { en: "For a wire, E = stress / strain = (F/A) / (x/L) = (F/x)(L/A). The graph gradient is F/x, so E = 1.0 x 10^4 x 2.0 / (2.0 x 10^-7) = 1.0 x 10^11 Pa." },
+    },
+  ],
+  phy4c1: [
+    {
+      question: { en: "A 0.15 kg ball travelling at +20 m s^-1 rebounds at -15 m s^-1. Calculate the impulse on the ball." },
+      answer: { en: "Impulse = change in momentum = m(v - u) = 0.15(-15 - 20) = -5.25 N s. The negative sign shows the impulse acts opposite to the initial direction." },
+    },
+  ],
+  phy4c2: [
+    {
+      question: { en: "A 0.80 kg object moves in a horizontal circle of radius 0.50 m at 4.0 m s^-1. Find the centripetal force." },
+      answer: { en: "Use F = mv^2 / r. F = 0.80 x 4.0^2 / 0.50 = 25.6 N. The force is directed towards the centre of the circle." },
+    },
+  ],
+  phy4c3: [
+    {
+      question: { en: "Parallel plates have a potential difference of 1200 V and separation 0.040 m. Find the electric field strength and the force on a 2.0 microC charge." },
+      answer: { en: "E = V / d = 1200 / 0.040 = 3.0 x 10^4 N C^-1. Force F = EQ = 3.0 x 10^4 x 2.0 x 10^-6 = 0.060 N." },
+    },
+  ],
+  phy4c4: [
+    {
+      question: { en: "A 2200 microF capacitor discharges through a 4.7 kOhm resistor from 6.0 V. Estimate the voltage after 20 s." },
+      answer: { en: "Time constant RC = 4700 x 2200 x 10^-6 = 10.34 s. V = V0 e^(-t/RC) = 6.0 e^(-20/10.34) = 0.87 V, to two significant figures." },
+    },
+  ],
+  phy4c5: [
+    {
+      question: { en: "A 5.0 cm wire carries 3.0 A at right angles to a 0.18 T magnetic field. Calculate the magnetic force." },
+      answer: { en: "Use F = BIl sin theta. Since theta = 90 degrees, sin theta = 1. F = 0.18 x 3.0 x 0.050 = 0.027 N." },
+    },
+  ],
+  phy4c6: [
+    {
+      question: { en: "A nuclear reaction has mass defect 0.0050 u. Estimate the energy released in MeV using 1 u = 931.5 MeV c^-2." },
+      answer: { en: "Energy released = mass defect x 931.5 MeV = 0.0050 x 931.5 = 4.66 MeV. The mass decrease appears as released energy." },
+    },
+  ],
+  phy5c1: [
+    {
+      question: { en: "How much energy is needed to raise the temperature of 0.50 kg of water by 18 degrees C? Use c = 4200 J kg^-1 K^-1." },
+      answer: { en: "Use Delta E = mc Delta theta. Delta E = 0.50 x 4200 x 18 = 37,800 J, or 3.8 x 10^4 J to two significant figures." },
+    },
+  ],
+  phy5c2: [
+    {
+      question: { en: "A gas has pressure 1.2 x 10^5 Pa, volume 2.5 x 10^-3 m^3 and temperature 300 K. Estimate the number of molecules." },
+      answer: { en: "Use pV = NkT. N = pV / kT = (1.2 x 10^5 x 2.5 x 10^-3) / (1.38 x 10^-23 x 300) = 7.25 x 10^22 molecules." },
+    },
+  ],
+  phy5c3: [
+    {
+      question: { en: "The activity of a source falls from 800 Bq to 100 Bq in 18 h. Find the half-life." },
+      answer: { en: "800 to 400 is one half-life, 400 to 200 is two, and 200 to 100 is three. Three half-lives take 18 h, so one half-life is 18 / 3 = 6.0 h." },
+    },
+  ],
+  phy5c4: [
+    {
+      question: { en: "An oscillator has period 0.80 s and amplitude 0.040 m. Find its angular frequency and maximum acceleration." },
+      answer: { en: "Angular frequency omega = 2 pi / T = 2 pi / 0.80 = 7.85 rad s^-1. Maximum acceleration = omega^2 A = 7.85^2 x 0.040 = 2.47 m s^-2." },
+    },
+  ],
+  phy5c5: [
+    {
+      question: { en: "A driven oscillator shows a large peak in amplitude at 12 Hz. Explain what happens to the peak when damping is increased." },
+      answer: { en: "The 12 Hz peak is resonance, where driving frequency is close to natural frequency. Increasing damping reduces the maximum amplitude and makes the resonance curve broader, so energy is dissipated faster." },
+    },
+  ],
+  phy5c6: [
+    {
+      question: { en: "Estimate the orbital speed of a satellite at radius 7.0 x 10^6 m from Earth's centre. Use GM = 3.99 x 10^14 m^3 s^-2." },
+      answer: { en: "For a circular orbit, gravitational force provides centripetal force, giving v = sqrt(GM / r). v = sqrt(3.99 x 10^14 / 7.0 x 10^6) = 7.5 x 10^3 m s^-1." },
+    },
+  ],
+  phy5c7: [
+    {
+      question: { en: "A star has surface temperature 5800 K. Estimate the wavelength of peak emission using Wien's law." },
+      answer: { en: "Wien's law gives lambda_max T = 2.898 x 10^-3 m K. lambda_max = 2.898 x 10^-3 / 5800 = 5.0 x 10^-7 m, in the visible region." },
+    },
+  ],
+  phy6c1: [
+    {
+      question: { en: "Describe a graph-based plan to determine g using a simple pendulum." },
+      answer: { en: "Measure period T for several lengths L by timing many oscillations. Plot T^2 against L because T^2 = (4 pi^2 / g)L. The gradient equals 4 pi^2 / g, so g = 4 pi^2 / gradient." },
+    },
+  ],
+  phy6c2: [
+    {
+      question: { en: "A wire diameter is 0.50 +/- 0.01 mm. Estimate the percentage uncertainty in its cross-sectional area." },
+      answer: { en: "Percentage uncertainty in diameter = 0.01 / 0.50 x 100 = 2.0%. Since area is proportional to diameter squared, percentage uncertainty in area = 2 x 2.0% = 4.0%." },
+    },
+  ],
+  phy6c3: [
+    {
+      question: { en: "A capacitor discharge follows V = V0 e^(-t/RC). What graph should be plotted to determine RC?" },
+      answer: { en: "Take natural logs: ln V = ln V0 - t / RC. Plot ln V on the y-axis against t on the x-axis. The gradient is -1 / RC, so RC = -1 / gradient." },
+    },
+  ],
+  phy6c4: [
+    {
+      question: { en: "A micrometer has a positive zero error, so all measured wire diameters are too large if uncorrected. Explain the effect on calculated Young modulus." },
+      answer: { en: "If diameter is too large, calculated area is too large. Stress = F/A is then underestimated, while strain is unchanged. Therefore the calculated Young modulus is underestimated." },
+    },
+  ],
+  phy6c5: [
+    {
+      question: { en: "In a capacitor discharge practical, why is a graph of ln V against t better than using a single pair of readings?" },
+      answer: { en: "A graph uses all data points, reveals outliers and tests whether the relationship is exponential. The gradient gives -1/RC, so random error is reduced compared with relying on one voltage and one time." },
+    },
+  ],
+  phy6c6: [
+    {
+      question: { en: "Write the structure of a strong practical evaluation answer for a method with large timing uncertainty." },
+      answer: { en: "Give a limitation, its consequence and a targeted improvement: reaction time makes the measured time too uncertain; this increases percentage uncertainty in the calculated constant; use light gates or video timing to reduce timing uncertainty." },
+    },
+  ],
+}
+
 const chapter = (data) => ({
-  examples: [],
-  youtube: [],
-  videos: [],
   ...data,
+  examples: data.examples || PHYSICS_WORKED_EXAMPLES[data.id] || [],
+  youtube: data.youtube || [],
+  videos: data.videos || [],
 })
 
 export const PHYSICS_SUBJECT = {

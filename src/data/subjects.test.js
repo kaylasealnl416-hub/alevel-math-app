@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { SUBJECTS } from './subjects.js'
+import { PAST_PAPERS_BY_SUBJECT } from './allSubjects.js'
 
 // Data structure validation tests
 describe('Subject Data Validation', () => {
@@ -64,6 +65,42 @@ describe('Subject Data Validation', () => {
       expect(unit.chapters.length).toBeGreaterThan(0)
       unit.chapters.forEach(chapter => {
         expect(chapter.id.startsWith('phy')).toBe(true)
+      })
+    })
+  })
+
+  it('physics should include one English worked example for every chapter', () => {
+    const physics = SUBJECTS.physics
+    Object.values(physics.books).forEach(unit => {
+      unit.chapters.forEach(chapter => {
+        expect(chapter.examples?.length).toBeGreaterThanOrEqual(1)
+        chapter.examples.forEach(example => {
+          expect(example.question?.en).toBeTruthy()
+          expect(example.answer?.en).toBeTruthy()
+          expect(example.question.en).not.toMatch(/[\u4e00-\u9fff]/)
+          expect(example.answer.en).not.toMatch(/[\u4e00-\u9fff]/)
+        })
+      })
+    })
+  })
+
+  it('physics should expose official Pearson past paper metadata', () => {
+    const physicsPapers = PAST_PAPERS_BY_SUBJECT.physics
+    expect(physicsPapers).toHaveLength(18)
+
+    const expectedCodes = ['WPH11/01', 'WPH12/01', 'WPH13/01', 'WPH14/01', 'WPH15/01', 'WPH16/01']
+    const expectedSeries = ['January-2024', 'June-2024', 'October-2024']
+
+    expectedCodes.forEach(code => {
+      expect(physicsPapers.some(paper => paper.code === code)).toBe(true)
+    })
+    expectedSeries.forEach(series => {
+      const papersInSeries = physicsPapers.filter(paper => paper.examSeries === series)
+      expect(papersInSeries).toHaveLength(6)
+      papersInSeries.forEach(paper => {
+        expect(paper.source).toBe('Pearson')
+        expect(paper.sourceUrl).toContain('qualifications.pearson.com')
+        expect(paper.sourceUrl).toContain(`Exam-Series=${series}`)
       })
     })
   })

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { SUBJECTS } from "../../data/subjects.js";
 import { CURRICULUM } from "../../data/curriculum.js";
-import { PAST_PAPERS, SUBJECT_NAMES } from "../../data/allSubjects.js";
+import { PAST_PAPERS, PAST_PAPERS_BY_SUBJECT, SUBJECT_NAMES } from "../../data/allSubjects.js";
 import { styles } from "../../styles/homeStyles.js";
 import MathText from "../practice/MathText";
 import AnswerInput from "../AnswerInput.jsx";
@@ -247,7 +247,8 @@ export default function MockExamView({ nav, t, lang, subject = "mathematics", qu
   const fmt = (s) => `${Math.floor(s / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
 
   // 根据学科动态生成试卷列表
-  const papers = isMath ? PAST_PAPERS : Object.entries(dataSource).map(([unit, unitData]) => ({
+  const subjectPapers = PAST_PAPERS_BY_SUBJECT[subject] || [];
+  const papers = isMath ? PAST_PAPERS : subjectPapers.length > 0 ? subjectPapers : Object.entries(dataSource).map(([unit, unitData]) => ({
     year: new Date().getFullYear(),
     session: unitData.exam?.availability || "Pearson IAL",
     paper: unit,
@@ -306,6 +307,11 @@ export default function MockExamView({ nav, t, lang, subject = "mathematics", qu
               <div style={styles.paperSession}>{paper.session}</div>
               <div style={styles.paperPaper}>{paper.paper}</div>
               <div style={{ fontSize: 12, color: "#888888", marginBottom: 4 }}>{paper.desc}</div>
+              {paper.code && (
+                <div style={{ fontSize: 11, color: "#64748B", marginBottom: 4 }}>
+                  {paper.source ? `${paper.source} · ` : ""}{paper.code}
+                </div>
+              )}
               <div style={styles.paperMeta}>
                 <span>⏱️ {paper.duration} min</span>
                 <span>📝 {paper.questions} Qs</span>
