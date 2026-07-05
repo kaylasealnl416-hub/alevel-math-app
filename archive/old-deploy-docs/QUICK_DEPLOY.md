@@ -32,9 +32,9 @@
 3. **复制下面的内容，粘贴进去**：
 
 ```bash
-DATABASE_URL=postgresql://postgres.mozzqjeusrjuxycwpyld:MySecure%40Pass2026@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres
+DATABASE_URL=postgresql://postgres.<project-ref>:<password>@<region>.pooler.supabase.com:5432/postgres
 NODE_ENV=production
-JWT_SECRET=db4e6e64e16dcd80bee82ec4bdc4f6c63ab246df79436f9015d1ac0cfdfe3711
+JWT_SECRET=<generate-new-32-byte-jwt-secret>
 FRONTEND_URL=https://alevel-math-app.vercel.app
 ```
 

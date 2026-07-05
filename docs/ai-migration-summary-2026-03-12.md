@@ -34,7 +34,7 @@
 ### 环境变量（backend/.env）
 ```env
 AI_PROVIDER=claude
-ANTHROPIC_API_KEY=sk-ant-your-key-here
+ANTHROPIC_API_KEY=<your-anthropic-api-key>
 CLAUDE_MODEL=claude-sonnet-4-20250514
 CLAUDE_MAX_TOKENS=4096
 CLAUDE_TEMPERATURE=0.7

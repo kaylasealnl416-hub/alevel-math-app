@@ -20,7 +20,7 @@
 4. 点击 "Create Key"
 
 ### 步骤 4: 复制 API Key
-- API Key 格式：`sk-ant-api03-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+- API Key 格式：`<your-anthropic-api-key>`
 - **重要**：API Key 只显示一次，请立即复制保存！
 
 ---
@@ -32,7 +32,7 @@
 编辑 `backend/.env` 文件：
 
 ```env
-ANTHROPIC_API_KEY=sk-ant-api03-your-actual-key-here
+ANTHROPIC_API_KEY=<your-anthropic-api-key>
 ```
 
 **注意**：
@@ -47,7 +47,7 @@ ANTHROPIC_API_KEY=sk-ant-api03-your-actual-key-here
 4. 点击 "New Variable"
 5. 添加：
    - **Name**: `ANTHROPIC_API_KEY`
-   - **Value**: `sk-ant-api03-your-actual-key-here`
+   - **Value**: `<your-anthropic-api-key>`
 6. 点击 "Add" 保存
 7. Railway 会自动重新部署
 

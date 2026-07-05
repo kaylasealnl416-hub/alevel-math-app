@@ -211,8 +211,8 @@ curl -X POST http://localhost:4000/api/auth/register \
       "nickname": "测试用户",
       "grade": "AS"
     },
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    "token": "<jwt-access-token>",
+    "refreshToken": "<jwt-refresh-token>"
   }
 }
 ```

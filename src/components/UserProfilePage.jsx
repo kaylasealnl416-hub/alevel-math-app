@@ -182,7 +182,7 @@ export default function UserProfilePage() {
               value={formData.targetUniversity}
               onChange={(e) => setFormData({ ...formData, targetUniversity: e.target.value })}
               style={S.input}
-              placeholder="e.g. Cambridge, Oxford"
+              placeholder="e.g. London, Manchester"
             />
           </div>
 

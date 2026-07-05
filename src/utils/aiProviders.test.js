@@ -99,12 +99,12 @@ describe('aiProviders', () => {
   // ── UI 展示 ──
   describe('getActiveProviderName', () => {
     it('无设置时返回默认名', () => {
-      expect(getActiveProviderName()).toBe('默认 (智谱 GLM)')
+      expect(getActiveProviderName()).toBe('Default (Zhipu GLM)')
     })
 
     it('有 provider 无 key 时返回默认名', () => {
       saveAISettings({ provider: 'claude', apiKey: '', model: '' })
-      expect(getActiveProviderName()).toBe('默认 (智谱 GLM)')
+      expect(getActiveProviderName()).toBe('Default (Zhipu GLM)')
     })
 
     it('有完整设置时返回提供商名', () => {

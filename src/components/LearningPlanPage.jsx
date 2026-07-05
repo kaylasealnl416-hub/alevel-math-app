@@ -249,7 +249,7 @@ function LearningPlanPage() {
                     {/* P5: 来源考试信息 */}
                     {rec.examId && (
                       <div style={{ fontSize: 12, color: '#80868b', marginTop: 4 }}>
-                        来自考试 #{rec.examId}{rec.createdAt ? ` · ${formatDate(rec.createdAt)}` : ''}
+                        From exam #{rec.examId}{rec.createdAt ? ` · ${formatDate(rec.createdAt)}` : ''}
                       </div>
                     )}
 

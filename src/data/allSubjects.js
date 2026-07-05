@@ -69,9 +69,36 @@ export const PHYSICS_PAST_PAPERS = PHYSICS_PAST_PAPER_SERIES.flatMap(series =>
   }))
 );
 
+const PEARSON_IAL_ECONOMICS_PAST_PAPER_BASE_URL = "https://qualifications.pearson.com/en/support/support-topics/exams/past-papers.html?Qualification-Family=International-Advanced-Level&Qualification-Subject=Economics+%282018%29&Specification-Code=Pearson-UK%3ASpecification-Code%2Fial18-economics&Status=Pearson-UK%3AStatus%2FLive";
+
+const ECONOMICS_PAPER_UNITS = [
+  { paper: "Unit1", code: "WEC11/01", duration: 105, questions: 13, marks: 80, desc: "Markets in action" },
+  { paper: "Unit2", code: "WEC12/01", duration: 105, questions: 13, marks: 80, desc: "Macroeconomic performance and policy" },
+  { paper: "Unit3", code: "WEC13/01", duration: 120, questions: 9, marks: 80, desc: "Business behaviour" },
+  { paper: "Unit4", code: "WEC14/01", duration: 120, questions: 9, marks: 80, desc: "Developments in the global economy" },
+];
+
+const ECONOMICS_PAST_PAPER_SERIES = [
+  { year: 2024, session: "Jan", examSeries: "January-2024" },
+  { year: 2024, session: "May/Jun", examSeries: "June-2024" },
+  { year: 2024, session: "Oct", examSeries: "October-2024" },
+];
+
+export const ECONOMICS_PAST_PAPERS = ECONOMICS_PAST_PAPER_SERIES.flatMap(series =>
+  ECONOMICS_PAPER_UNITS.map(unit => ({
+    ...series,
+    ...unit,
+    subject: "economics",
+    source: "Pearson",
+    sourceUrl: `${PEARSON_IAL_ECONOMICS_PAST_PAPER_BASE_URL}&Exam-Series=${series.examSeries}`,
+    availabilityNote: "Official Pearson past paper search. Recent locked papers must remain linked, not mirrored.",
+  }))
+);
+
 export const PAST_PAPERS_BY_SUBJECT = {
   mathematics: PAST_PAPERS,
   physics: PHYSICS_PAST_PAPERS,
+  economics: ECONOMICS_PAST_PAPERS,
 };
 
 // Subject name mapping (shared by MockExamView and WrongQuestionsPage)

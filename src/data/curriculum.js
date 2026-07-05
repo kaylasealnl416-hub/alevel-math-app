@@ -1,3 +1,194 @@
+const MATH_WORKED_EXAMPLES = {
+  p1c1: [{
+    question: { en: "Simplify 3 sqrt(50) - sqrt(8), then rationalise 5 / (2 + sqrt(3))." },
+    answer: { en: "3 sqrt(50) = 15 sqrt(2) and sqrt(8) = 2 sqrt(2), so the first expression is 13 sqrt(2). For the fraction, multiply by the conjugate: 5(2 - sqrt(3)) / (4 - 3) = 10 - 5 sqrt(3)." },
+  }],
+  p1c2: [{
+    question: { en: "Solve x^2 - 6x + 5 = 0 and find the minimum value of y = x^2 - 6x + 7." },
+    answer: { en: "Factorise x^2 - 6x + 5 = (x - 1)(x - 5), so x = 1 or x = 5. Complete the square: y = (x - 3)^2 - 2, so the minimum value is -2 at x = 3." },
+  }],
+  p1c3: [{
+    question: { en: "Find the intersection points of y = 2x + 1 and y = x^2 - 4x + 3." },
+    answer: { en: "Set x^2 - 4x + 3 = 2x + 1, giving x^2 - 6x + 2 = 0. Hence x = 3 +/- sqrt(7). Substitute into y = 2x + 1 to get y = 7 +/- 2 sqrt(7)." },
+  }],
+  p1c4: [{
+    question: { en: "Describe the transformation from y = x^2 to y = (x - 3)^2 + 2, and state the vertex." },
+    answer: { en: "The graph is translated 3 units to the right and 2 units up. The vertex moves from (0, 0) to (3, 2)." },
+  }],
+  p1c5: [{
+    question: { en: "Find the equation of the line through (2, 5) and (6, 13)." },
+    answer: { en: "Gradient = (13 - 5) / (6 - 2) = 2. Using y - 5 = 2(x - 2), the equation is y = 2x + 1." },
+  }],
+  p1c6: [{
+    question: { en: "Solve 2 sin x = 1 for 0 <= x < 360 degrees." },
+    answer: { en: "sin x = 1/2. The reference angle is 30 degrees. Sine is positive in quadrants I and II, so x = 30 degrees or 150 degrees." },
+  }],
+  p1c7: [{
+    question: { en: "A sector has radius 8 cm and angle 1.2 radians. Find the arc length and area." },
+    answer: { en: "Arc length s = r theta = 8 x 1.2 = 9.6 cm. Area = 1/2 r^2 theta = 0.5 x 64 x 1.2 = 38.4 cm^2." },
+  }],
+  p1c8: [{
+    question: { en: "Differentiate y = x^3 - 4x^2 + 2x and find the stationary points." },
+    answer: { en: "dy/dx = 3x^2 - 8x + 2. Set this equal to zero: x = (8 +/- sqrt(64 - 24)) / 6 = (4 +/- sqrt(10)) / 3. Substitute these x-values into y for the corresponding coordinates." },
+  }],
+  p1c9: [{
+    question: { en: "Find integral of (6x^2 - 4x + 1) dx and evaluate it from x = 0 to x = 2." },
+    answer: { en: "An antiderivative is 2x^3 - 2x^2 + x + C. From 0 to 2 the value is (16 - 8 + 2) - 0 = 10." },
+  }],
+  p2c1: [{
+    question: { en: "Simplify (x^2 - 9) / (x^2 + 5x + 6)." },
+    answer: { en: "Factorise: x^2 - 9 = (x - 3)(x + 3) and x^2 + 5x + 6 = (x + 2)(x + 3). Cancel the common factor x + 3, giving (x - 3)/(x + 2), with x not equal to -3 or -2." },
+  }],
+  p2c2: [{
+    question: { en: "Find the centre and radius of x^2 + y^2 - 6x + 4y - 12 = 0." },
+    answer: { en: "Complete the square: (x - 3)^2 - 9 + (y + 2)^2 - 4 - 12 = 0, so (x - 3)^2 + (y + 2)^2 = 25. The centre is (3, -2) and radius is 5." },
+  }],
+  p2c3: [{
+    question: { en: "Solve 3e^(2x) = 12." },
+    answer: { en: "Divide by 3 to get e^(2x) = 4. Take natural logs: 2x = ln 4, so x = 1/2 ln 4 = ln 2." },
+  }],
+  p2c4: [{
+    question: { en: "Expand (1 + 2x)^5 up to and including the x^3 term." },
+    answer: { en: "Use binomial coefficients 1, 5, 10, 10. The expansion is 1 + 5(2x) + 10(2x)^2 + 10(2x)^3 + ... = 1 + 10x + 40x^2 + 80x^3 + ..." },
+  }],
+  p2c5: [{
+    question: { en: "An arithmetic sequence has first term 7 and common difference 4. Find the 20th term and the sum of the first 20 terms." },
+    answer: { en: "u_20 = 7 + 19 x 4 = 83. S_20 = 20/2 x (7 + 83) = 900." },
+  }],
+  p2c6: [{
+    question: { en: "Solve 2 cos^2 x - 1 = 0 for 0 <= x < 360 degrees." },
+    answer: { en: "2 cos^2 x - 1 = 0 gives cos^2 x = 1/2, so cos x = +/- sqrt(2)/2. Therefore x = 45, 135, 225, 315 degrees." },
+  }],
+  p2c7: [{
+    question: { en: "Differentiate y = (3x - 1)^5." },
+    answer: { en: "Use the chain rule. dy/dx = 5(3x - 1)^4 x 3 = 15(3x - 1)^4." },
+  }],
+  p2c8: [{
+    question: { en: "Find integral of 6x(x^2 + 1)^4 dx." },
+    answer: { en: "Let u = x^2 + 1, so du = 2x dx. Then 6x dx = 3 du. The integral becomes 3 integral u^4 du = (3/5)u^5 + C = (3/5)(x^2 + 1)^5 + C." },
+  }],
+  s1c1: [{
+    question: { en: "State two assumptions that might be made when modelling the number of customers arriving at a ticket desk in one hour." },
+    answer: { en: "A suitable model may assume arrivals are independent and the average arrival rate is constant during the hour. Always link assumptions to the real context and mention when they may fail, such as during a lunch rush." },
+  }],
+  s1c2: [{
+    question: { en: "The data are 4, 7, 9, 10, 10. Find the mean and standard deviation." },
+    answer: { en: "Mean = 40/5 = 8. For standard deviation, use sqrt(sum x^2 / n - mean^2). sum x^2 = 16 + 49 + 81 + 100 + 100 = 346. Variance = 346/5 - 64 = 5.2, so standard deviation = 2.28." },
+  }],
+  s1c3: [{
+    question: { en: "A box plot has Q1 = 12, median = 18 and Q3 = 27. Find the interquartile range and the upper outlier boundary." },
+    answer: { en: "IQR = 27 - 12 = 15. The upper outlier boundary is Q3 + 1.5 x IQR = 27 + 22.5 = 49.5." },
+  }],
+  s1c4: [{
+    question: { en: "A bag contains 3 red and 2 blue counters. Two counters are selected without replacement. Find P(two red)." },
+    answer: { en: "P(first red) = 3/5. Given the first is red, P(second red) = 2/4. Therefore P(two red) = 3/5 x 2/4 = 3/10." },
+  }],
+  s1c5: [{
+    question: { en: "A regression line is y = 2.4x + 5. Estimate y when x = 12 and interpret the gradient." },
+    answer: { en: "Substitute x = 12: y = 2.4 x 12 + 5 = 33.8. The gradient means that for each increase of 1 in x, the predicted value of y increases by 2.4 units." },
+  }],
+  s1c6: [{
+    question: { en: "A discrete random variable X has P(X=0)=0.2, P(X=1)=0.5 and P(X=3)=0.3. Find E(X)." },
+    answer: { en: "E(X) = sum xp = 0 x 0.2 + 1 x 0.5 + 3 x 0.3 = 1.4." },
+  }],
+  s1c7: [{
+    question: { en: "X is normally distributed with mean 60 and standard deviation 8. Find P(X > 72)." },
+    answer: { en: "Standardise: z = (72 - 60) / 8 = 1.5. Therefore P(X > 72) = P(Z > 1.5) = 1 - Phi(1.5) = 1 - 0.9332 = 0.0668." },
+  }],
+  p3c1: [{
+    question: { en: "Express (5x + 1) / ((x - 1)(x + 2)) in partial fractions." },
+    answer: { en: "Let (5x + 1)/((x - 1)(x + 2)) = A/(x - 1) + B/(x + 2). Then 5x + 1 = A(x + 2) + B(x - 1). Put x = 1 to get A = 2; put x = -2 to get B = 3. So the result is 2/(x - 1) + 3/(x + 2)." },
+  }],
+  p3c2: [{
+    question: { en: "For f(x) = 2x - 3, find f^{-1}(x) and f(f^{-1}(8))." },
+    answer: { en: "Let y = 2x - 3. Rearrange x = (y + 3)/2, so f^{-1}(x) = (x + 3)/2. Then f(f^{-1}(8)) = 8, which checks the inverse relationship." },
+  }],
+  p3c3: [{
+    question: { en: "Solve 2 sin x cos x = sin x for 0 <= x < 360 degrees." },
+    answer: { en: "Rearrange sin x(2 cos x - 1) = 0. Thus sin x = 0 gives x = 0, 180 degrees, and 2 cos x - 1 = 0 gives cos x = 1/2, so x = 60, 300 degrees." },
+  }],
+  p3c4: [{
+    question: { en: "A quantity follows N = 40e^(0.12t). Find the time when N = 100." },
+    answer: { en: "Set 100 = 40e^(0.12t), so e^(0.12t) = 2.5. Take logs: 0.12t = ln 2.5, hence t = ln 2.5 / 0.12 = 7.64." },
+  }],
+  p3c5: [{
+    question: { en: "Differentiate y = x^2 ln x." },
+    answer: { en: "Use the product rule: dy/dx = 2x ln x + x^2 x (1/x) = 2x ln x + x." },
+  }],
+  p3c6: [{
+    question: { en: "Find integral of x e^x dx." },
+    answer: { en: "Use integration by parts with u = x and dv = e^x dx. Then du = dx and v = e^x. The integral is x e^x - integral e^x dx = x e^x - e^x + C = e^x(x - 1) + C." },
+  }],
+  p3c7: [{
+    question: { en: "Find the vector from A(1, 2, -1) to B(4, 0, 5) and its length." },
+    answer: { en: "AB = B - A = (3, -2, 6). Its length is sqrt(3^2 + (-2)^2 + 6^2) = sqrt(49) = 7." },
+  }],
+  p3c8: [{
+    question: { en: "Solve dy/dx = 3y with y = 2 when x = 0." },
+    answer: { en: "Separate variables: (1/y) dy = 3 dx. Integrate to get ln y = 3x + C, so y = Ae^(3x). Since y(0) = 2, A = 2. Therefore y = 2e^(3x)." },
+  }],
+  p4c1: [{
+    question: { en: "Use induction to outline why 1 + 2 + ... + n = n(n + 1)/2." },
+    answer: { en: "Base case n = 1 is true. Assume true for n = k: sum = k(k + 1)/2. For n = k + 1, add k + 1 to get k(k + 1)/2 + (k + 1) = (k + 1)(k + 2)/2, so the result holds." },
+  }],
+  p4c2: [{
+    question: { en: "For z = 3 - 4i, find |z| and arg z in degrees." },
+    answer: { en: "|z| = sqrt(3^2 + (-4)^2) = 5. The point is in quadrant IV, so arg z = -arctan(4/3) = -53.1 degrees." },
+  }],
+  p4c3: [{
+    question: { en: "Find the determinant of [[2, 1], [5, 3]] and state whether the matrix is invertible." },
+    answer: { en: "Determinant = 2 x 3 - 1 x 5 = 1. Since the determinant is non-zero, the matrix is invertible." },
+  }],
+  p4c4: [{
+    question: { en: "Find the angle between vectors a = (1, 2, 2) and b = (2, 0, 1)." },
+    answer: { en: "a dot b = 1x2 + 2x0 + 2x1 = 4. |a| = 3 and |b| = sqrt(5). cos theta = 4/(3 sqrt(5)), so theta = 53.4 degrees." },
+  }],
+  p4c5: [{
+    question: { en: "Use the identity cosh^2 x - sinh^2 x = 1 to simplify cosh^2 x - 1." },
+    answer: { en: "Rearrange the identity: cosh^2 x - 1 = sinh^2 x. This is the hyperbolic analogue of cos^2 x + sin^2 x = 1, but with a sign change." },
+  }],
+  p4c6: [{
+    question: { en: "Find the area enclosed by r = 2 for 0 <= theta <= pi/2." },
+    answer: { en: "Polar area = 1/2 integral r^2 dtheta. Here r^2 = 4, so area = 1/2 x integral from 0 to pi/2 of 4 dtheta = 2 x pi/2 = pi." },
+  }],
+  p4c7: [{
+    question: { en: "Find the Maclaurin expansion of e^x up to the x^3 term and use it to estimate e^0.1." },
+    answer: { en: "e^x = 1 + x + x^2/2 + x^3/6 + ... . For x = 0.1, e^0.1 is approximately 1 + 0.1 + 0.005 + 0.0001667 = 1.10517." },
+  }],
+  p4c8: [{
+    question: { en: "Solve y'' - 3y' + 2y = 0." },
+    answer: { en: "The auxiliary equation is m^2 - 3m + 2 = 0, so (m - 1)(m - 2) = 0. Hence y = Ae^x + Be^(2x)." },
+  }],
+  m1c1: [{
+    question: { en: "A particle starts from rest and accelerates uniformly at 3 m s^-2 for 8 s. Find its speed and displacement." },
+    answer: { en: "Use v = u + at = 0 + 3 x 8 = 24 m s^-1. Then s = ut + 1/2 at^2 = 0 + 0.5 x 3 x 64 = 96 m." },
+  }],
+  m1c2: [{
+    question: { en: "A 4 kg block is pulled by a horizontal force of 18 N against friction of 6 N. Find the acceleration." },
+    answer: { en: "Resultant force = 18 - 6 = 12 N. By F = ma, acceleration = 12 / 4 = 3 m s^-2." },
+  }],
+  m1c3: [{
+    question: { en: "A 10 kg box rests on a rough horizontal surface. If the coefficient of friction is 0.25, find the limiting friction." },
+    answer: { en: "Normal reaction R = mg = 10 x 9.8 = 98 N. Limiting friction = mu R = 0.25 x 98 = 24.5 N." },
+  }],
+  m1c4: [{
+    question: { en: "A uniform 4 m rod of weight 30 N is supported at one end. A 20 N load is placed 3 m from that end. Find the moment about the support." },
+    answer: { en: "The rod's weight acts at its centre, 2 m from the support, giving moment 30 x 2 = 60 N m. The load gives 20 x 3 = 60 N m. Total clockwise moment = 120 N m." },
+  }],
+  m1c5: [{
+    question: { en: "A 2 kg object increases speed from 3 m s^-1 to 7 m s^-1. Find the increase in kinetic energy." },
+    answer: { en: "Increase in KE = 1/2 m(v^2 - u^2) = 0.5 x 2 x (49 - 9) = 40 J." },
+  }],
+  m1c6: [{
+    question: { en: "A 0.5 kg particle moving at 6 m s^-1 collides with a wall and rebounds at 4 m s^-1 in the opposite direction. Find the impulse." },
+    answer: { en: "Take the original direction as positive. u = 6 and v = -4. Impulse = m(v - u) = 0.5(-4 - 6) = -5 N s, so its magnitude is 5 N s opposite to the original motion." },
+  }],
+  m1c7: [{
+    question: { en: "A projectile is launched at 20 m s^-1 at 30 degrees above the horizontal. Find the initial horizontal and vertical velocity components." },
+    answer: { en: "Horizontal component = 20 cos 30 = 17.3 m s^-1. Vertical component = 20 sin 30 = 10.0 m s^-1. Use these components separately in SUVAT equations." },
+  }],
+}
+
 export const CURRICULUM = {
   P1: {
     title: "Pure Mathematics 1",
@@ -1467,3 +1658,9 @@ export const CURRICULUM = {
     ]
   }
 };
+
+Object.values(CURRICULUM).forEach((book) => {
+  book.chapters.forEach((chapter) => {
+    chapter.examples = chapter.examples || MATH_WORKED_EXAMPLES[chapter.id] || []
+  })
+})

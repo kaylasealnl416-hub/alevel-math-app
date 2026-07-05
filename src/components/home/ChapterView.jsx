@@ -268,7 +268,7 @@ export default function ChapterView({ chapter, book, nav, t, lang, subject = "ma
                         </div>
                       </div>
                       <div style={{ padding: "12px 18px", background: "#F8FAFC" }}>
-                        <span style={{ fontSize: 11, fontWeight: 700, color: color, textTransform: "uppercase", letterSpacing: 0.5 }}>{lang === 'en' ? 'Answer' : '答案'} </span>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: color, textTransform: "uppercase", letterSpacing: 0.5 }}>{'Answer'} </span>
                         <span style={{ fontSize: 13, color: "#374151", lineHeight: 1.65 }}>{lang === 'en' ? ex.answer.en : ex.answer.zh || ex.answer.en}</span>
                       </div>
                     </div>

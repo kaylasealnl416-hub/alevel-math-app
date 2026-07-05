@@ -223,10 +223,30 @@ const PHYSICS_WORKED_EXAMPLES = {
   ],
 }
 
+const PHYSICS_UNIT_CODES = {
+  phy1: "WPH11/01",
+  phy2: "WPH12/01",
+  phy3: "WPH13/01",
+  phy4: "WPH14/01",
+  phy5: "WPH15/01",
+  phy6: "WPH16/01",
+}
+
+const physicsVideoSearch = (data) => {
+  const title = typeof data.title === "object" ? data.title.en : data.title
+  const unitCode = PHYSICS_UNIT_CODES[data.id.slice(0, 4)] || "Pearson Edexcel IAL Physics"
+  const query = encodeURIComponent("Pearson Edexcel IAL Physics " + unitCode + " " + title)
+  return [{
+    title: title + " - Pearson Edexcel IAL Physics search",
+    url: "https://www.youtube.com/results?search_query=" + query,
+    channel: "YouTube Search",
+  }]
+}
+
 const chapter = (data) => ({
   ...data,
   examples: data.examples || PHYSICS_WORKED_EXAMPLES[data.id] || [],
-  youtube: data.youtube || [],
+  youtube: data.youtube?.length ? data.youtube : physicsVideoSearch(data),
   videos: data.videos || [],
 })
 

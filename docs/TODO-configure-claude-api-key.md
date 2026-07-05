@@ -17,7 +17,7 @@
 
 #### 2. 配置本地开发环境
 - [ ] 打开 `backend/.env` 文件
-- [ ] 找到 `ANTHROPIC_API_KEY=sk-ant-api03-your-actual-key-here`
+- [ ] 找到 `ANTHROPIC_API_KEY=<your-anthropic-api-key>`
 - [ ] 替换为真实的 API Key
 - [ ] 保存文件
 

@@ -44,7 +44,7 @@
 
 ```bash
 # 数据库连接（从 Supabase 复制）
-DATABASE_URL=postgresql://postgres.mozzqjeusrjuxycwpyld:MySecure%40Pass2026@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres
+DATABASE_URL=postgresql://postgres.<project-ref>:<password>@<region>.pooler.supabase.com:5432/postgres
 
 # 服务器配置
 NODE_ENV=production

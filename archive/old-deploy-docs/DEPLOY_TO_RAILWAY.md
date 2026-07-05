@@ -63,13 +63,13 @@
 
 ```bash
 # 数据库连接（从你的 backend/.env.local 复制）
-DATABASE_URL=postgresql://postgres.mozzqjeusrjuxycwpyld:MySecure%40Pass2026@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres
+DATABASE_URL=postgresql://postgres.<project-ref>:<password>@<region>.pooler.supabase.com:5432/postgres
 
 # 生产环境标识
 NODE_ENV=production
 
 # JWT 密钥（使用下面生成的强随机字符串）
-JWT_SECRET=db4e6e64e16dcd80bee82ec4bdc4f6c63ab246df79436f9015d1ac0cfdfe3711
+JWT_SECRET=<generate-new-32-byte-jwt-secret>
 
 # 前端地址（暂时先用占位符，部署后再更新）
 FRONTEND_URL=https://alevel-math-app.vercel.app
@@ -79,7 +79,7 @@ FRONTEND_URL=https://alevel-math-app.vercel.app
 
 ```bash
 # Claude API Key（如果你有的话）
-ANTHROPIC_API_KEY=sk-ant-api03-your-key-here
+ANTHROPIC_API_KEY=<your-anthropic-api-key>
 ```
 
 **注意**：

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { SUBJECTS } from './subjects.js'
+import { CURRICULUM } from './curriculum.js'
 import { PAST_PAPERS_BY_SUBJECT } from './allSubjects.js'
 
 // Data structure validation tests
@@ -101,6 +102,57 @@ describe('Subject Data Validation', () => {
         expect(paper.source).toBe('Pearson')
         expect(paper.sourceUrl).toContain('qualifications.pearson.com')
         expect(paper.sourceUrl).toContain(`Exam-Series=${series}`)
+      })
+    })
+  })
+
+  it('physics should include one YouTube learning resource for every chapter', () => {
+    const physics = SUBJECTS.physics
+    Object.values(physics.books).forEach(unit => {
+      unit.chapters.forEach(chapter => {
+        expect(chapter.youtube?.length).toBeGreaterThanOrEqual(1)
+        chapter.youtube.forEach(video => {
+          expect(video.title).toBeTruthy()
+          expect(video.channel).toBeTruthy()
+          expect(video.url).toContain('youtube.com/results?search_query=')
+          expect(video.url).not.toContain(' ')
+        })
+      })
+    })
+  })
+
+  it('mathematics should include one English worked example for every chapter', () => {
+    Object.values(CURRICULUM).forEach(book => {
+      book.chapters.forEach(chapter => {
+        expect(chapter.examples?.length).toBeGreaterThanOrEqual(1)
+        chapter.examples.forEach(example => {
+          expect(example.question?.en).toBeTruthy()
+          expect(example.answer?.en).toBeTruthy()
+          expect(example.question.en).not.toMatch(/[\u4e00-\u9fff]/)
+          expect(example.answer.en).not.toMatch(/[\u4e00-\u9fff]/)
+        })
+      })
+    })
+  })
+
+  it('economics should expose official Pearson past paper metadata', () => {
+    const economicsPapers = PAST_PAPERS_BY_SUBJECT.economics
+    expect(economicsPapers).toHaveLength(12)
+
+    const expectedCodes = ['WEC11/01', 'WEC12/01', 'WEC13/01', 'WEC14/01']
+    const expectedSeries = ['January-2024', 'June-2024', 'October-2024']
+
+    expectedCodes.forEach(code => {
+      expect(economicsPapers.some(paper => paper.code === code)).toBe(true)
+    })
+    expectedSeries.forEach(series => {
+      const papersInSeries = economicsPapers.filter(paper => paper.examSeries === series)
+      expect(papersInSeries).toHaveLength(4)
+      papersInSeries.forEach(paper => {
+        expect(paper.source).toBe('Pearson')
+        expect(paper.sourceUrl).toContain('qualifications.pearson.com')
+        expect(paper.sourceUrl).toContain('Qualification-Subject=Economics+%282018%29')
+        expect(paper.sourceUrl).toContain('Exam-Series=' + series)
       })
     })
   })

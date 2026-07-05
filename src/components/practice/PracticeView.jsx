@@ -89,7 +89,7 @@ export default function PracticeView({ chapter, book, subject, embedded, onBack 
       // 提示用户题量不足
       if (data.insufficient) {
         const { default: Toast } = await import('../common/Toast')
-        Toast.info(`题库暂时只有 ${data.roundSize} 道题，不足 ${questionCount} 道`)
+        Toast.info(`Only ${data.roundSize} questions are available in the question bank; ${questionCount} requested.`)
       }
 
       setQuestions(data.questions || data)

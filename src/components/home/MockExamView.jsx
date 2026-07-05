@@ -87,7 +87,7 @@ export default function MockExamView({ nav, t, lang, subject = "mathematics", qu
       }
 
       if (allQuestions.length === 0) {
-        Toast.error("该试卷暂无题目，题库正在补充中");
+        Toast.error("No questions are available for this paper yet. The question bank is being expanded.");
         setLoading(false);
         return;
       }
@@ -95,7 +95,7 @@ export default function MockExamView({ nav, t, lang, subject = "mathematics", qu
       const data = { questions: allQuestions.slice(0, totalNeeded).sort(() => Math.random() - 0.5) };
 
       if (allQuestions.length < totalNeeded) {
-        Toast.info(`题库暂时只有 ${allQuestions.length} 道题，不足 ${totalNeeded} 道`);
+        Toast.info(`Only ${allQuestions.length} questions are available in the question bank; ${totalNeeded} requested.`);
       }
 
       const qs = data.questions.map(mapQuestion);
@@ -118,7 +118,7 @@ export default function MockExamView({ nav, t, lang, subject = "mathematics", qu
       const { questionSet: qs, questions: rawQs } = data;
 
       if (!rawQs || rawQs.length === 0) {
-        Toast.error("该试卷暂无题目");
+        Toast.error("This question set has no questions yet.");
         setLoading(false);
         return;
       }
@@ -224,7 +224,7 @@ export default function MockExamView({ nav, t, lang, subject = "mathematics", qu
         }
       } catch (err) {
         console.warn('Mock exam record creation failed:', err.message);
-        Toast.info('错题记录保存失败，结果仍可查看');
+        Toast.info('Failed to save wrong-answer records. Results are still available.');
       }
     }
 
